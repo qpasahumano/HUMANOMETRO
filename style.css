@@ -82,3 +82,24 @@ ul { list-style: none; padding: 0; }
   opacity: 0.7;
   cursor: pointer;
 }
+body.familia {
+  background: linear-gradient(180deg, #2a7f9e, #1b4f63);
+}
+
+body.social {
+  background: linear-gradient(180deg, #2e8b57, #1f5e3b);
+}
+
+body.laboral {
+  background: linear-gradient(180deg, #3a4f7a, #1f2e4d);
+}
+
+body.conciencia {
+  background: linear-gradient(180deg, #5b4b8a, #2e2359);
+}
+
+body.naturaleza {
+  background: linear-gradient(180deg, #3c7a4f, #1f4d30);
+}
+
+
