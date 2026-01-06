@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -14,7 +14,7 @@
     <!-- INICIO -->
     <section id="start">
       <h1>HUMANÓMETRO</h1>
-      <p>¿Cuánto de humano te queda en este mundo digital?</p>
+      <p>¿Cuánta humanidad expresás en este mundo digital?</p>
 
       <button onclick="startTest(false)">Versión Común</button>
       <button class="premium" onclick="startTest(true)">Versión Premium</button>
@@ -24,11 +24,13 @@
 
     <!-- TEST -->
     <section id="test" class="hidden">
-      <div id="thermo-container">
-  <div id="thermo-bar"></div>
-</div>
-
       <h2 id="areaTitle"></h2>
+
+      <!-- TERMÓMETRO -->
+      <div class="thermometer">
+        <div id="thermoFill"></div>
+      </div>
+
       <p id="questionText"></p>
 
       <div class="answers">
@@ -42,25 +44,24 @@
     <section id="results" class="hidden">
       <h2>Resultado Humanómetro</h2>
 
-      <div id="circles"></div>
+      <div class="thermometer final">
+        <div id="thermoFinal"></div>
+      </div>
 
       <h3 id="globalResult"></h3>
 
-      <h3>Consejos para elevar tu humanidad</h3>
-      <ul id="tips"></ul>
+      <div id="premiumAnalysis"></div>
 
       <button onclick="restart()">Reiniciar</button>
     </section>
 
     <!-- PRIVACIDAD -->
     <section id="privacy" class="hidden">
-      <h2>Política de Privacidad y Uso</h2>
+      <h2>Privacidad y Uso</h2>
       <p>
-        Humanómetro no recopila, almacena ni comparte datos personales.
-        Toda la información se procesa localmente en tu dispositivo.
-        No utiliza cookies ni servidores externos.
-        No constituye diagnóstico médico ni psicológico.
-        Es una herramienta simbólica y reflexiva.
+        Humanómetro no recopila datos personales.
+        Todo se procesa localmente en tu dispositivo.
+        Es una herramienta simbólica de reflexión.
       </p>
       <button onclick="restart()">Volver</button>
     </section>
@@ -70,4 +71,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
