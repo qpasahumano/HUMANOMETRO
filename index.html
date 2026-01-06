@@ -1,50 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Humanómetro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- FUENTE -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-  <!-- ESTILOS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- =========================
-       PANTALLA INICIO
-  ========================== -->
+  <!-- INICIO -->
   <section id="start">
     <h1>HUMANÓMETRO</h1>
-    <p class="subtitle">No es un espejo. Es tu humanidad reflejada.</p>
+    <p>No es un espejo. Es tu humanidad reflejada.</p>
 
-    <button class="btn-main" onclick="startTest(false)">
-      Versión Común
-    </button>
+    <button onclick="startTest(false)">Versión Común</button>
+    <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-    <button class="btn-premium" onclick="startTest(true)">
-      Versión Premium
-    </button>
-
-    <p class="legal-link" onclick="showPrivacy()">Privacidad y uso</p>
+    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
-  <!-- =========================
-       TEST / PREGUNTAS
-  ========================== -->
+  <!-- TEST -->
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
     <!-- TERMÓMETRO -->
     <div id="thermometer">
-      <div id="thermo-fill"></div>
+      <div id="thermoFill"></div>
     </div>
 
-    <p id="questionText" class="question"></p>
+    <p id="questionText"></p>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
@@ -53,47 +40,35 @@
     </div>
   </section>
 
-  <!-- =========================
-       RESULTADOS
-  ========================== -->
+  <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
-    <!-- RESULTADOS POR ÁREA -->
     <div id="circles"></div>
 
-    <!-- RESULTADOS GLOBALES -->
     <h3 id="globalResult"></h3>
-    <p id="coherenceResult" class="coherence"></p>
-    <p id="stateResult" class="state"></p>
+    <p id="coherenceResult"></p>
 
-    <!-- CONSEJOS -->
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <button class="btn-main" onclick="restart()">Reiniciar</button>
+    <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- =========================
-       PRIVACIDAD
-  ========================== -->
+  <!-- PRIVACIDAD -->
   <section id="privacy" class="hidden">
-    <h2>Política de Privacidad y Uso</h2>
-
+    <h2>Privacidad y uso</h2>
     <p>
-      Humanómetro no recopila, almacena ni comparte datos personales.
-      Toda la información se procesa localmente en tu dispositivo.
-      No utiliza cookies ni servidores externos.
-      No constituye diagnóstico médico, psicológico ni clínico.
-      Es una herramienta simbólica, reflexiva y educativa.
+      Humanómetro no recopila datos personales.
+      Toda la información se procesa localmente.
+      No es diagnóstico médico ni psicológico.
+      Es una herramienta reflexiva.
     </p>
-
-    <button class="btn-main" onclick="restart()">Volver</button>
+    <button onclick="restart()">Volver</button>
   </section>
 
 </main>
 
-<!-- SCRIPT -->
 <script src="script.js"></script>
 </body>
 </html>
