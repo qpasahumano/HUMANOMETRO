@@ -75,14 +75,36 @@ function answer(value) {
     currentArea++;
   }
 
-  updateThermo();
+function updateThermo() {
+  const totalQuestions = areas.reduce((a, b) => a + b.questions.length, 0);
+  const answered =
+    areas.slice(0, currentArea).reduce((a, b) => a + b.questions.length, 0) +
+    currentQuestion;
 
-  if (currentArea >= areas.length) {
-    showResults();
+  const progressPercent = Math.round((answered / totalQuestions) * 100);
+  const thermo = document.getElementById("thermoFill");
+  thermo.style.width = progressPercent + "%";
+
+  // calcular humanidad parcial
+  let totalScore = 0;
+  let maxScore = 0;
+
+  areas.forEach(a => {
+    totalScore += scores[a.name];
+    maxScore += a.questions.length * 2;
+  });
+
+  const humanity = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 100;
+
+  if (humanity < 40) {
+    thermo.style.background = "#e74c3c"; // rojo
+  } else if (humanity < 70) {
+    thermo.style.background = "#f1c40f"; // amarillo
   } else {
-    showQuestion();
+    thermo.style.background = "#2ecc71"; // verde
   }
 }
+
 
 function showResults() {
   hideAll();
@@ -168,4 +190,5 @@ function hideAll() {
     document.getElementById(id).classList.add("hidden");
   });
 }
+
 
