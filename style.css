@@ -1,22 +1,12 @@
-
-/* =========================
-   BASE GENERAL
-========================= */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
-  color: #ffffff;
-  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #1b2b4a, #0b1220);
+  color: white;
 }
 
-/* =========================
-   CONTENEDOR APP
-========================= */
 #app {
   max-width: 520px;
   margin: auto;
@@ -24,130 +14,71 @@ body {
   text-align: center;
 }
 
-/* =========================
-   TITULOS
-========================= */
-h1, h2, h3 {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
+.hidden { display: none; }
 
-h1 {
-  font-size: 2.2em;
-  margin-bottom: 10px;
-}
-
-h2 {
-  font-size: 1.6em;
-  margin-top: 20px;
-}
-
-/* =========================
-   BOTONES
-========================= */
 button {
-  width: 100%;
-  max-width: 360px;
+  width: 90%;
+  max-width: 340px;
   margin: 12px auto;
-  padding: 16px 22px;
+  padding: 15px;
   border-radius: 40px;
   border: none;
   font-size: 1em;
-  font-weight: 500;
   cursor: pointer;
-  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  background: #2ecc71;
   color: #000;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  display: block;
-}
-
-button:hover {
-  transform: scale(1.04);
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
-}
-
-button.secondary {
-  background: linear-gradient(45deg, #3498db, #2980b9);
-  color: #fff;
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
 }
 
-/* =========================
-   PANTALLAS
-========================= */
-.hidden {
-  display: none;
+.answers button {
+  background: #3498db;
+  color: white;
 }
 
-/* =========================
-   PREGUNTAS
-========================= */
-#question {
-  font-size: 1.15em;
-  line-height: 1.5;
-  margin: 20px 0;
-}
-
-/* =========================
-   TERMÓMETRO HUMANO
-========================= */
 #thermometer {
   width: 100%;
   height: 14px;
-  border-radius: 20px;
   background: #333;
-  margin: 18px 0 28px;
+  border-radius: 20px;
+  margin: 15px 0 25px;
   overflow: hidden;
 }
 
-#thermometer-fill {
+#thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  transition: width 0.4s ease, filter 0.4s ease;
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
+  transition: width 0.4s ease;
 }
 
-/* =========================
-   RESULTADOS
-========================= */
-.result-box {
-  background: rgba(255,255,255,0.06);
-  border-radius: 20px;
-  padding: 18px;
-  margin: 14px 0;
-  backdrop-filter: blur(6px);
+#circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.result-box strong {
-  font-size: 1.1em;
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
 }
 
-/* =========================
-   LISTAS
-========================= */
-ul {
-  list-style: none;
-  padding: 0;
-}
+.low { background: #e74c3c; }
+.mid { background: #f1c40f; color: #000; }
+.high { background: #2ecc71; color: #000; }
 
-li {
-  margin: 6px 0;
-}
+ul { list-style: none; padding: 0; }
 
-/* =========================
-   LEGAL
-========================= */
 .legal {
-  margin-top: 35px;
-  font-size: 0.75em;
+  font-size: 0.8em;
   opacity: 0.7;
   cursor: pointer;
 }
