@@ -1,0 +1,112 @@
+﻿* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #141e30, #243b55);
+  color: white;
+}
+
+#app {
+  min-height: 100vh;
+  padding: 25px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+h2, h3 {
+  margin-top: 20px;
+}
+
+p {
+  line-height: 1.5;
+}
+
+button {
+  margin: 12px auto;
+  padding: 15px 32px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  background: #2ecc71;
+  color: #000;
+  display: block;
+  width: 90%;
+  max-width: 340px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+button.premium {
+  background: linear-gradient(45deg, gold, orange);
+}
+
+.answers button {
+  background: #3498db;
+  color: #fff;
+}
+
+#circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.low {
+  background: #e74c3c;
+}
+
+.mid {
+  background: #f1c40f;
+  color: #000;
+}
+
+.high {
+  background: #2ecc71;
+  color: #000;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 8px 0;
+}
+
+.legal {
+  margin-top: 30px;
+  font-size: 0.8em;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
