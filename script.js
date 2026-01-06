@@ -306,3 +306,24 @@ function showPrivacy() {
   document.getElementById("start").classList.add("hidden");
   document.getElementById("privacy").classList.remove("hidden");
 }
+function updateThermometer() {
+  const totalQuestions = areas.reduce((sum, a) => sum + a.questions.length, 0);
+  const maxScore = totalQuestions * 2;
+
+  let currentScore = 0;
+  for (let a in scores) currentScore += scores[a];
+
+  const percent = Math.max(5, Math.round((currentScore / maxScore) * 100));
+
+  const bar = document.getElementById("thermo-bar");
+  bar.style.width = percent + "%";
+
+  if (percent < 40) {
+    bar.style.background = "linear-gradient(90deg, #c0392b, #e74c3c)";
+  } else if (percent < 70) {
+    bar.style.background = "linear-gradient(90deg, #f1c40f, #f39c12)";
+  } else {
+    bar.style.background = "linear-gradient(90deg, #2ecc71, #27ae60)";
+  }
+}
+
