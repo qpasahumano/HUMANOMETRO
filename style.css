@@ -1,45 +1,23 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   color: white;
-  background: radial-gradient(
-      circle at top,
-      rgba(120, 200, 255, 0.25),
-      rgba(10, 25, 47, 0.95)
-    ),
-    linear-gradient(180deg, #050b18, #0b1d3a);
+  background:
+    radial-gradient(circle at top, rgba(120,200,255,0.25), rgba(5,15,40,0.95)),
+    linear-gradient(180deg, #020817, #0b1d3a);
   min-height: 100vh;
 }
 
 #app {
-  min-height: 100vh;
   padding: 25px;
   text-align: center;
-  backdrop-filter: blur(2px);
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-h1 {
-  font-size: 2.6em;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
-}
-
-h2, h3 {
-  margin-top: 20px;
-}
-
-p {
-  line-height: 1.6;
-  opacity: 0.95;
-}
+h1 { font-size: 2.6em; letter-spacing: 2px; }
 
 button {
   margin: 14px auto;
@@ -48,22 +26,13 @@ button {
   border: none;
   font-size: 1em;
   cursor: pointer;
-  display: block;
   width: 90%;
   max-width: 340px;
-  transition: all 0.25s ease;
   background: linear-gradient(90deg, #2ecc71, #7dffb3);
-  color: #001a10;
-}
-
-button:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 25px rgba(120, 255, 200, 0.6);
 }
 
 button.premium {
   background: linear-gradient(90deg, #ffd54f, #ff9800);
-  color: #2a1400;
 }
 
 .answers button {
@@ -71,52 +40,26 @@ button.premium {
   color: #001018;
 }
 
-#circles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 25px;
+/* TERMÓMETRO */
+#thermoContainer, #thermoResult {
+  width: 100%;
+  max-width: 400px;
+  height: 18px;
+  margin: 20px auto;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(255,255,255,0.2);
-}
-
-.low {
-  background: linear-gradient(145deg, #ff5252, #c62828);
-}
-
-.mid {
-  background: linear-gradient(145deg, #ffeb3b, #f9a825);
-  color: #2a1a00;
-}
-
-.high {
-  background: linear-gradient(145deg, #66ffa6, #00c853);
-  color: #002a14;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 10px 0;
+#thermoBar, #thermoResultBar {
+  height: 100%;
+  width: 0%;
+  background: green;
+  transition: width 0.4s ease, background 0.4s ease;
 }
 
 .legal {
-  margin-top: 30px;
-  font-size: 0.85em;
+  font-size: 0.8em;
   opacity: 0.7;
   cursor: pointer;
 }
