@@ -1,166 +1,176 @@
-
-let areas = [];
-let currentArea = 0;
+// ===============================
+// ESTADO GLOBAL
+// ===============================
+let mode = "common"; // common | premium
+let currentModule = 0;
 let currentQuestion = 0;
+
+let modules = [];
 let scores = {};
-let isPremium = false;
 
-const baseAreas = [
-  { name: "Familiar", questions: [
-    "¿Estás emocionalmente presente?",
-    "¿Escuchás sin juzgar?",
-    "¿Compartís tiempo real?"
-  ]},
-  { name: "Social", questions: [
-    "¿Tratás con respeto?",
-    "¿Ayudás cuando podés?",
-    "¿Escuchás al otro?"
-  ]},
-  { name: "Laboral", questions: [
-    "¿Actuás con ética?",
-    "¿Respetás a colegas?",
-    "¿Sos justo?"
-  ]},
-  { name: "Conciencia", questions: [
-    "¿Reconocés tus errores?",
-    "¿Buscás crecer?",
-    "¿Actuás con coherencia?"
-  ]},
-  { name: "Naturaleza", questions: [
-    "¿Cuidás el entorno?",
-    "¿Reducís tu impacto?",
-    "¿Respetás la vida?"
-  ]}
+// ===============================
+// MÓDULOS BASE
+// ===============================
+const BASE_MODULES = [
+  {
+    name: "Familia",
+    questions: [
+      "¿Estás emocionalmente presente con tu familia?",
+      "¿Escuchás sin juzgar?",
+      "¿Expresás afecto sin que te lo pidan?"
+    ]
+  },
+  {
+    name: "Social",
+    questions: [
+      "¿Tratás a las personas con respeto?",
+      "¿Escuchás opiniones distintas a la tuya?",
+      "¿Actuás con empatía en espacios públicos?"
+    ]
+  },
+  {
+    name: "Amistad",
+    questions: [
+      "¿Estás presente para tus amistades?",
+      "¿Sos leal incluso cuando no estás de acuerdo?",
+      "¿Escuchás sin intentar imponer tu visión?"
+    ]
+  },
+  {
+    name: "Laboral",
+    questions: [
+      "¿Actuás con ética en tu trabajo?",
+      "¿Respetás a tus compañeros?",
+      "¿Sos justo cuando nadie te observa?"
+    ]
+  },
+  {
+    name: "Planeta",
+    questions: [
+      "¿Respetás a los animales como seres vivos?",
+      "¿Cuidás el entorno donde vivís?",
+      "¿Reducís tu impacto ambiental cuando podés?"
+    ]
+  }
 ];
 
-const premiumExtra = [
-  { name: "Profundidad", questions: [
-    "¿Vivís desde el amor?",
-    "¿Te mentís?",
-    "¿Te hacés cargo de tu impacto?"
-  ]}
-];
+// ===============================
+// MÓDULO PREMIUM
+// ===============================
+const PREMIUM_MODULE = {
+  name: "Conciencia Profunda",
+  questions: [
+    "¿Vivís desde el amor o desde el miedo?",
+    "¿Sos coherente entre lo que pensás y hacés?",
+    "¿Te responsabilizás de tu impacto en otros?"
+  ]
+};
 
-function startTest(premium) {
-  isPremium = premium;
-  areas = JSON.parse(JSON.stringify(baseAreas));
-  if (premium) areas = areas.concat(premiumExtra);
+// ===============================
+// INICIO
+// ===============================
+function startTest(isPremium) {
+  mode = isPremium ? "premium" : "common";
+
+  modules = JSON.parse(JSON.stringify(BASE_MODULES));
+  if (mode === "premium") {
+    modules.push(JSON.parse(JSON.stringify(PREMIUM_MODULE)));
+  }
 
   scores = {};
-  areas.forEach(a => scores[a.name] = 0);
+  modules.forEach(m => scores[m.name] = 0);
 
-  currentArea = 0;
+  currentModule = 0;
   currentQuestion = 0;
 
-  hideAll();
-  document.getElementById("test").classList.remove("hidden");
-  updateThermo();
+  showSection("test");
   showQuestion();
+  updateThermometer();
 }
 
+// ===============================
+// MOSTRAR PREGUNTA
+// ===============================
 function showQuestion() {
-  const area = areas[currentArea];
-  document.getElementById("areaTitle").innerText = area.name;
+  const mod = modules[currentModule];
+  document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText =
-    area.questions[currentQuestion];document.body.className = "";
-
-const areaName = areas[currentArea].name.toLowerCase();
-
-if (areaName.includes("familia")) document.body.classList.add("familia");
-else if (areaName.includes("social")) document.body.classList.add("social");
-else if (areaName.includes("laboral")) document.body.classList.add("laboral");
-else if (areaName.includes("conciencia")) document.body.classList.add("conciencia");
-else if (areaName.includes("naturaleza")) document.body.classList.add("naturaleza");
-
+    mod.questions[currentQuestion];
 }
 
+// ===============================
+// RESPUESTA
+// ===============================
 function answer(value) {
-  const area = areas[currentArea];
-  scores[area.name] += value;
+  const mod = modules[currentModule];
+  scores[mod.name] += value;
+
   currentQuestion++;
 
-  if (currentQuestion >= area.questions.length) {
+  if (currentQuestion >= mod.questions.length) {
     currentQuestion = 0;
-    currentArea++;
+    currentModule++;
   }
 
-function updateThermo() {
-  const totalQuestions = areas.reduce((a, b) => a + b.questions.length, 0);
-  const answered =
-    areas.slice(0, currentArea).reduce((a, b) => a + b.questions.length, 0) +
-    currentQuestion;
-
-  const progressPercent = Math.round((answered / totalQuestions) * 100);
-  const thermo = document.getElementById("thermoFill");
-  thermo.style.width = progressPercent + "%";
-
-  // calcular humanidad parcial
-  let totalScore = 0;
-  let maxScore = 0;
-
-  areas.forEach(a => {
-    totalScore += scores[a.name];
-    maxScore += a.questions.length * 2;
-  });
-
-  const humanity = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 100;
-
-  if (humanity < 40) {
-    thermo.style.background = "#e74c3c"; // rojo
-  } else if (humanity < 70) {
-    thermo.style.background = "#f1c40f"; // amarillo
+  if (currentModule >= modules.length) {
+    showResults();
   } else {
-    thermo.style.background = "#2ecc71"; // verde
+    showQuestion();
+    updateThermometer();
   }
 }
 
-
+// ===============================
+// RESULTADOS
+// ===============================
 function showResults() {
-  hideAll();
-  document.getElementById("results").classList.remove("hidden");
+  showSection("results");
 
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
   let total = 0;
 
-  areas.forEach(a => {
-    const max = a.questions.length * 2;
-    const percent = Math.round((scores[a.name] / max) * 100);
+  modules.forEach(m => {
+    const max = m.questions.length * 2;
+    const percent = Math.round((scores[m.name] / max) * 100);
     total += percent;
 
     const div = document.createElement("div");
-    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-    div.innerHTML = `${percent}%<br>${a.name}`;
+    div.className = "circle " +
+      (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+
+    div.innerHTML = `<strong>${percent}%</strong><br><small>${m.name}</small>`;
     circles.appendChild(div);
   });
 
-  const global = Math.round(total / areas.length);
+  const global = Math.round(total / modules.length);
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  const coherenceText = document.getElementById("coherenceResult");
-coherenceText.innerText = "Coherencia humana: " + coherence + "%";
+  const coherence = calculateCoherence();
+  document.getElementById("coherenceResult").innerText =
+    "Coherencia humana: " + coherence + "%";
 
-let coherenceExplanation = "";
-
-if (coherence >= 85) {
-  coherenceExplanation = "Tus valores internos se expresan de forma consistente en tus acciones.";
-} else if (coherence >= 60) {
-  coherenceExplanation = "Hay valores humanos presentes, pero no se sostienen de forma pareja en todos los ámbitos.";
-} else {
-  coherenceExplanation = "Existe una desconexión entre lo que sentís, pensás y cómo actuás.";
+  renderTips(global);
 }
 
-const explanation = document.createElement("p");
-explanation.style.opacity = "0.85";
-explanation.style.fontSize = "0.9em";
-explanation.innerText = coherenceExplanation;
+// ===============================
+// COHERENCIA HUMANA
+// ===============================
+function calculateCoherence() {
+  const values = modules.map(m => {
+    const max = m.questions.length * 2;
+    return Math.round((scores[m.name] / max) * 100);
+  });
 
-coherenceText.after(explanation);
+  return Math.max(0, 100 - (Math.max(...values) - Math.min(...values)));
+}
 
-
-function showTips(global) {
+// ===============================
+// CONSEJOS
+// ===============================
+function renderTips(global) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
@@ -169,36 +179,58 @@ function showTips(global) {
     return;
   }
 
-  ["Reducí el ritmo", "Más presencia", "Menos pantalla"].forEach(t => {
+  const list =
+    global < 40
+      ? ["Reducí el ritmo", "Volvé a la presencia", "Reconectá con lo vivo"]
+      : ["Escuchá más", "Elegí coherencia", "Cuidá tus vínculos"];
+
+  list.forEach(t => {
     const li = document.createElement("li");
     li.innerText = t;
     tips.appendChild(li);
   });
 }
 
-function updateThermo() {
-  const totalQuestions = areas.reduce((a,b)=>a+b.questions.length,0);
-  const answered = areas.slice(0,currentArea)
-    .reduce((a,b)=>a+b.questions.length,0) + currentQuestion;
-  document.getElementById("thermoFill").style.width =
-    Math.round((answered / totalQuestions) * 100) + "%";
+// ===============================
+// TERMÓMETRO
+// ===============================
+function updateThermometer() {
+  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+  const answered =
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
+    + currentQuestion;
+
+  const progress = Math.round((answered / totalQ) * 100);
+  const bar = document.getElementById("thermoFill");
+  bar.style.width = progress + "%";
+
+  let score = 0, max = 0;
+  modules.forEach(m => {
+    score += scores[m.name];
+    max += m.questions.length * 2;
+  });
+
+  const humanity = max ? Math.round((score / max) * 100) : 100;
+
+  if (humanity < 40) bar.style.background = "#e74c3c";
+  else if (humanity < 70) bar.style.background = "#f1c40f";
+  else bar.style.background = "#2ecc71";
 }
 
+// ===============================
+// NAVEGACIÓN
+// ===============================
 function restart() {
-  hideAll();
-  document.getElementById("start").classList.remove("hidden");
+  showSection("start");
 }
 
 function showPrivacy() {
-  hideAll();
-  document.getElementById("privacy").classList.remove("hidden");
+  showSection("privacy");
 }
 
-function hideAll() {
-  ["start","test","results","privacy"].forEach(id=>{
-    document.getElementById(id).classList.add("hidden");
-  });
+function showSection(id) {
+  ["start", "test", "results", "privacy"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
+  document.getElementById(id).classList.remove("hidden");
 }
-
-
-
