@@ -1,65 +1,84 @@
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  color: white;
-  background:
-    radial-gradient(circle at top, rgba(120,200,255,0.35), rgba(10,20,45,0.95)),
-    linear-gradient(180deg, #020817, #0b1d3a);
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a1a2f, #1b3b6f, #3fa9f5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
 
-#app {
-  padding: 25px;
+.app {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
   text-align: center;
 }
 
-.hidden { display: none; }
-
-h1 { font-size: 2.6em; letter-spacing: 2px; }
-
-button {
-  margin: 14px auto;
-  padding: 16px 36px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-  width: 90%;
-  max-width: 340px;
-  background: linear-gradient(90deg, #2ecc71, #7dffb3);
+h1 {
+  margin-bottom: 5px;
 }
 
-button.premium {
-  background: linear-gradient(90deg, #ffd54f, #ff9800);
-}
-
-.answers button {
-  background: linear-gradient(90deg, #4fc3f7, #0288d1);
-  color: #001018;
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 20px;
 }
 
 /* TERMÓMETRO */
-#thermoContainer, #thermoResult {
+.thermo-container {
+  margin: 20px 0;
+}
+
+.thermo-bar {
   width: 100%;
-  max-width: 400px;
-  height: 18px;
-  margin: 20px auto;
-  background: rgba(255,255,255,0.15);
-  border-radius: 20px;
+  height: 16px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
   overflow: hidden;
 }
 
-#thermoBar, #thermoResultBar {
+#thermo-fill {
   height: 100%;
-  width: 0%;
-  background: green;
-  transition: width 0.4s ease, background 0.4s ease;
+  width: 50%;
+  background: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+  transition: width 0.3s ease;
 }
 
-.legal {
-  font-size: 0.8em;
-  opacity: 0.7;
+/* PREGUNTA */
+#question-box {
+  background: rgba(0,0,0,0.25);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+#question-text {
+  font-size: 1.1rem;
+}
+
+/* BOTONES */
+.buttons button {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
+.buttons button:nth-child(1) { background: #e74c3c; color: #fff; }
+.buttons button:nth-child(2) { background: #f1c40f; color: #000; }
+.buttons button:nth-child(3) { background: #2ecc71; color: #000; }
+
+.privacy {
+  margin-top: 20px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
