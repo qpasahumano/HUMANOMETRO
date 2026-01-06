@@ -1,48 +1,153 @@
-const questions = [
-  "¿Escuchás a una persona sin mirar el celular?",
-  "¿Sentís empatía por el dolor ajeno?",
-  "¿Ayudás sin esperar algo a cambio?",
-  "¿Te detenés a reflexionar antes de reaccionar?",
-  "¿Priorizás vínculos reales sobre lo digital?",
-  "¿Respetás opiniones distintas a la tuya?"
-];
-
-let currentQuestion = 0;
-let score = 0;
-let maxScore = questions.length * 3;
-
-const questionText = document.getElementById("question-text");
-const thermoFill = document.getElementById("thermo-fill");
-
-function showQuestion() {
-  questionText.textContent = questions[currentQuestion];
+/* =========================
+   BASE GENERAL
+========================= */
+* {
+  box-sizing: border-box;
 }
 
-function updateThermo() {
-  const percent = (score / maxScore) * 100;
-  thermoFill.style.width = percent + "%";
+body {
+  margin: 0;
+  font-family: "Poppins", system-ui, sans-serif;
+  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
+  color: #ffffff;
+  min-height: 100vh;
 }
 
-function answer(value) {
-  score += value;
-  currentQuestion++;
-
-  updateThermo();
-
-  if (currentQuestion < questions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
+/* =========================
+   CONTENEDOR APP
+========================= */
+#app {
+  max-width: 520px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
 }
 
-function showResult() {
-  questionText.innerHTML = `
-    <strong>Resultado final</strong><br><br>
-    Tu nivel de humanidad se expresó en tus decisiones.<br>
-    Reflexioná sobre tus elecciones.
-  `;
+/* =========================
+   TITULOS
+========================= */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
-showQuestion();
-updateThermo();
+h1 {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.6em;
+  margin-top: 20px;
+}
+
+/* =========================
+   BOTONES
+========================= */
+button {
+  width: 100%;
+  max-width: 360px;
+  margin: 12px auto;
+  padding: 16px 22px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: #000;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: block;
+}
+
+button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+}
+
+button.secondary {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: #fff;
+}
+
+button.premium {
+  background: linear-gradient(45deg, gold, orange);
+}
+
+/* =========================
+   PANTALLAS
+========================= */
+.hidden {
+  display: none;
+}
+
+/* =========================
+   PREGUNTAS
+========================= */
+#question {
+  font-size: 1.15em;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+/* =========================
+   TERMÓMETRO HUMANO
+========================= */
+#thermometer {
+  width: 100%;
+  height: 14px;
+  border-radius: 20px;
+  background: #333;
+  margin: 18px 0 28px;
+  overflow: hidden;
+}
+
+#thermometer-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  transition: width 0.4s ease, filter 0.4s ease;
+}
+
+/* =========================
+   RESULTADOS
+========================= */
+.result-box {
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 18px;
+  margin: 14px 0;
+  backdrop-filter: blur(6px);
+}
+
+.result-box strong {
+  font-size: 1.1em;
+}
+
+/* =========================
+   LISTAS
+========================= */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 6px 0;
+}
+
+/* =========================
+   LEGAL
+========================= */
+.legal {
+  margin-top: 35px;
+  font-size: 0.75em;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
