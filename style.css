@@ -1,14 +1,13 @@
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   color: white;
   background:
-    radial-gradient(circle at top, rgba(120,200,255,0.25), rgba(5,15,40,0.95)),
+    radial-gradient(circle at top, rgba(120,200,255,0.35), rgba(10,20,45,0.95)),
     linear-gradient(180deg, #020817, #0b1d3a);
-  min-height: 100vh;
 }
+
 
 #app {
   padding: 25px;
@@ -63,3 +62,4 @@ button.premium {
   opacity: 0.7;
   cursor: pointer;
 }
+
