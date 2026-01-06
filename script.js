@@ -160,6 +160,8 @@ function answer(value) {
   } else {
     showQuestion();
   }
+  updateThermometer();
+
 }
 
 // ================================
@@ -326,4 +328,5 @@ function updateThermometer() {
     bar.style.background = "linear-gradient(90deg, #2ecc71, #27ae60)";
   }
 }
+
 
