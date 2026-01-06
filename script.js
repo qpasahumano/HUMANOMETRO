@@ -1,153 +1,155 @@
-/* =========================
-   BASE GENERAL
-========================= */
-* {
-  box-sizing: border-box;
+
+let areas = [];
+let currentArea = 0;
+let currentQuestion = 0;
+let scores = {};
+let isPremium = false;
+
+const baseAreas = [
+  { name: "Familiar", questions: [
+    "¿Estás emocionalmente presente?",
+    "¿Escuchás sin juzgar?",
+    "¿Compartís tiempo real?"
+  ]},
+  { name: "Social", questions: [
+    "¿Tratás con respeto?",
+    "¿Ayudás cuando podés?",
+    "¿Escuchás al otro?"
+  ]},
+  { name: "Laboral", questions: [
+    "¿Actuás con ética?",
+    "¿Respetás a colegas?",
+    "¿Sos justo?"
+  ]},
+  { name: "Conciencia", questions: [
+    "¿Reconocés tus errores?",
+    "¿Buscás crecer?",
+    "¿Actuás con coherencia?"
+  ]},
+  { name: "Naturaleza", questions: [
+    "¿Cuidás el entorno?",
+    "¿Reducís tu impacto?",
+    "¿Respetás la vida?"
+  ]}
+];
+
+const premiumExtra = [
+  { name: "Profundidad", questions: [
+    "¿Vivís desde el amor?",
+    "¿Te mentís?",
+    "¿Te hacés cargo de tu impacto?"
+  ]}
+];
+
+function startTest(premium) {
+  isPremium = premium;
+  areas = JSON.parse(JSON.stringify(baseAreas));
+  if (premium) areas = areas.concat(premiumExtra);
+
+  scores = {};
+  areas.forEach(a => scores[a.name] = 0);
+
+  currentArea = 0;
+  currentQuestion = 0;
+
+  hideAll();
+  document.getElementById("test").classList.remove("hidden");
+  updateThermo();
+  showQuestion();
 }
 
-body {
-  margin: 0;
-  font-family: "Poppins", system-ui, sans-serif;
-  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
-  color: #ffffff;
-  min-height: 100vh;
+function showQuestion() {
+  const area = areas[currentArea];
+  document.getElementById("areaTitle").innerText = area.name;
+  document.getElementById("questionText").innerText =
+    area.questions[currentQuestion];
 }
 
-/* =========================
-   CONTENEDOR APP
-========================= */
-#app {
-  max-width: 520px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
+function answer(value) {
+  const area = areas[currentArea];
+  scores[area.name] += value;
+  currentQuestion++;
+
+  if (currentQuestion >= area.questions.length) {
+    currentQuestion = 0;
+    currentArea++;
+  }
+
+  updateThermo();
+
+  if (currentArea >= areas.length) {
+    showResults();
+  } else {
+    showQuestion();
+  }
 }
 
-/* =========================
-   TITULOS
-========================= */
-h1, h2, h3 {
-  font-weight: 600;
-  letter-spacing: 0.5px;
+function showResults() {
+  hideAll();
+  document.getElementById("results").classList.remove("hidden");
+
+  const circles = document.getElementById("circles");
+  circles.innerHTML = "";
+
+  let total = 0;
+
+  areas.forEach(a => {
+    const max = a.questions.length * 2;
+    const percent = Math.round((scores[a.name] / max) * 100);
+    total += percent;
+
+    const div = document.createElement("div");
+    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.innerHTML = `${percent}%<br>${a.name}`;
+    circles.appendChild(div);
+  });
+
+  const global = Math.round(total / areas.length);
+  document.getElementById("globalResult").innerText =
+    "Humanidad global: " + global + "%";
+
+  document.getElementById("coherenceResult").innerText =
+    "Coherencia humana: " + Math.max(0, 100 - Math.abs(global - 70)) + "%";
+
+  showTips(global);
 }
 
-h1 {
-  font-size: 2.2em;
-  margin-bottom: 10px;
+function showTips(global) {
+  const tips = document.getElementById("tips");
+  tips.innerHTML = "";
+
+  if (global >= 90) {
+    tips.innerHTML = "<li>Sigue por este camino.</li>";
+    return;
+  }
+
+  ["Reducí el ritmo", "Más presencia", "Menos pantalla"].forEach(t => {
+    const li = document.createElement("li");
+    li.innerText = t;
+    tips.appendChild(li);
+  });
 }
 
-h2 {
-  font-size: 1.6em;
-  margin-top: 20px;
+function updateThermo() {
+  const totalQuestions = areas.reduce((a,b)=>a+b.questions.length,0);
+  const answered = areas.slice(0,currentArea)
+    .reduce((a,b)=>a+b.questions.length,0) + currentQuestion;
+  document.getElementById("thermoFill").style.width =
+    Math.round((answered / totalQuestions) * 100) + "%";
 }
 
-/* =========================
-   BOTONES
-========================= */
-button {
-  width: 100%;
-  max-width: 360px;
-  margin: 12px auto;
-  padding: 16px 22px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  background: linear-gradient(45deg, #2ecc71, #27ae60);
-  color: #000;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  display: block;
+function restart() {
+  hideAll();
+  document.getElementById("start").classList.remove("hidden");
 }
 
-button:hover {
-  transform: scale(1.04);
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+function showPrivacy() {
+  hideAll();
+  document.getElementById("privacy").classList.remove("hidden");
 }
 
-button.secondary {
-  background: linear-gradient(45deg, #3498db, #2980b9);
-  color: #fff;
+function hideAll() {
+  ["start","test","results","privacy"].forEach(id=>{
+    document.getElementById(id).classList.add("hidden");
+  });
 }
-
-button.premium {
-  background: linear-gradient(45deg, gold, orange);
-}
-
-/* =========================
-   PANTALLAS
-========================= */
-.hidden {
-  display: none;
-}
-
-/* =========================
-   PREGUNTAS
-========================= */
-#question {
-  font-size: 1.15em;
-  line-height: 1.5;
-  margin: 20px 0;
-}
-
-/* =========================
-   TERMÓMETRO HUMANO
-========================= */
-#thermometer {
-  width: 100%;
-  height: 14px;
-  border-radius: 20px;
-  background: #333;
-  margin: 18px 0 28px;
-  overflow: hidden;
-}
-
-#thermometer-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  transition: width 0.4s ease, filter 0.4s ease;
-}
-
-/* =========================
-   RESULTADOS
-========================= */
-.result-box {
-  background: rgba(255,255,255,0.06);
-  border-radius: 20px;
-  padding: 18px;
-  margin: 14px 0;
-  backdrop-filter: blur(6px);
-}
-
-.result-box strong {
-  font-size: 1.1em;
-}
-
-/* =========================
-   LISTAS
-========================= */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  margin: 6px 0;
-}
-
-/* =========================
-   LEGAL
-========================= */
-.legal {
-  margin-top: 35px;
-  font-size: 0.75em;
-  opacity: 0.7;
-  cursor: pointer;
-}
-
