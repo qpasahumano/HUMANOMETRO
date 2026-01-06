@@ -1,37 +1,59 @@
-﻿* {
+* {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #141e30, #243b55);
-  color: white;
+  background: radial-gradient(circle at top, #1e3c72, #0f2027);
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
 #app {
   min-height: 100vh;
-  padding: 25px;
+  padding: 24px;
   text-align: center;
 }
 
+/* ===== TERMÓMETRO ===== */
+#thermo-container {
+  width: 100%;
+  max-width: 500px;
+  height: 16px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  margin: 10px auto 25px auto;
+  overflow: hidden;
+}
+
+#thermo-bar {
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(90deg, #f1c40f, #2ecc71);
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+/* ===== TEXTOS ===== */
 .hidden {
   display: none;
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: 2.4em;
   margin-bottom: 10px;
+  letter-spacing: 2px;
 }
 
-h2, h3 {
-  margin-top: 20px;
+h2 {
+  margin-top: 10px;
 }
 
 p {
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
+/* ===== BOTONES ===== */
 button {
   margin: 12px auto;
   padding: 15px 32px;
@@ -39,28 +61,30 @@ button {
   border: none;
   font-size: 1em;
   cursor: pointer;
-  background: #2ecc71;
-  color: #000;
+  background: linear-gradient(45deg, #43cea2, #185a9d);
+  color: #fff;
   display: block;
   width: 90%;
   max-width: 340px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
+  color: #000;
 }
 
+/* ===== RESPUESTAS ===== */
 .answers button {
-  background: #3498db;
-  color: #fff;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
 }
 
+/* ===== RESULTADOS ===== */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -80,27 +104,13 @@ button.premium {
   font-weight: bold;
 }
 
-.low {
-  background: #e74c3c;
-}
-
-.mid {
-  background: #f1c40f;
-  color: #000;
-}
-
-.high {
-  background: #2ecc71;
-  color: #000;
-}
+.low { background: #e74c3c; }
+.mid { background: #f1c40f; color: #000; }
+.high { background: #2ecc71; color: #000; }
 
 ul {
   list-style: none;
   padding: 0;
-}
-
-ul li {
-  margin: 8px 0;
 }
 
 .legal {
@@ -109,4 +119,3 @@ ul li {
   opacity: 0.7;
   cursor: pointer;
 }
-
