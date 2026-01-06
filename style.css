@@ -130,6 +130,34 @@ body.naturaleza {
   background: linear-gradient(180deg, #3c7a4f, #1f4d30);
 }
 
+/* ===============================
+   FONDOS POR MÓDULO (VERSIÓN FINAL)
+   =============================== */
+
+#app {
+  transition: background 0.6s ease;
+}
+
+#app.familia {
+  background: linear-gradient(180deg, #5fa3c7, #7fc8d6);
+}
+
+#app.social {
+  background: linear-gradient(180deg, #4f93c2, #6fb3e0);
+}
+
+#app.amistad {
+  background: linear-gradient(180deg, #6fbfa3, #9fe0c8);
+}
+
+#app.laboral {
+  background: linear-gradient(180deg, #4f6d8a, #6f8fb0);
+}
+
+#app.planeta {
+  background: linear-gradient(180deg, #5fa86e, #8fd6a0);
+                              }
+
 
 
 
