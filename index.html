@@ -1,72 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Humanómetro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HUMANÓMETRO</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 
 <body>
-  <main id="app">
+  <div class="app">
 
-    <!-- INICIO -->
-    <section id="start">
-      <h1>HUMANÓMETRO</h1>
-      <p>¿Cuánta humanidad expresás en este mundo digital?</p>
+    <h1>HUMANÓMETRO</h1>
+    <p class="subtitle">No es un espejo. Es tu humanidad reflejada.</p>
 
-      <button onclick="startTest(false)">Versión Común</button>
-      <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-      <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-    </section>
-
-    <!-- TEST -->
-    <section id="test" class="hidden">
-      <h2 id="areaTitle"></h2>
-
-      <!-- TERMÓMETRO -->
-      <div class="thermometer">
-        <div id="thermoFill"></div>
+    <!-- TERMÓMETRO -->
+    <div class="thermo-container">
+      <div class="thermo-bar">
+        <div id="thermo-fill"></div>
       </div>
+    </div>
 
-      <p id="questionText"></p>
+    <!-- PREGUNTA -->
+    <div id="question-box">
+      <p id="question-text"></p>
+    </div>
 
-      <div class="answers">
-        <button onclick="answer(2)">Sí</button>
-        <button onclick="answer(1)">A veces</button>
-        <button onclick="answer(0)">No</button>
-      </div>
-    </section>
+    <!-- BOTONES -->
+    <div class="buttons">
+      <button onclick="answer(1)">Nunca</button>
+      <button onclick="answer(2)">A veces</button>
+      <button onclick="answer(3)">Siempre</button>
+    </div>
 
-    <!-- RESULTADOS -->
-    <section id="results" class="hidden">
-      <h2>Resultado Humanómetro</h2>
+    <p class="privacy">Privacidad y uso</p>
 
-      <div class="thermometer final">
-        <div id="thermoFinal"></div>
-      </div>
-
-      <h3 id="globalResult"></h3>
-
-      <div id="premiumAnalysis"></div>
-
-      <button onclick="restart()">Reiniciar</button>
-    </section>
-
-    <!-- PRIVACIDAD -->
-    <section id="privacy" class="hidden">
-      <h2>Privacidad y Uso</h2>
-      <p>
-        Humanómetro no recopila datos personales.
-        Todo se procesa localmente en tu dispositivo.
-        Es una herramienta simbólica de reflexión.
-      </p>
-      <button onclick="restart()">Volver</button>
-    </section>
-
-  </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
