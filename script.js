@@ -62,7 +62,16 @@ function showQuestion() {
   const area = areas[currentArea];
   document.getElementById("areaTitle").innerText = area.name;
   document.getElementById("questionText").innerText =
-    area.questions[currentQuestion];
+    area.questions[currentQuestion];document.body.className = "";
+
+const areaName = areas[currentArea].name.toLowerCase();
+
+if (areaName.includes("familia")) document.body.classList.add("familia");
+else if (areaName.includes("social")) document.body.classList.add("social");
+else if (areaName.includes("laboral")) document.body.classList.add("laboral");
+else if (areaName.includes("conciencia")) document.body.classList.add("conciencia");
+else if (areaName.includes("naturaleza")) document.body.classList.add("naturaleza");
+
 }
 
 function answer(value) {
@@ -190,5 +199,6 @@ function hideAll() {
     document.getElementById(id).classList.add("hidden");
   });
 }
+
 
 
