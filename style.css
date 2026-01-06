@@ -93,6 +93,34 @@ body.social {
 body.laboral {
   background: linear-gradient(180deg, #3a4f7a, #1f2e4d);
 }
+/* ===============================
+   FONDOS POR MÓDULO (SOLO VISUAL)
+   =============================== */
+
+body.familia {
+  background: linear-gradient(180deg, #5fa3c7, #7fc8d6);
+}
+
+body.social {
+  background: linear-gradient(180deg, #4f93c2, #6fb3e0);
+}
+
+body.amistad {
+  background: linear-gradient(180deg, #6fbfa3, #9fe0c8);
+}
+
+body.laboral {
+  background: linear-gradient(180deg, #4f6d8a, #6f8fb0);
+}
+
+body.planeta {
+  background: linear-gradient(180deg, #5fa86e, #8fd6a0);
+}
+
+/* Transición suave entre módulos */
+body {
+  transition: background 0.6s ease;
+}
 
 body.conciencia {
   background: linear-gradient(180deg, #5b4b8a, #2e2359);
@@ -101,5 +129,7 @@ body.conciencia {
 body.naturaleza {
   background: linear-gradient(180deg, #3c7a4f, #1f4d30);
 }
+
+
 
 
