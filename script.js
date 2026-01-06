@@ -108,11 +108,26 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + Math.max(0, 100 - Math.abs(global - 70)) + "%";
+  const coherenceText = document.getElementById("coherenceResult");
+coherenceText.innerText = "Coherencia humana: " + coherence + "%";
 
-  showTips(global);
+let coherenceExplanation = "";
+
+if (coherence >= 85) {
+  coherenceExplanation = "Tus valores internos se expresan de forma consistente en tus acciones.";
+} else if (coherence >= 60) {
+  coherenceExplanation = "Hay valores humanos presentes, pero no se sostienen de forma pareja en todos los ámbitos.";
+} else {
+  coherenceExplanation = "Existe una desconexión entre lo que sentís, pensás y cómo actuás.";
 }
+
+const explanation = document.createElement("p");
+explanation.style.opacity = "0.85";
+explanation.style.fontSize = "0.9em";
+explanation.innerText = coherenceExplanation;
+
+coherenceText.after(explanation);
+
 
 function showTips(global) {
   const tips = document.getElementById("tips");
@@ -153,3 +168,4 @@ function hideAll() {
     document.getElementById(id).classList.add("hidden");
   });
 }
+
