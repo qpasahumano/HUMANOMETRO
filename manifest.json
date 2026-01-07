@@ -1,0 +1,27 @@
+{
+  "name": "Humanómetro",
+  "short_name": "Humanómetro",
+  "description": "No es un espejo. Es tu humanidad reflejada.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#2ecc71",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "512_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "192_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "144_144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ]
+}
