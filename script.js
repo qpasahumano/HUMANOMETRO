@@ -32,7 +32,7 @@ const BASE_MODULES = [
     name: "Amistad",
     questions: [
       "¿Estás presente para tus amistades?",
-      "¿Sos leal incluso cuando no estás de acuerdo?",
+      "¿Sos leal con tus amistades cuando se requiere?",
       "¿Escuchás sin imponer tu visión?"
     ]
   },
@@ -69,7 +69,7 @@ const PREMIUM_MODULES = [
   {
     name: "Conciencia Profunda",
     questions: [
-      "¿Vivís desde el miedo o desde la coherencia?",
+      "¿Vivís desde el ego en general?",
       "¿Tu discurso coincide con tus actos?",
       "¿Asumís el impacto que generás en otros?"
     ]
@@ -273,3 +273,4 @@ function showSection(id) {
   );
   document.getElementById(id).classList.remove("hidden");
 }
+
