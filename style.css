@@ -161,5 +161,37 @@ h1, h2, h3 {
 #questionText {
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.12);
                             }
+/* ===============================
+   EFECTO LUMINOSO GLOBAL
+   =============================== */
+
+button {
+  box-shadow: 0 0 14px rgba(52, 152, 219, 0.5);
+}
+
+button.premium {
+  box-shadow: 0 0 22px rgba(255, 215, 0, 0.8);
+}
+
+.answers button {
+  box-shadow: 0 0 18px rgba(52, 152, 219, 0.6);
+}
+
+#thermoFill {
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.6);
+}
+
+.circle.high {
+  box-shadow: 0 0 20px rgba(46, 204, 113, 0.8);
+}
+
+.circle.mid {
+  box-shadow: 0 0 18px rgba(241, 196, 15, 0.8);
+}
+
+.circle.low {
+  box-shadow: 0 0 18px rgba(231, 76, 60, 0.8);
+  }
+
 
 
