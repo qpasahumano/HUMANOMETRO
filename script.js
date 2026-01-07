@@ -7,171 +7,142 @@ let currentQuestion = 0;
 
 let modules = [];
 let scores = {};
+let totalAnswers = 0;
 
 // ===============================
-// MÓDULOS BASE
+// MÓDULOS BASE (COMÚN)
 // ===============================
 const BASE_MODULES = [
-  {// ================================
-// BLOQUES PREMIUM (EXCLUSIVOS)
-// ================================
-const premiumModules = [
   {
-    name: "Incongruencias Personales",
-    questions: [
-      "¿Decís que sos honesto pero ocultás lo que sentís para evitar conflictos?",
-      "¿Sostenés tus valores cuando nadie te observa?",
-      "¿Mostrás versiones distintas de vos según el contexto?",
-      "¿Defendés ideas que no practicás bajo presión?",
-      "¿Preferís caer bien antes que ser auténtico?",
-      "¿Te justificás cuando sabés que actuaste mal?",
-      "¿Elegís el silencio para no asumir verdades incómodas?",
-      "¿Te reconocés incoherente bajo presión?",
-      "¿Te alejás de personas que te confrontan?",
-      "¿Decís “soy así” para no cambiar?"
-    ]
-  },
-  {
-    name: "Sombras Vinculares",
-    questions: [
-      "¿Retirás afecto cuando no te dan lo que esperás?",
-      "¿Usás el silencio como castigo?",
-      "¿Confundís amor con necesidad?",
-      "¿Exigís comprensión que no ofrecés?",
-      "¿Manipulás emocionalmente sin admitirlo?",
-      "¿Generás culpa para obtener algo?",
-      "¿Evitás conversaciones profundas?",
-      "¿Te victimizás para no asumir responsabilidad?",
-      "¿Te cuesta pedir perdón sin justificarte?",
-      "¿Dejás heridas sin reparar?"
-    ]
-  },
-  {
-    name: "Autoengaño Consciente",
-    questions: [
-      "¿Sabés qué deberías cambiar y no lo hacés?",
-      "¿Postergás decisiones importantes?",
-      "¿Culpás al contexto para no mirarte?",
-      "¿Elegís comodidad antes que verdad?",
-      "¿Te mentís para no incomodarte?",
-      "¿Evitás decisiones necesarias?",
-      "¿Minimizás lo que sabés que duele?",
-      "¿Justificás lo que criticás en otros?",
-      "¿Confundís entender con transformar?",
-      "¿Te escondés en el discurso?"
-    ]
-  },
-  {
-    name: "Impacto en Otros",
-    questions: [
-      "¿Tu presencia calma o tensa?",
-      "¿Cómo se sienten los demás después de hablar con vos?",
-      "¿Asumís el impacto de tus palabras?",
-      "¿Escuchás feedback sin defenderte?",
-      "¿Reconocés cuando herís?",
-      "¿Reparás vínculos dañados?",
-      "¿Dejás espacio emocional?",
-      "¿Cuidás tu tono y gestos?",
-      "¿Aceptás que podés ser parte del problema?",
-      "¿Tu humanidad se nota en hechos?"
-    ]
-  }
-];
     name: "Familia",
+    key: "familia",
     questions: [
-      "¿Estás emocionalmente presente con tu familia?",
-      "¿Escuchás sin juzgar?",
-      "¿Expresás afecto sin que te lo pidan?"
+      "¿Escuchás a tu familia cuando piensa distinto a vos?",
+      "¿Acompañás emocionalmente a tu familia cuando lo necesita?",
+      "¿Reconocés errores frente a tu familia?",
+      "¿Evitás dañar vínculos por orgullo?",
+      "¿Priorizás el bienestar familiar sobre tu comodidad?"
     ]
   },
   {
     name: "Social",
+    key: "social",
     questions: [
-      "¿Tratás a las personas con respeto?",
-      "¿Escuchás opiniones distintas a la tuya?",
-      "¿Actuás con empatía en espacios públicos?"
+      "¿Tratás con respeto a personas que no te aportan nada?",
+      "¿Ayudás sin esperar reconocimiento?",
+      "¿Escuchás opiniones distintas sin atacar?",
+      "¿Te solidarizás con quien sufre injusticias?",
+      "¿Cuidás tu impacto en la sociedad?"
     ]
   },
   {
     name: "Amistad",
+    key: "amistad",
     questions: [
-      "¿Estás presente para tus amistades?",
-      "¿Sos leal incluso cuando no estás de acuerdo?",
-      "¿Escuchás sin intentar imponer tu visión?"
+      "¿Sos leal a tus amistades cuando no están presentes?",
+      "¿Decís la verdad aunque incomode?",
+      "¿Acompañás en los malos momentos?",
+      "¿Respetás los límites del otro?",
+      "¿Celebrás los logros ajenos?"
     ]
   },
   {
     name: "Laboral",
+    key: "laboral",
     questions: [
-      "¿Actuás con ética en tu trabajo?",
+      "¿Actuás con honestidad en tu trabajo?",
+      "¿Cumplís responsabilidades aunque nadie controle?",
       "¿Respetás a tus compañeros?",
-      "¿Sos justo cuando nadie te observa?"
+      "¿Evitás sacar ventaja injusta?",
+      "¿Reconocés errores laborales?"
     ]
   },
   {
-    name: "Planeta",
+    name: "Naturaleza",
+    key: "naturaleza",
     questions: [
-      "¿Respetás a los animales como seres vivos?",
-      "¿Cuidás el entorno donde vivís?",
-      "¿Reducís tu impacto ambiental cuando podés?"
+      "¿Cuidás el ambiente en acciones cotidianas?",
+      "¿Respetás a los animales?",
+      "¿Reducís tu impacto ambiental?",
+      "¿Evitás el desperdicio?",
+      "¿Tomás conciencia de tu huella en el planeta?"
     ]
   }
 ];
 
 // ===============================
-// MÓDULO PREMIUM
+// MÓDULOS PREMIUM (EXCLUSIVOS)
 // ===============================
-const PREMIUM_MODULE = {
-  name: "Conciencia Profunda",
-  questions: [
-    "¿Vivís desde el amor o desde el miedo?",
-    "¿Sos coherente entre lo que pensás y hacés?",
-    "¿Te responsabilizás de tu impacto en otros?"
-  ]
-};
+const PREMIUM_MODULES = [
+  {
+    name: "Incongruencias Personales",
+    key: "incongruencias",
+    questions: [
+      "¿Decís que sos honesto pero ocultás lo que sentís?",
+      "¿Sostenés tus valores cuando nadie te observa?",
+      "¿Mostrás versiones distintas de vos según el contexto?",
+      "¿Defendés ideas que no practicás bajo presión?",
+      "¿Preferís caer bien antes que ser auténtico?"
+    ]
+  },
+  {
+    name: "Sombras Vinculares",
+    key: "sombras",
+    questions: [
+      "¿Manipulás emocionalmente para no perder vínculos?",
+      "¿Te victimizás para evitar responsabilidad?",
+      "¿Usás el afecto como forma de control?",
+      "¿Evitás compromisos profundos?",
+      "¿Confundís apego con amor?"
+    ]
+  }
+];
 
 // ===============================
 // INICIO
 // ===============================
-function startTest(isPremium) {
-  mode = isPremium ? "premium" : "common";
-
-  modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if (mode === "premium") {
-    modules.push(JSON.parse(JSON.stringify(PREMIUM_MODULE)));
-  }
-
-  scores = {};
-  modules.forEach(m => scores[m.name] = 0);
-
+function startTest(selectedMode) {
+  mode = selectedMode;
   currentModule = 0;
   currentQuestion = 0;
+  totalAnswers = 0;
+  scores = {};
 
-  showSection("test");
-  showQuestion();
-  updateThermometer();
+  modules = [...BASE_MODULES];
+  if (mode === "premium") {
+    modules = modules.concat(PREMIUM_MODULES);
+  }
+
+  modules.forEach(m => scores[m.key] = 0);
+
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("question").classList.remove("hidden");
+  updateQuestion();
 }
 
 // ===============================
 // MOSTRAR PREGUNTA
 // ===============================
-function showQuestion() {
-  const mod = modules[currentModule];
-  document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
+function updateQuestion() {
+  const module = modules[currentModule];
+  const question = module.questions[currentQuestion];
+
+  document.getElementById("module-title").innerText = module.name;
+  document.getElementById("question-text").innerText = question;
+  updateThermometer();
 }
 
 // ===============================
 // RESPUESTA
 // ===============================
 function answer(value) {
-  const mod = modules[currentModule];
-  scores[mod.name] += value;
+  const module = modules[currentModule];
+  scores[module.key] += value;
+  totalAnswers++;
 
   currentQuestion++;
 
-  if (currentQuestion >= mod.questions.length) {
+  if (currentQuestion >= module.questions.length) {
     currentQuestion = 0;
     currentModule++;
   }
@@ -179,123 +150,20 @@ function answer(value) {
   if (currentModule >= modules.length) {
     showResults();
   } else {
-    showQuestion();
-    updateThermometer();
+    updateQuestion();
   }
-}
-
-// ===============================
-// RESULTADOS
-// ===============================
-function showResults() {
-  showSection("results");
-
-  const circles = document.getElementById("circles");
-  circles.innerHTML = "";
-
-  let total = 0;
-
-  modules.forEach(m => {
-    const max = m.questions.length * 2;
-    const percent = Math.round((scores[m.name] / max) * 100);
-    total += percent;
-
-    const div = document.createElement("div");
-    div.className = "circle " +
-      (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-
-    div.innerHTML = `<strong>${percent}%</strong><br><small>${m.name}</small>`;
-    circles.appendChild(div);
-  });
-
-  const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + global + "%";
-
-  const coherence = calculateCoherence();
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
-
-  renderTips(global);
-}
-
-// ===============================
-// COHERENCIA HUMANA
-// ===============================
-function calculateCoherence() {
-  const values = modules.map(m => {
-    const max = m.questions.length * 2;
-    return Math.round((scores[m.name] / max) * 100);
-  });
-
-  return Math.max(0, 100 - (Math.max(...values) - Math.min(...values)));
-}
-
-// ===============================
-// CONSEJOS
-// ===============================
-function renderTips(global) {
-  const tips = document.getElementById("tips");
-  tips.innerHTML = "";
-
-  if (global >= 90) {
-    tips.innerHTML = "<li>Sigue por este camino.</li>";
-    return;
-  }
-
-  const list =
-    global < 40
-      ? ["Reducí el ritmo", "Volvé a la presencia", "Reconectá con lo vivo"]
-      : ["Escuchá más", "Elegí coherencia", "Cuidá tus vínculos"];
-
-  list.forEach(t => {
-    const li = document.createElement("li");
-    li.innerText = t;
-    tips.appendChild(li);
-  });
 }
 
 // ===============================
 // TERMÓMETRO
 // ===============================
 function updateThermometer() {
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
-    + currentQuestion;
+  const progress = totalAnswers / (modules.reduce((a, m) => a + m.questions.length, 0));
+  const percent = Math.round(progress * 100);
 
-  const progress = Math.round((answered / totalQ) * 100);
-  const bar = document.getElementById("thermoFill");
-  bar.style.width = progress + "%";
+  const bar = document.getElementById("thermo-bar");
+  bar.style.width = percent + "%";
 
-  let score = 0, max = 0;
-  modules.forEach(m => {
-    score += scores[m.name];
-    max += m.questions.length * 2;
-  });
-
-  const humanity = max ? Math.round((score / max) * 100) : 100;
-
-  if (humanity < 40) bar.style.background = "#e74c3c";
-  else if (humanity < 70) bar.style.background = "#f1c40f";
-  else bar.style.background = "#2ecc71";
-}
-
-// ===============================
-// NAVEGACIÓN
-// ===============================
-function restart() {
-  showSection("start");
-}
-
-function showPrivacy() {
-  showSection("privacy");
-}
-
-function showSection(id) {
-  ["start", "test", "results", "privacy"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
-  document.getElementById(id).classList.remove("hidden");
-}
-
+  if (percent < 35) bar.style.background = "#e74c3c";
+  else if (percent < 70) bar.style.background = "#f1c40f";
+  else bar.style.background =
