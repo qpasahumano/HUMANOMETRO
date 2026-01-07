@@ -1,108 +1,37 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+// SPLASH CONTROL
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("hide");
+    document.getElementById("app").classList.remove("hidden");
+  }, 1200);
+});
+
+// APP LOGICA BASE (NO CAMBIADA)
+function startTest(premium) {
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+
+  document.getElementById("resultText").innerText =
+    premium
+      ? "Lectura humana profunda (Premium)"
+      : "Lectura humana estándar";
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  font-family: "Poppins", sans-serif;
-  background: #0b1220;
-  color: #ffffff;
+function resetApp() {
+  location.reload();
 }
 
-/* SPLASH */
-#splash {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at top, #1a2550, #0b1220);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.6s ease;
+function showPrivacy() {
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("privacy").classList.remove("hidden");
 }
 
-#splash img {
-  width: 220px;
-  max-width: 70%;
-  margin-bottom: 20px;
+function goHome() {
+  document.getElementById("privacy").classList.add("hidden");
+  document.getElementById("start").classList.remove("hidden");
 }
 
-#splash span {
-  font-size: 1.4rem;
-  opacity: 0.85;
-}
-
-#splash.hide {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* APP */
-#app {
-  min-height: 100vh;
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 24px;
-  text-align: center;
-}
-
-/* VISIBILIDAD */
-.hidden {
-  display: none;
-}
-
-/* BOTONES */
-button {
-  padding: 12px 18px;
-  margin: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #ffffff;
-  color: #000000;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-button.premium {
-  background: #ffd54f;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* TEXTO */
-h1, h2 {
-  margin-bottom: 16px;
-}
-
-p {
-  margin-bottom: 14px;
-}
-
-.legal {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-/* TERMÓMETRO */
-#thermometer {
-  width: 60px;
-  height: 260px;
-  margin: 20px auto;
-  background: #222;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-#thermoFill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(to top, #ff1744, #ff9100, #00e676);
-  transition: height 0.4s ease;
+// SERVICE WORKER
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
 }
