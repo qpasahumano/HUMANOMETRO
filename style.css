@@ -5,36 +5,71 @@
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  background: #0b1229;
+  height: 100%;
   font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #16233f, #0b1229);
   color: #ffffff;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* SPLASH */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #16233f, #0b1229);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease;
+}
+
+#splash img {
+  width: 70%;
+  max-width: 320px;
+  border-radius: 24px;
+  margin-bottom: 24px;
+}
+
+#splash span {
+  font-size: 1.4rem;
+  opacity: 0.9;
+}
+
+#splash.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* APP */
 #app {
+  min-height: 100vh;
   max-width: 520px;
-  margin: auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 24px;
   text-align: center;
 }
 
-/* BOTONES (BASE ORIGINAL) */
-button {
-  padding: 12px 18px;
-  margin: 8px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button.premium {
-  font-weight: bold;
-}
-
-/* VISIBILIDAD */
 .hidden {
   display: none;
 }
 
+/* BOTONES (RESPETA COLORES) */
+button {
+  padding: 12px 18px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:not(.premium) {
+  background: #ffffff;
+  color: #0b1229;
+}
+
+button.premium {
+  background: #ffd54f;
+  color: #000;
+}
