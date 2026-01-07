@@ -3,8 +3,9 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #1b2b4a, #0b1220);
-  color: white;
+  background: linear-gradient(180deg, #16233f, #0b1220);
+  color: #ffffff;
+  transition: background 0.6s ease;
 }
 
 #app {
@@ -12,11 +13,12 @@ body {
   margin: auto;
   padding: 20px;
   text-align: center;
-  transition: background 0.6s ease;
 }
 
+/* ================= VISIBILIDAD ================= */
 .hidden { display: none; }
 
+/* ================= BOTONES ================= */
 button {
   width: 90%;
   max-width: 340px;
@@ -28,28 +30,25 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
+  box-shadow: 0 0 15px rgba(255, 180, 0, 0.6);
 }
 
 .answers button {
   background: #3498db;
-  color: white;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(52, 152, 219, 0.5);
 }
 
-.legal {
-  font-size: 0.8em;
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-/* TERMÓMETRO */
+/* ================= TERMÓMETRO ================= */
 #thermometer {
   width: 100%;
-  height: 14px;
-  background: #333;
+  height: 16px;
+  background: #111;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
@@ -58,26 +57,17 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  transition: width 0.4s ease;
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
+  transition: width 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* EFECTO FLUORESCENTE */
-#thermoFill.low {
-  background: #e74c3c;
-  box-shadow: 0 0 10px #e74c3c, 0 0 25px #e74c3c;
-}
-
-#thermoFill.mid {
-  background: #f1c40f;
-  box-shadow: 0 0 10px #f1c40f, 0 0 25px #f1c40f;
-}
-
-#thermoFill.high {
-  background: #2ecc71;
-  box-shadow: 0 0 10px #2ecc71, 0 0 25px #2ecc71;
-}
-
-/* RESULTADOS */
+/* ================= RESULTADOS ================= */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -88,34 +78,50 @@ button.premium {
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  margin: 12px;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   font-weight: bold;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.25);
 }
 
 .circle.low { background: #e74c3c; }
 .circle.mid { background: #f1c40f; color: #222; }
-.circle.high { background: #2ecc71; color: #222; }
+.circle.high { background: #2ecc71; color: #000; }
 
-/* FONDOS PASTEL POR MÓDULO */
+/* ================= FONDOS POR MÓDULO ================= */
 #app.familia {
-  background: linear-gradient(180deg, #7fc8ff, #b6e2ff);
+  background: linear-gradient(180deg, #1e4f6e, #0f2433);
 }
 
 #app.social {
-  background: linear-gradient(180deg, #7fffd4, #c9fff0);
+  background: linear-gradient(180deg, #205f4e, #10372e);
 }
 
 #app.amistad {
-  background: linear-gradient(180deg, #9bffb0, #d6ffe0);
+  background: linear-gradient(180deg, #3a6b5d, #1e3b34);
 }
 
 #app.laboral {
-  background: linear-gradient(180deg, #9fb6ff, #d6e0ff);
+  background: linear-gradient(180deg, #2f4568, #141f33);
 }
 
 #app.planeta {
-  background: linear-gradient(180deg, #9fffbf, #d6ffe8);
+  background: linear-gradient(180deg, #2f6e4e, #163826);
+}
+
+#app.premium {
+  background: linear-gradient(180deg, #3d2c63, #1a1233);
+}
+
+/* ================= TEXTO ================= */
+ul { list-style: none; padding: 0; }
+
+.legal {
+  font-size: 0.8em;
+  opacity: 0.75;
+  cursor: pointer;
 }
