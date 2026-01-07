@@ -1,33 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Humanómetro</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#2ecc71" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ICONO -->
-  <link rel="icon" type="image/png" href="522_522.png" />
+  <link rel="icon" type="image/png" href="522_522.png">
 
   <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="192_192.png" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.json">
 
   <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
   <!-- ESTILOS -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <img src="522_522.png" alt="Humanómetro">
+  </div>
+
+  <!-- APP -->
   <main id="app">
-    <!-- TODO TU CONTENIDO ORIGINAL INTACTO -->
+
+    <!-- INICIO -->
+    <section id="start">
+      <h1>HUMANÓMETRO</h1>
+      <p>No es un espejo. Es tu humanidad reflejada.</p>
+
+      <button onclick="startTest(false)">Versión Común</button>
+      <button class="premium" onclick="startTest(true)">Versión Premium</button>
+
+      <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+    </section>
+
+    <!-- TEST -->
+    <section id="test" class="hidden">
+      <h2 id="areaTitle"></h2>
+
+      <div id="thermometer">
+        <div id="thermoFill"></div>
+      </div>
+
+      <div id="question"></div>
+
+      <div id="answers">
+        <button onclick="answer(1)">Sí</button>
+        <button onclick="answer(0.5)">A veces</button>
+        <button onclick="answer(0)">No</button>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section id="result" class="hidden">
+      <h2>Resultado Humanómetro</h2>
+      <p id="resultText"></p>
+      <button onclick="restart()">Reiniciar</button>
+    </section>
+
+    <!-- PRIVACIDAD -->
+    <section id="privacy" class="hidden">
+      <h2>Privacidad y uso</h2>
+      <p>
+        Humanómetro no recopila datos personales.<br>
+        Toda la información se procesa localmente.<br>
+        No es diagnóstico médico ni psicológico.<br>
+        Es una herramienta reflexiva.
+      </p>
+      <button onclick="back()">Volver</button>
+    </section>
+
   </main>
 
+  <!-- SCRIPT -->
   <script src="script.js"></script>
+
+  <!-- SPLASH CONTROL -->
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const splash = document.getElementById("splash");
+        if (splash) splash.style.display = "none";
+      }, 1400);
+    });
+  </script>
+
 </body>
 </html>
