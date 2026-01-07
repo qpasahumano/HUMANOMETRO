@@ -1,5 +1,5 @@
 // ===============================
-// ESTADO GLOBAL
+// ESTADO GLOBAL (INAMOVIBLE)
 // ===============================
 let mode = "common";
 let currentModule = 0;
@@ -9,7 +9,7 @@ let modules = [];
 let scores = {};
 
 // ===============================
-// MÓDULOS COMUNES
+// MÓDULOS BASE (COMÚN)
 // ===============================
 const BASE_MODULES = [
   {
@@ -77,13 +77,12 @@ const PREMIUM_MODULES = [
 ];
 
 // ===============================
-// INICIO
+// INICIO DEL TEST (INAMOVIBLE)
 // ===============================
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
 
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
-
   if (mode === "premium") {
     modules = modules.concat(JSON.parse(JSON.stringify(PREMIUM_MODULES)));
   }
@@ -100,7 +99,7 @@ function startTest(isPremium) {
 }
 
 // ===============================
-// MOSTRAR PREGUNTA
+// MOSTRAR PREGUNTA (INAMOVIBLE)
 // ===============================
 function showQuestion() {
   const mod = modules[currentModule];
@@ -111,7 +110,7 @@ function showQuestion() {
 }
 
 // ===============================
-// RESPONDER
+// RESPUESTA (INAMOVIBLE)
 // ===============================
 function answer(value) {
   const mod = modules[currentModule];
@@ -133,7 +132,7 @@ function answer(value) {
 }
 
 // ===============================
-// RESULTADOS
+// RESULTADOS + CUALIDADES SUMADAS
 // ===============================
 function showResults() {
   showSection("results");
@@ -142,11 +141,16 @@ function showResults() {
   circles.innerHTML = "";
 
   let total = 0;
+  let weakAreas = [];
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
     total += percent;
+
+    if (percent < 80) {
+      weakAreas.push({ name: m.name, percent });
+    }
 
     const div = document.createElement("div");
     div.className =
@@ -163,11 +167,11 @@ function showResults() {
   document.getElementById("coherenceResult").innerText =
     "Coherencia humana: " + calculateCoherence() + "%";
 
-  renderTips(global);
+  renderTips(global, weakAreas);
 }
 
 // ===============================
-// COHERENCIA HUMANA
+// COHERENCIA HUMANA (INAMOVIBLE)
 // ===============================
 function calculateCoherence() {
   const values = modules.map(m => {
@@ -179,32 +183,54 @@ function calculateCoherence() {
 }
 
 // ===============================
-// CONSEJOS (MEJORADOS)
+// CONSEJOS + DIFERENCIA PREMIUM
 // ===============================
-function renderTips(global) {
+function renderTips(global, weakAreas) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  let text = "";
+  const intro = document.createElement("p");
 
   if (global >= 85) {
-    text =
-      "Alta humanidad. Hay coherencia real entre lo que pensás, sentís y hacés.";
+    intro.innerText =
+      "Tu humanidad general es alta. Hay coherencia entre lo que pensás, sentís y hacés.";
   } else if (global >= 60) {
-    text =
-      "Humanidad intermedia. Hay conciencia, pero se fragmenta según el contexto.";
+    intro.innerText =
+      "Tu humanidad está activa, pero se expresa de forma irregular según el área de tu vida.";
   } else {
-    text =
-      "Humanidad baja. No es juicio: es una señal de desconexión interna.";
+    intro.innerText =
+      "Hay una desconexión marcada entre valores, acciones y vínculos. Este resultado no juzga: señala.";
   }
 
-  const p = document.createElement("p");
-  p.innerText = text;
-  tips.appendChild(p);
+  tips.appendChild(intro);
+
+  if (weakAreas.length > 0) {
+    const title = document.createElement("h4");
+    title.innerText = "Áreas donde tu humanidad está más baja:";
+    tips.appendChild(title);
+
+    weakAreas.forEach(a => {
+      const li = document.createElement("li");
+      li.innerText =
+        a.name +
+        " (" +
+        a.percent +
+        "%): mayor presencia, escucha y coherencia en este ámbito.";
+      tips.appendChild(li);
+    });
+  }
+
+  // 🔥 EXTRA SOLO PREMIUM
+  if (mode === "premium") {
+    const premiumBlock = document.createElement("p");
+    premiumBlock.innerText =
+      "Lectura Premium: la incoherencia no suele estar en lo que pensás, sino en lo que sostenés cuando nadie te observa. El trabajo profundo empieza ahí.";
+    tips.appendChild(premiumBlock);
+  }
 }
 
 // ===============================
-// TERMÓMETRO (COLOR SEGÚN HUMANIDAD)
+// TERMÓMETRO (INAMOVIBLE)
 // ===============================
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
@@ -225,13 +251,13 @@ function updateThermometer() {
 
   const humanity = max ? Math.round((score / max) * 100) : 100;
 
-  if (humanity < 40) bar.style.background = "#ff3b3b";
-  else if (humanity < 70) bar.style.background = "#ffd93b";
-  else bar.style.background = "#3bff8f";
+  if (humanity < 40) bar.style.background = "#e74c3c";
+  else if (humanity < 70) bar.style.background = "#f1c40f";
+  else bar.style.background = "#2ecc71";
 }
 
 // ===============================
-// NAVEGACIÓN
+// NAVEGACIÓN (INAMOVIBLE)
 // ===============================
 function restart() {
   showSection("start");
@@ -246,4 +272,4 @@ function showSection(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-                  }
+}
