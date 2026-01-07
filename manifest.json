@@ -11,17 +11,6 @@
     {
       "src": "522_522.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "192_192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "144_144.png",
-      "sizes": "144x144",
       "type": "image/png"
     }
   ]
