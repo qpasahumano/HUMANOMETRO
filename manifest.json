@@ -1,37 +1,20 @@
-// SPLASH CONTROL
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("splash").classList.add("hide");
-    document.getElementById("app").classList.remove("hidden");
-  }, 1200);
-});
-
-// APP LOGICA BASE (NO CAMBIADA)
-function startTest(premium) {
-  document.getElementById("start").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
-
-  document.getElementById("resultText").innerText =
-    premium
-      ? "Lectura humana profunda (Premium)"
-      : "Lectura humana estándar";
-}
-
-function resetApp() {
-  location.reload();
-}
-
-function showPrivacy() {
-  document.getElementById("start").classList.add("hidden");
-  document.getElementById("privacy").classList.remove("hidden");
-}
-
-function goHome() {
-  document.getElementById("privacy").classList.add("hidden");
-  document.getElementById("start").classList.remove("hidden");
-}
-
-// SERVICE WORKER
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+{
+  "name": "Humanómetro",
+  "short_name": "Humanómetro",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1229",
+  "theme_color": "#0b1229",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
