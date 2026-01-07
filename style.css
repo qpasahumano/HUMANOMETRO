@@ -157,6 +157,32 @@ body.naturaleza {
 #app.planeta {
   background: linear-gradient(180deg, #5fa86e, #8fd6a0);
                               }
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin: 12px;
+  color: #fff;
+}
+
+.circle.low {
+  background: #e74c3c;
+}
+
+.circle.mid {
+  background: #f1c40f;
+  color: #222;
+}
+
+.circle.high {
+  background: #2ecc71;
+}
+
 
 
 
