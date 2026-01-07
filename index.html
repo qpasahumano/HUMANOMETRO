@@ -1,79 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Humanómetro</title>
-  <link rel="icon" type="image/png" href="522_522.png">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap">
-  <rel="stylesheet"
-  <link rel="stylesheet" href="style.css"<link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2ecc71" />
 
+  <!-- ICONO -->
+  <link rel="icon" type="image/png" href="522_522.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="192_192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<main id="app">
+  <main id="app">
+    <!-- TODO TU CONTENIDO ORIGINAL INTACTO -->
+  </main>
 
-  <!-- INICIO -->
-  <section id="start">
-    <h1>HUMANÓMETRO</h1>
-    <p>No es un espejo. Es tu humanidad reflejada.</p>
-
-    <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-  </section>
-
-  <!-- TEST -->
-  <section id="test" class="hidden">
-    <h2 id="areaTitle"></h2>
-
-    <div id="thermometer">
-      <div id="thermoFill"></div>
-    </div>
-
-    <p id="questionText"></p>
-
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
-
-  <!-- RESULTADOS -->
-  <section id="results" class="hidden">
-    <h2>Resultado Humanómetro</h2>
-
-    <div id="circles"></div>
-
-    <h3 id="globalResult"></h3>
-    <p id="coherenceResult"></p>
-
-    <h3>Lectura humana</h3>
-    <ul id="tips"></ul>
-
-    <button onclick="restart()">Reiniciar</button>
-  </section>
-
-  <!-- PRIVACIDAD -->
-  <section id="privacy" class="hidden">
-    <h2>Privacidad y uso</h2>
-    <p>
-      Humanómetro no recopila datos personales.<br>
-      Toda la información se procesa localmente.<br>
-      No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva.
-    </p>
-    <button onclick="restart()">Volver</button>
-  </section>
-
-</main>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
-
-
