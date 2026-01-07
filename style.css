@@ -1,21 +1,56 @@
-* { box-sizing: border-box; }
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: #0b1229;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
+/* FONDO GENERAL */
 body {
-  margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #16233f, #0b1220);
   color: #ffffff;
-  transition: background 0.6s ease;
+  background: radial-gradient(
+    circle at top,
+    #1b2b55 0%,
+    #0b1229 60%,
+    #060b1f 100%
+  );
 }
 
+/* SPLASH */
+#splash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    #1e2f63 0%,
+    #0b1229 70%,
+    #060b1f 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#splash img {
+  width: 80%;
+  max-width: 320px;
+  animation: fadeIn 1.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* APP */
 #app {
   max-width: 520px;
   margin: auto;
@@ -23,181 +58,56 @@ body {
   text-align: center;
 }
 
-/* ================= VISIBILIDAD ================= */
-.hidden { display: none; }
+/* TITULOS */
+h1, h2 {
+  font-weight: 600;
+}
 
-/* ================= BOTONES ================= */
+/* BOTONES */
 button {
-  width: 90%;
-  max-width: 340px;
-  margin: 12px auto;
-  padding: 15px;
-  border-radius: 40px;
+  padding: 12px 20px;
+  margin: 10px;
+  border-radius: 8px;
   border: none;
-  font-size: 1em;
+  font-size: 16px;
   cursor: pointer;
-  background: #2ecc71;
-  color: #000;
-  box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
 }
 
 button.premium {
-  background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 15px rgba(255, 180, 0, 0.6);
+  background: #ffd700;
+  color: #000;
 }
 
-.answers button {
-  background: #3498db;
-  color: #fff;
-  box-shadow: 0 0 12px rgba(52, 152, 219, 0.5);
+button:not(.premium) {
+  background: #ffffff;
+  color: #000;
 }
 
-/* ================= TERMÓMETRO ================= */
+/* TERMÓMETRO */
 #thermometer {
   width: 100%;
-  height: 16px;
-  background: #111;
-  border-radius: 20px;
-  margin: 15px 0 25px;
+  height: 20px;
+  background: #333;
+  border-radius: 10px;
   overflow: hidden;
+  margin: 20px 0;
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  box-shadow: 0 0 18px rgba(46, 204, 113, 0.8);
-  transition: width 0.4s ease, box-shadow 0.4s ease;
+  background: linear-gradient(90deg, #00ffcc, #00ffaa);
+  transition: width 0.4s ease;
 }
 
-/* ================= RESULTADOS ================= */
-#circles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+/* VISIBILIDAD */
+.hidden {
+  display: none;
 }
 
-.circle {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: #fff;
-  box-shadow: 0 0 12px rgba(255,255,255,0.25);
-}
-
-.circle.low { background: #e74c3c; }
-.circle.mid { background: #f1c40f; color: #222; }
-.circle.high { background: #2ecc71; color: #000; }
-
-/* ================= FONDOS POR MÓDULO ================= */
-#app.familia {
-  background: linear-gradient(180deg, #1e4f6e, #0f2433);
-}
-
-#app.social {
-  background: linear-gradient(180deg, #205f4e, #10372e);
-}
-
-#app.amistad {
-  background: linear-gradient(180deg, #3a6b5d, #1e3b34);
-}
-
-#app.laboral {
-  background: linear-gradient(180deg, #2f4568, #141f33);
-}
-
-#app.planeta {
-  background: linear-gradient(180deg, #2f6e4e, #163826);
-}
-
-#app.premium {
-  background: linear-gradient(180deg, #3d2c63, #1a1233);
-}
-
-/* ================= TEXTO ================= */
-ul { list-style: none; padding: 0; }
-
+/* LEGAL */
 .legal {
-  font-size: 0.8em;
-  opacity: 0.75;
+  font-size: 14px;
+  opacity: 0.8;
   cursor: pointer;
 }
-/* ===============================
-   CONTRASTE AUTOMÁTICO DE TEXTO
-   =============================== */
-#app {
-  color: #ffffff; /* default claro */
-}
-
-#app.light-text {
-  color: #ffffff;
-}
-
-#app.dark-text {
-  color: #111111;
-}
-
-/* ===============================
-   FONDOS LUMINOSOS OSCUROS (NO CLAROS)
-   =============================== */
-
-#app.familia {
-  background: radial-gradient(circle at top,
-    #2fa4ff 0%,
-    #123a5c 60%,
-    #0b1e2e 100%);
-}
-
-#app.social {
-  background: radial-gradient(circle at top,
-    #2ecc71 0%,
-    #1f5e3b 60%,
-    #0f2f1d 100%);
-}
-
-#app.amistad {
-  background: radial-gradient(circle at top,
-    #58d6b9 0%,
-    #2e5c52 60%,
-    #162e2a 100%);
-}
-
-#app.laboral {
-  background: radial-gradient(circle at top,
-    #6fa8ff 0%,
-    #2f4568 60%,
-    #141f33 100%);
-}
-
-#app.planeta {
-  background: radial-gradient(circle at top,
-    #7dff9b 0%,
-    #2f6e4e 60%,
-    #163826 100%);
-}
-
-#app.premium {
-  background: radial-gradient(circle at top,
-    #b18cff 0%,
-    #3d2c63 60%,
-    #1a1233 100%);
-  }
-#thermoFill {
-  box-shadow:
-    0 0 12px rgba(255,255,255,0.4),
-    0 0 25px rgba(46,204,113,0.9),
-    0 0 45px rgba(46,204,113,0.6);
-                              }
-
-
