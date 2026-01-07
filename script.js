@@ -9,7 +9,7 @@ let modules = [];
 let scores = {};
 
 // ===============================
-// MÓDULOS BASE (COMÚN)
+// MÓDULOS COMUNES
 // ===============================
 const BASE_MODULES = [
   {
@@ -61,34 +61,35 @@ const PREMIUM_MODULES = [
   {
     name: "Incongruencias Personales",
     questions: [
-      "¿Decís que sos honesto pero ocultás lo que sentís?",
-      "¿Mostrás versiones distintas de vos según el contexto?",
-      "¿Preferís caer bien antes que ser auténtico?"
+      "¿Decís una cosa y hacés otra?",
+      "¿Evitás decir verdades para quedar bien?",
+      "¿Te justificás cuando sabés que actuaste mal?"
     ]
   },
   {
     name: "Conciencia Profunda",
     questions: [
-      "¿Vivís desde el amor o desde el miedo?",
-      "¿Sos coherente entre lo que pensás y hacés?",
-      "¿Te responsabilizás de tu impacto en otros?"
+      "¿Vivís desde el miedo o desde la coherencia?",
+      "¿Tu discurso coincide con tus actos?",
+      "¿Asumís el impacto que generás en otros?"
     ]
   }
 ];
 
 // ===============================
-// INICIO DEL TEST
+// INICIO
 // ===============================
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
 
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
+
   if (mode === "premium") {
     modules = modules.concat(JSON.parse(JSON.stringify(PREMIUM_MODULES)));
   }
 
   scores = {};
-  modules.forEach(m => (scores[m.name] = 0));
+  modules.forEach(m => scores[m.name] = 0);
 
   currentModule = 0;
   currentQuestion = 0;
@@ -103,13 +104,14 @@ function startTest(isPremium) {
 // ===============================
 function showQuestion() {
   const mod = modules[currentModule];
+
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText =
     mod.questions[currentQuestion];
 }
 
 // ===============================
-// RESPUESTA
+// RESPONDER
 // ===============================
 function answer(value) {
   const mod = modules[currentModule];
@@ -140,12 +142,10 @@ function showResults() {
   circles.innerHTML = "";
 
   let total = 0;
-  const percents = [];
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push(percent);
     total += percent;
 
     const div = document.createElement("div");
@@ -160,72 +160,74 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  const coherence = calculateCoherence(percents);
   document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
+    "Coherencia humana: " + calculateCoherence() + "%";
 
-  renderTips(global, coherence);
+  renderTips(global);
 }
 
 // ===============================
 // COHERENCIA HUMANA
 // ===============================
-function calculateCoherence(values) {
+function calculateCoherence() {
+  const values = modules.map(m => {
+    const max = m.questions.length * 2;
+    return Math.round((scores[m.name] / max) * 100);
+  });
+
   return Math.max(0, 100 - (Math.max(...values) - Math.min(...values)));
 }
 
 // ===============================
-// CONSEJOS (COMÚN vs PREMIUM)
+// CONSEJOS (MEJORADOS)
 // ===============================
-function renderTips(global, coherence) {
+function renderTips(global) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
   let text = "";
 
-  if (mode === "common") {
-    if (global >= 85) {
-      text =
-        "Tu humanidad está activa. El desafío es sostenerla en la vida cotidiana.";
-    } else if (global >= 60) {
-      text =
-        "Hay humanidad presente, pero aparece de forma irregular según el contexto.";
-    } else {
-      text =
-        "Este resultado señala una desconexión con lo humano esencial. Es una señal, no un juicio.";
-    }
+  if (global >= 85) {
+    text =
+      "Alta humanidad. Hay coherencia real entre lo que pensás, sentís y hacés.";
+  } else if (global >= 60) {
+    text =
+      "Humanidad intermedia. Hay conciencia, pero se fragmenta según el contexto.";
   } else {
-    // PREMIUM: análisis más profundo
-    if (global >= 85 && coherence >= 80) {
-      text =
-        "Tu humanidad es consistente. Pensamiento, emoción y acción se alinean incluso bajo presión.";
-    } else if (global >= 60) {
-      text =
-        "Tu humanidad está activa, pero fragmentada. El entorno define más que tu conciencia.";
-    } else {
-      text =
-        "Existe una ruptura entre valores, decisiones y vínculos. El trabajo es interno y profundo.";
-    }
+    text =
+      "Humanidad baja. No es juicio: es una señal de desconexión interna.";
   }
 
-  const li = document.createElement("li");
-  li.innerText = text;
-  tips.appendChild(li);
+  const p = document.createElement("p");
+  p.innerText = text;
+  tips.appendChild(p);
 }
 
 // ===============================
-// TERMÓMETRO
+// TERMÓMETRO (COLOR SEGÚN HUMANIDAD)
 // ===============================
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
   const answered =
-    modules
-      .slice(0, currentModule)
-      .reduce((s, m) => s + m.questions.length, 0) + currentQuestion;
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
+    + currentQuestion;
 
   const progress = Math.round((answered / totalQ) * 100);
   const bar = document.getElementById("thermoFill");
   bar.style.width = progress + "%";
+
+  let score = 0;
+  let max = 0;
+  modules.forEach(m => {
+    score += scores[m.name];
+    max += m.questions.length * 2;
+  });
+
+  const humanity = max ? Math.round((score / max) * 100) : 100;
+
+  if (humanity < 40) bar.style.background = "#ff3b3b";
+  else if (humanity < 70) bar.style.background = "#ffd93b";
+  else bar.style.background = "#3bff8f";
 }
 
 // ===============================
@@ -244,4 +246,4 @@ function showSection(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
+                  }
