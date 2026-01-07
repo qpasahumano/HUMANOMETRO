@@ -4,11 +4,12 @@
 let mode = "common";
 let currentModule = 0;
 let currentQuestion = 0;
+
 let modules = [];
 let scores = {};
 
 // ===============================
-// MÓDULOS COMUNES
+// MÓDULOS BASE (COMÚN)
 // ===============================
 const BASE_MODULES = [
   {
@@ -74,7 +75,7 @@ const PREMIUM_MODULES = [
 ];
 
 // ===============================
-// INICIO
+// INICIO DEL TEST
 // ===============================
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
@@ -167,7 +168,7 @@ function showResults() {
 }
 
 // ===============================
-// COHERENCIA
+// COHERENCIA HUMANA
 // ===============================
 function calculateCoherence() {
   const values = modules.map(m => {
@@ -187,12 +188,16 @@ function renderUnifiedAdvice(global, lowAreas) {
   let text = "";
 
   if (global >= 85) {
-    text = "Tu humanidad está activa y coherente. El desafío ahora es sostenerla incluso en contextos adversos.";
-  } else {
     text =
-      "Hay áreas donde tu humanidad se debilita: " +
+      "Tu humanidad se expresa de forma integrada. El desafío ahora es sostener esta coherencia incluso cuando el entorno presiona en sentido contrario.";
+  } else if (lowAreas.length > 0) {
+    text =
+      "Se observan tensiones humanas principalmente en estas áreas: " +
       lowAreas.join(", ") +
       ". Trabajar la presencia, la escucha y la coherencia en estos espacios puede elevar tu equilibrio humano.";
+  } else {
+    text =
+      "Tu humanidad está activa, aunque aún fragmentada. Integrar pensamiento, emoción y acción es la clave para estabilizarla.";
   }
 
   const li = document.createElement("li");
@@ -201,7 +206,7 @@ function renderUnifiedAdvice(global, lowAreas) {
 }
 
 // ===============================
-// TERMÓMETRO
+// TERMÓMETRO (PROGRESO)
 // ===============================
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
@@ -215,15 +220,19 @@ function updateThermometer() {
 }
 
 // ===============================
-// FONDO POR MÓDULO
+// FONDO SEGÚN MÓDULO
 // ===============================
 function applyModuleTheme() {
   const app = document.getElementById("app");
   app.className = "";
+
   if (modules[currentModule]) {
     app.classList.add(modules[currentModule].key);
   }
-  if (mode === "premium") app.classList.add("premium");
+
+  if (mode === "premium") {
+    app.classList.add("premium");
+  }
 }
 
 // ===============================
@@ -242,4 +251,4 @@ function showSection(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-    }
+}
