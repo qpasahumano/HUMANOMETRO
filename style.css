@@ -185,4 +185,10 @@ ul { list-style: none; padding: 0; }
     #3d2c63 60%,
     #1a1233 100%);
   }
+#thermoFill {
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.4),
+    0 0 25px rgba(46,204,113,0.9),
+    0 0 45px rgba(46,204,113,0.6);
+                              }
 
