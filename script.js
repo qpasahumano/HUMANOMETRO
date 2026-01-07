@@ -192,9 +192,29 @@ function restart() {
   showSection("start");
 }
 
+
 function showSection(id) {
   ["start", "test", "results", "privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
       }
+function renderTips(global) {
+  const tips = document.getElementById("tips");
+  tips.innerHTML = "";
+
+  let text = "";
+
+  if (global >= 85) {
+    text = "Tu nivel de humanidad es alto. Hay coherencia entre lo que sentís, pensás y hacés. El desafío ahora es sostenerlo incluso en contextos difíciles.";
+  } else if (global >= 60) {
+    text = "Tu humanidad está presente, pero aparece fragmentada según el área. Hay conciencia, pero falta coherencia sostenida.";
+  } else {
+    text = "Tu humanidad está en tensión. Hay desconexión entre valores, acciones y vínculos. Este resultado no es juicio, es señal.";
+  }
+
+  const p = document.createElement("p");
+  p.innerText = text;
+  tips.appendChild(p);
+}
+
