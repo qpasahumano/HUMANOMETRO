@@ -5,17 +5,19 @@
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #16233f, #0b1229);
+  background: radial-gradient(circle at top, #16233f, #0b1229);
   color: #ffffff;
+  overflow-x: hidden;
 }
 
 /* SPLASH */
 #splash {
   position: fixed;
   inset: 0;
-  background: linear-gradient(180deg, #16233f, #0b1229);
+  background: radial-gradient(circle, #16233f, #0b1229);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,15 +27,14 @@ html, body {
 }
 
 #splash img {
-  width: 70%;
-  max-width: 320px;
-  border-radius: 24px;
+  width: 220px;
+  max-width: 70%;
   margin-bottom: 24px;
 }
 
 #splash span {
   font-size: 1.4rem;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 #splash.hide {
@@ -46,7 +47,7 @@ html, body {
   min-height: 100vh;
   max-width: 520px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 28px;
   text-align: center;
 }
 
@@ -54,22 +55,39 @@ html, body {
   display: none;
 }
 
-/* BOTONES (RESPETA COLORES) */
-button {
-  padding: 12px 18px;
-  margin: 10px;
-  border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
 }
 
-button:not(.premium) {
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+}
+
+p {
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* BOTONES */
+button {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
   background: #ffffff;
   color: #0b1229;
 }
 
 button.premium {
-  background: #ffd54f;
-  color: #000;
+  background: #ffd65a;
+  color: #000000;
+}
+
+button:hover {
+  opacity: 0.9;
 }
