@@ -6,82 +6,55 @@
 
   <!-- PWA -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#0b1229" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" href="522_522.png" />
+  <link rel="icon" href="icon-512.png" />
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- SPLASH SCREEN -->
+  <!-- SPLASH -->
   <div id="splash">
-    <img src="522_522.png" alt="Humanómetro" />
+    <img src="icon-512.png" alt="Humanómetro">
     <span>Humanómetro</span>
   </div>
 
   <!-- APP -->
   <main id="app" class="hidden">
 
-    <!-- INICIO -->
     <section id="start">
       <h1>HUMANÓMETRO</h1>
       <p>No es un espejo. Es tu humanidad reflejada.</p>
 
       <button onclick="startTest(false)">Versión Común</button>
       <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-      <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+      <button onclick="showPrivacy()">Privacidad y uso</button>
     </section>
 
-    <!-- TEST -->
-    <section id="test" class="hidden">
-      <h2 id="areaTitle"></h2>
-
-      <div id="thermometer">
-        <div id="thermoFill"></div>
-      </div>
-
-      <div id="answers"></div>
-    </section>
-
-    <!-- RESULTADO -->
     <section id="result" class="hidden">
       <h2>Resultado Humanómetro</h2>
       <p id="resultText"></p>
-      <button onclick="resetTest()">Reiniciar</button>
+      <button onclick="resetApp()">Reiniciar</button>
     </section>
 
-    <!-- PRIVACIDAD -->
     <section id="privacy" class="hidden">
       <h2>Privacidad y uso</h2>
       <p>
         Humanómetro no recopila datos personales.<br>
-        Toda la información se procesa localmente.<br>
+        Todo se procesa localmente.<br>
         No es diagnóstico médico ni psicológico.<br>
         Es una herramienta reflexiva.
       </p>
-      <button onclick="backToStart()">Volver</button>
+      <button onclick="goHome()">Volver</button>
     </section>
 
   </main>
 
   <script src="script.js"></script>
-
-  <!-- SPLASH CONTROL -->
-  <script>
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.getElementById("splash").classList.add("hide");
-        document.getElementById("app").classList.remove("hidden");
-      }, 1500);
-    });
-  </script>
-
 </body>
 </html>
