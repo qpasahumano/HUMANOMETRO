@@ -125,3 +125,64 @@ ul { list-style: none; padding: 0; }
   opacity: 0.75;
   cursor: pointer;
 }
+/* ===============================
+   CONTRASTE AUTOMÁTICO DE TEXTO
+   =============================== */
+#app {
+  color: #ffffff; /* default claro */
+}
+
+#app.light-text {
+  color: #ffffff;
+}
+
+#app.dark-text {
+  color: #111111;
+}
+
+/* ===============================
+   FONDOS LUMINOSOS OSCUROS (NO CLAROS)
+   =============================== */
+
+#app.familia {
+  background: radial-gradient(circle at top,
+    #2fa4ff 0%,
+    #123a5c 60%,
+    #0b1e2e 100%);
+}
+
+#app.social {
+  background: radial-gradient(circle at top,
+    #2ecc71 0%,
+    #1f5e3b 60%,
+    #0f2f1d 100%);
+}
+
+#app.amistad {
+  background: radial-gradient(circle at top,
+    #58d6b9 0%,
+    #2e5c52 60%,
+    #162e2a 100%);
+}
+
+#app.laboral {
+  background: radial-gradient(circle at top,
+    #6fa8ff 0%,
+    #2f4568 60%,
+    #141f33 100%);
+}
+
+#app.planeta {
+  background: radial-gradient(circle at top,
+    #7dff9b 0%,
+    #2f6e4e 60%,
+    #163826 100%);
+}
+
+#app.premium {
+  background: radial-gradient(circle at top,
+    #b18cff 0%,
+    #3d2c63 60%,
+    #1a1233 100%);
+  }
+
