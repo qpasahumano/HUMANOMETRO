@@ -1,18 +1,18 @@
 {
-  "name": "Humanómetro",
-  "short_name": "Humanómetro",
-  "start_url": "./index.html",
+  "name": "HUMANÓMETRO",
+  "short_name": "HUMANÓMETRO",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#0b1229",
-  "theme_color": "#0b1229",
+  "background_color": "#0b132b",
+  "theme_color": "#0b132b",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "iconos/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "iconos/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
