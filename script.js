@@ -12,7 +12,71 @@ let scores = {};
 // MÓDULOS BASE
 // ===============================
 const BASE_MODULES = [
+  {// ================================
+// BLOQUES PREMIUM (EXCLUSIVOS)
+// ================================
+const premiumModules = [
   {
+    name: "Incongruencias Personales",
+    questions: [
+      "¿Decís que sos honesto pero ocultás lo que sentís para evitar conflictos?",
+      "¿Sostenés tus valores cuando nadie te observa?",
+      "¿Mostrás versiones distintas de vos según el contexto?",
+      "¿Defendés ideas que no practicás bajo presión?",
+      "¿Preferís caer bien antes que ser auténtico?",
+      "¿Te justificás cuando sabés que actuaste mal?",
+      "¿Elegís el silencio para no asumir verdades incómodas?",
+      "¿Te reconocés incoherente bajo presión?",
+      "¿Te alejás de personas que te confrontan?",
+      "¿Decís “soy así” para no cambiar?"
+    ]
+  },
+  {
+    name: "Sombras Vinculares",
+    questions: [
+      "¿Retirás afecto cuando no te dan lo que esperás?",
+      "¿Usás el silencio como castigo?",
+      "¿Confundís amor con necesidad?",
+      "¿Exigís comprensión que no ofrecés?",
+      "¿Manipulás emocionalmente sin admitirlo?",
+      "¿Generás culpa para obtener algo?",
+      "¿Evitás conversaciones profundas?",
+      "¿Te victimizás para no asumir responsabilidad?",
+      "¿Te cuesta pedir perdón sin justificarte?",
+      "¿Dejás heridas sin reparar?"
+    ]
+  },
+  {
+    name: "Autoengaño Consciente",
+    questions: [
+      "¿Sabés qué deberías cambiar y no lo hacés?",
+      "¿Postergás decisiones importantes?",
+      "¿Culpás al contexto para no mirarte?",
+      "¿Elegís comodidad antes que verdad?",
+      "¿Te mentís para no incomodarte?",
+      "¿Evitás decisiones necesarias?",
+      "¿Minimizás lo que sabés que duele?",
+      "¿Justificás lo que criticás en otros?",
+      "¿Confundís entender con transformar?",
+      "¿Te escondés en el discurso?"
+    ]
+  },
+  {
+    name: "Impacto en Otros",
+    questions: [
+      "¿Tu presencia calma o tensa?",
+      "¿Cómo se sienten los demás después de hablar con vos?",
+      "¿Asumís el impacto de tus palabras?",
+      "¿Escuchás feedback sin defenderte?",
+      "¿Reconocés cuando herís?",
+      "¿Reparás vínculos dañados?",
+      "¿Dejás espacio emocional?",
+      "¿Cuidás tu tono y gestos?",
+      "¿Aceptás que podés ser parte del problema?",
+      "¿Tu humanidad se nota en hechos?"
+    ]
+  }
+];
     name: "Familia",
     questions: [
       "¿Estás emocionalmente presente con tu familia?",
@@ -234,3 +298,4 @@ function showSection(id) {
   );
   document.getElementById(id).classList.remove("hidden");
 }
+
