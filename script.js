@@ -5,27 +5,27 @@ let modules = [];
 let scores = {};
 
 const BASE_MODULES = [
-  { name: "Familia", questions: [
+  { name:"Familia", questions:[
     "¿Estás emocionalmente presente con tu familia?",
     "¿Escuchás sin juzgar?",
     "¿Expresás afecto sin que te lo pidan?"
   ]},
-  { name: "Social", questions: [
+  { name:"Social", questions:[
     "¿Tratás a las personas con respeto?",
     "¿Escuchás opiniones distintas a la tuya?",
     "¿Actuás con empatía en espacios públicos?"
   ]},
-  { name: "Amistad", questions: [
+  { name:"Amistad", questions:[
     "¿Estás presente para tus amistades?",
     "¿Sos leal incluso cuando no estás de acuerdo?",
     "¿Escuchás sin imponer tu visión?"
   ]},
-  { name: "Laboral", questions: [
+  { name:"Laboral", questions:[
     "¿Actuás con ética en tu trabajo?",
     "¿Respetás a tus compañeros?",
     "¿Sos justo cuando nadie te observa?"
   ]},
-  { name: "Planeta", questions: [
+  { name:"Planeta", questions:[
     "¿Respetás a los animales como seres vivos?",
     "¿Cuidás el entorno donde vivís?",
     "¿Reducís tu impacto ambiental cuando podés?"
@@ -33,20 +33,21 @@ const BASE_MODULES = [
 ];
 
 const PREMIUM_MODULES = [
-  { name: "Conciencia Profunda", questions: [
+  { name:"Conciencia Profunda", questions:[
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
-function startTest(isPremium) {
+function startTest(isPremium){
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
+  if(mode==="premium") modules = modules.concat(PREMIUM_MODULES);
 
   scores = {};
-  modules.forEach(m => scores[m.name] = 0);
+  modules.forEach(m=>scores[m.name]=0);
+
   currentModule = 0;
   currentQuestion = 0;
 
@@ -55,86 +56,84 @@ function startTest(isPremium) {
   updateThermometer();
 }
 
-function showQuestion() {
-  const mod = modules[currentModule];
-  document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
+function showQuestion(){
+  const m = modules[currentModule];
+  document.getElementById("areaTitle").innerText = m.name;
+  document.getElementById("questionText").innerText = m.questions[currentQuestion];
 }
 
-function answer(value) {
-  const mod = modules[currentModule];
-  scores[mod.name] += value;
+function answer(val){
+  scores[modules[currentModule].name] += val;
   currentQuestion++;
 
-  if (currentQuestion >= mod.questions.length) {
+  if(currentQuestion >= modules[currentModule].questions.length){
     currentQuestion = 0;
     currentModule++;
   }
 
-  if (currentModule >= modules.length) showResults();
-  else {
+  if(currentModule >= modules.length){
+    showResults();
+  } else {
     showQuestion();
     updateThermometer();
   }
 }
 
-function showResults() {
+function showResults(){
   showSection("results");
+
   const circles = document.getElementById("circles");
-  circles.innerHTML = "";
-
-  let percents = [];
-
-  modules.forEach(m => {
-    const max = m.questions.length * 2;
-    const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push({ name: m.name, value: percent });
-
-    const div = document.createElement("div");
-    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-    div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
-    circles.appendChild(div);
-  });
-
-  const global = Math.round(percents.reduce((a,b)=>a+b.value,0) / percents.length);
-  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
-
-  const values = percents.map(p=>p.value);
-  const coherence = 100 - (Math.max(...values) - Math.min(...values));
-  document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
-
-  renderTips(percents);
-}
-
-function renderTips(percents) {
   const tips = document.getElementById("tips");
+  circles.innerHTML = "";
   tips.innerHTML = "";
 
-  const weak = percents.filter(p => p.value < 100);
+  let percents = [];
+  let total = 0;
 
-  if (weak.length === 0) {
-    tips.innerHTML = "<li>Seguís por buen camino.</li>";
+  modules.forEach(m=>{
+    const max = m.questions.length * 2;
+    const p = Math.round((scores[m.name] / max) * 100);
+    percents.push({name:m.name,value:p});
+    total += p;
+
+    const d = document.createElement("div");
+    d.className = "circle " + (p<40?"low":p<70?"mid":"high");
+    d.innerHTML = `<strong>${p}%</strong><small>${m.name}</small>`;
+    circles.appendChild(d);
+  });
+
+  const global = Math.round(total / modules.length);
+  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
+
+  const coherence = 100 - (Math.max(...percents.map(p=>p.value)) - Math.min(...percents.map(p=>p.value)));
+  document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
+
+  const weak = percents.filter(p=>p.value < 100);
+
+  if(weak.length === 0){
+    tips.innerHTML = "<li>Estás en un muy buen camino. Mantené esta coherencia.</li>";
     return;
   }
 
-  weak.forEach(p => {
+  weak.forEach(w=>{
     const li = document.createElement("li");
-    li.innerHTML = `En <strong>${p.name}</strong>, tus respuestas muestran espacio de mejora. Observar este ámbito con más conciencia puede ayudarte a alinear lo que sentís con lo que hacés.`;
+    li.innerHTML = `Área <strong>${w.name}</strong>: dedicar mayor conciencia y presencia en este aspecto fortalecerá tu coherencia humana.`;
     tips.appendChild(li);
   });
 }
 
-function updateThermometer() {
+function updateThermometer(){
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered = modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
-  const progress = Math.round((answered/totalQ)*100);
-  document.getElementById("thermoFill").style.width = progress+"%";
+  const answered = modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0) + currentQuestion;
+  document.getElementById("thermoFill").style.width = Math.round((answered/totalQ)*100) + "%";
 }
 
-function restart() { showSection("start"); }
-function showPrivacy() { showSection("privacy"); }
+function restart(){ showSection("start"); }
+function showPrivacy(){ showSection("privacy"); }
 
-function showSection(id) {
-  ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
+function showSection(id){
+  ["start","test","results","privacy"].forEach(s=>{
+    document.getElementById(s).classList.add("hidden");
+  });
   document.getElementById(id).classList.remove("hidden");
 }
