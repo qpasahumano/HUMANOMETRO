@@ -26,17 +26,17 @@ const BASE_MODULES = [
     "¿Sos justo cuando nadie te observa?"
   ]},
   { name: "Planeta", questions: [
-    "¿Respetás a los animales?",
-    "¿Cuidás el entorno?",
-    "¿Reducís tu impacto ambiental?"
+    "¿Respetás a los animales como seres vivos?",
+    "¿Cuidás el entorno donde vivís?",
+    "¿Reducís tu impacto ambiental cuando podés?"
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
-    "¿Vivís desde el amor o el miedo?",
+    "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
-    "¿Asumís tu impacto en otros?"
+    "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
@@ -47,7 +47,6 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
 
@@ -86,64 +85,100 @@ function showResults() {
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
-  let percents = [];
   let total = 0;
+  let percents = {};
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push({ name: m.name, value: percent });
+    percents[m.name] = percent;
     total += percent;
 
     const div = document.createElement("div");
     div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-    div.innerHTML = `<strong>${percent}%</strong><br>${m.name}`;
+    div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
   });
 
   const global = Math.round(total / modules.length);
   document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
-  const values = percents.map(p => p.value);
+  const values = Object.values(percents);
+  const coherence = 100 - (Math.max(...values) - Math.min(...values));
   document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + (100 - (Math.max(...values) - Math.min(...values))) + "%";
+    "Coherencia humana: " + coherence + "%";
 
-  renderTips(percents);
+  renderPersonalizedReading(percents);
 }
 
-function renderTips(percents) {
+function renderPersonalizedReading(percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  const weak = percents.filter(p => p.value < 100);
+  const areasBajas = Object.entries(percents)
+    .filter(([_, v]) => v < 99);
 
-  if (weak.length === 0) {
-    tips.innerHTML = "<li>Estás en el buen camino. Mantené esta coherencia.</li>";
+  // CASO: todo excelente
+  if (areasBajas.length === 0) {
+    tips.innerHTML = `
+      <li>
+        Estás transitando un camino de alta coherencia humana.
+        Mantené esta conciencia viva en tus decisiones cotidianas.
+      </li>`;
     return;
   }
 
-  weak.forEach(p => {
+  // DEVOLUCIONES PERSONALIZADAS POR ÁREA
+  areasBajas.forEach(([area, valor]) => {
+    let mensaje = "";
+
+    switch (area) {
+      case "Familia":
+        mensaje = "Revisá cómo estás estando emocionalmente presente con las personas más cercanas. Pequeños gestos diarios pueden transformar vínculos.";
+        break;
+      case "Social":
+        mensaje = "Observá tu forma de vincularte en espacios compartidos. La empatía cotidiana construye impacto humano.";
+        break;
+      case "Amistad":
+        mensaje = "Tal vez sea momento de escuchar más y sostener vínculos desde la presencia real, no solo desde la costumbre.";
+        break;
+      case "Laboral":
+        mensaje = "Reflexioná si tus acciones laborales reflejan tus valores internos, incluso cuando nadie observa.";
+        break;
+      case "Planeta":
+        mensaje = "Tu relación con el entorno puede fortalecerse con decisiones conscientes que respeten la vida en todas sus formas.";
+        break;
+      case "Conciencia Profunda":
+        mensaje = "Profundizar en tu coherencia interna puede ayudarte a alinear pensamiento, emoción y acción.";
+        break;
+    }
+
     const li = document.createElement("li");
-    li.innerText = `Área ${p.name}: hay aspectos que podés atender con más conciencia.`;
+    li.innerHTML = `<strong>${area}:</strong> ${mensaje}`;
     tips.appendChild(li);
   });
 }
 
 function updateThermometer() {
-  const total = modules.reduce((s,m)=>s+m.questions.length,0);
-  const done =
-    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
+  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+  const answered =
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
     + currentQuestion;
 
-  document.getElementById("thermoFill").style.width =
-    Math.round((done/total)*100) + "%";
+  const progress = Math.round((answered / totalQ) * 100);
+  document.getElementById("thermoFill").style.width = progress + "%";
 }
 
-function restart() { showSection("start"); }
-function showPrivacy() { showSection("privacy"); }
+function restart() {
+  showSection("start");
+}
+
+function showPrivacy() {
+  showSection("privacy");
+}
 
 function showSection(id) {
-  ["start","test","results","privacy"].forEach(s =>
+  ["start", "test", "results", "privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
