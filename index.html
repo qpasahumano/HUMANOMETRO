@@ -5,11 +5,9 @@
   <title>Humanómetro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -24,6 +22,12 @@
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
+
+    <p class="premium-info">
+      La versión <strong>Premium</strong> ofrece una lectura más profunda,
+      devoluciones ampliadas por área y acceso a la <strong>Revisión Semanal</strong>
+      para observar tu evolución humana en el tiempo.
+    </p>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -57,14 +61,9 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <!-- BLOQUE PREMIUM (SOLO TEXTO · NO ROMPE NADA) -->
-    <div id="premiumBlock" class="hidden">
-      <h3>Lectura Premium · Integración Humana</h3>
-      <p>
-        Esta lectura integra tus resultados desde una mirada más profunda.
-        No señala fallas: amplía conciencia, coherencia y procesos internos.
-      </p>
-    </div>
+    <button id="weeklyBtn" class="premium hidden" onclick="weeklyReview()">
+      Revisión semanal (Premium)
+    </button>
 
     <button onclick="restart()">Reiniciar</button>
   </section>
@@ -74,7 +73,7 @@
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente.<br>
+      Todo se procesa localmente en tu dispositivo.<br>
       No es diagnóstico médico ni psicológico.<br>
       Es una herramienta reflexiva.
     </p>
