@@ -13,13 +13,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- SERVICE WORKER -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+      });
+    }
+  </script>
 </head>
 
 <body>
-  <!-- SPLASH SCREEN -->
-<div id="splash">
-  <img src="splash.png" alt="Humanómetro">
-</div>
 <main id="app">
 
   <!-- INICIO -->
@@ -37,7 +42,6 @@
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
-    <!-- TERMÓMETRO -->
     <div id="thermometer">
       <div id="thermoFill"></div>
     </div>
@@ -83,4 +87,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
