@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -14,7 +16,17 @@ body {
   text-align: center;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2, h3 {
+  margin-top: 20px;
+}
 
 button {
   width: 90%;
@@ -27,18 +39,18 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 14px rgba(46,204,113,0.8);
+  box-shadow: 0 0 12px rgba(46,204,113,0.6);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,0.9);
+  box-shadow: 0 0 15px rgba(255,180,0,0.7);
 }
 
 .answers button {
   background: #3498db;
   color: white;
-  box-shadow: 0 0 14px rgba(52,152,219,0.8);
+  box-shadow: 0 0 12px rgba(52,152,219,0.7);
 }
 
 #thermometer {
@@ -54,7 +66,7 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 18px rgba(46,204,113,1);
+  box-shadow: 0 0 14px rgba(46,204,113,0.9);
   transition: width 0.4s ease;
 }
 
@@ -73,14 +85,26 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
 }
 
-.circle.low { background: #e74c3c; }
-.circle.mid { background: #f1c40f; color: #000; }
-.circle.high { background: #2ecc71; color: #000; }
+.circle.low {
+  background: #e74c3c;
+}
 
-ul { list-style: none; padding: 0; }
+.circle.mid {
+  background: #f1c40f;
+  color: #000;
+}
+
+.circle.high {
+  background: #2ecc71;
+  color: #000;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
 
 .legal {
   font-size: 0.8em;
