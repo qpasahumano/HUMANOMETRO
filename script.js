@@ -71,9 +71,8 @@ function answer(value) {
     currentModule++;
   }
 
-  if (currentModule >= modules.length) {
-    showResults();
-  } else {
+  if (currentModule >= modules.length) showResults();
+  else {
     showQuestion();
     updateThermometer();
   }
@@ -81,18 +80,15 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
-
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
-  let total = 0;
-  let percents = {};
+  let percents = [];
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents[m.name] = percent;
-    total += percent;
+    percents.push({ name: m.name, value: percent });
 
     const div = document.createElement("div");
     div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
@@ -100,86 +96,45 @@ function showResults() {
     circles.appendChild(div);
   });
 
-  const global = Math.round(total / modules.length);
+  const global = Math.round(percents.reduce((a,b)=>a+b.value,0) / percents.length);
   document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
-  const values = Object.values(percents);
+  const values = percents.map(p=>p.value);
   const coherence = 100 - (Math.max(...values) - Math.min(...values));
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
+  document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
 
-  renderPersonalizedReading(percents);
+  renderTips(percents);
 }
 
-function renderPersonalizedReading(percents) {
+function renderTips(percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  const areasBajas = Object.entries(percents)
-    .filter(([_, v]) => v < 99);
+  const weak = percents.filter(p => p.value < 100);
 
-  // CASO: todo excelente
-  if (areasBajas.length === 0) {
-    tips.innerHTML = `
-      <li>
-        Estás transitando un camino de alta coherencia humana.
-        Mantené esta conciencia viva en tus decisiones cotidianas.
-      </li>`;
+  if (weak.length === 0) {
+    tips.innerHTML = "<li>Seguís por buen camino.</li>";
     return;
   }
 
-  // DEVOLUCIONES PERSONALIZADAS POR ÁREA
-  areasBajas.forEach(([area, valor]) => {
-    let mensaje = "";
-
-    switch (area) {
-      case "Familia":
-        mensaje = "Revisá cómo estás estando emocionalmente presente con las personas más cercanas. Pequeños gestos diarios pueden transformar vínculos.";
-        break;
-      case "Social":
-        mensaje = "Observá tu forma de vincularte en espacios compartidos. La empatía cotidiana construye impacto humano.";
-        break;
-      case "Amistad":
-        mensaje = "Tal vez sea momento de escuchar más y sostener vínculos desde la presencia real, no solo desde la costumbre.";
-        break;
-      case "Laboral":
-        mensaje = "Reflexioná si tus acciones laborales reflejan tus valores internos, incluso cuando nadie observa.";
-        break;
-      case "Planeta":
-        mensaje = "Tu relación con el entorno puede fortalecerse con decisiones conscientes que respeten la vida en todas sus formas.";
-        break;
-      case "Conciencia Profunda":
-        mensaje = "Profundizar en tu coherencia interna puede ayudarte a alinear pensamiento, emoción y acción.";
-        break;
-    }
-
+  weak.forEach(p => {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${area}:</strong> ${mensaje}`;
+    li.innerHTML = `En <strong>${p.name}</strong>, tus respuestas muestran espacio de mejora. Observar este ámbito con más conciencia puede ayudarte a alinear lo que sentís con lo que hacés.`;
     tips.appendChild(li);
   });
 }
 
 function updateThermometer() {
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
-    + currentQuestion;
-
-  const progress = Math.round((answered / totalQ) * 100);
-  document.getElementById("thermoFill").style.width = progress + "%";
+  const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
+  const answered = modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
+  const progress = Math.round((answered/totalQ)*100);
+  document.getElementById("thermoFill").style.width = progress+"%";
 }
 
-function restart() {
-  showSection("start");
-}
-
-function showPrivacy() {
-  showSection("privacy");
-}
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
-  ["start", "test", "results", "privacy"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
+  ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-    }
+}
