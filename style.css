@@ -1,3 +1,4 @@
+
 * { box-sizing: border-box; }
 
 body {
@@ -5,7 +6,6 @@ body {
   font-family: "Poppins", sans-serif;
   background: linear-gradient(180deg, #0b1220, #1b2b4a);
   color: white;
-  transition: background 0.6s ease;
 }
 
 #app {
@@ -39,6 +39,12 @@ button.premium {
   box-shadow: 0 0 15px rgba(255,180,0,0.7);
 }
 
+button.install {
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
 .answers button {
   background: #3498db;
   color: white;
@@ -58,8 +64,8 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 12px rgba(46,204,113,0.9);
-  transition: width 0.4s ease, background 0.4s ease;
+  box-shadow: 0 0 14px rgba(46,204,113,1);
+  transition: width 0.4s ease;
 }
 
 #circles {
