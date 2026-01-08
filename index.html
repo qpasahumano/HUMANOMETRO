@@ -5,9 +5,11 @@
   <title>Humanómetro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
+  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,11 +24,6 @@
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-    <p class="premium-info">
-      La versión <strong>Premium</strong> incorpora lectura profunda por área,
-      coherencia humana y chequeo semanal evolutivo.
-    </p>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -60,13 +57,15 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <div id="weeklyBox" class="hidden">
-      <h3>Chequeo semanal (Premium)</h3>
-      <p>¿Esta semana actuaste de forma más humana que la anterior?</p>
-      <button onclick="weeklyAnswer(2)">Sí</button>
-      <button onclick="weeklyAnswer(1)">Más o menos</button>
-      <button onclick="weeklyAnswer(0)">No</button>
-    </div>
+    <!-- SOLO PREMIUM -->
+    <button id="weeklyBtn" class="premium hidden" onclick="openWeeklyReview()">
+      Revisión semanal
+    </button>
+
+    <p id="premiumNote" class="hidden" style="margin-top:18px;font-size:.85em;opacity:.85;">
+      La versión <strong>Premium</strong> habilita lecturas evolutivas, coherencia profunda
+      y revisiones periódicas de tu humanidad en el tiempo.
+    </p>
 
     <button onclick="restart()">Reiniciar</button>
   </section>
@@ -76,9 +75,9 @@
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo se procesa localmente.<br>
+      Todo el procesamiento ocurre localmente.<br>
       No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva.
+      Es una herramienta reflexiva y simbólica.
     </p>
     <button onclick="restart()">Volver</button>
   </section>
