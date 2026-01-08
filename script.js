@@ -26,17 +26,17 @@ const BASE_MODULES = [
     "¿Sos justo cuando nadie te observa?"
   ]},
   { name: "Planeta", questions: [
-    "¿Respetás a los animales como seres vivos?",
-    "¿Cuidás el entorno donde vivís?",
-    "¿Reducís tu impacto ambiental cuando podés?"
+    "¿Respetás a los animales?",
+    "¿Cuidás el entorno?",
+    "¿Reducís tu impacto ambiental?"
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
-    "¿Vivís desde el amor o desde el miedo?",
+    "¿Vivís desde el amor o el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
-    "¿Te responsabilizás de tu impacto en otros?"
+    "¿Asumís tu impacto en otros?"
   ]}
 ];
 
@@ -47,6 +47,7 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
+
   currentModule = 0;
   currentQuestion = 0;
 
@@ -58,8 +59,7 @@ function startTest(isPremium) {
 function showQuestion() {
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
 function answer(value) {
@@ -72,8 +72,9 @@ function answer(value) {
     currentModule++;
   }
 
-  if (currentModule >= modules.length) showResults();
-  else {
+  if (currentModule >= modules.length) {
+    showResults();
+  } else {
     showQuestion();
     updateThermometer();
   }
@@ -85,29 +86,27 @@ function showResults() {
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
-  let total = 0;
   let percents = [];
+  let total = 0;
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push(percent);
+    percents.push({ name: m.name, value: percent });
     total += percent;
 
     const div = document.createElement("div");
-    div.className =
-      "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-    div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
+    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.innerHTML = `<strong>${percent}%</strong><br>${m.name}`;
     circles.appendChild(div);
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + global + "%";
+  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
-  const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
+  const values = percents.map(p => p.value);
   document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
+    "Coherencia humana: " + (100 - (Math.max(...values) - Math.min(...values))) + "%";
 
   renderTips(percents);
 }
@@ -116,52 +115,36 @@ function renderTips(percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  if (percents.every(p => p === 100)) {
-    tips.innerHTML = "<li>Sigue por el buen camino.</li>";
+  const weak = percents.filter(p => p.value < 100);
+
+  if (weak.length === 0) {
+    tips.innerHTML = "<li>Estás en el buen camino. Mantené esta coherencia.</li>";
     return;
   }
 
-  percents.forEach((p, i) => {
-    if (p < 100) {
-      const li = document.createElement("li");
-      li.innerHTML =
-        `Área <strong>${modules[i].name}</strong>: hay espacio para mayor presencia y coherencia.`;
-      tips.appendChild(li);
-    }
+  weak.forEach(p => {
+    const li = document.createElement("li");
+    li.innerText = `Área ${p.name}: hay aspectos que podés atender con más conciencia.`;
+    tips.appendChild(li);
   });
 }
 
 function updateThermometer() {
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
+  const total = modules.reduce((s,m)=>s+m.questions.length,0);
+  const done =
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
     + currentQuestion;
 
-  const progress = Math.round((answered / totalQ) * 100);
-  document.getElementById("thermoFill").style.width = progress + "%";
+  document.getElementById("thermoFill").style.width =
+    Math.round((done/total)*100) + "%";
 }
+
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
   ["start","test","results","privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
-
-function restart() { showSection("start"); }
-function showPrivacy() { showSection("privacy"); }
-
-/* ===============================
-   EVENTOS (CLAVE PARA QUE ANDEN LOS BOTONES)
-   =============================== */
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("btnCommon").onclick = () => startTest(false);
-  document.getElementById("btnPremium").onclick = () => startTest(true);
-  document.getElementById("btnPrivacy").onclick = showPrivacy;
-  document.getElementById("btnBack").onclick = restart;
-  document.getElementById("btnRestart").onclick = restart;
-
-  document.querySelectorAll(".answers button").forEach(btn => {
-    btn.onclick = () => answer(parseInt(btn.dataset.value));
-  });
-});
+    }
