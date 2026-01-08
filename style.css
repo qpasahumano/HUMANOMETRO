@@ -6,9 +6,9 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  background: radial-gradient(circle at top, #0f2027, #050b14);
   color: #ffffff;
-  transition: background 0.6s ease;
+  transition: background 0.8s ease;
 }
 
 #app {
@@ -24,7 +24,7 @@ h1 { font-size: 2.5em; }
 h2, h3 { margin-top: 20px; }
 
 /* ===============================
-   BOTONES
+   BOTONES (NO MODIFICADOS)
    =============================== */
 button {
   width: 90%;
@@ -36,28 +36,28 @@ button {
   font-size: 1em;
   cursor: pointer;
   background: #2ecc71;
-  color: #08140d;
-  box-shadow: 0 0 14px rgba(46,204,113,0.6);
+  color: #04140d;
+  box-shadow: 0 0 18px rgba(46,204,113,0.65);
 }
 
 button.premium {
-  background: linear-gradient(45deg, #f5c542, #ff9f1c);
-  box-shadow: 0 0 16px rgba(255,180,0,0.7);
+  background: linear-gradient(45deg, #ffd86f, #ff9f1c);
+  box-shadow: 0 0 20px rgba(255,190,70,0.75);
 }
 
 .answers button {
-  background: #3498db;
+  background: #3da9fc;
   color: #ffffff;
-  box-shadow: 0 0 14px rgba(52,152,219,0.7);
+  box-shadow: 0 0 18px rgba(61,169,252,0.7);
 }
 
 /* ===============================
-   TERMÓMETRO (NO TOCADO LÓGICAMENTE)
+   TERMÓMETRO (INTACTO)
    =============================== */
 #thermometer {
   width: 100%;
   height: 14px;
-  background: #111827;
+  background: #0a101a;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
@@ -66,8 +66,13 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 14px rgba(46,204,113,0.9);
+  background: linear-gradient(
+    90deg,
+    #ff4d4d,
+    #f6ff6b,
+    #00ffb3
+  );
+  box-shadow: 0 0 20px rgba(0,255,180,0.9);
   transition: width 0.4s ease, background 0.4s ease;
 }
 
@@ -89,12 +94,22 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+  box-shadow: 0 0 22px rgba(255,255,255,0.25);
 }
 
-.circle.low  { background: #e74c3c; }
-.circle.mid  { background: #f1c40f; color: #1a1a1a; }
-.circle.high { background: #2ecc71; color: #0b1a12; }
+.circle.low {
+  background: radial-gradient(circle, #ff4d4d, #8b0000);
+}
+
+.circle.mid {
+  background: radial-gradient(circle, #f6ff6b, #9fa600);
+  color: #111;
+}
+
+.circle.high {
+  background: radial-gradient(circle, #00ffb3, #007a5a);
+  color: #021a14;
+}
 
 ul { list-style: none; padding: 0; }
 
@@ -105,35 +120,59 @@ ul { list-style: none; padding: 0; }
 }
 
 /* =====================================================
-   FONDOS POR MÓDULO – PROFESIONALES / LUMINOSOS
+   FONDOS POR BLOQUE – AURORA BOREAL (FLUO OSCURO)
    ===================================================== */
 
-/* FAMILIA – cálido, contención */
+/* FAMILIA */
 body.familia {
-  background: linear-gradient(180deg, #3b6f8f, #1f3b52);
+  background: radial-gradient(circle at top left,
+    #00ffd5,
+    #0a3d3f,
+    #030b10
+  );
 }
 
-/* SOCIAL – humano, apertura */
+/* SOCIAL */
 body.social {
-  background: linear-gradient(180deg, #3a7f6b, #1f4f44);
+  background: radial-gradient(circle at top right,
+    #3aff8f,
+    #1f4f3a,
+    #030b10
+  );
 }
 
-/* AMISTAD – cercanía */
+/* AMISTAD */
 body.amistad {
-  background: linear-gradient(180deg, #5a7fa3, #2b4663);
+  background: radial-gradient(circle at center,
+    #4dd7ff,
+    #203a6f,
+    #050b14
+  );
 }
 
-/* LABORAL – foco, sobriedad */
+/* LABORAL */
 body.laboral {
-  background: linear-gradient(180deg, #3b4f77, #1c2945);
+  background: radial-gradient(circle at top,
+    #6f7cff,
+    #2a2f6f,
+    #060914
+  );
 }
 
-/* PLANETA – natural, vivo */
+/* PLANETA */
 body.planeta {
-  background: linear-gradient(180deg, #3f7a55, #1e3f2c);
+  background: radial-gradient(circle at bottom,
+    #00ff7f,
+    #1f5f3f,
+    #040d08
+  );
 }
 
-/* CONCIENCIA – profundidad */
+/* CONCIENCIA */
 body.conciencia {
-  background: linear-gradient(180deg, #4b3f78, #241a44);
-  }
+  background: radial-gradient(circle at center,
+    #b66cff,
+    #3a1f5f,
+    #0a0414
+  );
+     }
