@@ -3,8 +3,8 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
+  background: #0b1220;
   color: white;
-  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
   transition: background 0.6s ease;
 }
 
@@ -17,13 +17,6 @@ body {
 
 .hidden { display: none; }
 
-h1 { font-size: 2.5em; }
-h2, h3 { margin-top: 20px; }
-
-/* ===============================
-   BOTONES (INTOCABLES)
-   =============================== */
-
 button {
   width: 90%;
   max-width: 340px;
@@ -35,24 +28,21 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 14px rgba(46,204,113,0.7);
+  box-shadow: 0 0 15px rgba(46,204,113,.8);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,0.85);
+  box-shadow: 0 0 18px rgba(255,180,0,.9);
 }
 
 .answers button {
   background: #3498db;
-  color: white;
-  box-shadow: 0 0 14px rgba(52,152,219,0.85);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(52,152,219,.9);
 }
 
-/* ===============================
-   TERMÓMETRO (INTOCABLE)
-   =============================== */
-
+/* TERMÓMETRO */
 #thermometer {
   width: 100%;
   height: 14px;
@@ -65,15 +55,12 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 18px rgba(46,204,113,1);
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
+  transition: width .4s ease;
 }
 
-/* ===============================
-   RESULTADOS
-   =============================== */
-
+/* RESULTADOS */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -89,45 +76,23 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 0 22px rgba(255,255,255,0.3);
+  box-shadow: 0 0 20px rgba(255,255,255,.25);
 }
 
-.circle.low { background: #e74c3c; }
-.circle.mid { background: #f1c40f; color: #000; }
-.circle.high { background: #2ecc71; color: #000; }
+.circle.low { background:#e74c3c; }
+.circle.mid { background:#f1c40f; color:#000; }
+.circle.high { background:#2ecc71; color:#000; }
 
-ul { list-style: none; padding: 0; }
+/* === FONDOS LED POR BLOQUE === */
+body.familia   { background: radial-gradient(circle,#1fa2ff,#001f3f); }
+body.social    { background: radial-gradient(circle,#00f2fe,#0a3d62); }
+body.amistad   { background: radial-gradient(circle,#43e97b,#064420); }
+body.laboral   { background: radial-gradient(circle,#667eea,#1b2b4a); }
+body.planeta   { background: radial-gradient(circle,#38ef7d,#134e4a); }
+body.conciencia{ background: radial-gradient(circle,#c471f5,#2b1055); }
 
 .legal {
-  font-size: 0.8em;
-  opacity: 0.7;
+  font-size: .8em;
+  opacity: .7;
   cursor: pointer;
-}
-
-/* ===============================
-   FONDOS LED POR BLOQUE (RECUPERADOS)
-   =============================== */
-
-body.familia {
-  background: radial-gradient(circle at top, #7fd6ff, #102a43);
-}
-
-body.social {
-  background: radial-gradient(circle at top, #6fffd0, #0b3d2e);
-}
-
-body.amistad {
-  background: radial-gradient(circle at top, #c09bff, #2e1a47);
-}
-
-body.laboral {
-  background: radial-gradient(circle at top, #ffd36f, #5c4b00);
-}
-
-body.planeta {
-  background: radial-gradient(circle at top, #7dff9b, #0f3d24);
-}
-
-body.conciencia {
-  background: radial-gradient(circle at top, #ff9bd5, #3d0f28);
-                            }
+  }
