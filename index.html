@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,17 +12,7 @@
 
   <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
-
-  <!-- SERVICE WORKER -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js");
-      });
-    }
-  </script>
 </head>
 
 <body>
@@ -34,6 +25,8 @@
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
+
+    <button id="installBtn" class="install hidden">Instalar App</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -75,9 +68,9 @@
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente en el dispositivo.<br>
+      Todo ocurre localmente.<br>
       No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva y simbólica.
+      Es una herramienta reflexiva.
     </p>
     <button onclick="restart()">Volver</button>
   </section>
@@ -85,5 +78,13 @@
 </main>
 
 <script src="script.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js");
+  });
+}
+</script>
 </body>
 </html>
