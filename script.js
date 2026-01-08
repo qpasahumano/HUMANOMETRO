@@ -57,7 +57,6 @@ function startTest(isPremium) {
 
 function showQuestion() {
   const mod = modules[currentModule];
-  document.body.className = mod.name.toLowerCase();
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
@@ -81,8 +80,6 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
-  document.body.className = "";
-
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
@@ -99,66 +96,48 @@ function showResults() {
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
 
-    if (percent < 100) details.push({ area: m.name, percent });
+    if (percent < 100) {
+      details.push({ area: m.name, percent });
+    }
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
+  document.getElementById("globalResult").innerText =
+    "Humanidad global: " + global + "%";
 
-  renderTips(global, details);
+  renderTips(details);
 }
 
-function renderTips(global, details) {
+function renderTips(details) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
   if (details.length === 0) {
-    tips.innerHTML = "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
+    tips.innerHTML =
+      "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
     return;
   }
 
   details.forEach(d => {
     const li = document.createElement("li");
-
-    switch (d.area) {
-      case "Familia":
-        li.innerHTML = "En <strong>Familia</strong>, tus respuestas muestran que podrías fortalecer la presencia emocional y la escucha genuina en los vínculos más cercanos.";
-        break;
-
-      case "Social":
-        li.innerHTML = "En el área <strong>Social</strong>, aparece margen para actuar con mayor empatía y conciencia en los espacios compartidos con otras personas.";
-        break;
-
-      case "Amistad":
-        li.innerHTML = "En <strong>Amistad</strong>, podrías revisar qué tan disponible estás emocionalmente y cómo acompañás a quienes te rodean.";
-        break;
-
-      case "Laboral":
-        li.innerHTML = "En lo <strong>Laboral</strong>, tus respuestas sugieren observar la coherencia entre valores personales y acciones cotidianas en el trabajo.";
-        break;
-
-      case "Planeta":
-        li.innerHTML = "En <strong>Planeta</strong>, hay una invitación a profundizar el cuidado del entorno y la responsabilidad con la vida que te rodea.";
-        break;
-
-      case "Conciencia":
-        li.innerHTML = "En <strong>Conciencia</strong>, se abre un espacio para alinear más profundamente pensamiento, emoción y acción.";
-        break;
-    }
-
+    li.innerHTML =
+      `En <strong>${d.area}</strong>, podrías observar con más conciencia cómo estás actuando y qué impacto tienen tus decisiones.`;
     tips.appendChild(li);
   });
 }
 
 function updateThermometer() {
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered = modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) + currentQuestion;
-  document.getElementById("thermoFill").style.width = Math.round((answered / totalQ) * 100) + "%";
+  const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
+  const answered =
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
+    + currentQuestion;
+
+  document.getElementById("thermoFill").style.width =
+    Math.round((answered / totalQ) * 100) + "%";
 }
 
 function restart() {
   showSection("start");
-  document.body.className = "";
 }
 
 function showPrivacy() {
@@ -166,34 +145,27 @@ function showPrivacy() {
 }
 
 function showSection(id) {
-  ["start", "test", "results", "privacy"].forEach(s =>
+  ["start","test","results","privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
 }
-/* ======================================================
-   🔁 REVISIÓN SEMANAL PREMIUM (AISLADA)
-   No toca test, no toca devoluciones, no toca resultados
-====================================================== */
+/* ========= REVISIÓN SEMANAL PREMIUM (AISLADA) ========= */
 
-/* ---- CONFIG ---- */
-const WEEKLY_KEY = "humanometro_last_weekly";
-const WEEKLY_INTERVAL = 7 * 24 * 60 * 60 * 1000;
+const WEEKLY_KEY = "humanometro_weekly_last";
+const WEEKLY_DELAY = 7 * 24 * 60 * 60 * 1000;
 
-/* ---- PREGUNTAS SEMANALES ---- */
 const WEEKLY_QUESTIONS = [
-  "Esta semana, ¿estuviste más presente con las personas que te rodean?",
-  "¿Actuaste con coherencia entre lo que sentís y lo que hacés?",
-  "¿Tomaste decisiones considerando su impacto en otros?",
-  "¿Te escuchaste a vos mismo antes de reaccionar?",
-  "¿Hubo algún momento donde elegiste conscientemente ser más humano?"
+  "Esta semana, ¿estuviste más presente con los demás?",
+  "¿Actuaste con coherencia entre lo que pensás y hacés?",
+  "¿Elegiste conscientemente respuestas más humanas?",
+  "¿Te escuchaste antes de reaccionar?",
+  "¿Cuidaste tu impacto emocional en otros?"
 ];
 
-/* ---- ESTADO ---- */
 let weeklyIndex = 0;
 let weeklyScore = 0;
 
-/* ---- BOTÓN PREMIUM (inyectado sin romper nada) ---- */
 function injectWeeklyButton() {
   if (mode !== "premium") return;
   if (document.getElementById("weeklyBtn")) return;
@@ -201,35 +173,25 @@ function injectWeeklyButton() {
   const btn = document.createElement("button");
   btn.id = "weeklyBtn";
   btn.innerText = "Revisión semanal (Premium)";
-  btn.style.marginTop = "20px";
   btn.onclick = startWeeklyReview;
+  btn.style.marginTop = "20px";
 
   document.getElementById("results").appendChild(btn);
 }
 
-/* ---- VALIDAR SI CORRESPONDE ---- */
-function canDoWeekly() {
-  const last = localStorage.getItem(WEEKLY_KEY);
-  if (!last) return true;
-  return Date.now() - Number(last) >= WEEKLY_INTERVAL;
-}
-
-/* ---- INICIAR ---- */
 function startWeeklyReview() {
-  if (!canDoWeekly()) {
+  const last = localStorage.getItem(WEEKLY_KEY);
+  if (last && Date.now() - Number(last) < WEEKLY_DELAY) {
     alert("La revisión semanal se habilita cada 7 días.");
     return;
   }
 
   weeklyIndex = 0;
   weeklyScore = 0;
-
-  showWeeklySection();
-  renderWeeklyQuestion();
+  showWeekly();
 }
 
-/* ---- UI ---- */
-function showWeeklySection() {
+function showWeekly() {
   hideAllSections();
 
   let sec = document.getElementById("weekly");
@@ -238,7 +200,7 @@ function showWeeklySection() {
     sec.id = "weekly";
     sec.innerHTML = `
       <h2>Revisión semanal</h2>
-      <p id="weeklyQuestion"></p>
+      <p id="weeklyQ"></p>
       <div class="answers">
         <button onclick="weeklyAnswer(2)">Sí</button>
         <button onclick="weeklyAnswer(1)">A veces</button>
@@ -249,15 +211,14 @@ function showWeeklySection() {
   }
 
   sec.classList.remove("hidden");
+  renderWeeklyQ();
 }
 
-/* ---- RENDER ---- */
-function renderWeeklyQuestion() {
-  document.getElementById("weeklyQuestion").innerText =
+function renderWeeklyQ() {
+  document.getElementById("weeklyQ").innerText =
     WEEKLY_QUESTIONS[weeklyIndex];
 }
 
-/* ---- RESPUESTAS ---- */
 function weeklyAnswer(val) {
   weeklyScore += val;
   weeklyIndex++;
@@ -265,11 +226,10 @@ function weeklyAnswer(val) {
   if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
     finishWeekly();
   } else {
-    renderWeeklyQuestion();
+    renderWeeklyQ();
   }
 }
 
-/* ---- RESULTADO ---- */
 function finishWeekly() {
   localStorage.setItem(WEEKLY_KEY, Date.now());
 
@@ -278,38 +238,12 @@ function finishWeekly() {
 
   document.getElementById("weekly").innerHTML = `
     <h2>Resultado semanal</h2>
-    <p>
-      Esta semana tu nivel de coherencia humana fue del
-      <strong>${percent}%</strong>.
-    </p>
-    <p>
-      No es un juicio. Es una observación de tendencia.
-      Usala como espejo, no como castigo.
-    </p>
+    <p>Tu coherencia humana esta semana fue del <strong>${percent}%</strong>.</p>
+    <p>Esto es una lectura de tendencia, no un juicio.</p>
     <button onclick="restart()">Volver</button>
   `;
-
-  scheduleWeeklyNotification();
 }
 
-/* ---- NOTIFICACIÓN (OPCIONAL, SEGURA) ---- */
-function scheduleWeeklyNotification() {
-  if (!("Notification" in window)) return;
-
-  if (Notification.permission === "default") {
-    Notification.requestPermission();
-  }
-
-  if (Notification.permission === "granted") {
-    setTimeout(() => {
-      new Notification("Humanómetro", {
-        body: "¿Querés hacer tu revisión semanal de humanidad?",
-      });
-    }, WEEKLY_INTERVAL);
-  }
-}
-
-/* ---- UTIL ---- */
 function hideAllSections() {
   ["start","test","results","privacy","weekly"].forEach(id=>{
     const el = document.getElementById(id);
@@ -317,11 +251,8 @@ function hideAllSections() {
   });
 }
 
-/* ---- GANCHO AUTOMÁTICO ---- */
-const _originalShowResults = showResults;
+const _showResultsOriginal = showResults;
 showResults = function() {
-  _originalShowResults();
+  _showResultsOriginal();
   injectWeeklyButton();
 };
-
-
