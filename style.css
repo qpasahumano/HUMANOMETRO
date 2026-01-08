@@ -1,93 +1,93 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
   font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top, #16233f, #0b1229);
-  color: #ffffff;
-  overflow-x: hidden;
+  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  color: white;
+  transition: background 0.6s ease;
 }
 
-/* SPLASH */
-#splash {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle, #16233f, #0b1229);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.6s ease;
-}
-
-#splash img {
-  width: 220px;
-  max-width: 70%;
-  margin-bottom: 24px;
-}
-
-#splash span {
-  font-size: 1.4rem;
-  opacity: 0.85;
-}
-
-#splash.hide {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* APP */
 #app {
-  min-height: 100vh;
   max-width: 520px;
-  margin: 0 auto;
-  padding: 28px;
+  margin: auto;
+  padding: 20px;
   text-align: center;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-h1 {
-  font-size: 2.2rem;
-  margin-bottom: 12px;
-}
+h1 { font-size: 2.5em; }
+h2, h3 { margin-top: 20px; }
 
-h2 {
-  font-size: 1.8rem;
-  margin-bottom: 16px;
-}
-
-p {
-  opacity: 0.9;
-  line-height: 1.5;
-}
-
-/* BOTONES */
 button {
-  width: 100%;
-  padding: 14px 18px;
-  margin: 12px 0;
-  font-size: 1rem;
-  border-radius: 10px;
+  width: 90%;
+  max-width: 340px;
+  margin: 12px auto;
+  padding: 15px;
+  border-radius: 40px;
   border: none;
+  font-size: 1em;
   cursor: pointer;
-  background: #ffffff;
-  color: #0b1229;
+  background: #2ecc71;
+  color: #000;
+  box-shadow: 0 0 12px rgba(46,204,113,0.6);
 }
 
 button.premium {
-  background: #ffd65a;
-  color: #000000;
+  background: linear-gradient(45deg, gold, orange);
+  box-shadow: 0 0 15px rgba(255,180,0,0.7);
 }
 
-button:hover {
-  opacity: 0.9;
+.answers button {
+  background: #3498db;
+  color: white;
+  box-shadow: 0 0 12px rgba(52,152,219,0.7);
+}
+
+#thermometer {
+  width: 100%;
+  height: 14px;
+  background: #111;
+  border-radius: 20px;
+  margin: 15px 0 25px;
+  overflow: hidden;
+}
+
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
+  box-shadow: 0 0 12px rgba(46,204,113,0.9);
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+#circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+}
+
+.circle.low { background: #e74c3c; }
+.circle.mid { background: #f1c40f; color: #000; }
+.circle.high { background: #2ecc71; color: #000; }
+
+ul { list-style: none; padding: 0; }
+
+.legal {
+  font-size: 0.8em;
+  opacity: 0.7;
+  cursor: pointer;
 }
