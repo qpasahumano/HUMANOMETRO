@@ -1,44 +1,15 @@
 * { box-sizing: border-box; }
 
+/* ===============================
+   BASE GENERAL
+   =============================== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  color: #0b1220;
+  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  color: #ffffff;
   transition: background 0.6s ease;
 }
-
-/* ===== FONDOS POR BLOQUE ===== */
-
-body.start-bg {
-  background: linear-gradient(180deg, #1b2b4a, #0b1220);
-  color: #ffffff;
-}
-
-body.familia {
-  background: linear-gradient(180deg, #ffd6e0, #ffb3c6);
-}
-
-body.social {
-  background: linear-gradient(180deg, #d7f0ff, #a9dcff);
-}
-
-body.amistad {
-  background: linear-gradient(180deg, #d8f5e1, #a6e7c0);
-}
-
-body.laboral {
-  background: linear-gradient(180deg, #e2ddff, #b8b0ff);
-}
-
-body.planeta {
-  background: linear-gradient(180deg, #d9f7d9, #aee6ae);
-}
-
-body.conciencia {
-  background: linear-gradient(180deg, #ffecc7, #ffd27f);
-}
-
-/* ===== APP ===== */
 
 #app {
   max-width: 520px;
@@ -52,8 +23,9 @@ body.conciencia {
 h1 { font-size: 2.5em; }
 h2, h3 { margin-top: 20px; }
 
-/* ===== BOTONES ===== */
-
+/* ===============================
+   BOTONES
+   =============================== */
 button {
   width: 90%;
   max-width: 340px;
@@ -64,27 +36,28 @@ button {
   font-size: 1em;
   cursor: pointer;
   background: #2ecc71;
-  color: #000;
-  box-shadow: 0 0 14px rgba(46,204,113,0.7);
+  color: #08140d;
+  box-shadow: 0 0 14px rgba(46,204,113,0.6);
 }
 
 button.premium {
-  background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,0.8);
+  background: linear-gradient(45deg, #f5c542, #ff9f1c);
+  box-shadow: 0 0 16px rgba(255,180,0,0.7);
 }
 
 .answers button {
   background: #3498db;
-  color: #fff;
-  box-shadow: 0 0 14px rgba(52,152,219,0.8);
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(52,152,219,0.7);
 }
 
-/* ===== TERMÓMETRO ===== */
-
+/* ===============================
+   TERMÓMETRO (NO TOCADO LÓGICAMENTE)
+   =============================== */
 #thermometer {
   width: 100%;
   height: 14px;
-  background: #111;
+  background: #111827;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
@@ -94,12 +67,13 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 16px rgba(46,204,113,1);
-  transition: width 0.4s ease;
+  box-shadow: 0 0 14px rgba(46,204,113,0.9);
+  transition: width 0.4s ease, background 0.4s ease;
 }
 
-/* ===== RESULTADOS ===== */
-
+/* ===============================
+   RESULTADOS
+   =============================== */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -115,13 +89,12 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  color: #fff;
-  box-shadow: 0 0 18px rgba(0,0,0,0.25);
+  box-shadow: 0 0 18px rgba(255,255,255,0.25);
 }
 
-.circle.low { background: #e74c3c; }
-.circle.mid { background: #f1c40f; color: #000; }
-.circle.high { background: #2ecc71; color: #000; }
+.circle.low  { background: #e74c3c; }
+.circle.mid  { background: #f1c40f; color: #1a1a1a; }
+.circle.high { background: #2ecc71; color: #0b1a12; }
 
 ul { list-style: none; padding: 0; }
 
@@ -130,3 +103,37 @@ ul { list-style: none; padding: 0; }
   opacity: 0.7;
   cursor: pointer;
 }
+
+/* =====================================================
+   FONDOS POR MÓDULO – PROFESIONALES / LUMINOSOS
+   ===================================================== */
+
+/* FAMILIA – cálido, contención */
+body.familia {
+  background: linear-gradient(180deg, #3b6f8f, #1f3b52);
+}
+
+/* SOCIAL – humano, apertura */
+body.social {
+  background: linear-gradient(180deg, #3a7f6b, #1f4f44);
+}
+
+/* AMISTAD – cercanía */
+body.amistad {
+  background: linear-gradient(180deg, #5a7fa3, #2b4663);
+}
+
+/* LABORAL – foco, sobriedad */
+body.laboral {
+  background: linear-gradient(180deg, #3b4f77, #1c2945);
+}
+
+/* PLANETA – natural, vivo */
+body.planeta {
+  background: linear-gradient(180deg, #3f7a55, #1e3f2c);
+}
+
+/* CONCIENCIA – profundidad */
+body.conciencia {
+  background: linear-gradient(180deg, #4b3f78, #241a44);
+  }
