@@ -109,57 +109,58 @@ function showResults() {
   document.getElementById("coherenceResult").innerText =
     "Coherencia humana: " + coherence + "%";
 
-  renderTips(global, areas);
+  renderTips(areas);
 }
 
-function renderTips(global, areas) {
+function renderTips(areas) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  // CASO TODO 100%
-  if (areas.every(a => a.value === 100)) {
+  const pendientes = areas.filter(a => a.value < 100);
+
+  if (pendientes.length === 0) {
     tips.innerHTML =
-      "<li>Estás en un proceso humano íntegro y coherente. No hay áreas críticas que revisar en este momento.</li>";
+      "<li>Estás en un momento de coherencia humana alta. No hay áreas críticas que atender ahora.</li>";
     return;
   }
 
-  areas
-    .filter(a => a.value < 100)
-    .forEach(a => {
-      const li = document.createElement("li");
+  pendientes.forEach(a => {
+    const li = document.createElement("li");
 
-      if (a.name === "Familia") {
+    switch (a.name) {
+      case "Familia":
         li.innerHTML =
-          "En <strong>Familia</strong>, tus respuestas sugieren que podrías fortalecer la presencia emocional y la escucha consciente en los vínculos más cercanos.";
-      }
+          "En <strong>Familia</strong>, tus respuestas indican que podrías fortalecer la disponibilidad emocional y la calidad del tiempo compartido, más allá de las rutinas.";
+        break;
 
-      if (a.name === "Social") {
+      case "Social":
         li.innerHTML =
-          "En el plano <strong>Social</strong>, aparece una oportunidad para revisar cómo te vinculás con la diferencia y la empatía cotidiana.";
-      }
+          "En el área <strong>Social</strong>, aparece la oportunidad de revisar cómo te vinculás con personas diferentes a vos y qué tan abierto estás al diálogo.";
+        break;
 
-      if (a.name === "Amistad") {
+      case "Amistad":
         li.innerHTML =
-          "En <strong>Amistad</strong>, se abre un espacio para profundizar la lealtad emocional y la disponibilidad genuina hacia el otro.";
-      }
+          "En <strong>Amistad</strong>, se observa un margen para profundizar la escucha genuina y la presencia cuando el otro necesita ser acompañado.";
+        break;
 
-      if (a.name === "Laboral") {
+      case "Laboral":
         li.innerHTML =
-          "En el ámbito <strong>Laboral</strong>, tus respuestas invitan a observar la coherencia entre valores, acciones y decisiones cuando nadie observa.";
-      }
+          "En el plano <strong>Laboral</strong>, tus respuestas sugieren revisar la coherencia entre valores personales y decisiones cotidianas dentro del trabajo.";
+        break;
 
-      if (a.name === "Planeta") {
+      case "Planeta":
         li.innerHTML =
-          "En relación al <strong>Planeta</strong>, podrías reforzar la conciencia sobre el impacto cotidiano de tus hábitos en el entorno y los seres vivos.";
-      }
+          "En relación al <strong>Planeta</strong>, hay espacio para tomar mayor conciencia del impacto de tus hábitos diarios sobre el entorno y los seres vivos.";
+        break;
 
-      if (a.name === "Conciencia Profunda") {
+      case "Conciencia Profunda":
         li.innerHTML =
-          "En <strong>Conciencia Profunda</strong>, se refleja un llamado a alinear pensamiento, emoción y acción desde un lugar más consciente.";
-      }
+          "En <strong>Conciencia Profunda</strong>, se refleja la necesidad de alinear intención, pensamiento y acción desde un lugar más consciente.";
+        break;
+    }
 
-      tips.appendChild(li);
-    });
+    tips.appendChild(li);
+  });
 }
 
 function updateThermometer() {
