@@ -4,9 +4,6 @@ let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
-// ===============================
-// MÓDULOS
-// ===============================
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
@@ -36,16 +33,13 @@ const BASE_MODULES = [
 ];
 
 const PREMIUM_MODULES = [
-  { name: "Conciencia", questions: [
+  { name: "Conciencia Profunda", questions: [
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
-// ===============================
-// INICIO
-// ===============================
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
@@ -53,7 +47,6 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
 
@@ -62,20 +55,13 @@ function startTest(isPremium) {
   updateThermometer();
 }
 
-// ===============================
-// MOSTRAR PREGUNTA
-// ===============================
 function showQuestion() {
   const mod = modules[currentModule];
-  document.body.className = mod.name.toLowerCase();
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText =
     mod.questions[currentQuestion];
 }
 
-// ===============================
-// RESPUESTA
-// ===============================
 function answer(value) {
   const mod = modules[currentModule];
   scores[mod.name] += value;
@@ -94,13 +80,8 @@ function answer(value) {
   }
 }
 
-// ===============================
-// RESULTADOS
-// ===============================
 function showResults() {
   showSection("results");
-  document.body.className = "";
-
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
@@ -115,12 +96,11 @@ function showResults() {
     const div = document.createElement("div");
     div.className = "circle " +
       (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
 
     if (percent < 100) {
-      details.push({ area: m.name, percent });
+      details.push({ area: m.name, value: percent });
     }
   });
 
@@ -128,69 +108,49 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  const values = details.map(d => d.percent);
-  const coherence =
-    details.length === 0
-      ? 100
-      : 100 - (Math.max(...values) - Math.min(...values));
-
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
-
   renderTips(global, details);
 }
 
-// ===============================
-// DEVOLUCIONES (NO REPETIDAS)
-// ===============================
 function renderTips(global, details) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
   if (details.length === 0) {
     tips.innerHTML =
-      "<li>Estás transitando un proceso humano coherente y consciente. Seguí habitando tus decisiones desde este nivel de presencia.</li>";
+      "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
     return;
   }
 
   details.forEach(d => {
-    let text = "";
-
-    switch (d.area) {
-      case "Familia":
-        text = "En el ámbito familiar, aparece la oportunidad de fortalecer la presencia emocional y la escucha genuina en los vínculos más cercanos.";
-        break;
-      case "Social":
-        text = "En lo social, tus respuestas sugieren revisar cómo te posicionás frente al respeto, la empatía y la diversidad en los intercambios.";
-        break;
-      case "Amistad":
-        text = "En la amistad, podría ser valioso observar cuánta disponibilidad real ofrecés y cómo acompañás a quienes te rodean.";
-        break;
-      case "Laboral":
-        text = "En el plano laboral, se abre un espacio para reflexionar sobre coherencia, ética y trato humano en las responsabilidades diarias.";
-        break;
-      case "Planeta":
-        text = "En relación al planeta, tus respuestas invitan a profundizar la conexión entre tus acciones cotidianas y el cuidado de lo vivo.";
-        break;
-      case "Conciencia":
-        text = "En la conciencia personal, surge la oportunidad de alinear con mayor profundidad pensamiento, emoción y acción.";
-        break;
-    }
-
     const li = document.createElement("li");
-    li.innerHTML = text;
+    li.innerHTML =
+      `En <strong>${d.area}</strong>, tus respuestas muestran un margen de crecimiento.
+       Observar este espacio con más presencia puede ayudarte a alinear acciones y valores.`;
     tips.appendChild(li);
   });
 }
 
-// ===============================
-// TERMÓMETRO
-// ===============================
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
   const answered =
     modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) +
     currentQuestion;
 
-  const progress = Math.round((answered / totalQ) * 100);
-  document.get
+  document.getElementById("thermoFill").style.width =
+    Math.round((answered / totalQ) * 100) + "%";
+}
+
+function restart() {
+  showSection("start");
+}
+
+function showPrivacy() {
+  showSection("privacy");
+}
+
+function showSection(id) {
+  ["start", "test", "results", "privacy"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
+  document.getElementById(id).classList.remove("hidden");
+}
