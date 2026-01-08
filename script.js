@@ -134,3 +134,21 @@ function showSection(id) {
   ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
+// SPLASH SCREEN
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  const app = document.getElementById("app");
+
+  if (splash) {
+    setTimeout(() => {
+      splash.style.opacity = "0";
+      splash.style.pointerEvents = "none";
+
+      setTimeout(() => {
+        splash.style.display = "none";
+        app.style.display = "block";
+      }, 500);
+    }, 1200);
+  }
+});
+
