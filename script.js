@@ -4,62 +4,49 @@ let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
-// ===============================
-// MÓDULOS BASE (COMÚN)
-// ===============================
 const BASE_MODULES = [
-  { name: "Familia", questions: [
+  { name: "Familia", key: "familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
     "¿Escuchás sin juzgar?",
     "¿Expresás afecto sin que te lo pidan?"
   ]},
-  { name: "Social", questions: [
+  { name: "Social", key: "social", questions: [
     "¿Tratás a las personas con respeto?",
     "¿Escuchás opiniones distintas a la tuya?",
     "¿Actuás con empatía en espacios públicos?"
   ]},
-  { name: "Amistad", questions: [
+  { name: "Amistad", key: "amistad", questions: [
     "¿Estás presente para tus amistades?",
     "¿Sos leal incluso cuando no estás de acuerdo?",
     "¿Escuchás sin imponer tu visión?"
   ]},
-  { name: "Laboral", questions: [
+  { name: "Laboral", key: "laboral", questions: [
     "¿Actuás con ética en tu trabajo?",
     "¿Respetás a tus compañeros?",
     "¿Sos justo cuando nadie te observa?"
   ]},
-  { name: "Planeta", questions: [
+  { name: "Planeta", key: "planeta", questions: [
     "¿Respetás a los animales como seres vivos?",
     "¿Cuidás el entorno donde vivís?",
     "¿Reducís tu impacto ambiental cuando podés?"
   ]}
 ];
 
-// ===============================
-// MÓDULOS PREMIUM
-// ===============================
 const PREMIUM_MODULES = [
-  { name: "Conciencia", questions: [
+  { name: "Conciencia Profunda", key: "conciencia", questions: [
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
-// ===============================
-// INICIO DEL TEST
-// ===============================
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
-
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if (mode === "premium") {
-    modules = modules.concat(JSON.parse(JSON.stringify(PREMIUM_MODULES)));
-  }
+  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
 
@@ -68,21 +55,17 @@ function startTest(isPremium) {
   updateThermometer();
 }
 
-// ===============================
-// MOSTRAR PREGUNTA
-// ===============================
 function showQuestion() {
   const mod = modules[currentModule];
-  document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
 
-  updateBackground(mod.name);
+  // 🔹 CAMBIO DE FONDO POR MÓDULO (NUEVO – SOLO ESTO)
+  document.body.className = "";
+  document.body.classList.add(mod.key);
+
+  document.getElementById("areaTitle").innerText = mod.name;
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
-// ===============================
-// RESPUESTA
-// ===============================
 function answer(value) {
   const mod = modules[currentModule];
   scores[mod.name] += value;
@@ -101,11 +84,9 @@ function answer(value) {
   }
 }
 
-// ===============================
-// RESULTADOS
-// ===============================
 function showResults() {
   showSection("results");
+  document.body.className = ""; // vuelve a fondo base
 
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
@@ -120,9 +101,7 @@ function showResults() {
     total += percent;
 
     const div = document.createElement("div");
-    div.className =
-      "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-
+    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
   });
@@ -131,18 +110,13 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  const coherence =
-    100 - (Math.max(...percents) - Math.min(...percents));
-
+  const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
   document.getElementById("coherenceResult").innerText =
     "Coherencia humana: " + coherence + "%";
 
   renderTips(global, percents);
 }
 
-// ===============================
-// CONSEJOS (NO REPETITIVOS)
-// ===============================
 function renderTips(global, percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
@@ -152,52 +126,34 @@ function renderTips(global, percents) {
     return;
   }
 
-  const weakest =
-    modules[percents.indexOf(Math.min(...percents))].name;
-
+  const weakest = modules[percents.indexOf(Math.min(...percents))].name;
   tips.innerHTML =
     `<li>Tu mayor desafío actual está en el área <strong>${weakest}</strong>. 
-    Observá ese espacio con más conciencia y presencia.</li>`;
+     Observá ese espacio con más conciencia y presencia.</li>`;
 }
 
-// ===============================
-// TERMÓMETRO
-// ===============================
 function updateThermometer() {
-  const totalQ =
-    modules.reduce((s, m) => s + m.questions.length, 0);
-
+  const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
   const answered =
-    modules.slice(0, currentModule)
-      .reduce((s, m) => s + m.questions.length, 0)
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
     + currentQuestion;
 
-  const progress = Math.round((answered / totalQ) * 100);
+  const progress = Math.round((answered/totalQ)*100);
   document.getElementById("thermoFill").style.width = progress + "%";
 }
 
-// ===============================
-// FONDOS POR BLOQUE (SOLO VISUAL)
-// ===============================
-function updateBackground(moduleName) {
-  document.body.className = "";
-  document.body.classList.add(moduleName.toLowerCase());
-}
-
-// ===============================
-// NAVEGACIÓN
-// ===============================
 function restart() {
+  document.body.className = "";
   showSection("start");
 }
 
 function showPrivacy() {
+  document.body.className = "";
   showSection("privacy");
 }
 
 function showSection(id) {
-  ["start", "test", "results", "privacy"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
+  ["start","test","results","privacy"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-}
+    }
