@@ -5,13 +5,10 @@
   <title>Humanómetro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -26,14 +23,7 @@
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-    <!-- ACLARACIÓN PREMIUM -->
-    <p style="margin-top:18px; font-size:0.85em; opacity:0.85; line-height:1.5;">
-      <strong>¿Por qué Premium?</strong><br>
-      La versión Premium amplía la lectura humana integrando coherencia interna,
-      vínculos, impacto personal y foco evolutivo.
-      No suma preguntas al azar: profundiza el sentido de tus respuestas
-      y ofrece una lectura más consciente de tu proceso humano.
-    </p>
+    <button class="soft" onclick="openWeekly()">Chequeo semanal</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -47,11 +37,6 @@
     </div>
 
     <p id="questionText"></p>
-
-    <!-- ACLARACIÓN GENERAL -->
-    <p style="font-size:0.75em; opacity:0.7; margin-top:6px;">
-      Respondé según cómo actuás la mayor parte del tiempo, no en casos aislados.
-    </p>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
@@ -72,13 +57,19 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <!-- NOTA PREMIUM FINAL -->
-    <p id="premiumNote" class="hidden" style="margin-top:20px; font-size:0.85em; opacity:0.85;">
-      Esta lectura forma parte de la versión <strong>Premium</strong>,
-      que integra áreas vitales y coherencia humana con mayor profundidad reflexiva.
+    <p id="premiumNote" class="hidden">
+      Esta lectura ampliada forma parte de la versión <strong>Premium</strong>.
     </p>
 
+    <button onclick="saveWeekly()">Guardar chequeo semanal</button>
     <button onclick="restart()">Reiniciar</button>
+  </section>
+
+  <!-- CHEQUEO SEMANAL -->
+  <section id="weekly" class="hidden">
+    <h2>Chequeo semanal</h2>
+    <p id="weeklyResult"></p>
+    <button onclick="restart()">Volver</button>
   </section>
 
   <!-- PRIVACIDAD -->
@@ -86,9 +77,8 @@
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente en el dispositivo.<br>
-      No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva y simbólica.
+      Todo el procesamiento ocurre localmente.<br>
+      Es una herramienta reflexiva.
     </p>
     <button onclick="restart()">Volver</button>
   </section>
