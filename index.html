@@ -12,8 +12,7 @@
   <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
-  <!-- CSS con cache-busting -->
-  <link rel="stylesheet" href="style.css?v=FINAL">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -25,59 +24,4 @@
     <p>No es un espejo. Es tu humanidad reflejada.</p>
 
     <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-  </section>
-
-  <!-- TEST -->
-  <section id="test" class="hidden">
-    <h2 id="areaTitle"></h2>
-
-    <!-- TERMÓMETRO -->
-    <div id="thermometer">
-      <div id="thermoFill"></div>
-    </div>
-
-    <p id="questionText"></p>
-
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
-
-  <!-- RESULTADOS -->
-  <section id="results" class="hidden">
-    <h2>Resultado Humanómetro</h2>
-
-    <div id="circles"></div>
-
-    <h3 id="globalResult"></h3>
-    <p id="coherenceResult"></p>
-
-    <h3>Lectura humana</h3>
-    <ul id="tips"></ul>
-
-    <button onclick="restart()">Reiniciar</button>
-  </section>
-
-  <!-- PRIVACIDAD -->
-  <section id="privacy" class="hidden">
-    <h2>Privacidad y uso</h2>
-    <p>
-      Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente.<br>
-      No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva.
-    </p>
-    <button onclick="restart()">Volver</button>
-  </section>
-
-</main>
-
-<!-- JS con cache-busting -->
-<script src="script.js?v=FINAL"></script>
-</body>
-</html>
+    <button class="premium
