@@ -1,14 +1,11 @@
 * { box-sizing: border-box; }
 
-/* ===============================
-   BASE GENERAL
-   =============================== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top, #0f2027, #050b14);
-  color: #ffffff;
-  transition: background 0.8s ease;
+  color: white;
+  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
+  transition: background 0.6s ease;
 }
 
 #app {
@@ -24,8 +21,9 @@ h1 { font-size: 2.5em; }
 h2, h3 { margin-top: 20px; }
 
 /* ===============================
-   BOTONES (LED SUAVE)
+   BOTONES (INTOCABLES)
    =============================== */
+
 button {
   width: 90%;
   max-width: 340px;
@@ -36,34 +34,29 @@ button {
   font-size: 1em;
   cursor: pointer;
   background: #2ecc71;
-  color: #04140d;
-  box-shadow:
-    0 0 6px rgba(46,204,113,0.8),
-    0 0 14px rgba(46,204,113,0.6);
+  color: #000;
+  box-shadow: 0 0 14px rgba(46,204,113,0.7);
 }
 
 button.premium {
-  background: linear-gradient(45deg, #ffd86f, #ff9f1c);
-  box-shadow:
-    0 0 8px rgba(255,190,70,0.9),
-    0 0 20px rgba(255,160,0,0.7);
+  background: linear-gradient(45deg, gold, orange);
+  box-shadow: 0 0 18px rgba(255,180,0,0.85);
 }
 
 .answers button {
-  background: #3da9fc;
-  color: #ffffff;
-  box-shadow:
-    0 0 8px rgba(61,169,252,0.9),
-    0 0 20px rgba(61,169,252,0.6);
+  background: #3498db;
+  color: white;
+  box-shadow: 0 0 14px rgba(52,152,219,0.85);
 }
 
 /* ===============================
-   TERMÓMETRO (LED FLUO)
+   TERMÓMETRO (INTOCABLE)
    =============================== */
+
 #thermometer {
   width: 100%;
   height: 14px;
-  background: #0a101a;
+  background: #111;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
@@ -72,21 +65,15 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #ff4d4d,
-    #f6ff6b,
-    #00ffb3
-  );
-  box-shadow:
-    0 0 10px rgba(0,255,180,0.9),
-    0 0 25px rgba(0,255,180,0.8);
-  transition: width 0.4s ease, background 0.4s ease;
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
+  box-shadow: 0 0 18px rgba(46,204,113,1);
+  transition: width 0.4s ease;
 }
 
 /* ===============================
    RESULTADOS
    =============================== */
+
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -102,33 +89,12 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow:
-    0 0 12px rgba(255,255,255,0.25),
-    0 0 25px rgba(255,255,255,0.15);
+  box-shadow: 0 0 22px rgba(255,255,255,0.3);
 }
 
-.circle.low {
-  background: radial-gradient(circle, #ff4d4d, #8b0000);
-  box-shadow:
-    0 0 12px rgba(255,77,77,0.9),
-    0 0 28px rgba(255,77,77,0.6);
-}
-
-.circle.mid {
-  background: radial-gradient(circle, #f6ff6b, #9fa600);
-  color: #111;
-  box-shadow:
-    0 0 12px rgba(246,255,107,0.9),
-    0 0 28px rgba(246,255,107,0.6);
-}
-
-.circle.high {
-  background: radial-gradient(circle, #00ffb3, #007a5a);
-  color: #021a14;
-  box-shadow:
-    0 0 14px rgba(0,255,179,0.9),
-    0 0 30px rgba(0,255,179,0.6);
-}
+.circle.low { background: #e74c3c; }
+.circle.mid { background: #f1c40f; color: #000; }
+.circle.high { background: #2ecc71; color: #000; }
 
 ul { list-style: none; padding: 0; }
 
@@ -138,42 +104,30 @@ ul { list-style: none; padding: 0; }
   cursor: pointer;
 }
 
-/* =====================================================
-   FONDOS POR BLOQUE – MISMO COLOR + LED
-   ===================================================== */
+/* ===============================
+   FONDOS LED POR BLOQUE (RECUPERADOS)
+   =============================== */
 
 body.familia {
-  background:
-    radial-gradient(circle at top left, rgba(0,255,213,0.35), transparent 60%),
-    linear-gradient(180deg, #0a3d3f, #030b10);
+  background: radial-gradient(circle at top, #7fd6ff, #102a43);
 }
 
 body.social {
-  background:
-    radial-gradient(circle at top right, rgba(58,255,143,0.35), transparent 60%),
-    linear-gradient(180deg, #1f4f3a, #030b10);
+  background: radial-gradient(circle at top, #6fffd0, #0b3d2e);
 }
 
 body.amistad {
-  background:
-    radial-gradient(circle at center, rgba(77,215,255,0.35), transparent 60%),
-    linear-gradient(180deg, #203a6f, #050b14);
+  background: radial-gradient(circle at top, #c09bff, #2e1a47);
 }
 
 body.laboral {
-  background:
-    radial-gradient(circle at top, rgba(111,124,255,0.35), transparent 60%),
-    linear-gradient(180deg, #2a2f6f, #060914);
+  background: radial-gradient(circle at top, #ffd36f, #5c4b00);
 }
 
 body.planeta {
-  background:
-    radial-gradient(circle at bottom, rgba(0,255,127,0.35), transparent 60%),
-    linear-gradient(180deg, #1f5f3f, #040d08);
+  background: radial-gradient(circle at top, #7dff9b, #0f3d24);
 }
 
 body.conciencia {
-  background:
-    radial-gradient(circle at center, rgba(182,108,255,0.35), transparent 60%),
-    linear-gradient(180deg, #3a1f5f, #0a0414);
-}
+  background: radial-gradient(circle at top, #ff9bd5, #3d0f28);
+                            }
