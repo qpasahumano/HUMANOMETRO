@@ -1,11 +1,14 @@
-
+/* ===============================
+   BASE GLOBAL (NO FUNCIONAL)
+   =============================== */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(180deg, #0b1220, #1b2b4a);
-  color: white;
+  color: #ffffff;
+  transition: background 0.8s ease;
 }
 
 #app {
@@ -20,6 +23,9 @@ body {
 h1 { font-size: 2.5em; }
 h2, h3 { margin-top: 20px; }
 
+/* ===============================
+   BOTONES (LUMINOSOS)
+   =============================== */
 button {
   width: 90%;
   max-width: 340px;
@@ -30,44 +36,60 @@ button {
   font-size: 1em;
   cursor: pointer;
   background: #2ecc71;
-  color: #000;
-  box-shadow: 0 0 12px rgba(46,204,113,0.6);
+  color: #001a0d;
+  box-shadow:
+    0 0 14px rgba(46,204,113,0.9),
+    0 0 28px rgba(46,204,113,0.6);
 }
 
 button.premium {
-  background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 15px rgba(255,180,0,0.7);
-}
-
-button.install {
-  background: #ffffff;
-  color: #000;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  background: linear-gradient(45deg, #ffd700, #ff9f1a);
+  color: #2b1a00;
+  box-shadow:
+    0 0 16px rgba(255,190,0,0.9),
+    0 0 32px rgba(255,160,0,0.7);
 }
 
 .answers button {
   background: #3498db;
-  color: white;
-  box-shadow: 0 0 12px rgba(52,152,219,0.7);
+  color: #ffffff;
+  box-shadow:
+    0 0 14px rgba(52,152,219,0.9),
+    0 0 30px rgba(52,152,219,0.6);
 }
 
+/* ===============================
+   TERMÓMETRO (FLUORESCENTE)
+   =============================== */
 #thermometer {
   width: 100%;
   height: 14px;
-  background: #111;
+  background: #0a0f1c;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 14px rgba(46,204,113,1);
-  transition: width 0.4s ease;
+  background: linear-gradient(
+    90deg,
+    #ff3b3b,
+    #ffd93d,
+    #3cff87
+  );
+  box-shadow:
+    0 0 12px rgba(60,255,135,1),
+    0 0 24px rgba(60,255,135,0.8),
+    0 0 36px rgba(60,255,135,0.6);
+  transition: width 0.4s ease, background 0.4s ease;
 }
 
+/* ===============================
+   RESULTADOS (CÍRCULOS)
+   =============================== */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -83,17 +105,81 @@ button.install {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+  color: #ffffff;
+  box-shadow:
+    0 0 18px rgba(255,255,255,0.35),
+    0 0 30px rgba(255,255,255,0.2);
 }
 
-.circle.low { background: #e74c3c; }
-.circle.mid { background: #f1c40f; color: #000; }
-.circle.high { background: #2ecc71; color: #000; }
+.circle.low {
+  background: #e74c3c;
+  box-shadow: 0 0 22px rgba(231,76,60,0.9);
+}
 
-ul { list-style: none; padding: 0; }
+.circle.mid {
+  background: #f1c40f;
+  color: #2a2200;
+  box-shadow: 0 0 22px rgba(241,196,15,0.9);
+}
 
+.circle.high {
+  background: #2ecc71;
+  color: #003314;
+  box-shadow: 0 0 22px rgba(46,204,113,1);
+}
+
+/* ===============================
+   TEXTO LEGAL
+   =============================== */
 .legal {
   font-size: 0.8em;
-  opacity: 0.7;
+  opacity: 0.75;
   cursor: pointer;
 }
+
+/* ===============================
+   FONDOS POR MÓDULO
+   (PASTELES LUMINOSOS + CONTRASTE)
+   =============================== */
+
+/* Familia */
+body.familia {
+  background:
+    radial-gradient(circle at top, rgba(180,240,255,0.35), transparent 60%),
+    linear-gradient(180deg, #1e5f78, #0f2f3d);
+}
+
+/* Social */
+body.social {
+  background:
+    radial-gradient(circle at top, rgba(180,255,220,0.35), transparent 60%),
+    linear-gradient(180deg, #1f6b4d, #0f3527);
+}
+
+/* Amistad */
+body.amistad {
+  background:
+    radial-gradient(circle at top, rgba(200,255,235,0.35), transparent 60%),
+    linear-gradient(180deg, #1f7a63, #0e3d30);
+}
+
+/* Laboral */
+body.laboral {
+  background:
+    radial-gradient(circle at top, rgba(190,210,255,0.35), transparent 60%),
+    linear-gradient(180deg, #2a3f6e, #131c33);
+}
+
+/* Planeta */
+body.planeta {
+  background:
+    radial-gradient(circle at top, rgba(180,255,190,0.35), transparent 60%),
+    linear-gradient(180deg, #256b3f, #0f2e1c);
+}
+
+/* Conciencia / Premium */
+body.conciencia {
+  background:
+    radial-gradient(circle at top, rgba(210,190,255,0.35), transparent 60%),
+    linear-gradient(180deg, #3a2a6e, #1a1033);
+  }
