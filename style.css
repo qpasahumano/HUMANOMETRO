@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  background: radial-gradient(circle at top, #1b2b4a, #0b1220);
   color: white;
 }
 
@@ -27,18 +27,18 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 14px rgba(46,204,113,0.7);
+  box-shadow: 0 0 16px rgba(46,204,113,0.9);
 }
 
 button.premium {
-  background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 16px rgba(255,180,0,0.8);
+  background: linear-gradient(45deg, #ffd700, #ff8c00);
+  box-shadow: 0 0 18px rgba(255,180,0,0.9);
 }
 
 .answers button {
   background: #3498db;
-  color: #fff;
-  box-shadow: 0 0 14px rgba(52,152,219,0.8);
+  color: white;
+  box-shadow: 0 0 16px rgba(52,152,219,0.9);
 }
 
 #thermometer {
@@ -54,7 +54,7 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 14px rgba(46,204,113,0.9);
+  box-shadow: 0 0 20px rgba(46,204,113,1);
   transition: width 0.4s ease;
 }
 
