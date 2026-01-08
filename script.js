@@ -171,3 +171,156 @@ function showSection(id) {
   );
   document.getElementById(id).classList.remove("hidden");
 }
+/* ======================================================
+   🔁 REVISIÓN SEMANAL PREMIUM (AISLADA)
+   No toca test, no toca devoluciones, no toca resultados
+====================================================== */
+
+/* ---- CONFIG ---- */
+const WEEKLY_KEY = "humanometro_last_weekly";
+const WEEKLY_INTERVAL = 7 * 24 * 60 * 60 * 1000;
+
+/* ---- PREGUNTAS SEMANALES ---- */
+const WEEKLY_QUESTIONS = [
+  "Esta semana, ¿estuviste más presente con las personas que te rodean?",
+  "¿Actuaste con coherencia entre lo que sentís y lo que hacés?",
+  "¿Tomaste decisiones considerando su impacto en otros?",
+  "¿Te escuchaste a vos mismo antes de reaccionar?",
+  "¿Hubo algún momento donde elegiste conscientemente ser más humano?"
+];
+
+/* ---- ESTADO ---- */
+let weeklyIndex = 0;
+let weeklyScore = 0;
+
+/* ---- BOTÓN PREMIUM (inyectado sin romper nada) ---- */
+function injectWeeklyButton() {
+  if (mode !== "premium") return;
+  if (document.getElementById("weeklyBtn")) return;
+
+  const btn = document.createElement("button");
+  btn.id = "weeklyBtn";
+  btn.innerText = "Revisión semanal (Premium)";
+  btn.style.marginTop = "20px";
+  btn.onclick = startWeeklyReview;
+
+  document.getElementById("results").appendChild(btn);
+}
+
+/* ---- VALIDAR SI CORRESPONDE ---- */
+function canDoWeekly() {
+  const last = localStorage.getItem(WEEKLY_KEY);
+  if (!last) return true;
+  return Date.now() - Number(last) >= WEEKLY_INTERVAL;
+}
+
+/* ---- INICIAR ---- */
+function startWeeklyReview() {
+  if (!canDoWeekly()) {
+    alert("La revisión semanal se habilita cada 7 días.");
+    return;
+  }
+
+  weeklyIndex = 0;
+  weeklyScore = 0;
+
+  showWeeklySection();
+  renderWeeklyQuestion();
+}
+
+/* ---- UI ---- */
+function showWeeklySection() {
+  hideAllSections();
+
+  let sec = document.getElementById("weekly");
+  if (!sec) {
+    sec = document.createElement("section");
+    sec.id = "weekly";
+    sec.innerHTML = `
+      <h2>Revisión semanal</h2>
+      <p id="weeklyQuestion"></p>
+      <div class="answers">
+        <button onclick="weeklyAnswer(2)">Sí</button>
+        <button onclick="weeklyAnswer(1)">A veces</button>
+        <button onclick="weeklyAnswer(0)">No</button>
+      </div>
+    `;
+    document.getElementById("app").appendChild(sec);
+  }
+
+  sec.classList.remove("hidden");
+}
+
+/* ---- RENDER ---- */
+function renderWeeklyQuestion() {
+  document.getElementById("weeklyQuestion").innerText =
+    WEEKLY_QUESTIONS[weeklyIndex];
+}
+
+/* ---- RESPUESTAS ---- */
+function weeklyAnswer(val) {
+  weeklyScore += val;
+  weeklyIndex++;
+
+  if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
+    finishWeekly();
+  } else {
+    renderWeeklyQuestion();
+  }
+}
+
+/* ---- RESULTADO ---- */
+function finishWeekly() {
+  localStorage.setItem(WEEKLY_KEY, Date.now());
+
+  const max = WEEKLY_QUESTIONS.length * 2;
+  const percent = Math.round((weeklyScore / max) * 100);
+
+  document.getElementById("weekly").innerHTML = `
+    <h2>Resultado semanal</h2>
+    <p>
+      Esta semana tu nivel de coherencia humana fue del
+      <strong>${percent}%</strong>.
+    </p>
+    <p>
+      No es un juicio. Es una observación de tendencia.
+      Usala como espejo, no como castigo.
+    </p>
+    <button onclick="restart()">Volver</button>
+  `;
+
+  scheduleWeeklyNotification();
+}
+
+/* ---- NOTIFICACIÓN (OPCIONAL, SEGURA) ---- */
+function scheduleWeeklyNotification() {
+  if (!("Notification" in window)) return;
+
+  if (Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+
+  if (Notification.permission === "granted") {
+    setTimeout(() => {
+      new Notification("Humanómetro", {
+        body: "¿Querés hacer tu revisión semanal de humanidad?",
+      });
+    }, WEEKLY_INTERVAL);
+  }
+}
+
+/* ---- UTIL ---- */
+function hideAllSections() {
+  ["start","test","results","privacy","weekly"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+  });
+}
+
+/* ---- GANCHO AUTOMÁTICO ---- */
+const _originalShowResults = showResults;
+showResults = function() {
+  _originalShowResults();
+  injectWeeklyButton();
+};
+
