@@ -3,9 +3,42 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #0b1220, #1b2b4a);
-  color: white;
+  color: #0b1220;
+  transition: background 0.6s ease;
 }
+
+/* ===== FONDOS POR BLOQUE ===== */
+
+body.start-bg {
+  background: linear-gradient(180deg, #1b2b4a, #0b1220);
+  color: #ffffff;
+}
+
+body.familia {
+  background: linear-gradient(180deg, #ffd6e0, #ffb3c6);
+}
+
+body.social {
+  background: linear-gradient(180deg, #d7f0ff, #a9dcff);
+}
+
+body.amistad {
+  background: linear-gradient(180deg, #d8f5e1, #a6e7c0);
+}
+
+body.laboral {
+  background: linear-gradient(180deg, #e2ddff, #b8b0ff);
+}
+
+body.planeta {
+  background: linear-gradient(180deg, #d9f7d9, #aee6ae);
+}
+
+body.conciencia {
+  background: linear-gradient(180deg, #ffecc7, #ffd27f);
+}
+
+/* ===== APP ===== */
 
 #app {
   max-width: 520px;
@@ -15,6 +48,11 @@ body {
 }
 
 .hidden { display: none; }
+
+h1 { font-size: 2.5em; }
+h2, h3 { margin-top: 20px; }
+
+/* ===== BOTONES ===== */
 
 button {
   width: 90%;
@@ -27,19 +65,21 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 12px rgba(46,204,113,0.6);
+  box-shadow: 0 0 14px rgba(46,204,113,0.7);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 15px rgba(255,180,0,0.7);
+  box-shadow: 0 0 18px rgba(255,180,0,0.8);
 }
 
 .answers button {
   background: #3498db;
-  color: white;
-  box-shadow: 0 0 12px rgba(52,152,219,0.7);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(52,152,219,0.8);
 }
+
+/* ===== TERMÓMETRO ===== */
 
 #thermometer {
   width: 100%;
@@ -54,9 +94,11 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 14px rgba(46,204,113,0.9);
+  box-shadow: 0 0 16px rgba(46,204,113,1);
   transition: width 0.4s ease;
 }
+
+/* ===== RESULTADOS ===== */
 
 #circles {
   display: flex;
@@ -73,15 +115,18 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(0,0,0,0.25);
 }
 
 .circle.low { background: #e74c3c; }
 .circle.mid { background: #f1c40f; color: #000; }
 .circle.high { background: #2ecc71; color: #000; }
 
+ul { list-style: none; padding: 0; }
+
 .legal {
   font-size: 0.8em;
   opacity: 0.7;
   cursor: pointer;
-  }
+}
