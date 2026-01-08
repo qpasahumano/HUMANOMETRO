@@ -12,16 +12,13 @@
   <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=9">
 
+  <!-- Service Worker -->
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-          regs.forEach(r => r.unregister());
-        }).then(() => {
-          navigator.serviceWorker.register("./service-worker.js");
-        });
+        navigator.serviceWorker.register("service-worker.js?v=9");
       });
     }
   </script>
@@ -30,7 +27,6 @@
 <body>
 <main id="app">
 
-  <!-- INICIO -->
   <section id="start">
     <h1>HUMANÓMETRO</h1>
     <p>No es un espejo. Es tu humanidad reflejada.</p>
@@ -41,7 +37,6 @@
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
-  <!-- TEST -->
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
@@ -58,7 +53,6 @@
     </div>
   </section>
 
-  <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
@@ -73,12 +67,11 @@
     <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- PRIVACIDAD -->
   <section id="privacy" class="hidden">
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente.<br>
+      Todo ocurre localmente en tu dispositivo.<br>
       No es diagnóstico médico ni psicológico.<br>
       Es una herramienta reflexiva.
     </p>
@@ -87,6 +80,6 @@
 
 </main>
 
-<script src="script.js"></script>
+<script src="script.js?v=9"></script>
 </body>
 </html>
