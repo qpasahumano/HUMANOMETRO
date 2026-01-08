@@ -58,7 +58,8 @@ function startTest(isPremium) {
 function showQuestion() {
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
+  document.getElementById("questionText").innerText =
+    mod.questions[currentQuestion];
 }
 
 function answer(value) {
@@ -80,53 +81,87 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
+
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
-  let percents = [];
   let total = 0;
+  let percents = [];
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push({ name: m.name, value: percent });
+    percents.push(percent);
     total += percent;
 
     const div = document.createElement("div");
-    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.className =
+      "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
+  document.getElementById("globalResult").innerText =
+    "Humanidad global: " + global + "%";
 
-  const coherence = 100 - (Math.max(...percents.map(p=>p.value)) - Math.min(...percents.map(p=>p.value)));
-  document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
+  const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
+  document.getElementById("coherenceResult").innerText =
+    "Coherencia humana: " + coherence + "%";
 
-  renderTips(global, percents);
-
-  if (mode === "premium") {
-    document.getElementById("premiumNote").classList.remove("hidden");
-  }
+  renderTips(percents);
 }
 
-function renderTips(global, percents) {
+function renderTips(percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  if (global >= 99) {
-    tips.innerHTML = "<li>Estás en un muy buen camino. Tu humanidad se expresa de forma consciente y coherente.</li>";
+  if (percents.every(p => p === 100)) {
+    tips.innerHTML = "<li>Sigue por el buen camino.</li>";
     return;
   }
 
-  const lowAreas = percents.filter(p => p.value < 100);
-
-  lowAreas.forEach(a => {
-    const li = document.createElement("li");
-    li.innerHTML = `En el área <strong>${a.name}</strong>, podrías profundizar tu presencia y coherencia. Lo que respondés indica un espacio fértil para crecer con más conciencia.`;
-    tips.appendChild(li);
+  percents.forEach((p, i) => {
+    if (p < 100) {
+      const li = document.createElement("li");
+      li.innerHTML =
+        `Área <strong>${modules[i].name}</strong>: hay espacio para mayor presencia y coherencia.`;
+      tips.appendChild(li);
+    }
   });
 }
 
-function updateThermometer
+function updateThermometer() {
+  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+  const answered =
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
+    + currentQuestion;
+
+  const progress = Math.round((answered / totalQ) * 100);
+  document.getElementById("thermoFill").style.width = progress + "%";
+}
+
+function showSection(id) {
+  ["start","test","results","privacy"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
+
+/* ===============================
+   EVENTOS (CLAVE PARA QUE ANDEN LOS BOTONES)
+   =============================== */
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("btnCommon").onclick = () => startTest(false);
+  document.getElementById("btnPremium").onclick = () => startTest(true);
+  document.getElementById("btnPrivacy").onclick = showPrivacy;
+  document.getElementById("btnBack").onclick = restart;
+  document.getElementById("btnRestart").onclick = restart;
+
+  document.querySelectorAll(".answers button").forEach(btn => {
+    btn.onclick = () => answer(parseInt(btn.dataset.value));
+  });
+});
