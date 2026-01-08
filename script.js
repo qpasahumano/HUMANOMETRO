@@ -1,30 +1,30 @@
-console.log("SCRIPT NUEVO CARGADO - FECHA HOY");
+const CACHE_NAME = "humanometro-v4"; // 🔴 CAMBIAR VERSIÓN SIEMPRE
+const FILES_TO_CACHE = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json"
+];
 
-/* ===============================
-   ESTADO GENERAL
-=============================== */
-let mode = "common";
-let currentModule = 0;
-let currentQuestion = 0;
-let modules = [];
-let scores = {};
+self.addEventListener("install", (e) => {
+  self.skipWaiting();
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
+  );
+});
 
-/* ===============================
-   MÓDULOS BASE
-=============================== */
-const BASE_MODULES = [
-  { name: "Familia", questions: [
-    "¿Estás emocionalmente presente con tu familia?",
-    "¿Escuchás sin juzgar?",
-    "¿Expresás afecto sin que te lo pidan?"
-  ]},
-  { name: "Social", questions: [
-    "¿Tratás a las personas con respeto?",
-    "¿Escuchás opiniones distintas a la tuya?",
-    "¿Actuás con empatía en espacios públicos?"
-  ]},
-  { name: "Amistad", questions: [
-    "¿Estás presente para tus amistades?",
-    "¿Sos leal incluso cuando no estás de acuerdo?",
-    "¿Escuchás sin imponer tu visión?"
-  ]},
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => k !== CACHE_NAME && caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
+});
