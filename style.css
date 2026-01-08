@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: #0b1220;
+  background: linear-gradient(180deg, #0b1220, #1b2b4a);
   color: white;
 }
 
@@ -38,7 +38,6 @@ button.premium {
 .answers button {
   background: #3498db;
   color: #fff;
-  box-shadow: 0 0 14px rgba(52,152,219,.9);
 }
 
 #thermometer {
@@ -79,12 +78,10 @@ button.premium {
 .circle.mid { background:#f1c40f; color:#000; }
 .circle.high { background:#2ecc71; color:#000; }
 
-#premiumBlock {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  box-shadow: 0 0 18px rgba(255,215,0,0.35);
+.premium-info {
+  font-size: .85em;
+  opacity: .85;
+  margin-top: 15px;
 }
 
 .legal {
