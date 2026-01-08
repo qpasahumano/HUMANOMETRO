@@ -40,6 +40,15 @@ const PREMIUM_MODULES = [
   ]}
 ];
 
+const THEMES = {
+  "Familia": "linear-gradient(180deg,#1f3c5b,#2e6fa3)",
+  "Social": "linear-gradient(180deg,#1e4f3b,#2ecc71)",
+  "Amistad": "linear-gradient(180deg,#3b2c5a,#8e44ad)",
+  "Laboral": "linear-gradient(180deg,#2c3e50,#4f6d8a)",
+  "Planeta": "linear-gradient(180deg,#1f4d30,#27ae60)",
+  "Conciencia Profunda": "linear-gradient(180deg,#2e2359,#5b4b8a)"
+};
+
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
@@ -60,103 +69,3 @@ function showQuestion() {
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText = mod.questions[currentQuestion];
   applyTheme(mod.name);
-}
-
-function answer(value) {
-  const mod = modules[currentModule];
-  scores[mod.name] += value;
-  currentQuestion++;
-
-  if (currentQuestion >= mod.questions.length) {
-    currentQuestion = 0;
-    currentModule++;
-  }
-
-  if (currentModule >= modules.length) showResults();
-  else {
-    showQuestion();
-    updateThermometer();
-  }
-}
-
-function showResults() {
-  showSection("results");
-  document.getElementById("app").className = "";
-
-  const circles = document.getElementById("circles");
-  circles.innerHTML = "";
-
-  let total = 0;
-  let percents = [];
-
-  modules.forEach(m => {
-    const max = m.questions.length * 2;
-    const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push(percent);
-    total += percent;
-
-    const div = document.createElement("div");
-    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
-    div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
-    circles.appendChild(div);
-  });
-
-  const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
-
-  const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
-
-  renderTips(global, percents);
-}
-
-function renderTips(global, percents) {
-  const tips = document.getElementById("tips");
-  tips.innerHTML = "";
-
-  if (global >= 90) {
-    tips.innerHTML = "<li>Sigue por este camino.</li>";
-    return;
-  }
-
-  const weakest = modules[percents.indexOf(Math.min(...percents))].name;
-  tips.innerHTML =
-    `<li>Tu mayor desafío actual está en <strong>${weakest}</strong>. Poné más conciencia en ese aspecto.</li>`;
-}
-
-function updateThermometer() {
-  const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered =
-    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
-    + currentQuestion;
-
-  const progress = Math.round((answered / totalQ) * 100);
-  document.getElementById("thermoFill").style.width = progress + "%";
-}
-
-function applyTheme(name) {
-  const app = document.getElementById("app");
-  app.className = "";
-
-  const map = {
-    "Familia": "familia",
-    "Social": "social",
-    "Amistad": "amistad",
-    "Laboral": "laboral",
-    "Planeta": "planeta",
-    "Conciencia Profunda": "conciencia"
-  };
-
-  if (map[name]) app.classList.add(map[name]);
-}
-
-function restart() { showSection("start"); }
-function showPrivacy() { showSection("privacy"); }
-
-function showSection(id) {
-  ["start","test","results","privacy"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
-  document.getElementById(id).classList.remove("hidden");
-}
