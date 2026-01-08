@@ -1,11 +1,9 @@
-// ===== ESTADO GLOBAL =====
 let mode = "common";
 let currentModule = 0;
 let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
-// ===== MÓDULOS =====
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
@@ -35,14 +33,13 @@ const BASE_MODULES = [
 ];
 
 const PREMIUM_MODULES = [
-  { name: "Conciencia Profunda", questions: [
+  { name: "Conciencia", questions: [
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
-// ===== INICIO =====
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
@@ -50,7 +47,6 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
 
@@ -59,12 +55,10 @@ function startTest(isPremium) {
   updateThermometer();
 }
 
-// ===== PREGUNTAS =====
 function showQuestion() {
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
 function answer(value) {
@@ -85,7 +79,6 @@ function answer(value) {
   }
 }
 
-// ===== RESULTADOS =====
 function showResults() {
   showSection("results");
 
@@ -101,13 +94,12 @@ function showResults() {
     total += percent;
 
     const div = document.createElement("div");
-    div.className =
-      "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
 
     if (percent < 100) {
-      details.push({ area: m.name, value: percent });
+      details.push({ area: m.name, percent });
     }
   });
 
@@ -115,57 +107,49 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  renderTips(details);
+  const coherence =
+    100 - (Math.max(...details.map(d => d.percent), 0) -
+           Math.min(...details.map(d => d.percent), 100));
+
+  document.getElementById("coherenceResult").innerText =
+    "Coherencia humana: " + coherence + "%";
+
+  renderTips(global, details);
+
+  // 🔥 PREMIUM: LECTURA + BOTÓN SEMANAL (FIJO)
+  if (mode === "premium") {
+    document.getElementById("premiumNote").classList.remove("hidden");
+    document.getElementById("weeklyBtn").classList.remove("hidden");
+  }
 }
 
-// ===== DEVOLUCIONES (NO REPETIDAS) =====
-function renderTips(details) {
+function renderTips(global, details) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
   if (details.length === 0) {
     tips.innerHTML =
-      "<li>Estás en un proceso humano coherente y consciente. Seguí por este camino.</li>";
+      "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
     return;
   }
 
   details.forEach(d => {
-    let mensaje = "";
-
-    switch (d.area) {
-      case "Familia":
-        mensaje =
-          "En el ámbito familiar, tus respuestas sugieren que podrías fortalecer la presencia emocional y la escucha consciente.";
-        break;
-      case "Social":
-        mensaje =
-          "En lo social, aparece margen para revisar cómo interactuás con los demás y cómo impactan tus actitudes cotidianas.";
-        break;
-      case "Amistad":
-        mensaje =
-          "En las amistades, puede ser valioso observar tu disponibilidad y la calidad del vínculo que sostenés.";
-        break;
-      case "Laboral":
-        mensaje =
-          "En el plano laboral, tus respuestas invitan a revisar coherencia, ética y trato con el entorno de trabajo.";
-        break;
-      case "Planeta":
-        mensaje =
-          "En relación al planeta, surge la oportunidad de profundizar hábitos de cuidado y responsabilidad ambiental.";
-        break;
-      case "Conciencia Profunda":
-        mensaje =
-          "En conciencia profunda, aparece un espacio para alinear pensamiento, emoción y acción.";
-        break;
-    }
-
     const li = document.createElement("li");
-    li.innerHTML = mensaje;
+    li.innerHTML =
+      `En <strong>${d.area}</strong>, tus respuestas muestran un espacio de crecimiento posible si ponés más conciencia y presencia en ese ámbito.`;
     tips.appendChild(li);
   });
 }
 
-// ===== TERMÓMETRO =====
+// ✅ REVISIÓN SEMANAL (ACTIVA)
+function openWeeklyReview() {
+  alert(
+    "Revisión semanal:\n\n" +
+    "Esta función te permite observar tu evolución humana con el tiempo.\n" +
+    "En la versión Premium vas a poder comparar tendencias y coherencia."
+  );
+}
+
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
   const answered =
@@ -176,7 +160,6 @@ function updateThermometer() {
     Math.round((answered / totalQ) * 100) + "%";
 }
 
-// ===== NAVEGACIÓN =====
 function restart() {
   showSection("start");
 }
