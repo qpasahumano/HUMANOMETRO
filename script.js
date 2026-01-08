@@ -116,33 +116,50 @@ function renderTips(global, areas) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  // CASO HUMANIDAD MUY ALTA
-  if (global >= 99) {
+  // CASO TODO 100%
+  if (areas.every(a => a.value === 100)) {
     tips.innerHTML =
-      "<li>Tu lectura muestra una humanidad integrada y consciente. Estás transitando un proceso coherente entre lo que sentís, pensás y hacés.</li>";
+      "<li>Estás en un proceso humano íntegro y coherente. No hay áreas críticas que revisar en este momento.</li>";
     return;
   }
 
-  // ÁREAS A DESARROLLAR
-  const pendientes = areas.filter(a => a.value < 100);
+  areas
+    .filter(a => a.value < 100)
+    .forEach(a => {
+      const li = document.createElement("li");
 
-  pendientes.forEach(a => {
-    const li = document.createElement("li");
+      if (a.name === "Familia") {
+        li.innerHTML =
+          "En <strong>Familia</strong>, tus respuestas sugieren que podrías fortalecer la presencia emocional y la escucha consciente en los vínculos más cercanos.";
+      }
 
-    if (mode === "premium") {
-      li.innerHTML = `
-        En el área <strong>${a.name}</strong>, tus respuestas reflejan un espacio de evolución.
-        No se trata de carencia, sino de conciencia: observar este ámbito con mayor presencia
-        puede ayudarte a alinear intención, acción y coherencia interna.
-      `;
-    } else {
-      li.innerHTML = `
-        Podrías prestar más atención al área <strong>${a.name}</strong>.
-      `;
-    }
+      if (a.name === "Social") {
+        li.innerHTML =
+          "En el plano <strong>Social</strong>, aparece una oportunidad para revisar cómo te vinculás con la diferencia y la empatía cotidiana.";
+      }
 
-    tips.appendChild(li);
-  });
+      if (a.name === "Amistad") {
+        li.innerHTML =
+          "En <strong>Amistad</strong>, se abre un espacio para profundizar la lealtad emocional y la disponibilidad genuina hacia el otro.";
+      }
+
+      if (a.name === "Laboral") {
+        li.innerHTML =
+          "En el ámbito <strong>Laboral</strong>, tus respuestas invitan a observar la coherencia entre valores, acciones y decisiones cuando nadie observa.";
+      }
+
+      if (a.name === "Planeta") {
+        li.innerHTML =
+          "En relación al <strong>Planeta</strong>, podrías reforzar la conciencia sobre el impacto cotidiano de tus hábitos en el entorno y los seres vivos.";
+      }
+
+      if (a.name === "Conciencia Profunda") {
+        li.innerHTML =
+          "En <strong>Conciencia Profunda</strong>, se refleja un llamado a alinear pensamiento, emoción y acción desde un lugar más consciente.";
+      }
+
+      tips.appendChild(li);
+    });
 }
 
 function updateThermometer() {
@@ -151,8 +168,8 @@ function updateThermometer() {
     modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) +
     currentQuestion;
 
-  const progress = Math.round((answered / totalQ) * 100);
-  document.getElementById("thermoFill").style.width = progress + "%";
+  document.getElementById("thermoFill").style.width =
+    Math.round((answered / totalQ) * 100) + "%";
 }
 
 function restart() {
@@ -168,4 +185,4 @@ function showSection(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
+    }
