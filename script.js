@@ -99,51 +99,36 @@ function showResults() {
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + global + "%";
+  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
   const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
+  document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
 
   renderTips(global, percents);
 }
 
-/* ===============================
-   DEVOLUCIÓN INTELIGENTE (NUEVO)
-   =============================== */
 function renderTips(global, percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  // Caso 1: TODO bien
-  const allHigh = percents.every(p => p >= 90);
-  if (allHigh) {
-    tips.innerHTML = "<li><strong>Estás por buen camino. Sostené esta coherencia humana.</strong></li>";
+  const incompleteAreas = modules
+    .map((m, i) => ({ name: m.name, percent: percents[i] }))
+    .filter(a => a.percent < 99);
+
+  if (global >= 99 && incompleteAreas.length === 0) {
+    tips.innerHTML = "<li>Estás en el buen camino.</li>";
     return;
   }
 
-  // Caso 2: detectar áreas comprometidas (<70)
-  const weakAreas = modules
-    .filter((_, i) => percents[i] < 70)
-    .map(m => m.name);
-
-  if (weakAreas.length > 0) {
-    tips.innerHTML = `
-      <li>
-        En este momento tu humanidad requiere mayor atención en las áreas:
-        <strong>${weakAreas.join(", ")}</strong>.
-        Observá estos espacios con más presencia, coherencia y conciencia.
-      </li>`;
+  if (incompleteAreas.length > 0) {
+    const list = incompleteAreas.map(a => `<strong>${a.name}</strong>`).join(", ");
+    tips.innerHTML = `<li>Observá con más presencia y conciencia las siguientes áreas: ${list}.</li>`;
   }
 }
 
 function updateThermometer() {
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered =
-    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
-    + currentQuestion;
-
+  const answered = modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
   const progress = Math.round((answered/totalQ)*100);
   document.getElementById("thermoFill").style.width = progress+"%";
 }
@@ -152,8 +137,6 @@ function restart() { showSection("start"); }
 function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
-  ["start","test","results","privacy"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
+  ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
     }
