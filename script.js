@@ -140,4 +140,4 @@ function showPrivacy(){ showSection("privacy"); }
 function showSection(id){
   ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-    }
+}
