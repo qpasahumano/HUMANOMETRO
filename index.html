@@ -1,164 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>HUMANÓMETRO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Humanómetro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    /* ===============================
-       BASE VISUAL AISLADA
-       =============================== */
-    body {
-      margin: 0;
-      padding: 0;
-      background: #050607;
-      color: #eaeaea;
-      font-family: system-ui, sans-serif;
-    }
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
 
-    .hm-block {
-      margin: 24px auto;
-      padding: 20px;
-      max-width: 780px;
-      border-radius: 16px;
-    }
-
-    h2, h3 {
-      margin-top: 0;
-    }
-
-    /* ===============================
-       DEVOLUCIONES INTRAPERSONALES
-       =============================== */
-    .hm-intrapersonal .hm-area {
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    /* ===============================
-       PREMIUM INTEGRACIÓN HUMANA
-       =============================== */
-    .hm-premium-integracion {
-      border: 2px solid rgba(0,255,200,0.6);
-      background: radial-gradient(circle at top, #0e1a1a, #050909);
-    }
-
-    .hm-premium-integracion .hm-premium-cierre {
-      font-style: italic;
-      opacity: 0.85;
-    }
-
-    /* ===============================
-       CONTEXTO CONTROL SEMANAL
-       =============================== */
-    .hm-contexto-control {
-      background: linear-gradient(180deg, #0b0f14, #070a0d);
-      border-left: 4px solid rgba(0,255,200,0.5);
-    }
-
-    /* ===============================
-       CONTROL SEMANAL
-       =============================== */
-    .hm-control .hm-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 14px 0;
-    }
-
-    .hm-control button {
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: #0e2b28;
-      color: #eaeaea;
-      border: 1px solid rgba(0,255,200,0.4);
-      cursor: pointer;
-    }
-
-    .hm-control-content {
-      margin-top: 16px;
-      padding: 12px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-    }
-
-    /* ===============================
-       DECLARACIÓN DEL SISTEMA
-       =============================== */
-    .hm-declaracion {
-      text-align: center;
-      opacity: 0.75;
-      font-size: 0.9em;
-    }
-  </style>
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<main id="app">
 
-  <!-- ===============================
-       DEVOLUCIONES INTRAPERSONALES
-       (BLOQUE BASE – CONGELADO)
-       =============================== -->
-  <section id="hm-intrapersonal" class="hm-block hm-intrapersonal">
-    <h2>Devolución Intrapersonal</h2>
+  <!-- INICIO -->
+  <section id="start">
+    <h1>HUMANÓMETRO</h1>
+    <p>No es un espejo. Es tu humanidad reflejada.</p>
 
-    <div class="hm-area">
-      <h3>Familia</h3>
-      <p>Tu energía familiar no se define por cuánto estás, sino por cómo estás. Hay intención de acompañar, pero la coherencia aparece cuando la atención es plena y no compartida con otras preocupaciones internas.</p>
+    <button onclick="startTest(false)">Versión Común</button>
+    <button class="premium" onclick="startTest(true)">Versión Premium</button>
+
+    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+  </section>
+
+  <!-- TEST -->
+  <section id="test" class="hidden">
+    <h2 id="areaTitle"></h2>
+
+    <div id="thermometer">
+      <div id="thermoFill"></div>
     </div>
 
-    <div class="hm-area">
-      <h3>Social</h3>
-      <p>En lo social mostrás capacidad de adaptación, aunque a veces eso diluye tu expresión genuina. Cuando decís lo que realmente pensás, el entorno se ordena sin esfuerzo.</p>
-    </div>
+    <p id="questionText"></p>
 
-    <div class="hm-area">
-      <h3>Amistad</h3>
-      <p>Tus vínculos de amistad reflejan lealtad y entrega, pero no siempre reciprocidad. Aprender a equilibrar el dar y el recibir fortalece tus relaciones sin perder autenticidad.</p>
-    </div>
-
-    <div class="hm-area">
-      <h3>Laboral</h3>
-      <p>En el ámbito laboral hay empuje, pero también desgaste innecesario. Parte de tu energía se dispersa en tareas que no conectan con tu propósito interno.</p>
-    </div>
-
-    <div class="hm-area">
-      <h3>Planeta (planeta agua)</h3>
-      <p>Tu vínculo con el planeta agua se expresa más en hábitos cotidianos que en grandes gestos. La coherencia aparece cuando pequeñas acciones sostienen valores profundos.</p>
-    </div>
-
-    <div class="hm-area">
-      <h3>Conciencia</h3>
-      <p>Tu conciencia está activa, aunque de forma intermitente. Cuando sostenés la observación interna sin juicio, emergen comprensiones que no nacen del pensamiento, sino de la experiencia.</p>
+    <div class="answers">
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">A veces</button>
+      <button onclick="answer(0)">No</button>
     </div>
   </section>
 
-  <!-- ===============================
-       PREMIUM – INTEGRACIÓN HUMANA
-       =============================== -->
-  <section class="hm-block hm-premium-integracion">
-    <h2>Lectura Premium · Integración Humana</h2>
+  <!-- RESULTADOS -->
+  <section id="results" class="hidden">
+    <h2>Resultado Humanómetro</h2>
 
-    <p>Esta lectura no analiza áreas por separado. Integra tu resultado como un sistema vivo.</p>
-    <p>No busca errores ni carencias. Observa cómo interactúan tus vínculos, tus decisiones cotidianas, tu conciencia y tu impacto en el planeta agua.</p>
-    <p>Aquí no hay consejos aislados. Aparecen patrones, coherencias y tensiones internas que solo se revelan cuando se observa el conjunto.</p>
-    <p class="hm-premium-cierre">Esta lectura amplía perspectiva. No corrige conductas.</p>
+    <div id="circles"></div>
+
+    <h3 id="globalResult"></h3>
+    <p id="coherenceResult"></p>
+
+    <h3>Lectura humana</h3>
+    <ul id="tips"></ul>
+
+    <!-- BLOQUE PREMIUM (SOLO TEXTO · NO ROMPE NADA) -->
+    <div id="premiumBlock" class="hidden">
+      <h3>Lectura Premium · Integración Humana</h3>
+      <p>
+        Esta lectura integra tus resultados desde una mirada más profunda.
+        No señala fallas: amplía conciencia, coherencia y procesos internos.
+      </p>
+    </div>
+
+    <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- ===============================
-       CONTEXTO CONTROL SEMANAL
-       =============================== -->
-  <section class="hm-block hm-contexto-control">
-    <h3>¿Para qué sirve el Control Semanal?</h3>
-    <p>El control semanal no evalúa quién sos, sino cómo te expresaste en los últimos días.</p>
-    <p>No funciona como juicio ni como corrección. Funciona como un espejo de micro-decisiones, hábitos y reacciones cotidianas.</p>
-    <p>Pequeños ajustes sostenidos generan grandes movimientos internos.</p>
+  <!-- PRIVACIDAD -->
+  <section id="privacy" class="hidden">
+    <h2>Privacidad y uso</h2>
+    <p>
+      Humanómetro no recopila datos personales.<br>
+      Todo el procesamiento ocurre localmente.<br>
+      No es diagnóstico médico ni psicológico.<br>
+      Es una herramienta reflexiva.
+    </p>
+    <button onclick="restart()">Volver</button>
   </section>
 
-  <!-- ===============================
-       CONTROL SEMANAL
-       =============================== -->
-  <section id="hm-control-semanal" class="hm-block hm-control">
-    <
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
