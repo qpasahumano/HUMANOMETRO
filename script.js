@@ -57,6 +57,7 @@ function startTest(isPremium) {
 
 function showQuestion() {
   const mod = modules[currentModule];
+  document.body.className = mod.name.toLowerCase();
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
@@ -71,9 +72,8 @@ function answer(value) {
     currentModule++;
   }
 
-  if (currentModule >= modules.length) {
-    showResults();
-  } else {
+  if (currentModule >= modules.length) showResults();
+  else {
     showQuestion();
     updateThermometer();
   }
@@ -81,6 +81,7 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
+  document.body.className = "";
 
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
@@ -98,29 +99,13 @@ function showResults() {
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
 
-    if (percent < 100) {
-      details.push({ area: m.name, percent });
-    }
+    if (percent < 100) details.push({ area: m.name, percent });
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + global + "%";
-
-  const coherence =
-    100 - (Math.max(...details.map(d => d.percent), 0) -
-           Math.min(...details.map(d => d.percent), 100));
-
-  document.getElementById("coherenceResult").innerText =
-    "Coherencia humana: " + coherence + "%";
+  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
   renderTips(global, details);
-
-  // 🔥 PREMIUM: LECTURA + BOTÓN SEMANAL (FIJO)
-  if (mode === "premium") {
-    document.getElementById("premiumNote").classList.remove("hidden");
-    document.getElementById("weeklyBtn").classList.remove("hidden");
-  }
 }
 
 function renderTips(global, details) {
@@ -128,40 +113,52 @@ function renderTips(global, details) {
   tips.innerHTML = "";
 
   if (details.length === 0) {
-    tips.innerHTML =
-      "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
+    tips.innerHTML = "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
     return;
   }
 
   details.forEach(d => {
     const li = document.createElement("li");
-    li.innerHTML =
-      `En <strong>${d.area}</strong>, tus respuestas muestran un espacio de crecimiento posible si ponés más conciencia y presencia en ese ámbito.`;
+
+    switch (d.area) {
+      case "Familia":
+        li.innerHTML = "En <strong>Familia</strong>, tus respuestas muestran que podrías fortalecer la presencia emocional y la escucha genuina en los vínculos más cercanos.";
+        break;
+
+      case "Social":
+        li.innerHTML = "En el área <strong>Social</strong>, aparece margen para actuar con mayor empatía y conciencia en los espacios compartidos con otras personas.";
+        break;
+
+      case "Amistad":
+        li.innerHTML = "En <strong>Amistad</strong>, podrías revisar qué tan disponible estás emocionalmente y cómo acompañás a quienes te rodean.";
+        break;
+
+      case "Laboral":
+        li.innerHTML = "En lo <strong>Laboral</strong>, tus respuestas sugieren observar la coherencia entre valores personales y acciones cotidianas en el trabajo.";
+        break;
+
+      case "Planeta":
+        li.innerHTML = "En <strong>Planeta</strong>, hay una invitación a profundizar el cuidado del entorno y la responsabilidad con la vida que te rodea.";
+        break;
+
+      case "Conciencia":
+        li.innerHTML = "En <strong>Conciencia</strong>, se abre un espacio para alinear más profundamente pensamiento, emoción y acción.";
+        break;
+    }
+
     tips.appendChild(li);
   });
 }
 
-// ✅ REVISIÓN SEMANAL (ACTIVA)
-function openWeeklyReview() {
-  alert(
-    "Revisión semanal:\n\n" +
-    "Esta función te permite observar tu evolución humana con el tiempo.\n" +
-    "En la versión Premium vas a poder comparar tendencias y coherencia."
-  );
-}
-
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) +
-    currentQuestion;
-
-  document.getElementById("thermoFill").style.width =
-    Math.round((answered / totalQ) * 100) + "%";
+  const answered = modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) + currentQuestion;
+  document.getElementById("thermoFill").style.width = Math.round((answered / totalQ) * 100) + "%";
 }
 
 function restart() {
   showSection("start");
+  document.body.className = "";
 }
 
 function showPrivacy() {
