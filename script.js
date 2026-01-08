@@ -33,7 +33,7 @@ const BASE_MODULES = [
 ];
 
 const PREMIUM_MODULES = [
-  { name: "Conciencia", questions: [
+  { name: "Conciencia Profunda", questions: [
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
@@ -57,14 +57,9 @@ function startTest(isPremium) {
 
 function showQuestion() {
   const mod = modules[currentModule];
-
-  // 🔹 CAMBIO DE FONDO POR MÓDULO (ÚNICO AGREGADO)
-  document.body.className = "";
-  document.body.classList.add(mod.name.toLowerCase());
-
   document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
+  applyTheme(mod.name);
 }
 
 function answer(value) {
@@ -86,7 +81,7 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
-  document.body.className = "";
+  document.getElementById("app").className = "";
 
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
@@ -107,8 +102,7 @@ function showResults() {
   });
 
   const global = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + global + "%";
+  document.getElementById("globalResult").innerText = "Humanidad global: " + global + "%";
 
   const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
   document.getElementById("coherenceResult").innerText =
@@ -128,7 +122,7 @@ function renderTips(global, percents) {
 
   const weakest = modules[percents.indexOf(Math.min(...percents))].name;
   tips.innerHTML =
-    `<li>Tu mayor desafío actual está en el área <strong>${weakest}</strong>. Observá ese espacio con más conciencia y presencia.</li>`;
+    `<li>Tu mayor desafío actual está en <strong>${weakest}</strong>. Poné más conciencia en ese aspecto.</li>`;
 }
 
 function updateThermometer() {
@@ -141,19 +135,28 @@ function updateThermometer() {
   document.getElementById("thermoFill").style.width = progress + "%";
 }
 
-function restart() {
-  document.body.className = "";
-  showSection("start");
+function applyTheme(name) {
+  const app = document.getElementById("app");
+  app.className = "";
+
+  const map = {
+    "Familia": "familia",
+    "Social": "social",
+    "Amistad": "amistad",
+    "Laboral": "laboral",
+    "Planeta": "planeta",
+    "Conciencia Profunda": "conciencia"
+  };
+
+  if (map[name]) app.classList.add(map[name]);
 }
 
-function showPrivacy() {
-  document.body.className = "";
-  showSection("privacy");
-}
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
   ["start","test","results","privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-    }
+}
