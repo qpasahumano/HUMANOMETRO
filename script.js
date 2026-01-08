@@ -47,7 +47,6 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
 
@@ -81,18 +80,15 @@ function answer(value) {
 
 function showResults() {
   showSection("results");
-
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
   let percents = [];
-  let total = 0;
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push(percent);
-    total += percent;
+    percents.push({ name: m.name, value: percent });
 
     const div = document.createElement("div");
     div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
@@ -100,39 +96,70 @@ function showResults() {
     circles.appendChild(div);
   });
 
-  const global = Math.round(total / modules.length);
+  const global = Math.round(
+    percents.reduce((a,b)=>a+b.value,0) / percents.length
+  );
+
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  const coherence = 100 - (Math.max(...percents) - Math.min(...percents));
+  const coherence =
+    100 - (Math.max(...percents.map(p=>p.value)) -
+           Math.min(...percents.map(p=>p.value)));
+
   document.getElementById("coherenceResult").innerText =
     "Coherencia humana: " + coherence + "%";
 
-  renderTips(global, percents);
+  renderPersonalizedReading(percents);
 }
 
-function renderTips(global, percents) {
+function renderPersonalizedReading(percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  if (global >= 95 && percents.every(p => p >= 95)) {
-    tips.innerHTML = "<li>Estás en el buen camino. Seguí cultivando esta coherencia.</li>";
+  const lowAreas = percents.filter(p => p.value < 100);
+
+  if (lowAreas.length === 0) {
+    tips.innerHTML = "<li>Estás en un muy buen camino. Seguí así.</li>";
     return;
   }
 
-  percents.forEach((p, i) => {
-    if (p < 100) {
-      const li = document.createElement("li");
-      li.innerHTML = `Área <strong>${modules[i].name}</strong>: hay espacio para mayor presencia y conciencia según tus respuestas.`;
-      tips.appendChild(li);
+  lowAreas.forEach(area => {
+    let text = "";
+
+    switch (area.name) {
+      case "Familia":
+        text = "En el área familiar, reforzar la presencia emocional puede fortalecer vínculos y generar mayor armonía.";
+        break;
+      case "Social":
+        text = "En lo social, practicar más escucha y empatía puede mejorar tu interacción con los demás.";
+        break;
+      case "Amistad":
+        text = "En tus amistades, estar más disponible emocionalmente puede profundizar la confianza.";
+        break;
+      case "Laboral":
+        text = "En lo laboral, actuar con mayor coherencia y ética refuerza tu integridad personal.";
+        break;
+      case "Planeta":
+        text = "En relación al planeta, pequeñas acciones conscientes tienen un gran impacto colectivo.";
+        break;
+      case "Conciencia Profunda":
+        text = "A nivel de conciencia profunda, alinear pensamiento, emoción y acción potencia tu crecimiento.";
+        break;
     }
+
+    const li = document.createElement("li");
+    li.innerText = text;
+    tips.appendChild(li);
   });
 }
 
 function updateThermometer() {
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered = modules.slice(0,currentModule)
-    .reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
+  const answered =
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
+    + currentQuestion;
+
   const progress = Math.round((answered/totalQ)*100);
   document.getElementById("thermoFill").style.width = progress+"%";
 }
