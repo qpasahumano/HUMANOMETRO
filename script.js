@@ -1,9 +1,11 @@
+// ===== ESTADO GLOBAL =====
 let mode = "common";
 let currentModule = 0;
 let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
+// ===== MÓDULOS =====
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
@@ -40,6 +42,7 @@ const PREMIUM_MODULES = [
   ]}
 ];
 
+// ===== INICIO =====
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
@@ -47,6 +50,7 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
+
   currentModule = 0;
   currentQuestion = 0;
 
@@ -55,6 +59,7 @@ function startTest(isPremium) {
   updateThermometer();
 }
 
+// ===== PREGUNTAS =====
 function showQuestion() {
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
@@ -80,8 +85,10 @@ function answer(value) {
   }
 }
 
+// ===== RESULTADOS =====
 function showResults() {
   showSection("results");
+
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
@@ -94,8 +101,8 @@ function showResults() {
     total += percent;
 
     const div = document.createElement("div");
-    div.className = "circle " +
-      (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.className =
+      "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
 
@@ -108,28 +115,57 @@ function showResults() {
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + global + "%";
 
-  renderTips(global, details);
+  renderTips(details);
 }
 
-function renderTips(global, details) {
+// ===== DEVOLUCIONES (NO REPETIDAS) =====
+function renderTips(details) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
   if (details.length === 0) {
     tips.innerHTML =
-      "<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
+      "<li>Estás en un proceso humano coherente y consciente. Seguí por este camino.</li>";
     return;
   }
 
   details.forEach(d => {
+    let mensaje = "";
+
+    switch (d.area) {
+      case "Familia":
+        mensaje =
+          "En el ámbito familiar, tus respuestas sugieren que podrías fortalecer la presencia emocional y la escucha consciente.";
+        break;
+      case "Social":
+        mensaje =
+          "En lo social, aparece margen para revisar cómo interactuás con los demás y cómo impactan tus actitudes cotidianas.";
+        break;
+      case "Amistad":
+        mensaje =
+          "En las amistades, puede ser valioso observar tu disponibilidad y la calidad del vínculo que sostenés.";
+        break;
+      case "Laboral":
+        mensaje =
+          "En el plano laboral, tus respuestas invitan a revisar coherencia, ética y trato con el entorno de trabajo.";
+        break;
+      case "Planeta":
+        mensaje =
+          "En relación al planeta, surge la oportunidad de profundizar hábitos de cuidado y responsabilidad ambiental.";
+        break;
+      case "Conciencia Profunda":
+        mensaje =
+          "En conciencia profunda, aparece un espacio para alinear pensamiento, emoción y acción.";
+        break;
+    }
+
     const li = document.createElement("li");
-    li.innerHTML =
-      `En <strong>${d.area}</strong>, tus respuestas muestran un margen de crecimiento.
-       Observar este espacio con más presencia puede ayudarte a alinear acciones y valores.`;
+    li.innerHTML = mensaje;
     tips.appendChild(li);
   });
 }
 
+// ===== TERMÓMETRO =====
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
   const answered =
@@ -140,6 +176,7 @@ function updateThermometer() {
     Math.round((answered / totalQ) * 100) + "%";
 }
 
+// ===== NAVEGACIÓN =====
 function restart() {
   showSection("start");
 }
