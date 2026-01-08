@@ -3,58 +3,45 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  background: #0b1220;
   color: white;
-  transition: background 0.6s ease;
 }
-
-/* ===============================
-   FONDOS POR BLOQUE (ACTIVOS)
-   =============================== */
-
-body.familia {
-  background: linear-gradient(180deg, #123b5a, #1f5f8b);
-}
-
-body.social {
-  background: linear-gradient(180deg, #114d3a, #1f8a65);
-}
-
-body.amistad {
-  background: linear-gradient(180deg, #2e2a6f, #5a4fcf);
-}
-
-body.laboral {
-  background: linear-gradient(180deg, #3b2b12, #8b6a1f);
-}
-
-body.planeta {
-  background: linear-gradient(180deg, #0f3b1f, #2fa36a);
-}
-
-body.conciencia {
-  background: linear-gradient(180deg, #2a114d, #6a2fcf);
-}
-
-/* ===============================
-   CONTENEDOR
-   =============================== */
 
 #app {
   max-width: 520px;
   margin: auto;
   padding: 20px;
   text-align: center;
+  transition: background 0.6s ease;
 }
 
+/* === FONDOS POR BLOQUE === */
+#app.familia {
+  background: linear-gradient(180deg, #1f3c5b, #2e6fa3);
+}
+
+#app.social {
+  background: linear-gradient(180deg, #1e4f3b, #2ecc71);
+}
+
+#app.amistad {
+  background: linear-gradient(180deg, #3b2c5a, #8e44ad);
+}
+
+#app.laboral {
+  background: linear-gradient(180deg, #2c3e50, #4f6d8a);
+}
+
+#app.planeta {
+  background: linear-gradient(180deg, #1f4d30, #27ae60);
+}
+
+#app.conciencia {
+  background: linear-gradient(180deg, #2e2359, #5b4b8a);
+}
+
+/* === ESTRUCTURA === */
 .hidden { display: none; }
-
-h1 { font-size: 2.5em; }
-h2, h3 { margin-top: 20px; }
-
-/* ===============================
-   BOTONES (NO TOCADOS)
-   =============================== */
 
 button {
   width: 90%;
@@ -72,19 +59,16 @@ button {
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 15px rgba(255,180,0,0.7);
+  box-shadow: 0 0 15px rgba(255,180,0,0.8);
 }
 
 .answers button {
   background: #3498db;
   color: white;
-  box-shadow: 0 0 12px rgba(52,152,219,0.7);
+  box-shadow: 0 0 12px rgba(52,152,219,0.8);
 }
 
-/* ===============================
-   TERMÓMETRO (NO TOCADO)
-   =============================== */
-
+/* === TERMÓMETRO === */
 #thermometer {
   width: 100%;
   height: 14px;
@@ -98,14 +82,11 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 12px rgba(46,204,113,0.9);
-  transition: width 0.4s ease, background 0.4s ease;
+  box-shadow: 0 0 14px rgba(46,204,113,0.9);
+  transition: width 0.4s ease;
 }
 
-/* ===============================
-   RESULTADOS
-   =============================== */
-
+/* === RESULTADOS === */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -134,4 +115,4 @@ ul { list-style: none; padding: 0; }
   font-size: 0.8em;
   opacity: 0.7;
   cursor: pointer;
-   }
+                            }
