@@ -32,16 +32,12 @@ button {
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-}
-
-button.soft {
-  background: #34495e;
-  color: #fff;
+  box-shadow: 0 0 18px rgba(255,180,0,.9);
 }
 
 .answers button {
   background: #3498db;
-  color: white;
+  color: #fff;
 }
 
 #thermometer {
@@ -82,10 +78,12 @@ button.soft {
 .circle.mid { background:#f1c40f; color:#000; }
 .circle.high { background:#2ecc71; color:#000; }
 
-ul { list-style:none; padding:0; }
+ul { list-style: none; padding: 0; }
 
-.legal {
-  font-size:.8em;
-  opacity:.7;
-  cursor:pointer;
+.legal { font-size:.8em; opacity:.7; cursor:pointer; }
+
+.premium-info {
+  font-size:.85em;
+  opacity:.85;
+  margin-top:15px;
 }
