@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Humanómetro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -15,7 +18,7 @@
   <!-- INICIO -->
   <section id="start">
     <h1>HUMANÓMETRO</h1>
-    <p>No es un test. Es una lectura de tu humanidad.</p>
+    <p>No es un espejo. Es tu humanidad reflejada.</p>
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
@@ -59,9 +62,10 @@
   <section id="privacy" class="hidden">
     <h2>Privacidad y uso</h2>
     <p>
-      Humanómetro no recopila datos.<br>
-      Todo se procesa localmente.<br>
-      No es diagnóstico médico ni psicológico.
+      Humanómetro no recopila datos personales.<br>
+      Todo el procesamiento ocurre localmente.<br>
+      No es diagnóstico médico ni psicológico.<br>
+      Es una herramienta reflexiva.
     </p>
     <button onclick="restart()">Volver</button>
   </section>
