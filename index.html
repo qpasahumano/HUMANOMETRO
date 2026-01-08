@@ -23,7 +23,10 @@
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-    <button class="soft" onclick="openWeekly()">Chequeo semanal</button>
+    <p class="premium-info">
+      La versión <strong>Premium</strong> incorpora lectura profunda por área,
+      coherencia humana y chequeo semanal evolutivo.
+    </p>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -57,19 +60,15 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <p id="premiumNote" class="hidden">
-      Esta lectura ampliada forma parte de la versión <strong>Premium</strong>.
-    </p>
+    <div id="weeklyBox" class="hidden">
+      <h3>Chequeo semanal (Premium)</h3>
+      <p>¿Esta semana actuaste de forma más humana que la anterior?</p>
+      <button onclick="weeklyAnswer(2)">Sí</button>
+      <button onclick="weeklyAnswer(1)">Más o menos</button>
+      <button onclick="weeklyAnswer(0)">No</button>
+    </div>
 
-    <button onclick="saveWeekly()">Guardar chequeo semanal</button>
     <button onclick="restart()">Reiniciar</button>
-  </section>
-
-  <!-- CHEQUEO SEMANAL -->
-  <section id="weekly" class="hidden">
-    <h2>Chequeo semanal</h2>
-    <p id="weeklyResult"></p>
-    <button onclick="restart()">Volver</button>
   </section>
 
   <!-- PRIVACIDAD -->
@@ -77,7 +76,8 @@
     <h2>Privacidad y uso</h2>
     <p>
       Humanómetro no recopila datos personales.<br>
-      Todo el procesamiento ocurre localmente.<br>
+      Todo se procesa localmente.<br>
+      No es diagnóstico médico ni psicológico.<br>
       Es una herramienta reflexiva.
     </p>
     <button onclick="restart()">Volver</button>
