@@ -198,3 +198,65 @@ function showSection(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
+// ===============================
+// REVISIÓN SEMANAL PREMIUM
+// ===============================
+
+const WEEKLY_CONFIG = {
+  questionsPerWeek: 3,
+  maxWeeks: 4
+};
+
+function getWeeklyState() {
+  return JSON.parse(localStorage.getItem("weeklyState")) || {
+    week: 1,
+    usedQuestions: [],
+    history: []
+  };
+}
+
+function saveWeeklyState(state) {
+  localStorage.setItem("weeklyState", JSON.stringify(state));
+}
+
+function canDoWeeklyCheck() {
+  const state = getWeeklyState();
+  return state.week <= WEEKLY_CONFIG.maxWeeks;
+}
+
+function getWeeklyQuestions() {
+  const state = getWeeklyState();
+
+  const available = WEEKLY_QUESTION_BANK.filter(
+    q => !state.usedQuestions.includes(q)
+  );
+
+  const selected = available.slice(0, WEEKLY_CONFIG.questionsPerWeek);
+
+  state.usedQuestions.push(...selected);
+  saveWeeklyState(state);
+
+  return selected;
+}
+
+function submitWeeklyAnswers(score) {
+  const state = getWeeklyState();
+
+  state.history.push(score);
+  state.week += 1;
+
+  saveWeeklyState(state);
+}
+
+function getWeeklyTrend() {
+  const { history } = getWeeklyState();
+
+  if (history.length < 2) return "tendencia inicial";
+
+  const last = history[history.length - 1];
+  const prev = history[history.length - 2];
+
+  if (last > prev) return "tu humanidad está en ascenso";
+  if (last < prev) return "tu humanidad está en descenso";
+  return "tu humanidad se mantiene estable";
+}
