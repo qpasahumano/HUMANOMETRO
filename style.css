@@ -83,15 +83,9 @@ button.premium {
   cursor: pointer;
 }
 
-#premiumNote {
-  margin-top: 15px;
-  font-size: 0.85em;
-  opacity: 0.85;
-}
 #weeklyBox {
   margin-top: 30px;
-  padding: 15px;
+  padding: 18px;
   border-radius: 16px;
-  box-shadow: 0 0 18px rgba(255,255,255,0.2);
-  }
-
+  box-shadow: 0 0 18px rgba(255,255,255,0.25);
+}
