@@ -5,16 +5,21 @@
   <title>Humanómetro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
+  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+
+  <!-- CSS (anti caché) -->
+  <link rel="stylesheet" href="style.css?v=20260109">
 </head>
 
 <body>
 <main id="app">
 
+  <!-- INICIO -->
   <section id="start">
     <h1>HUMANÓMETRO</h1>
     <p>No es un espejo. Es tu humanidad reflejada.</p>
@@ -25,6 +30,7 @@
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
+  <!-- TEST -->
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
@@ -41,6 +47,7 @@
     </div>
   </section>
 
+  <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
@@ -54,6 +61,7 @@
     <button onclick="restart()">Reiniciar</button>
   </section>
 
+  <!-- PRIVACIDAD -->
   <section id="privacy" class="hidden">
     <h2>Privacidad y uso</h2>
     <p>
@@ -69,4 +77,4 @@
 
 <script src="script.js"></script>
 </body>
-</html>
+  </html>
