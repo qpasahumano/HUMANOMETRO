@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
   <!-- CSS (anti caché) -->
-  <link rel="stylesheet" href="style.css?v=20260109">
+  <link rel="stylesheet" href="style.css?v=20260110">
 </head>
 
 <body>
@@ -24,8 +24,20 @@
     <h1>HUMANÓMETRO</h1>
     <p>No es un espejo. Es tu humanidad reflejada.</p>
 
+    <p class="legal">
+      Humanómetro es una herramienta de autoevaluación humana.<br>
+      A partir de tus respuestas calcula niveles de coherencia emocional
+      y humana expresados en porcentajes.<br>
+      El resultado no depende de una sola respuesta, sino de la constancia
+      entre intención, emoción y acción a lo largo del test.
+    </p>
+
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
+
+    <button id="installBtn" class="premium" style="display:none;">
+      Instalar Humanómetro
+    </button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -77,4 +89,4 @@
 
 <script src="script.js"></script>
 </body>
-  </html>
+</html>
