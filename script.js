@@ -41,22 +41,11 @@ const PREMIUM_MODULES = [
   ]}
 ];
 
-const WEEKLY_BANK = {
-  familia: [
-    "¿Estuviste realmente presente para tu familia esta semana?",
-    "¿Escuchaste más de lo que hablaste?"
-  ],
-  social: [
-    "¿Tu trato social fue empático?",
-    "¿Evitaste juzgar automáticamente?"
-  ],
-  laboral: [
-    "¿Actuaste con coherencia laboral?"
-  ],
-  planeta: [
-    "¿Tomaste decisiones conscientes respecto al consumo?"
-  ]
-};
+const COUPLE_WEEKLY = [
+  "¿Escuchás a tu pareja sin preparar tu respuesta?",
+  "¿Sos coherente entre lo que decís y lo que hacés con tu pareja?",
+  "¿Cuidás el vínculo incluso en momentos de tensión?"
+];
 
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
@@ -97,14 +86,18 @@ function answer(value) {
   }
 }
 
-function getPersonalFeedback(area, percent){
-  if(percent < 40){
-    return `En ${area}, hay una desconexión que merece atención consciente.`;
-  }
-  if(percent < 70){
-    return `En ${area}, mostrás intención, pero falta coherencia sostenida.`;
-  }
-  return `En ${area}, hay coherencia, presencia y humanidad activa.`;
+/* === DEVOLUCIONES === */
+
+function generalCommonFeedback(avg){
+  if(avg < 40) return "Hay una desconexión general entre intención y acción. Tomar conciencia es el primer paso.";
+  if(avg < 70) return "Hay humanidad presente, pero aún falta coherencia sostenida.";
+  return "Tu humanidad está activa. Sostené este nivel con conciencia diaria.";
+}
+
+function intrapersonalPremium(area, percent){
+  if(percent < 40) return `En ${area}, estás actuando en automático. Falta presencia real.`;
+  if(percent < 70) return `En ${area}, hay intención consciente, pero aún no es constante.`;
+  return `En ${area}, hay coherencia interna y acción alineada.`;
 }
 
 function showResults() {
@@ -129,24 +122,32 @@ function showResults() {
 
     if(mode === "premium"){
       const li = document.createElement("li");
-      li.innerText = getPersonalFeedback(m.name, percent);
+      li.innerText = intrapersonalPremium(m.name, percent);
       tips.appendChild(li);
     }
   });
 
+  const avg = Math.round(total / modules.length);
   document.getElementById("globalResult").innerText =
-    "Humanidad global: " + Math.round(total / modules.length) + "%";
+    "Humanidad global: " + avg + "%";
+
+  if(mode === "common"){
+    const li = document.createElement("li");
+    li.innerText = generalCommonFeedback(avg);
+    tips.appendChild(li);
+  }
 
   if(mode === "premium"){
     const btn = document.createElement("button");
     btn.className = "premium";
-    btn.innerText = "Activar conteo semanal";
+    btn.innerText = "Desbloquear revisión semanal";
     btn.onclick = startWeeklyReview;
 
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "El conteo semanal es un servicio preferencial con seguimiento personalizado y lecturas humanas dinámicas. Servicio con costo.";
+      "Descubrí tu grado real de evolución emocional en tus vínculos de pareja. " +
+      "Seguimiento semanal profundo y personalizado. Servicio preferencial con costo.";
 
     document.getElementById("results").appendChild(btn);
     document.getElementById("results").appendChild(note);
@@ -155,26 +156,23 @@ function showResults() {
 
 function updateThermometer() {
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered = modules
-    .slice(0,currentModule)
-    .reduce((s,m)=>s+m.questions.length,0) + currentQuestion;
+  const answered =
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
+    + currentQuestion;
 
   document.getElementById("thermoFill").style.width =
     Math.round((answered/totalQ)*100) + "%";
 }
 
+/* === SEMANAL PAREJA === */
+
 function startWeeklyReview() {
   weeklyScore = [];
+  let html = `<div id="weeklyBox"><h3>Revisión semanal de vínculo de pareja</h3>`;
 
-  const entries = Object.entries(WEEKLY_BANK)
-    .flatMap(([area, qs]) => qs.map(q => ({ area, text: q })))
-    .slice(0,3);
-
-  let html = `<div id="weeklyBox"><h3>Revisión semanal de humanidad</h3>`;
-
-  entries.forEach((q,i) => {
+  COUPLE_WEEKLY.forEach((q,i)=>{
     html += `
-      <p><strong>${q.area.toUpperCase()}</strong>: ${q.text}</p>
+      <p>${q}</p>
       <div class="answers">
         <button onclick="weeklyAnswer(${i},2)">Sí</button>
         <button onclick="weeklyAnswer(${i},1)">A veces</button>
@@ -190,20 +188,17 @@ function startWeeklyReview() {
 function weeklyAnswer(i,v){
   weeklyScore[i] = v;
 
-  if(weeklyScore.filter(x => x !== undefined).length === 3){
-    const avg = weeklyScore.reduce((a,b)=>a+b,0)/3;
+  if(weeklyScore.filter(x=>x!==undefined).length === COUPLE_WEEKLY.length){
+    const avg = weeklyScore.reduce((a,b)=>a+b,0)/COUPLE_WEEKLY.length;
 
-    let msg = "";
-    if(avg < 0.8){
-      msg = "Semana con baja coherencia humana. Hay desconexión entre intención y acción.";
-    } else if(avg < 1.5){
-      msg = "Semana intermedia. Conciencia parcial sin constancia sostenida.";
-    } else {
-      msg = "Semana coherente. Presencia, empatía y responsabilidad sostenidas.";
-    }
+    let msg = avg < 0.8
+      ? "Vínculo en estado de desconexión emocional."
+      : avg < 1.5
+      ? "Vínculo inestable: conciencia parcial sin sostén."
+      : "Vínculo consciente con base emocional sólida.";
 
     document.getElementById("weeklyBox").innerHTML +=
-      `<p><strong>Lectura semanal personalizada:</strong><br>${msg}</p>`;
+      `<p><strong>Lectura de vínculo:</strong><br>${msg}</p>`;
   }
 }
 
@@ -215,4 +210,4 @@ function showSection(id){
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-   }
+}
