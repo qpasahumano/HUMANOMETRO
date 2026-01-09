@@ -5,6 +5,10 @@ let modules = [];
 let scores = {};
 let weeklyScore = [];
 
+/* ======================
+   MÓDULOS
+====================== */
+
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
@@ -47,6 +51,10 @@ const COUPLE_WEEKLY = [
   "¿Cuidás el vínculo incluso en momentos de tensión?"
 ];
 
+/* ======================
+   INICIO TEST
+====================== */
+
 function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
@@ -86,19 +94,59 @@ function answer(value) {
   }
 }
 
-/* === DEVOLUCIONES === */
+/* ======================
+   DEVOLUCIONES
+====================== */
 
 function generalCommonFeedback(avg){
-  if(avg < 40) return "Hay una desconexión general entre intención y acción. Tomar conciencia es el primer paso.";
-  if(avg < 70) return "Hay humanidad presente, pero aún falta coherencia sostenida.";
-  return "Tu humanidad está activa. Sostené este nivel con conciencia diaria.";
+  if(avg < 40){
+    return {
+      level: "Bajo",
+      text:
+        "Las respuestas muestran una desconexión frecuente entre lo que sentís, pensás y sostenés en tus acciones cotidianas."
+    };
+  }
+  if(avg < 70){
+    return {
+      level: "Medio",
+      text:
+        "Existe conciencia humana, pero no siempre se mantiene cuando cambian las circunstancias o el estado emocional."
+    };
+  }
+  return {
+    level: "Alto",
+    text:
+      "Hay alineación clara entre intención, emoción y acción de forma sostenida."
+  };
 }
 
 function intrapersonalPremium(area, percent){
-  if(percent < 40) return `En ${area}, estás actuando en automático. Falta presencia real.`;
-  if(percent < 70) return `En ${area}, hay intención consciente, pero aún no es constante.`;
-  return `En ${area}, hay coherencia interna y acción alineada.`;
+  const variants = {
+    low: [
+      `En ${area}, estás actuando más desde la reacción que desde la presencia consciente.`,
+      `En ${area}, hay una desconexión interna que impacta en tus decisiones.`,
+      `En ${area}, el vínculo con vos mismo se encuentra debilitado en este momento.`
+    ],
+    mid: [
+      `En ${area}, existe conciencia, pero no siempre se sostiene frente a la incomodidad.`,
+      `En ${area}, la coherencia aparece de forma parcial según el contexto.`,
+      `En ${area}, la intención es clara, aunque todavía inestable.`
+    ],
+    high: [
+      `En ${area}, tus decisiones reflejan coherencia interna y presencia real.`,
+      `En ${area}, se percibe alineación entre emoción, pensamiento y acción.`,
+      `En ${area}, hay responsabilidad humana activa y sostenida.`
+    ]
+  };
+
+  const group = percent < 40 ? "low" : percent < 70 ? "mid" : "high";
+  const texts = variants[group];
+  return texts[Math.floor(Math.random() * texts.length)];
 }
+
+/* ======================
+   RESULTADOS
+====================== */
 
 function showResults() {
   showSection("results");
@@ -132,12 +180,31 @@ function showResults() {
     "Humanidad global: " + avg + "%";
 
   if(mode === "common"){
-    const li = document.createElement("li");
-    li.innerText = generalCommonFeedback(avg);
-    tips.appendChild(li);
+    const fb = generalCommonFeedback(avg);
+    tips.innerHTML += `<li>Nivel de coherencia humana: ${fb.level}</li>`;
+    tips.innerHTML += `<li>${fb.text}</li>`;
   }
 
   if(mode === "premium"){
+    let levelText, explanationText;
+
+    if(avg < 40){
+      levelText = "Nivel de coherencia humana: Bajo";
+      explanationText =
+        "Las respuestas reflejan fragmentación emocional y dificultad para sostener coherencia entre distintas áreas de tu vida.";
+    } else if(avg < 70){
+      levelText = "Nivel de coherencia humana: Medio";
+      explanationText =
+        "Existe conciencia activa, pero aún depende del contexto emocional y del momento personal.";
+    } else {
+      levelText = "Nivel de coherencia humana: Alto";
+      explanationText =
+        "Se observa alineación interna entre pensamiento, emoción y acción de forma consistente.";
+    }
+
+    tips.innerHTML += `<li>${levelText}</li>`;
+    tips.innerHTML += `<li>${explanationText}</li>`;
+
     const btn = document.createElement("button");
     btn.className = "premium";
     btn.innerText = "Desbloquear revisión semanal";
@@ -146,13 +213,16 @@ function showResults() {
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "Descubrí tu grado real de evolución emocional en tus vínculos de pareja. " +
-      "Seguimiento semanal profundo y personalizado. Servicio preferencial con costo.";
+      "Descubrí tu grado real de evolución emocional en tus vínculos de pareja. Seguimiento semanal profundo y personalizado.";
 
     document.getElementById("results").appendChild(btn);
     document.getElementById("results").appendChild(note);
   }
 }
+
+/* ======================
+   TERMÓMETRO
+====================== */
 
 function updateThermometer() {
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
@@ -164,7 +234,9 @@ function updateThermometer() {
     Math.round((answered/totalQ)*100) + "%";
 }
 
-/* === SEMANAL PAREJA === */
+/* ======================
+   SEMANAL PAREJA
+====================== */
 
 function startWeeklyReview() {
   weeklyScore = [];
@@ -185,22 +257,41 @@ function startWeeklyReview() {
   document.getElementById("results").innerHTML += html;
 }
 
-function weeklyAnswer(i,v){
+function weeklyAnswer(i, v){
   weeklyScore[i] = v;
 
-  if(weeklyScore.filter(x=>x!==undefined).length === COUPLE_WEEKLY.length){
+  const rows = document.querySelectorAll("#weeklyBox .answers");
+  const buttons = rows[i].querySelectorAll("button");
+  buttons.forEach(b => b.style.opacity = "0.35");
+  buttons[v === 2 ? 0 : v === 1 ? 1 : 2].style.opacity = "1";
+
+  if(weeklyScore.filter(x => x !== undefined).length === COUPLE_WEEKLY.length){
     const avg = weeklyScore.reduce((a,b)=>a+b,0)/COUPLE_WEEKLY.length;
 
-    let msg = avg < 0.8
-      ? "Vínculo en estado de desconexión emocional."
-      : avg < 1.5
-      ? "Vínculo inestable: conciencia parcial sin sostén."
-      : "Vínculo consciente con base emocional sólida.";
+    let level, message;
+
+    if(avg < 0.8){
+      level = "Nivel de humanidad en el vínculo: Bajo";
+      message =
+        "El vínculo atraviesa un momento de desconexión emocional. Falta escucha real, presencia afectiva y coherencia en el cuidado mutuo.";
+    } else if(avg < 1.5){
+      level = "Nivel de humanidad en el vínculo: Medio";
+      message =
+        "Existe intención de cuidado y conciencia parcial, pero no siempre se traduce en acciones sostenidas.";
+    } else {
+      level = "Nivel de humanidad en el vínculo: Alto";
+      message =
+        "El vínculo muestra presencia emocional, escucha activa y coherencia humana sostenida durante la semana.";
+    }
 
     document.getElementById("weeklyBox").innerHTML +=
-      `<p><strong>Lectura de vínculo:</strong><br>${msg}</p>`;
+      `<p><strong>${level}</strong><br>${message}</p>`;
   }
 }
+
+/* ======================
+   UTILIDADES
+====================== */
 
 function restart(){ showSection("start"); }
 function showPrivacy(){ showSection("privacy"); }
@@ -211,3 +302,19 @@ function showSection(id){
   );
   document.getElementById(id).classList.remove("hidden");
 }
+
+/* ======================
+   PWA INSTALL
+====================== */
+
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBtn").style.display = "block";
+});
+
+document.getElementById("installBtn")?.addEventListener("click", () => {
+  deferredPrompt.prompt();
+  deferredPrompt = null;
+});
