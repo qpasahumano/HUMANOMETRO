@@ -3,16 +3,38 @@ let currentModule = 0;
 let currentQuestion = 0;
 let modules = [];
 let scores = {};
-let weeklyScore = [];
 
 /* ======================
-   MÓDULOS (PREGUNTAS REFORMULADAS)
+   PWA – INSTALAR APP
+====================== */
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBtn").classList.remove("hidden");
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("installBtn");
+  if (btn) {
+    btn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      btn.classList.add("hidden");
+    });
+  }
+});
+
+/* ======================
+   MÓDULOS
 ====================== */
 
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente disponible para tu familia?",
-    "¿Escuchás a tu familia sin juzgar ni corregir?",
+    "¿Escuchás sin juzgar ni corregir?",
     "¿Expresás afecto de manera espontánea?"
   ]},
   { name: "Social", questions: [
@@ -26,44 +48,47 @@ const BASE_MODULES = [
     "¿Sabés escuchar sin imponer tu punto de vista?"
   ]},
   { name: "Laboral", questions: [
-    "¿Tomás decisiones justas en tu trabajo incluso cuando nadie controla?",
-    "¿Mantenés coherencia entre tus valores y tus acciones laborales?",
-    "¿Evitás beneficiarte a costa de otros en tu trabajo?"
+    "¿Tomás decisiones justas en tu trabajo incluso sin control?",
+    "¿Mantenés coherencia entre valores y acciones laborales?",
+    "¿Evitás beneficiarte a costa de otros en el trabajo?"
   ]},
   { name: "Planeta", questions: [
-    "Si te encontraras con un animal en una situación S.O.S (urgencia), ¿accionarías?",
-    "¿Realizás acciones concretas para cuidar el entorno donde vivís?",
-    "¿Intentás reducir tu impacto ambiental en lo cotidiano?"
+    "Si te encontraras con un animal en una situación S.O.S, ¿accionarías?",
+    "¿Realizás acciones concretas para cuidar tu entorno?",
+    "¿Intentás reducir tu impacto ambiental cotidiano?"
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
     "¿Sos consciente de tus reacciones emocionales antes de actuar?",
-    "¿Lográs coherencia entre lo que pensás y lo que hacés?",
-    "¿Te responsabilizás del impacto emocional que generás en otros?"
+    "¿Lográs coherencia entre lo que pensás y hacés?",
+    "¿Te responsabilizás del impacto emocional que generás?"
   ]}
 ];
 
 /* ======================
-   REVISIÓN SEMANAL (PAREJA)
+   SEMANAL – FLUJO TIPO TEST
 ====================== */
 
-const COUPLE_WEEKLY = [
+const WEEKLY_QUESTIONS = [
   "Esta semana, ¿escuchaste a tu pareja sin preparar tu respuesta?",
-  "Durante un conflicto, ¿pudiste evitar guardar rencor?",
-  "¿Intentaste empatizar con lo que le estaba pasando a tu pareja?",
-  "¿Cuidaste el vínculo incluso cuando hubo tensión o desacuerdo?"
+  "En un conflicto, ¿evitaste guardar rencor?",
+  "¿Intentaste comprender lo que le pasaba a tu pareja?",
+  "¿Cuidaste el vínculo incluso en momentos de tensión?"
 ];
 
+let weeklyIndex = 0;
+let weeklyScore = [];
+
 /* ======================
-   FLUJO DEL TEST
+   TEST GENERAL
 ====================== */
 
 function startTest(isPremium){
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if(mode === "premium") modules = modules.concat(PREMIUM_MODULES);
+  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
@@ -79,175 +104,123 @@ function startTest(isPremium){
 function showQuestion(){
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
-  document.getElementById("questionText").innerText =
-    mod.questions[currentQuestion];
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
-function answer(value){
+function answer(val){
   const mod = modules[currentModule];
-  scores[mod.name] += value;
+  scores[mod.name] += val;
   currentQuestion++;
 
-  if(currentQuestion >= mod.questions.length){
+  if (currentQuestion >= mod.questions.length){
     currentQuestion = 0;
     currentModule++;
   }
 
-  currentModule >= modules.length
-    ? showResults()
-    : (showQuestion(), updateThermometer());
+  currentModule >= modules.length ? showResults() : (showQuestion(), updateThermometer());
 }
 
 /* ======================
-   DEVOLUCIONES HUMANAS
-====================== */
-
-function commonFeedback(avg){
-  if(avg < 40){
-    return "Las respuestas reflejan una distancia entre valores internos y acciones sostenidas. Hay conciencia, pero cuesta mantenerla presente en lo cotidiano.";
-  }
-  if(avg < 70){
-    return "Existe sensibilidad humana y reflexión, aunque la coherencia fluctúa según el contexto emocional y las circunstancias.";
-  }
-  return "Las decisiones muestran una conciencia humana activa, con una alineación creciente entre pensamiento, emoción y acción.";
-}
-
-function premiumFeedback(area, percent){
-  const texts = {
-    low: [
-      `En ${area}, aparece un conflicto interno entre intención y acción.`,
-      `En ${area}, el automatismo emocional suele imponerse.`,
-      `En ${area}, hay valores claros pero dificultad para sostenerlos.`
-    ],
-    mid: [
-      `En ${area}, la conciencia está presente pero es inestable.`,
-      `En ${area}, la coherencia depende del estado emocional.`,
-      `En ${area}, hay intención genuina, aunque fluctuante.`
-    ],
-    high: [
-      `En ${area}, existe alineación interna y presencia consciente.`,
-      `En ${area}, las decisiones reflejan responsabilidad emocional.`,
-      `En ${area}, la coherencia se sostiene incluso en la incomodidad.`
-    ]
-  };
-
-  const group = percent < 40 ? "low" : percent < 70 ? "mid" : "high";
-  return texts[group][Math.floor(Math.random() * texts[group].length)];
-}
-
-/* ======================
-   RESULTADOS
+   RESULTADOS + SEMANAL
 ====================== */
 
 function showResults(){
   showSection("results");
 
-  const circles = document.getElementById("circles");
   const tips = document.getElementById("tips");
-  circles.innerHTML = "";
   tips.innerHTML = "";
 
   let total = 0;
-
   modules.forEach(m => {
     const max = m.questions.length * 2;
-    const percent = Math.round((scores[m.name] / max) * 100);
-    total += percent;
-
-    circles.innerHTML += `
-      <div class="circle ${percent < 40 ? "low" : percent < 70 ? "mid" : "high"}">
-        <strong>${percent}%</strong><small>${m.name}</small>
-      </div>`;
-
-    if(mode === "premium"){
-      tips.innerHTML += `<li>${premiumFeedback(m.name, percent)}</li>`;
-    }
+    const pct = Math.round((scores[m.name] / max) * 100);
+    total += pct;
   });
 
   const avg = Math.round(total / modules.length);
-  document.getElementById("globalResult").innerText =
-    "Humanidad global: " + avg + "%";
+  document.getElementById("globalResult").innerText = "Humanidad global: " + avg + "%";
 
-  if(mode === "common"){
-    tips.innerHTML += `<li>${commonFeedback(avg)}</li>`;
-  }
-
-  if(mode === "premium"){
-    const results = document.getElementById("results");
-
-    tips.innerHTML +=
-      `<li><strong>Lectura integral:</strong> La coherencia se expresa como un proceso interno sostenido, no como una respuesta aislada.</li>`;
-
+  if (mode === "premium") {
     const btn = document.createElement("button");
     btn.className = "premium";
-    btn.innerText = "Desbloquear revisión semanal";
-    btn.onclick = startWeeklyReview;
+    btn.innerText = "Iniciar revisión semanal";
+    btn.onclick = startWeekly;
 
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "Semana a semana mediremos juntos tu nivel de conciencia humana en los vínculos emocionales de pareja y en otras situaciones vividas. " +
-      "Yo te haré preguntas y vos responderás en base a lo que realmente experimentaste.";
+      "Semana a semana caminaremos juntos observando tu conciencia humana en los vínculos emocionales. " +
+      "No se trata de juzgar, sino de mirar con honestidad lo vivido y transformarlo.";
 
-    const box = document.createElement("div");
-    box.id = "weeklyBox";
-
-    results.appendChild(btn);
-    results.appendChild(note);
-    results.appendChild(box);
+    document.getElementById("results").appendChild(btn);
+    document.getElementById("results").appendChild(note);
   }
 }
 
 /* ======================
-   TERMÓMETRO
+   SEMANAL – UNA PREGUNTA
+====================== */
+
+function startWeekly(){
+  weeklyIndex = 0;
+  weeklyScore = [];
+  showWeeklyQuestion();
+}
+
+function showWeeklyQuestion(){
+  const results = document.getElementById("results");
+  results.innerHTML = `
+    <h3>Revisión semanal</h3>
+    <p>${WEEKLY_QUESTIONS[weeklyIndex]}</p>
+    <div class="answers">
+      <button onclick="weeklyAnswer(2)">Sí</button>
+      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
+      <button onclick="weeklyAnswer(0)">No</button>
+    </div>
+  `;
+}
+
+function weeklyAnswer(v){
+  weeklyScore.push(v);
+  weeklyIndex++;
+
+  if (weeklyIndex < WEEKLY_QUESTIONS.length){
+    showWeeklyQuestion();
+  } else {
+    showWeeklyResult();
+  }
+}
+
+function showWeeklyResult(){
+  const avg = weeklyScore.reduce((a,b)=>a+b,0) / weeklyScore.length;
+
+  let color = avg < 0.8 ? "red" : avg < 1.5 ? "yellow" : "green";
+  let msg =
+    color === "green"
+      ? "Semana de crecimiento humano y apertura emocional."
+      : color === "yellow"
+      ? "Semana intermedia: hubo conciencia, pero también reacción."
+      : "Semana de cierre emocional y desconexión. Es momento de observar sin culpa.";
+
+  document.getElementById("results").innerHTML = `
+    <h3>Lectura semanal</h3>
+    <p>${msg}</p>
+    <div style="margin-top:20px;height:120px;width:20px;background:#111;border-radius:10px;overflow:hidden;">
+      <div style="height:${avg*40}%;background:${color};box-shadow:0 0 12px ${color};"></div>
+    </div>
+  `;
+}
+
+/* ======================
+   TERMÓMETRO GENERAL
 ====================== */
 
 function updateThermometer(){
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
   const answered =
-    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
-    + currentQuestion;
-
+    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0) + currentQuestion;
   document.getElementById("thermoFill").style.width =
-    Math.round((answered / totalQ) * 100) + "%";
-}
-
-/* ======================
-   SEMANAL (FUNCIONAL)
-====================== */
-
-function startWeeklyReview(){
-  weeklyScore = [];
-  const box = document.getElementById("weeklyBox");
-  box.innerHTML = "<h3>Revisión semanal de vínculo de pareja</h3>";
-
-  COUPLE_WEEKLY.forEach((q,i)=>{
-    box.innerHTML += `
-      <p>${q}</p>
-      <div class="answers">
-        <button onclick="weeklyAnswer(${i},2)">Sí</button>
-        <button onclick="weeklyAnswer(${i},1)">Tal vez / A veces</button>
-        <button onclick="weeklyAnswer(${i},0)">No</button>
-      </div>`;
-  });
-}
-
-function weeklyAnswer(i,v){
-  weeklyScore[i] = v;
-
-  if(weeklyScore.filter(x => x !== undefined).length === COUPLE_WEEKLY.length){
-    const avg = weeklyScore.reduce((a,b)=>a+b,0)/COUPLE_WEEKLY.length;
-
-    const msg =
-      avg < 0.8
-        ? "El vínculo atraviesa una semana de desconexión emocional. Predominan reacciones defensivas."
-        : avg < 1.5
-        ? "Hay intención de cuidado, aunque la coherencia emocional fue intermitente."
-        : "El vínculo mostró presencia, empatía y cuidado mutuo durante la semana.";
-
-    document.getElementById("weeklyBox").innerHTML +=
-      `<p><strong>Nivel de humanidad en el vínculo:</strong><br>${msg}</p>`;
-  }
+    Math.round((answered/totalQ)*100) + "%";
 }
 
 /* ======================
