@@ -44,7 +44,7 @@ const PREMIUM_MODULES = [
 const WEEKLY_BANK = {
   familia: [
     "¿Estuviste realmente presente para tu familia esta semana?",
-    "¿Escuchaste más de lo que hablaste en tu entorno familiar?"
+    "¿Escuchaste más de lo que hablaste?"
   ],
   social: [
     "¿Tu trato social fue empático?",
@@ -65,6 +65,7 @@ function startTest(isPremium) {
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
+
   currentModule = 0;
   currentQuestion = 0;
 
@@ -96,11 +97,23 @@ function answer(value) {
   }
 }
 
+function getPersonalFeedback(area, percent){
+  if(percent < 40){
+    return `En ${area}, hay una desconexión que merece atención consciente.`;
+  }
+  if(percent < 70){
+    return `En ${area}, mostrás intención, pero falta coherencia sostenida.`;
+  }
+  return `En ${area}, hay coherencia, presencia y humanidad activa.`;
+}
+
 function showResults() {
   showSection("results");
 
   const circles = document.getElementById("circles");
+  const tips = document.getElementById("tips");
   circles.innerHTML = "";
+  tips.innerHTML = "";
 
   let total = 0;
 
@@ -113,15 +126,31 @@ function showResults() {
     div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
     div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
+
+    if(mode === "premium"){
+      const li = document.createElement("li");
+      li.innerText = getPersonalFeedback(m.name, percent);
+      tips.appendChild(li);
+    }
   });
 
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + Math.round(total / modules.length) + "%";
 
-  document.getElementById("coherenceResult").innerText = "";
+  if(mode === "premium"){
+    const btn = document.createElement("button");
+    btn.className = "premium";
+    btn.innerText = "Activar conteo semanal";
+    btn.onclick = startWeeklyReview;
 
-  document.getElementById("premiumNote")
-    .classList.toggle("hidden", mode !== "premium");
+    const note = document.createElement("p");
+    note.className = "legal";
+    note.innerText =
+      "El conteo semanal es un servicio preferencial con seguimiento personalizado y lecturas humanas dinámicas. Servicio con costo.";
+
+    document.getElementById("results").appendChild(btn);
+    document.getElementById("results").appendChild(note);
+  }
 }
 
 function updateThermometer() {
@@ -135,13 +164,11 @@ function updateThermometer() {
 }
 
 function startWeeklyReview() {
-  mode = "premium";
-  showSection("results");
-
   weeklyScore = [];
-  const entries = Object.entries(WEEKLY_BANK).flatMap(([area, qs]) =>
-    qs.map(q => ({ area, text: q }))
-  ).slice(0,3);
+
+  const entries = Object.entries(WEEKLY_BANK)
+    .flatMap(([area, qs]) => qs.map(q => ({ area, text: q })))
+    .slice(0,3);
 
   let html = `<div id="weeklyBox"><h3>Revisión semanal de humanidad</h3>`;
 
@@ -161,10 +188,22 @@ function startWeeklyReview() {
 }
 
 function weeklyAnswer(i,v){
-  weeklyScore[i]=v;
-  if(weeklyScore.filter(x=>x!==undefined).length===3){
+  weeklyScore[i] = v;
+
+  if(weeklyScore.filter(x => x !== undefined).length === 3){
+    const avg = weeklyScore.reduce((a,b)=>a+b,0)/3;
+
+    let msg = "";
+    if(avg < 0.8){
+      msg = "Semana con baja coherencia humana. Hay desconexión entre intención y acción.";
+    } else if(avg < 1.5){
+      msg = "Semana intermedia. Conciencia parcial sin constancia sostenida.";
+    } else {
+      msg = "Semana coherente. Presencia, empatía y responsabilidad sostenidas.";
+    }
+
     document.getElementById("weeklyBox").innerHTML +=
-      `<p><strong>Tendencia semanal registrada.</strong></p>`;
+      `<p><strong>Lectura semanal personalizada:</strong><br>${msg}</p>`;
   }
 }
 
@@ -176,4 +215,4 @@ function showSection(id){
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
+   }
