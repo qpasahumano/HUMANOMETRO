@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Humanómetro v.1®</title>
+  <title>Humanómetro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- PWA -->
@@ -21,8 +21,11 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1>HUMANÓMETRO v.1®</h1>
+    <h1>HUMANÓMETRO <small style="font-size:.6em;opacity:.7;">v.1®</small></h1>
     <p>No es un espejo. Es tu humanidad reflejada.</p>
+
+    <button onclick="startTest(false)">Versión Común</button>
+    <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
     <p class="legal">
       Humanómetro es una herramienta de autoevaluación humana.<br>
@@ -30,13 +33,6 @@
       No mide actos aislados, sino patrones sostenidos en el tiempo.<br><br>
       <strong>¿Conocés tu nivel de conciencia humana actual?</strong>
     </p>
-
-    <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
-
-    <button id="installBtn" class="premium" style="display:none;">
-      Instalar Humanómetro
-    </button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -53,7 +49,7 @@
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">A veces</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
       <button onclick="answer(0)">No</button>
     </div>
   </section>
