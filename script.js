@@ -98,6 +98,45 @@ function getWeeklyQuestions() {
 
   return selected;
 }
+function startWeeklyReview() {
+  if (mode !== "premium") return;
+
+  const questions = getWeeklyQuestions();
+  let html = "<h3>Revisión semanal de humanidad</h3>";
+
+  questions.forEach((q, i) => {
+    html += `
+      <p><strong>${q.area.toUpperCase()}</strong>: ${q.text}</p>
+      <div class="answers">
+        <button onclick="weeklyAnswer(${i},2)">Sí</button>
+        <button onclick="weeklyAnswer(${i},1)">A veces</button>
+        <button onclick="weeklyAnswer(${i},0)">No</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("results").innerHTML += `
+    <div id="weeklyBox">${html}</div>
+  `;
+}
+
+let weeklyScore = [];
+
+function weeklyAnswer(index, value) {
+  weeklyScore[index] = value;
+
+  if (weeklyScore.filter(v => v !== undefined).length === 3) {
+    const sum = weeklyScore.reduce((a,b)=>a+b,0);
+    let trend = "estable";
+
+    if (sum <= 2) trend = "en descenso";
+    if (sum >= 5) trend = "en crecimiento";
+
+    document.getElementById("weeklyBox").innerHTML += `
+      <p><strong>Tendencia semanal:</strong> ${trend}</p>
+    `;
+  }
+}
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
     "¿Vivís desde el amor o desde el miedo?",
@@ -309,5 +348,6 @@ function getWeeklyTrend() {
   if (last < prev) return "tu humanidad está en descenso";
   return "tu humanidad se mantiene estable";
 }
+
 
 
