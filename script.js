@@ -47,8 +47,8 @@ function startTest(isPremium){
 
   scores = {};
   modules.forEach(m=>scores[m.name]=0);
-  currentModule=0;
-  currentQuestion=0;
+  currentModule = 0;
+  currentQuestion = 0;
 
   showSection("test");
   showQuestion();
@@ -72,7 +72,7 @@ function answer(val){
   }
 
   if(currentModule>=modules.length) showResults();
-  else {
+  else{
     showQuestion();
     updateThermometer();
   }
@@ -80,52 +80,50 @@ function answer(val){
 
 function showResults(){
   showSection("results");
-
   const circles=document.getElementById("circles");
   circles.innerHTML="";
+  const tips=document.getElementById("tips");
+  tips.innerHTML="";
 
   let total=0;
-  let percents=[];
+  let details=[];
 
   modules.forEach(m=>{
     const max=m.questions.length*2;
     const percent=Math.round((scores[m.name]/max)*100);
-    percents.push({name:m.name,value:percent});
     total+=percent;
 
     const div=document.createElement("div");
     div.className="circle "+(percent<40?"low":percent<70?"mid":"high");
     div.innerHTML=`<strong>${percent}%</strong><small>${m.name}</small>`;
     circles.appendChild(div);
+
+    if(percent<100){
+      details.push({area:m.name,percent});
+    }
   });
 
   const global=Math.round(total/modules.length);
   document.getElementById("globalResult").innerText="Humanidad global: "+global+"%";
+  document.getElementById("coherenceResult").innerText="Coherencia humana: "+(100-(Math.max(...details.map(d=>d.percent),0)-Math.min(...details.map(d=>d.percent),100)))+"%";
 
-  const coherence=100-(Math.max(...percents.map(p=>p.value))-Math.min(...percents.map(p=>p.value)));
-  document.getElementById("coherenceResult").innerText="Coherencia humana: "+coherence+"%";
-
-  renderTips(global, percents);
-
-  const premiumBlock=document.getElementById("premiumBlock");
-  if(mode==="premium") premiumBlock.classList.remove("hidden");
-  else premiumBlock.classList.add("hidden");
-}
-
-function renderTips(global, percents){
-  const tips=document.getElementById("tips");
-  tips.innerHTML="";
-
-  if(global>=99){
-    tips.innerHTML="<li>Estás en un proceso humano sólido y coherente. Seguí por este camino.</li>";
-    return;
+  if(details.length===0){
+    tips.innerHTML="<li>Estás en un camino humano sólido y consciente. Seguí así.</li>";
+  }else{
+    details.forEach(d=>{
+      const li=document.createElement("li");
+      li.innerHTML=`En <strong>${d.area}</strong> se percibe un margen de crecimiento. Tus respuestas indican que allí podrías actuar con mayor presencia y coherencia.`;
+      tips.appendChild(li);
+    });
   }
 
-  percents.filter(p=>p.value<100).forEach(p=>{
-    const li=document.createElement("li");
-    li.innerHTML=`En <strong>${p.name}</strong> hay margen para mayor presencia y coherencia cotidiana.`;
-    tips.appendChild(li);
-  });
+  if(mode==="premium"){
+    document.getElementById("weeklyBtn").classList.remove("hidden");
+  }
+}
+
+function weeklyReview(){
+  alert("La revisión semanal estará disponible en la versión Premium final.");
 }
 
 function updateThermometer(){
@@ -140,4 +138,4 @@ function showPrivacy(){ showSection("privacy"); }
 function showSection(id){
   ["start","test","results","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-}
+                             }
