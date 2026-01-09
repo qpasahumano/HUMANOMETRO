@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260114">
+  <link rel="stylesheet" href="style.css?v=20260115">
 </head>
 
 <body>
@@ -21,18 +21,23 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1>HUMANÓMETRO <small style="font-size:.6em;opacity:.7;">v.1®</small></h1>
+    <h1>
+      HUMANÓMETRO
+      <small style="font-size:.6em;opacity:.7;">v.1®</small>
+    </h1>
+
     <p>No es un espejo. Es tu humanidad reflejada.</p>
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-    <!-- BOTÓN INSTALAR PWA -->
+    <!-- BOTÓN INSTALAR -->
     <button id="installBtn" class="premium hidden">Instalar Humanómetro</button>
 
     <p class="legal">
       Humanómetro es una herramienta de autoevaluación humana.<br>
-      Observa patrones, no respuestas aisladas.<br><br>
+      El resultado no surge de una sola respuesta, sino del conjunto de elecciones que vas realizando a lo largo del test.<br>
+      Cada respuesta refleja un nivel de coherencia entre lo que sentís, pensás y hacés en distintas áreas de tu vida.<br><br>
       <strong>¿Conocés tu nivel de conciencia humana actual?</strong>
     </p>
 
@@ -59,10 +64,14 @@
   <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
+
     <div id="circles"></div>
+
     <h3 id="globalResult"></h3>
+
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
+
     <button onclick="restart()">Reiniciar</button>
   </section>
 
