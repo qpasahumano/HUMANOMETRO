@@ -5,27 +5,27 @@ let modules = [];
 let scores = {};
 
 const BASE_MODULES = [
-  { name:"Familia", questions:[
+  { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
     "¿Escuchás sin juzgar?",
     "¿Expresás afecto sin que te lo pidan?"
   ]},
-  { name:"Social", questions:[
+  { name: "Social", questions: [
     "¿Tratás a las personas con respeto?",
     "¿Escuchás opiniones distintas a la tuya?",
     "¿Actuás con empatía en espacios públicos?"
   ]},
-  { name:"Amistad", questions:[
+  { name: "Amistad", questions: [
     "¿Estás presente para tus amistades?",
     "¿Sos leal incluso cuando no estás de acuerdo?",
     "¿Escuchás sin imponer tu visión?"
   ]},
-  { name:"Laboral", questions:[
+  { name: "Laboral", questions: [
     "¿Actuás con ética en tu trabajo?",
     "¿Respetás a tus compañeros?",
     "¿Sos justo cuando nadie te observa?"
   ]},
-  { name:"Planeta", questions:[
+  { name: "Planeta", questions: [
     "¿Respetás a los animales como seres vivos?",
     "¿Cuidás el entorno donde vivís?",
     "¿Reducís tu impacto ambiental cuando podés?"
@@ -33,17 +33,17 @@ const BASE_MODULES = [
 ];
 
 const PREMIUM_MODULES = [
-  { name:"Conciencia", questions:[
+  { name: "Conciencia Profunda", questions: [
     "¿Vivís desde el amor o desde el miedo?",
     "¿Sos coherente entre lo que pensás y hacés?",
     "¿Te responsabilizás de tu impacto en otros?"
   ]}
 ];
 
-function startTest(isPremium){
+function startTest(isPremium) {
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if(mode === "premium") modules = modules.concat(PREMIUM_MODULES);
+  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
 
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
@@ -55,41 +55,42 @@ function startTest(isPremium){
   updateThermometer();
 }
 
-function showQuestion(){
+function showQuestion() {
   const mod = modules[currentModule];
   document.getElementById("areaTitle").innerText = mod.name;
   document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
-function answer(val){
+function answer(value) {
   const mod = modules[currentModule];
-  scores[mod.name] += val;
+  scores[mod.name] += value;
   currentQuestion++;
 
-  if(currentQuestion >= mod.questions.length){
+  if (currentQuestion >= mod.questions.length) {
     currentQuestion = 0;
     currentModule++;
   }
 
-  if(currentModule >= modules.length) showResults();
+  if (currentModule >= modules.length) showResults();
   else {
     showQuestion();
     updateThermometer();
   }
 }
 
-function showResults(){
+function showResults() {
   showSection("results");
+
   const circles = document.getElementById("circles");
   circles.innerHTML = "";
 
-  let percents = [];
   let total = 0;
+  let percents = [];
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const percent = Math.round((scores[m.name] / max) * 100);
-    percents.push({ area:m.name, value:percent });
+    percents.push({ name: m.name, value: percent });
     total += percent;
 
     const div = document.createElement("div");
@@ -105,42 +106,75 @@ function showResults(){
   document.getElementById("coherenceResult").innerText = "Coherencia humana: " + coherence + "%";
 
   renderTips(global, percents);
+
+  if (mode === "premium") {
+    const note = document.getElementById("premiumNote");
+    if (note) note.classList.remove("hidden");
+  }
 }
 
-function renderTips(global, percents){
+function renderTips(global, percents) {
   const tips = document.getElementById("tips");
   tips.innerHTML = "";
 
-  if(mode === "common"){
-    tips.innerHTML = `<li>Este resultado refleja una visión general de tu humanidad actual.
-    Usalo como referencia simbólica para observar tu coherencia cotidiana.</li>`;
+  // COMÚN → UNA SOLA DEVOLUCIÓN GENERAL
+  if (mode === "common") {
+    if (global >= 90) {
+      tips.innerHTML = "<li>Tu nivel de humanidad es alto y consistente. Seguí sosteniendo este equilibrio.</li>";
+    } else if (global >= 60) {
+      tips.innerHTML = "<li>Hay una base humana presente, con áreas que pueden fortalecerse si les prestás más conciencia.</li>";
+    } else {
+      tips.innerHTML = "<li>Tu humanidad está en tensión. Este resultado invita a frenar, observarte y reconectar con lo esencial.</li>";
+    }
     return;
   }
 
-  if(global >= 99){
-    tips.innerHTML = `<li>Estás transitando un estado de coherencia humana elevada.
-    Tu presencia, tus vínculos y tus decisiones muestran alineación consciente.</li>`;
-    return;
-  }
+  // PREMIUM → DEVOLUCIONES DIFERENTES POR ÁREA
+  percents.forEach(p => {
+    if (p.value >= 100) return;
 
-  percents.filter(p => p.value < 100).forEach(p => {
+    let text = "";
+
+    switch (p.name) {
+      case "Familia":
+        text = "En el ámbito familiar, tus respuestas sugieren que podrías estar funcionando más desde la inercia que desde la presencia consciente.";
+        break;
+      case "Social":
+        text = "En lo social, aparece una distancia entre tu intención y tu impacto. Revisar tu forma de vincularte puede abrir nuevas posibilidades.";
+        break;
+      case "Amistad":
+        text = "En tus amistades, se percibe una posible desconexión emocional. Estar más disponible puede transformar esos vínculos.";
+        break;
+      case "Laboral":
+        text = "En el plano laboral, tus respuestas indican tensión entre valores y acciones. Ordenar prioridades puede traer mayor coherencia.";
+        break;
+      case "Planeta":
+        text = "En tu relación con el entorno, hay margen para una conciencia más activa sobre tu impacto cotidiano.";
+        break;
+      case "Conciencia Profunda":
+        text = "En tu conciencia interna, aparece una brecha entre lo que sentís y lo que encarnás. Integrarlo es el próximo paso evolutivo.";
+        break;
+      default:
+        return;
+    }
+
     const li = document.createElement("li");
-    li.innerHTML = `En <strong>${p.area}</strong>, tus respuestas indican un espacio de evolución.
-    Revisar cómo habitás ese ámbito puede ayudarte a crecer en coherencia y presencia.`;
+    li.innerHTML = text;
     tips.appendChild(li);
   });
 }
 
-function updateThermometer(){
+function updateThermometer() {
   const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
   const answered = modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
-  document.getElementById("thermoFill").style.width = Math.round((answered/totalQ)*100) + "%";
+  const progress = Math.round((answered/totalQ)*100);
+  document.getElementById("thermoFill").style.width = progress + "%";
 }
 
-function restart(){ showSection("start"); }
-function showPrivacy(){ showSection("privacy"); }
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
 
-function showSection(id){
+function showSection(id) {
   ["start","test","results","privacy"].forEach(s =>
     document.getElementById(s).classList.add("hidden")
   );
