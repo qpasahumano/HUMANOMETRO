@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #0b1220, #1b2b4a);
+  background: #0b1220;
   color: white;
 }
 
@@ -53,7 +53,6 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
   transition: width .4s ease;
 }
 
@@ -78,14 +77,14 @@ button.premium {
 .circle.mid { background:#f1c40f; color:#000; }
 .circle.high { background:#2ecc71; color:#000; }
 
-.premium-info {
-  font-size: .85em;
-  opacity: .85;
-  margin-top: 15px;
-}
-
 .legal {
   font-size: .8em;
   opacity: .7;
   cursor: pointer;
+}
+
+#premiumNote {
+  margin-top: 15px;
+  font-size: 0.85em;
+  opacity: 0.85;
 }
