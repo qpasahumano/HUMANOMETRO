@@ -4,6 +4,34 @@ let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
+// === BANCO SEMANAL PREMIUM (ROTATIVO – 1 MES) ===
+const WEEKLY_BANK = {
+  familia: [
+    "¿Estuviste realmente presente para tu familia esta semana?",
+    "¿Hubo algún gesto concreto de cuidado hacia tu familia?",
+    "¿Escuchaste más de lo que hablaste en tu entorno familiar?"
+  ],
+  pareja: [
+    "¿Cuidaste el vínculo de pareja con actos y no solo palabras?",
+    "¿Fuiste honesto emocionalmente con tu pareja esta semana?",
+    "¿Escuchaste a tu pareja sin intentar corregirla?"
+  ],
+  laboral: [
+    "¿Trabajaste con coherencia entre valores y acciones?",
+    "¿Tu actitud laboral fue respetuosa incluso bajo presión?",
+    "¿Aportaste algo positivo al clima de trabajo?"
+  ],
+  social: [
+    "¿Tu trato social fue empático y consciente?",
+    "¿Evitaste juzgar automáticamente a los demás?",
+    "¿Tu presencia social fue genuina?"
+  ],
+  planeta: [
+    "¿Tomaste decisiones conscientes respecto al consumo?",
+    "¿Cuidaste el entorno más allá de lo obligatorio?",
+    "¿Fuiste coherente con el respeto por otras formas de vida?"
+  ]
+};
 const WEEKLY_QUESTION_BANK = [
   "¿Esta semana actuaste con coherencia aunque nadie te mirara?",
   "¿Elegiste escuchar antes que reaccionar?",
@@ -260,3 +288,4 @@ function getWeeklyTrend() {
   if (last < prev) return "tu humanidad está en descenso";
   return "tu humanidad se mantiene estable";
 }
+
