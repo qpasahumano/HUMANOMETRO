@@ -12,7 +12,7 @@ let weeklyScore = [];
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente disponible para tu familia?",
-    "¿Escuchás a tu familia sin necesidad de juzgar o corregir?",
+    "¿Escuchás a tu familia sin juzgar ni corregir?",
     "¿Expresás afecto de manera espontánea?"
   ]},
   { name: "Social", questions: [
@@ -26,29 +26,34 @@ const BASE_MODULES = [
     "¿Sabés escuchar sin imponer tu punto de vista?"
   ]},
   { name: "Laboral", questions: [
-    "¿Actuás con ética en tu trabajo más allá de la supervisión?",
-    "¿Respetás a tus compañeros independientemente del rol?",
-    "¿Sos justo incluso cuando nadie observa?"
+    "¿Tomás decisiones justas en tu trabajo incluso cuando nadie controla?",
+    "¿Mantenés coherencia entre tus valores y tus acciones laborales?",
+    "¿Evitás beneficiarte a costa de otros en tu trabajo?"
   ]},
   { name: "Planeta", questions: [
-    "¿Reconocés a los animales como seres sensibles?",
-    "¿Cuidás el entorno en el que vivís?",
+    "Si te encontraras con un animal en una situación S.O.S (urgencia), ¿accionarías?",
+    "¿Realizás acciones concretas para cuidar el entorno donde vivís?",
     "¿Intentás reducir tu impacto ambiental en lo cotidiano?"
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
-    "¿Desde qué emoción tomás la mayoría de tus decisiones?",
+    "¿Sos consciente de tus reacciones emocionales antes de actuar?",
     "¿Lográs coherencia entre lo que pensás y lo que hacés?",
-    "¿Te hacés responsable del impacto emocional que generás?"
+    "¿Te responsabilizás del impacto emocional que generás en otros?"
   ]}
 ];
 
+/* ======================
+   REVISIÓN SEMANAL (PAREJA)
+====================== */
+
 const COUPLE_WEEKLY = [
-  "¿Escuchaste a tu pareja sin preparar tu respuesta?",
-  "¿Fuiste coherente entre lo que dijiste y lo que hiciste?",
-  "¿Cuidaste el vínculo incluso en momentos de tensión?"
+  "Esta semana, ¿escuchaste a tu pareja sin preparar tu respuesta?",
+  "Durante un conflicto, ¿pudiste evitar guardar rencor?",
+  "¿Intentaste empatizar con lo que le estaba pasando a tu pareja?",
+  "¿Cuidaste el vínculo incluso cuando hubo tensión o desacuerdo?"
 ];
 
 /* ======================
@@ -99,25 +104,25 @@ function answer(value){
 
 function commonFeedback(avg){
   if(avg < 40){
-    return "Las respuestas muestran una brecha entre valores internos y acciones sostenidas. No es falta de conciencia, sino dificultad para mantenerla presente en el día a día.";
+    return "Las respuestas reflejan una distancia entre valores internos y acciones sostenidas. Hay conciencia, pero cuesta mantenerla presente en lo cotidiano.";
   }
   if(avg < 70){
-    return "Existe sensibilidad humana y reflexión, aunque la coherencia fluctúa según el contexto emocional y las circunstancias externas.";
+    return "Existe sensibilidad humana y reflexión, aunque la coherencia fluctúa según el contexto emocional y las circunstancias.";
   }
-  return "Las decisiones reflejan una conciencia humana activa, con una alineación creciente entre pensamiento, emoción y acción.";
+  return "Las decisiones muestran una conciencia humana activa, con una alineación creciente entre pensamiento, emoción y acción.";
 }
 
 function premiumFeedback(area, percent){
   const texts = {
     low: [
-      `En ${area}, aparece un conflicto interno entre lo que sentís y lo que hacés.`,
-      `En ${area}, el automatismo emocional suele imponerse a la conciencia.`,
+      `En ${area}, aparece un conflicto interno entre intención y acción.`,
+      `En ${area}, el automatismo emocional suele imponerse.`,
       `En ${area}, hay valores claros pero dificultad para sostenerlos.`
     ],
     mid: [
-      `En ${area}, la conciencia está presente, aunque de forma inestable.`,
-      `En ${area}, la coherencia depende mucho del estado emocional.`,
-      `En ${area}, hay intención genuina, pero aún fluctuante.`
+      `En ${area}, la conciencia está presente pero es inestable.`,
+      `En ${area}, la coherencia depende del estado emocional.`,
+      `En ${area}, hay intención genuina, aunque fluctuante.`
     ],
     high: [
       `En ${area}, existe alineación interna y presencia consciente.`,
@@ -171,7 +176,7 @@ function showResults(){
     const results = document.getElementById("results");
 
     tips.innerHTML +=
-      `<li><strong>Lectura integral:</strong> La coherencia se evalúa como un proceso interno sostenido.</li>`;
+      `<li><strong>Lectura integral:</strong> La coherencia se expresa como un proceso interno sostenido, no como una respuesta aislada.</li>`;
 
     const btn = document.createElement("button");
     btn.className = "premium";
@@ -181,8 +186,8 @@ function showResults(){
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "Explorá tu nivel de humanidad en los vínculos emocionales de pareja. " +
-      "El seguimiento semanal permite observar patrones, evolución y coherencia afectiva.";
+      "Semana a semana mediremos juntos tu nivel de conciencia humana en los vínculos emocionales de pareja y en otras situaciones vividas. " +
+      "Yo te haré preguntas y vos responderás en base a lo que realmente experimentaste.";
 
     const box = document.createElement("div");
     box.id = "weeklyBox";
@@ -221,7 +226,7 @@ function startWeeklyReview(){
       <p>${q}</p>
       <div class="answers">
         <button onclick="weeklyAnswer(${i},2)">Sí</button>
-        <button onclick="weeklyAnswer(${i},1)">A veces</button>
+        <button onclick="weeklyAnswer(${i},1)">Tal vez / A veces</button>
         <button onclick="weeklyAnswer(${i},0)">No</button>
       </div>`;
   });
@@ -235,10 +240,10 @@ function weeklyAnswer(i,v){
 
     const msg =
       avg < 0.8
-        ? "El vínculo atraviesa un momento de desconexión emocional. Falta escucha y presencia."
+        ? "El vínculo atraviesa una semana de desconexión emocional. Predominan reacciones defensivas."
         : avg < 1.5
-        ? "Existe intención de cuidado, pero aún no se sostiene de forma constante."
-        : "El vínculo muestra coherencia emocional, presencia y cuidado mutuo.";
+        ? "Hay intención de cuidado, aunque la coherencia emocional fue intermitente."
+        : "El vínculo mostró presencia, empatía y cuidado mutuo durante la semana.";
 
     document.getElementById("weeklyBox").innerHTML +=
       `<p><strong>Nivel de humanidad en el vínculo:</strong><br>${msg}</p>`;
