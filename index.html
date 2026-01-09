@@ -15,17 +15,18 @@
 <body>
 <main id="app">
 
+  <!-- INICIO -->
   <section id="start">
     <h1>HUMANÓMETRO</h1>
     <p>No es un espejo. Es tu humanidad reflejada.</p>
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
-    <button class="premium" onclick="startWeeklyReview()">Revisión semanal (Premium)</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
+  <!-- TEST -->
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
@@ -42,6 +43,7 @@
     </div>
   </section>
 
+  <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
@@ -53,13 +55,10 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <p id="premiumNote" class="hidden">
-      Las devoluciones por área forman parte de la versión Premium.
-    </p>
-
     <button onclick="restart()">Reiniciar</button>
   </section>
 
+  <!-- PRIVACIDAD -->
   <section id="privacy" class="hidden">
     <h2>Privacidad y uso</h2>
     <p>
