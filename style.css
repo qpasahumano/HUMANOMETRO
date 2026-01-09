@@ -1,3 +1,7 @@
+/* =========================
+   RESET Y BASE
+========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -5,9 +9,30 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: #0b1220;
+  background-color: #0b1220;
+
+  /* Fondo con imagen sutil de marca */
+  background-image: url("bg-humanometro.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+  background-attachment: fixed;
+
   color: white;
 }
+
+/* Capa de oscurecimiento para suavizar imagen */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 18, 32, 0.88);
+  z-index: -1;
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
 
 #app {
   max-width: 520px;
@@ -19,6 +44,10 @@ body {
 .hidden {
   display: none;
 }
+
+/* =========================
+   BOTONES (BASE)
+========================= */
 
 button {
   width: 90%;
@@ -32,17 +61,43 @@ button {
   background: #2ecc71;
   color: #000;
   box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* Premium */
 button.premium {
   background: linear-gradient(45deg, gold, orange);
   box-shadow: 0 0 18px rgba(255, 180, 0, 0.9);
 }
 
+/* Respuestas */
 .answers button {
   background: #3498db;
   color: #fff;
 }
+
+/* =========================
+   FEEDBACK TOUCH / LED
+========================= */
+
+button:active {
+  transform: scale(0.97);
+  filter: brightness(1.15);
+  box-shadow: 0 0 25px rgba(46, 204, 113, 1);
+}
+
+button.premium:active {
+  filter: brightness(1.2);
+  box-shadow: 0 0 30px rgba(255, 200, 80, 1);
+}
+
+.answers button:active {
+  box-shadow: 0 0 25px rgba(52, 152, 219, 1);
+}
+
+/* =========================
+   TERMÓMETRO
+========================= */
 
 #thermometer {
   width: 100%;
@@ -64,6 +119,10 @@ button.premium {
   );
   transition: width 0.4s ease;
 }
+
+/* =========================
+   RESULTADOS
+========================= */
 
 #circles {
   display: flex;
@@ -96,15 +155,23 @@ button.premium {
   color: #000;
 }
 
+/* =========================
+   TEXTOS AUXILIARES
+========================= */
+
 .legal {
   font-size: 0.8em;
   opacity: 0.7;
   cursor: pointer;
 }
 
+/* =========================
+   SEMANAL
+========================= */
+
 #weeklyBox {
   margin-top: 30px;
   padding: 18px;
   border-radius: 16px;
   box-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
-}
+  }
