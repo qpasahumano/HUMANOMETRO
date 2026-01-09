@@ -4,6 +4,23 @@ let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
+const WEEKLY_QUESTION_BANK = [
+  "¿Esta semana actuaste con coherencia aunque nadie te mirara?",
+  "¿Elegiste escuchar antes que reaccionar?",
+  "¿Cuidaste tu energía emocional?",
+  "¿Fuiste responsable con tus palabras?",
+  "¿Elegiste el respeto incluso en desacuerdo?",
+  "¿Reconociste un error propio?",
+  "¿Ayudaste sin esperar nada a cambio?",
+  "¿Fuiste honesto con vos mismo?",
+  "¿Te hiciste cargo de tus decisiones?",
+  "¿Cuidaste tu vínculo con otros?",
+  "¿Frenaste una reacción automática?",
+  "¿Elegiste el bien común sobre el beneficio propio?",
+  "¿Actuaste desde la empatía?",
+  "¿Sostuviste un valor aunque fuera incómodo?",
+  "¿Tomaste conciencia de tu impacto?"
+];
 const BASE_MODULES = [
   { name: "Familia", questions: [
     "¿Estás emocionalmente presente con tu familia?",
@@ -180,3 +197,4 @@ function showSection(id) {
   );
   document.getElementById(id).classList.remove("hidden");
 }
+
