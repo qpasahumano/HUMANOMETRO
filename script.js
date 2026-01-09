@@ -77,6 +77,27 @@ const BASE_MODULES = [
   ]}
 ];
 
+function getWeeklyQuestions() {
+  const used = JSON.parse(localStorage.getItem("weekly_used") || "[]");
+  const available = [];
+
+  Object.entries(WEEKLY_BANK).forEach(([area, questions]) => {
+    questions.forEach(q => {
+      if (!used.includes(q)) {
+        available.push({ area, text: q });
+      }
+    });
+  });
+
+  // Mezcla y toma 3
+  const selected = available.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+  // Guardar usadas
+  const newUsed = used.concat(selected.map(q => q.text));
+  localStorage.setItem("weekly_used", JSON.stringify(newUsed));
+
+  return selected;
+}
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
     "¿Vivís desde el amor o desde el miedo?",
@@ -288,4 +309,5 @@ function getWeeklyTrend() {
   if (last < prev) return "tu humanidad está en descenso";
   return "tu humanidad se mantiene estable";
 }
+
 
