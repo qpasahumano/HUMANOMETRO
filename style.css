@@ -44,15 +44,20 @@ body {
   font-family: "Mystery Quest", cursive;
   letter-spacing: 0.18em;
   font-size: 2.2em;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   text-shadow:
     0 0 6px rgba(0, 255, 200, 0.6),
     0 0 14px rgba(0, 180, 255, 0.4);
 }
 
-/* versión debajo */
+/* V.1 — versión chica, sin LED */
 .brand + .legal {
-  margin-top: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.7em;
+  letter-spacing: normal;
+  text-shadow: none;
+  opacity: 0.65;
+  margin-top: 4px;
 }
 
 /* =========================
@@ -101,7 +106,7 @@ button.premium {
 }
 
 /* =========================
-   TERMÓMETRO LED
+   TERMÓMETRO
 ========================= */
 #thermometer {
   width: 100%;
@@ -160,7 +165,7 @@ button.premium {
   animation: fadeIn 0.6s ease forwards;
 }
 
-/* cielo boreal interno */
+/* Cielo boreal interno */
 .circle::before {
   content: "";
   position: absolute;
@@ -175,7 +180,6 @@ button.premium {
   z-index: 0;
 }
 
-/* texto arriba del efecto */
 .circle * {
   position: relative;
   z-index: 1;
@@ -196,6 +200,29 @@ button.premium {
 }
 
 /* =========================
+   CONTEO SEMANAL
+========================= */
+#weeklyBox {
+  margin-top: 30px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 0 18px rgba(120, 255, 255, 0.25);
+}
+
+#weeklyBox h3 {
+  margin-bottom: 10px;
+  text-shadow:
+    0 0 6px rgba(120, 255, 255, 0.7),
+    0 0 14px rgba(120, 180, 255, 0.4);
+}
+
+#weeklyBox p {
+  margin-bottom: 12px;
+}
+
+/* =========================
    ANIMACIONES
 ========================= */
 @keyframes auroraMove {
@@ -207,4 +234,4 @@ button.premium {
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
-}
+   }
