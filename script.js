@@ -244,8 +244,15 @@ function showSection(id) {
 }
 
 /* ===============================
-   DONACIÓN
+   DONACIÓN (ACTUALIZADO)
 ================================ */
 function weeklyWithDonation() {
+  const donated = localStorage.getItem("humanometro_donacion");
+
+  if (!donated) {
+    location.href = "https://mpago.la/1eCGrKX";
+    localStorage.setItem("humanometro_donacion", "true");
+  }
+
   startWeekly();
-}
+   }
