@@ -5,216 +5,235 @@ let modules = [];
 let scores = {};
 
 /* ===============================
-   CONTEO SEMANAL (INAMOVIBLE)
-================================ */
+   MÓDULOS BASE
+   =============================== */
+
+const BASE_MODULES = [
+  { name: "Familia", questions: [
+    { q: "¿Estuviste emocionalmente presente con tu familia?", n: "Aquí se mide presencia, no perfección." },
+    { q: "¿Escuchaste sin juzgar?", n: "No se mide acuerdo, se mide apertura." },
+    { q: "¿Expresaste afecto sin que te lo pidan?", n: "Se observa intención genuina." }
+  ]},
+  { name: "Social", questions: [
+    { q: "¿Trataste a las personas con respeto?", n: "Se mide trato humano." },
+    { q: "¿Escuchaste opiniones distintas a la tuya?", n: "No se juzga la idea, se mide tolerancia." },
+    { q: "¿Actuaste con empatía en espacios públicos?", n: "Se observa conciencia social." }
+  ]},
+  { name: "Amistad", questions: [
+    { q: "¿Estuviste presente para tus amistades?", n: "Presencia real, no disponibilidad constante." },
+    { q: "¿Cuidaste el vínculo aun cuando pensaban distinto?", n: "Se mide cuidado del lazo, no coincidencia." },
+    { q: "¿Escuchaste sin imponer tu visión?", n: "Se mide respeto mutuo." }
+  ]},
+  { name: "Laboral", questions: [
+    { q: "¿Generaste buen clima laboral aun cuando no estabas cómodo?", n: "Se observa responsabilidad humana." },
+    { q: "¿Respetaste a tus compañeros?", n: "No se mide simpatía, se mide trato." },
+    { q: "¿Evitaste sobrecargar a otros con tu función?", n: "Se mide equidad y conciencia colectiva." }
+  ]},
+  { name: "Planeta", questions: [
+    { q: "¿Reconociste a los animales como seres sensibles?", n: "Se mide empatía, no acción perfecta." },
+    { q: "¿Cuidaste el entorno inmediato donde vivís?", n: "Se observa conciencia cotidiana." },
+    { q: "¿Reduciste tu impacto ambiental cuando estuvo a tu alcance?", n: "Se mide intención posible." }
+  ]}
+];
+
+const PREMIUM_MODULES = [
+  { name: "Conciencia Profunda", questions: [
+    { q: "¿Tomaste decisiones desde la conciencia y no desde el impulso?", n: "Se mide atención interna." },
+    { q: "¿Fuiste coherente entre lo que pensaste y lo que hiciste?", n: "No se juzga error, se mide alineación." },
+    { q: "¿Asumiste responsabilidad por tu impacto en otros?", n: "Se observa madurez emocional." }
+  ]}
+];
+
+/* ===============================
+   TEST PRINCIPAL
+   =============================== */
+
+function startTest(isPremium) {
+  mode = isPremium ? "premium" : "common";
+  modules = JSON.parse(JSON.stringify(BASE_MODULES));
+  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
+
+  scores = {};
+  modules.forEach(m => scores[m.name] = 0);
+
+  currentModule = 0;
+  currentQuestion = 0;
+
+  showSection("test");
+  showQuestion();
+  updateThermometer();
+}
+
+function showQuestion() {
+  const mod = modules[currentModule];
+  document.getElementById("areaTitle").innerText = mod.name;
+  document.getElementById("questionText").innerText = mod.questions[currentQuestion].q;
+  document.getElementById("questionNote").innerText = mod.questions[currentQuestion].n;
+}
+
+function answer(value) {
+  const mod = modules[currentModule];
+  scores[mod.name] += value;
+  currentQuestion++;
+
+  if (currentQuestion >= mod.questions.length) {
+    currentQuestion = 0;
+    currentModule++;
+  }
+
+  if (currentModule >= modules.length) showResults();
+  else {
+    showQuestion();
+    updateThermometer();
+  }
+}
+
+function showResults() {
+  showSection("results");
+
+  const circles = document.getElementById("circles");
+  const tips = document.getElementById("tips");
+  circles.innerHTML = "";
+  tips.innerHTML = "";
+
+  let total = 0;
+
+  modules.forEach(m => {
+    const max = m.questions.length * 2;
+    const percent = Math.round((scores[m.name] / max) * 100);
+    total += percent;
+
+    const div = document.createElement("div");
+    div.className = "circle " + (percent < 40 ? "low" : percent < 70 ? "mid" : "high");
+    div.innerHTML = `<strong>${percent}%</strong><small>${m.name}</small>`;
+    circles.appendChild(div);
+
+    if (mode === "premium") {
+      const li = document.createElement("li");
+      li.innerText =
+        percent < 40
+          ? `En ${m.name}, se observa una desconexión entre intención y acción.`
+          : percent < 70
+          ? `En ${m.name}, hay conciencia intermitente que puede fortalecerse.`
+          : `En ${m.name}, existe coherencia y presencia humana sostenida.`;
+      tips.appendChild(li);
+    }
+  });
+
+  const avg = Math.round(total / modules.length);
+  document.getElementById("globalResult").innerText =
+    "Humanidad global: " + avg + "%";
+
+  if (mode === "common") {
+    const li = document.createElement("li");
+    li.innerText =
+      avg < 40
+        ? "Predomina una desconexión entre intención y acción. Reconocerlo es el primer paso."
+        : avg < 70
+        ? "Existe sensibilidad humana, aunque aún fluctuante."
+        : "Hay coherencia entre lo que sentís, pensás y hacés.";
+    tips.appendChild(li);
+  }
+}
+
+function updateThermometer() {
+  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+  const answered =
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0)
+    + currentQuestion;
+
+  document.getElementById("thermoFill").style.width =
+    Math.round((answered / totalQ) * 100) + "%";
+}
+
+/* ===============================
+   CONTEO SEMANAL (ACTUALIZADO)
+   =============================== */
+
 let weeklyIndex = 0;
 let weeklyScores = [];
 
 const WEEKLY_QUESTIONS = [
-  "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
-  "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
-  "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
+  { q: "¿Pudiste actuar con empatía ante algún vínculo cercano esta semana, incluso en momentos incómodos?" },
+  { q: "¿Cómo fue tu forma de reaccionar ante tensiones o contratiempos esta semana: más consciente que impulsiva?" },
+  { q: "¿Mantuviste un trato respetuoso en tus vínculos cotidianos, aun cuando algo no te resultó favorable?" },
+  { q: "¿Pudiste escuchar a otra persona sin cerrarte completamente en tu propia postura?" }
 ];
 
 function startWeekly() {
   weeklyIndex = 0;
   weeklyScores = [];
   showSection("weekly");
-  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-  weeklyThermoFill.style.width = "0%";
-  weeklyResult.classList.add("hidden");
-  weeklySaved.classList.add("hidden");
+  showWeeklyQuestion();
+}
+
+function showWeeklyQuestion() {
+  document.getElementById("weeklyQuestion").innerText =
+    WEEKLY_QUESTIONS[weeklyIndex].q;
+  updateWeeklyThermometer();
 }
 
 function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
 
-  weeklyThermoFill.style.width =
-    Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
-
-  if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
-    showWeeklyResult();
+  if (weeklyIndex < WEEKLY_QUESTIONS.length) {
+    showWeeklyQuestion();
   } else {
-    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+    showWeeklyResult();
   }
 }
 
 function showWeeklyResult() {
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+  document.getElementById("weeklyResult").classList.remove("hidden");
 
-  let text = "";
-  let advice = "";
+  const avg =
+    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  if (avg < 0.8) {
-    text = "Esta semana mostró una desconexión entre intención y acción.";
-    advice = "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
-  } else if (avg < 1.5) {
-    text = "Tu humanidad estuvo presente, pero de forma fluctuante.";
-    advice = "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
-  } else {
-    text = "Mostraste coherencia humana y presencia consciente esta semana.";
-    advice = "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
-  }
+  document.getElementById("weeklyText").innerText =
+    avg < 0.8
+      ? "Esta semana se observa una tendencia humana baja."
+      : avg < 1.5
+      ? "La semana mostró una conciencia humana intermedia."
+      : "La semana reflejó una coherencia humana positiva.";
 
-  weeklyText.innerText = text;
-  weeklyAdvice.innerText = advice;
-  weeklyResult.classList.remove("hidden");
+  document.getElementById("weeklyAdvice").innerText =
+    "Esta lectura se construye a partir de tus registros conscientes. La constancia permite observar evolución.";
+
+  updateWeeklyThermometer(avg);
+}
+
+function updateWeeklyThermometer(value = null) {
+  const fill = document.getElementById("weeklyThermoFill");
+  const percent = value !== null
+    ? Math.round((value / 2) * 100)
+    : Math.round((weeklyIndex / WEEKLY_QUESTIONS.length) * 100);
+
+  fill.style.width = percent + "%";
 }
 
 function saveWeekly() {
-  const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+  const history = JSON.parse(localStorage.getItem("weeklyHistory")) || [];
+  const avg =
+    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  history.push({
-    date: new Date().toISOString().slice(0,10),
-    score: avg
-  });
+  history.push({ date: new Date().toISOString(), value: avg });
+  localStorage.setItem("weeklyHistory", JSON.stringify(history));
 
-  localStorage.setItem("humanometro_semanal", JSON.stringify(history));
-  weeklySaved.classList.remove("hidden");
+  document.getElementById("weeklySaved").classList.remove("hidden");
 }
 
 /* ===============================
-   TEST PRINCIPAL
-================================ */
+   NAVEGACIÓN
+   =============================== */
 
-const BASE_MODULES = [
-  { name:"Familia", questions:[
-    { q:"¿Estuviste emocionalmente presente con tu familia?", n:"Aquí se mide presencia, no perfección." },
-    { q:"¿Escuchaste sin juzgar?", n:"No se mide acuerdo, se mide apertura." },
-    { q:"¿Expresaste afecto sin que te lo pidan?", n:"Se observa intención genuina." }
-  ]},
-  { name:"Social", questions:[
-    { q:"¿Trataste a las personas con respeto?", n:"Se mide trato humano." },
-    { q:"¿Escuchaste opiniones distintas a la tuya?", n:"Se mide tolerancia." },
-    { q:"¿Actuaste con empatía en espacios públicos?", n:"Conciencia social." }
-  ]},
-  { name:"Amistad", questions:[
-    { q:"¿Estuviste presente para tus amistades?", n:"Presencia real." },
-    { q:"¿Cuidaste el vínculo aun sin coincidir?", n:"Cuidado del lazo." },
-    { q:"¿Escuchaste sin imponer tu visión?", n:"Respeto mutuo." }
-  ]},
-  { name:"Laboral", questions:[
-    { q:"¿Generaste buen clima laboral aun sin estar cómodo?", n:"Responsabilidad humana." },
-    { q:"¿Respetaste a tus compañeros?", n:"Trato consciente." },
-    { q:"¿Evitaste sobrecargar a otros?", n:"Conciencia colectiva." }
-  ]},
-  { name:"Planeta", questions:[
-    { q:"¿Reconociste a los animales como seres sensibles?", n:"Empatía." },
-    { q:"¿Cuidaste el entorno donde vivís?", n:"Conciencia cotidiana." },
-    { q:"¿Reduciste tu impacto cuando estuvo a tu alcance?", n:"Intención posible." }
-  ]}
-];
+function restart() { showSection("start"); }
+function showPrivacy() { showSection("privacy"); }
 
-const PREMIUM_MODULES = [
-  { name:"Conciencia Profunda", questions:[
-    { q:"¿Tomaste decisiones desde la conciencia?", n:"Atención interna." },
-    { q:"¿Fuiste coherente entre pensamiento y acción?", n:"Alineación." },
-    { q:"¿Asumiste responsabilidad por tu impacto?", n:"Madurez emocional." }
-  ]}
-];
-
-function startTest(isPremium){
-  mode = isPremium ? "premium" : "common";
-  modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if(mode==="premium") modules = modules.concat(PREMIUM_MODULES);
-  scores = {};
-  modules.forEach(m=>scores[m.name]=0);
-  currentModule=0;
-  currentQuestion=0;
-  showSection("test");
-  showQuestion();
-  updateThermometer();
-}
-
-function showQuestion(){
-  const m = modules[currentModule];
-  areaTitle.innerText = m.name;
-  questionText.innerText = m.questions[currentQuestion].q;
-  questionNote.innerText = m.questions[currentQuestion].n;
-}
-
-function answer(v){
-  scores[modules[currentModule].name]+=v;
-  currentQuestion++;
-  if(currentQuestion>=modules[currentModule].questions.length){
-    currentQuestion=0;
-    currentModule++;
-  }
-  currentModule>=modules.length ? showResults() : showQuestion(), updateThermometer();
-}
-
-function showResults(){
-  showSection("results");
-  circles.innerHTML="";
-  tips.innerHTML="";
-  weeklyAccess.innerHTML="";
-  let total=0;
-
-  modules.forEach(m=>{
-    const max=m.questions.length*2;
-    const p=Math.round(scores[m.name]/max*100);
-    total+=p;
-    circles.innerHTML+=`
-      <div class="circle ${p<40?"low":p<70?"mid":"high"}">
-        <strong>${p}%</strong>
-        <small>${m.name}</small>
-      </div>`;
-    
-    if(mode==="premium"){
-      tips.innerHTML+=`
-        <li>
-          En <strong>${m.name}</strong>:
-          ${p<40
-            ? "hay una desconexión interna. Tomar conciencia sin castigarte es el primer paso."
-            : p<70
-              ? "existe intención, pero aún es inestable. La constancia puede fortalecerla."
-              : "hay coherencia y presencia humana. Sostenerla refuerza tu equilibrio."
-          }
-        </li>`;
-    }
+function showSection(id) {
+  ["start", "test", "results", "weekly", "privacy"].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.add("hidden");
   });
-
-  const avg = Math.round(total/modules.length);
-  globalResult.innerText="Humanidad global: "+avg+"%";
-
-  /* === DEVOLUCIÓN TEST COMÚN (CORRECCIÓN APLICADA) === */
-  if(mode==="common"){
-    let text = "";
-    if(avg < 40){
-      text = "Tus respuestas muestran una desconexión entre lo que sentís y cómo actuás. No es un juicio: es una señal. Observar tus reacciones cotidianas puede ayudarte a recuperar presencia y humanidad.";
-    } else if(avg < 70){
-      text = "Existe sensibilidad y conciencia humana, pero de forma fluctuante. En algunos momentos estás presente, en otros actuás en automático. La atención sostenida puede ayudarte a estabilizarte.";
-    } else {
-      text = "Mostrás un nivel de coherencia humana sólido. Hay alineación entre intención, pensamiento y acción. Sostener esta actitud en lo cotidiano fortalece tu equilibrio interno.";
-    }
-
-    tips.innerHTML += `<li>${text}</li>`;
-  }
-
-  if(mode==="premium"){
-    weeklyAccess.innerHTML=`
-      <button class="premium" onclick="startWeekly()">Conteo semanal</button>
-      <p class="legal">
-        Conteo semanal – versión Premium.<br>
-        Este espacio se sostiene a través de aportes conscientes y donaciones a voluntad.
-        Permite observar tu evolución humana semana a semana y construir una lectura mensual más profunda.
-      </p>`;
-  }
-}
-
-function updateThermometer(){
-  const totalQ=modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered=modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)+currentQuestion;
-  thermoFill.style.width=Math.round((answered/totalQ)*100)+"%";
-}
-
-function restart(){ showSection("start"); }
-function showPrivacy(){ showSection("privacy"); }
-
-function showSection(id){
-  ["start","test","results","weekly","privacy"]
-    .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-}
+     }
