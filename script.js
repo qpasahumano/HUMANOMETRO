@@ -195,7 +195,7 @@ function showResults(){
 
   if(mode==="premium"){
     weeklyAccess.innerHTML=`
-      <button class="premium" onclick="startWeekly()">Conteo semanal</button>
+      <button class="premium"onclick="weeklyWithDonation()" ">Conteo semanal</button>
       <p class="legal">
         Conteo semanal – versión Premium.<br>
         Este espacio se sostiene a través de aportes conscientes y donaciones a voluntad.
@@ -235,4 +235,5 @@ function weeklyWithDonation(){
   // Acceso normal al conteo semanal
   startWeekly();
 }
+
 
