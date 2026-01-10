@@ -82,7 +82,7 @@ button.premium {
   transition: width .4s ease;
 }
 
-/* Termómetro semanal con LED */
+/* Termómetro semanal LED */
 #weeklyThermoFill {
   height: 100%;
   width: 0%;
