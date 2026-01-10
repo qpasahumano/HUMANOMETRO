@@ -1,31 +1,42 @@
+/* ======================
+   RESET GENERAL
+====================== */
 * {
   box-sizing: border-box;
 }
 
+/* ======================
+   FONDO GLOBAL – LOGO HUMANÓMETRO
+====================== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background-color: #0b1220;
+  color: white;
 
-  /* Fondo con imagen sutil de la app */
-  background-image: url("bg-humanometro.png");
-  background-repeat: no-repeat;
+  /* Fondo con imagen + capas de protección */
+  background:
+    linear-gradient(
+      rgba(11, 18, 32, 0.92),
+      rgba(11, 18, 32, 0.92)
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.04),
+      rgba(0,0,0,0.25)
+    ),
+    url("bg-humanometro.png");
+
+  background-size: cover;
   background-position: center;
-  background-size: 70%;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 
-  color: white;
+  min-height: 100vh;
 }
 
-/* Oscurecimiento para legibilidad */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(11, 18, 32, 0.88);
-  z-index: -1;
-}
-
+/* ======================
+   CONTENEDOR PRINCIPAL
+====================== */
 #app {
   max-width: 520px;
   margin: auto;
@@ -33,29 +44,49 @@ body::before {
   text-align: center;
 }
 
+/* ======================
+   UTILIDADES
+====================== */
 .hidden {
   display: none;
 }
 
-/* BOTONES */
+/* ======================
+   LEGIBILIDAD TOTAL
+====================== */
+h1, h2, h3, p, li, small {
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+}
+
+/* ======================
+   BOTONES
+====================== */
 button {
   width: 90%;
   max-width: 340px;
   margin: 12px auto;
   padding: 15px;
+
   border-radius: 40px;
   border: none;
   font-size: 1em;
   cursor: pointer;
+
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46,204,113,.8);
+
+  box-shadow: 0 0 16px rgba(46,204,113,0.8);
   transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+  filter: brightness(1.1);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,.9);
+  box-shadow: 0 0 20px rgba(255,180,0,0.9);
 }
 
 .answers button {
@@ -63,26 +94,13 @@ button.premium {
   color: #fff;
 }
 
-/* Feedback táctil LED */
-button:active {
-  transform: scale(.97);
-  filter: brightness(1.15);
-  box-shadow: 0 0 25px rgba(46,204,113,1);
-}
-
-button.premium:active {
-  box-shadow: 0 0 30px rgba(255,200,80,1);
-}
-
-.answers button:active {
-  box-shadow: 0 0 25px rgba(52,152,219,1);
-}
-
-/* TERMÓMETRO */
+/* ======================
+   TERMÓMETRO PRINCIPAL
+====================== */
 #thermometer {
   width: 100%;
   height: 14px;
-  background: #111;
+  background: rgba(0,0,0,0.55);
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
@@ -91,18 +109,18 @@ button.premium:active {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
   transition: width .4s ease;
-  animation: pulse 1.6s infinite ease-in-out;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 6px rgba(46,204,113,.4); }
-  50% { box-shadow: 0 0 18px rgba(46,204,113,.9); }
-  100% { box-shadow: 0 0 6px rgba(46,204,113,.4); }
-}
-
-/* RESULTADOS */
+/* ======================
+   RESULTADOS POR ÁREA
+====================== */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -114,38 +132,49 @@ button.premium:active {
   height: 110px;
   border-radius: 50%;
   margin: 10px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   font-weight: bold;
-  opacity: 0;
-  transform: scale(.85);
-  animation: appear .6s ease forwards;
+  box-shadow: 0 0 18px rgba(0,0,0,0.4);
 }
 
-.circle:nth-child(1){animation-delay:.1s}
-.circle:nth-child(2){animation-delay:.25s}
-.circle:nth-child(3){animation-delay:.4s}
-.circle:nth-child(4){animation-delay:.55s}
-.circle:nth-child(5){animation-delay:.7s}
-
-@keyframes appear {
-  to { opacity:1; transform:scale(1); }
+.circle.low {
+  background: #e74c3c;
 }
 
-.circle.low { background:#e74c3c; }
-.circle.mid { background:#f1c40f; color:#000; }
-.circle.high { background:#2ecc71; color:#000; }
+.circle.mid {
+  background: #f1c40f;
+  color: #000;
+}
 
+.circle.high {
+  background: #2ecc71;
+  color: #000;
+}
+
+/* ======================
+   TEXTO LEGAL / PEQUEÑO
+====================== */
 .legal {
-  font-size:.8em;
-  opacity:.7;
-  cursor:pointer;
+  font-size: 0.8em;
+  opacity: 0.9;
+  cursor: pointer;
+  line-height: 1.4em;
 }
 
+/* ======================
+   BLOQUE MEDIDOR SEMANAL
+====================== */
 #weeklyBox {
-  margin-top:30px;
-  padding:18px;
-  border-radius:16px;
-  box-shadow:0 0 18px rgba(255,255,255,.25);
-}
+  margin-top: 30px;
+  padding: 18px;
+  border-radius: 16px;
+
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+
+  box-shadow: 0 0 22px rgba(255,255,255,0.25);
+  }
