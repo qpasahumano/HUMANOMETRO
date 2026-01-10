@@ -1,4 +1,4 @@
-let mode = "common";
+ let mode = "common";
 let currentModule = 0;
 let currentQuestion = 0;
 let modules = [];
@@ -150,6 +150,10 @@ function answer(v) {
   updateThermometer();
 }
 
+/* ===============================
+   RESULTADOS (DEVOLUCIONES RESTAURADAS)
+================================ */
+
 function showResults() {
   showSection("results");
   circles.innerHTML = "";
@@ -168,19 +172,26 @@ function showResults() {
         <strong>${p}%</strong>
         <small>${m.name}</small>
       </div>`;
+
+    // 🔹 DEVOLUCIONES PREMIUM POR ÁREA
+    if (mode === "premium") {
+      tips.innerHTML += `
+        <li>
+          ${p < 40
+            ? `En ${m.name} se observa una desconexión entre intención y acción.`
+            : p < 70
+              ? `En ${m.name} hay conciencia presente, aunque inestable.`
+              : `En ${m.name} hay coherencia y presencia humana sostenida.`
+          }
+        </li>`;
+    }
   });
 
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
 
-  if (mode === "premium") {
-    weeklyAccess.innerHTML = `
-      <button class="premium" onclick="weeklyWithDonation()">Conteo semanal</button>
-      <p class="legal">
-        Conteo semanal – versión Premium.<br>
-        Este espacio se sostiene a través de aportes conscientes y donaciones a voluntad.
-      </p>`;
-  } else {
+  // 🔹 DEVOLUCIÓN TEST COMÚN
+  if (mode === "common") {
     tips.innerHTML = `
       <li>
         ${avg < 40
@@ -188,55 +199,3 @@ function showResults() {
           : avg < 70
             ? "Existe intención humana, pero de forma inestable."
             : "Hay coherencia y presencia humana sostenida."
-        }
-      </li>`;
-  }
-}
-
-function updateThermometer() {
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) +
-    currentQuestion;
-
-  thermoFill.style.width = Math.round((answered / totalQ) * 100) + "%";
-}
-
-function restart() {
-  showSection("start");
-}
-
-function showPrivacy() {
-  showSection("privacy");
-}
-
-function showSection(id) {
-  ["start", "test", "results", "weekly", "privacy"]
-    .forEach(s => document.getElementById(s).classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
-
-/* ===============================
-   DONACIÓN VOLUNTARIA – FINAL
-================================ */
-
-function weeklyWithDonation() {
-  const donated = localStorage.getItem("humanometro_donacion");
-
-  if (!donated) {
-    window.open("https://mpago.la/1eCGrKX", "_blank");
-    localStorage.setItem("humanometro_donacion", "true");
-  }
-
-  startWeekly();
-}
-
-/* ===============================
-   PWA – SERVICE WORKER
-================================ */
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js");
-  });
-                       }
