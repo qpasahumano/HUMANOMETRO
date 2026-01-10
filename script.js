@@ -51,8 +51,10 @@ const BASE_MODULES = [
   ]},
   { name: "Laboral", questions: [
     "¿Actuaste con justicia aun sin supervisión?",
-    "¿Fuiste coherente entre valores y acciones?",
-    "¿Evitaste beneficiarte a costa de otros?"
+    /* REFORMULACIÓN 1 */
+    "¿Generaste un buen clima laboral incluso cuando no te sentías cómodo?",
+    /* REFORMULACIÓN 2 */
+    "¿Sobrecargaste con tu función a tus compañeros?"
   ]},
   { name: "Planeta", questions: [
     "Ante una situación S.O.S con un animal, ¿accionarías?",
@@ -303,4 +305,4 @@ function showSection(id){
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
+   }
