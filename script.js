@@ -218,3 +218,21 @@ function showSection(id){
     .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
+/* ===============================
+   DONACIÓN VOLUNTARIA – CONTEO SEMANAL
+   Integrado – Mercado Pago
+   Link real: https://mpago.la/1eCGrKX
+================================ */
+
+function weeklyWithDonation(){
+  const donated = localStorage.getItem("humanometro_donacion");
+
+  if(!donated){
+    window.open("https://mpago.la/1eCGrKX", "_blank");
+    localStorage.setItem("humanometro_donacion", "true");
+  }
+
+  // Acceso normal al conteo semanal
+  startWeekly();
+}
+
