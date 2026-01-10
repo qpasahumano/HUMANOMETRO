@@ -18,9 +18,9 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("installBtn");
-  if(btn){
+  if (btn) {
     btn.addEventListener("click", async () => {
-      if(!deferredPrompt) return;
+      if (!deferredPrompt) return;
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
       deferredPrompt = null;
@@ -30,47 +30,47 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ======================
-   MÓDULOS
+   MÓDULOS BASE
 ====================== */
 
 const BASE_MODULES = [
   { name: "Familia", questions: [
-    "¿Estás emocionalmente disponible para tu familia?",
-    "¿Escuchás sin juzgar ni corregir?",
-    "¿Expresás afecto de manera espontánea?"
+    "¿Estuviste emocionalmente presente con tu familia?",
+    "¿Escuchaste sin juzgar ni corregir?",
+    "¿Expresaste afecto de forma genuina?"
   ]},
   { name: "Social", questions: [
-    "¿Tratás a las personas con respeto incluso cuando no coincidís?",
-    "¿Podés escuchar opiniones distintas sin cerrarte?",
-    "¿Tenés en cuenta cómo tus acciones afectan a otros?"
+    "¿Trataste a otros con respeto aun en desacuerdo?",
+    "¿Escuchaste opiniones distintas sin cerrarte?",
+    "¿Tuviste en cuenta el impacto de tus actos?"
   ]},
   { name: "Amistad", questions: [
-    "¿Estás presente para tus amistades cuando lo necesitan?",
-    "¿Cuidás el vínculo aunque no compartas la misma opinión?",
-    "¿Sabés escuchar sin imponer tu punto de vista?"
+    "¿Estuviste disponible cuando alguien te necesitó?",
+    "¿Cuidaste el vínculo aun sin coincidir?",
+    "¿Escuchaste sin imponer tu mirada?"
   ]},
   { name: "Laboral", questions: [
-    "¿Tomás decisiones justas en tu trabajo incluso sin supervisión?",
-    "¿Mantenés coherencia entre valores y acciones laborales?",
-    "¿Evitás beneficiarte a costa de otros en tu trabajo?"
+    "¿Actuaste con justicia aun sin supervisión?",
+    "¿Fuiste coherente entre valores y acciones?",
+    "¿Evitaste beneficiarte a costa de otros?"
   ]},
   { name: "Planeta", questions: [
-    "Si te encontraras con un animal en una situación S.O.S, ¿accionarías?",
-    "¿Realizás acciones concretas para cuidar el entorno donde vivís?",
-    "¿Intentás reducir tu impacto ambiental cotidiano?"
+    "Ante una situación S.O.S con un animal, ¿accionarías?",
+    "¿Cuidaste activamente el entorno donde vivís?",
+    "¿Reduciste tu impacto ambiental cuando pudiste?"
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
-    "¿Sos consciente de tus reacciones emocionales antes de actuar?",
-    "¿Lográs coherencia entre lo que pensás y lo que hacés?",
-    "¿Te responsabilizás del impacto emocional que generás en otros?"
+    "¿Fuiste consciente de tus reacciones antes de actuar?",
+    "¿Lograste coherencia entre lo que sentís y hacés?",
+    "¿Asumiste responsabilidad emocional en tus vínculos?"
   ]}
 ];
 
 /* ======================
-   TEST GENERAL
+   TEST
 ====================== */
 
 function startTest(isPremium){
@@ -95,9 +95,9 @@ function showQuestion(){
   document.getElementById("questionText").innerText = mod.questions[currentQuestion];
 }
 
-function answer(value){
+function answer(val){
   const mod = modules[currentModule];
-  scores[mod.name] += value;
+  scores[mod.name] += val;
   currentQuestion++;
 
   if(currentQuestion >= mod.questions.length){
@@ -111,21 +111,38 @@ function answer(value){
 }
 
 /* ======================
-   DEVOLUCIONES GENERALES
+   DEVOLUCIONES
 ====================== */
 
 function commonFeedback(avg){
   if(avg < 40){
-    return "La coherencia humana se encuentra baja. Predominan respuestas reactivas y una desconexión entre empatía, conciencia y acción.";
+    return "Las respuestas reflejan una desconexión entre conciencia, empatía y acción. Predominan reacciones automáticas.";
   }
   if(avg < 70){
-    return "Existe conciencia humana, aunque de forma intermitente. Hay momentos de presencia y otros donde se pierde el eje interno.";
+    return "Hay conciencia presente, aunque de forma inestable. En algunas vivencias se sostiene y en otras se diluye.";
   }
-  return "La coherencia y congruencia humana están activas. Pensar, sentir y actuar tienden a alinearse de manera sostenida.";
+  return "La coherencia humana está activa. Pensar, sentir y actuar tienden a alinearse.";
+}
+
+function premiumFeedback(area, percent){
+  const low = [
+    `En ${area} se percibe desconexión interna y reacción automática.`,
+    `En ${area} cuesta sostener empatía en situaciones reales.`
+  ];
+  const mid = [
+    `En ${area} la conciencia aparece, pero no siempre se mantiene.`,
+    `En ${area} hay intención de coherencia aún fluctuante.`
+  ];
+  const high = [
+    `En ${area} hay presencia consciente y coherencia interna.`,
+    `En ${area} tus acciones reflejan humanidad sostenida.`
+  ];
+  const pool = percent < 40 ? low : percent < 70 ? mid : high;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 /* ======================
-   RESULTADOS
+   RESULTADOS GENERALES
 ====================== */
 
 function showResults(){
@@ -147,13 +164,19 @@ function showResults(){
       <div class="circle ${pct < 40 ? "low" : pct < 70 ? "mid" : "high"}">
         <strong>${pct}%</strong><small>${m.name}</small>
       </div>`;
+
+    if(mode === "premium"){
+      tips.innerHTML += `<li>${premiumFeedback(m.name, pct)}</li>`;
+    }
   });
 
   const avg = Math.round(total / modules.length);
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + avg + "%";
 
-  tips.innerHTML += `<li>${commonFeedback(avg)}</li>`;
+  if(mode === "common"){
+    tips.innerHTML += `<li>${commonFeedback(avg)}</li>`;
+  }
 
   if(mode === "premium"){
     const results = document.getElementById("results");
@@ -176,14 +199,14 @@ function showResults(){
 }
 
 /* ======================
-   MEDIDOR SEMANAL
+   MEDIDOR SEMANAL (VIVENCIAL)
 ====================== */
 
 const WEEKLY_QUESTIONS = [
-  "Esta semana, ¿escuchaste a tu pareja sin preparar tu respuesta?",
-  "¿Durante un conflicto lograste no guardar rencor?",
-  "¿Intentaste empatizar con lo que le estaba pasando a tu pareja?",
-  "¿Cuidaste el vínculo incluso en momentos de tensión?"
+  "¿Tuviste un conflicto con tu pareja esta semana?",
+  "Si lo hubo, ¿guardaste bronca por lo sucedido?",
+  "¿Escuchaste a tu pareja con presencia real?",
+  "¿Intentaste comprender lo que le pasaba al otro?"
 ];
 
 function startWeekly(){
@@ -216,24 +239,34 @@ function showWeeklyResult(){
   let state, color, icon, advice;
 
   if(avg >= 1.5){
-    state = "Estado humano en ascenso";
+    state = "Conciencia humana en ascenso";
     color = "#2ecc71";
     icon = "🙂";
-    advice = "Seguí cultivando la escucha y la empatía. Estás construyendo coherencia interna.";
+    advice = "Sostené esta presencia. Estás humanizando tus vínculos.";
   } else if(avg >= 0.8){
-    state = "Estado humano intermedio";
+    state = "Conciencia humana intermedia";
     color = "#f1c40f";
     icon = "😐";
-    advice = "Observá en qué momentos reaccionás y dónde podrías responder con más conciencia.";
+    advice = "Observá dónde reaccionás y dónde podés responder con más empatía.";
   } else {
-    state = "Estado humano bajo";
+    state = "Conciencia humana baja";
     color = "#e74c3c";
     icon = "☹️";
-    advice = "Poné foco en detenerte antes de reaccionar. Escuchar y sentir sin defenderte es un primer paso.";
+    advice = "Poné foco en frenar la reacción y abrir la escucha consciente.";
   }
 
   document.getElementById("results").innerHTML = `
-    <h3>Resultado semanal ${icon}</h3>
+    <h3>Resultado semanal</h3>
+
+    <div style="
+      font-size:48px;
+      text-align:center;
+      margin:10px 0;
+      filter: drop-shadow(0 0 8px ${color});
+    ">
+      ${icon}
+    </div>
+
     <p><strong>${state}</strong></p>
     <p>${advice}</p>
 
