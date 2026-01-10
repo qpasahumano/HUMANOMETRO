@@ -5,13 +5,15 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
   <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=FINAL-CANDADO">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -19,20 +21,18 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1 class="logo">
-      <span class="logo-text">HUMANÓMETRO® v.1</span>
-    </h1>
+    <h1 class="brand">HUMANÓMETRO</h1>
 
-    <p>
-      No es un espejo. Es tu humanidad reflejada.<br>
-      Según tus vivencias y experiencias, esta herramienta observa tus elecciones
-      para ofrecerte una lectura de tu conciencia humana actual.<br>
-      ¿Conocés tu nivel de conciencia humana hoy?
+    <p class="intro">
+      Esta herramienta no mide perfección ni juicio.<br>
+      A lo largo de tus experiencias y vivencias, observa cómo se alinean
+      intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
+    <p class="legal">v.1 ®</p>
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
@@ -45,7 +45,7 @@
     </div>
 
     <p id="questionText"></p>
-    <p class="question-note" id="questionNote"></p>
+    <small id="questionNote" class="legal"></small>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
@@ -65,28 +65,7 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <div id="weeklyEntry"></div>
-
     <button onclick="restart()">Reiniciar</button>
-  </section>
-
-  <!-- CONTEO SEMANAL -->
-  <section id="weekly" class="hidden">
-    <h2 class="weekly-title">Bloque: Amor / Pareja</h2>
-
-    <p class="weekly-intro">
-      ¿Cómo fue tu semana?<br>
-      Respondé con total sinceridad para conocer tu tendencia humana actual
-      en este aspecto de tu vida.
-    </p>
-
-    <p id="weeklyQuestion"></p>
-
-    <div class="answers">
-      <button onclick="weeklyAnswer(2)">Sí</button>
-      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-      <button onclick="weeklyAnswer(0)">No</button>
-    </div>
   </section>
 
   <!-- PRIVACIDAD -->
@@ -103,6 +82,6 @@
 
 </main>
 
-<script src="script.js?v=FINAL-CANDADO"></script>
+<script src="script.js"></script>
 </body>
 </html>
