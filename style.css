@@ -18,8 +18,26 @@ body {
   border-radius: 16px;
 }
 
-.hidden {
-  display: none;
+.hidden { display: none; }
+
+/* LOGO */
+.brand {
+  margin-bottom: 10px;
+}
+
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: 2.2em;
+  color: #b9fff2;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 12px rgba(120,255,230,.6);
+}
+
+.brand-meta {
+  font-size: 0.65em;
+  margin-left: 6px;
+  opacity: 0.75;
 }
 
 button {
@@ -33,12 +51,12 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+  box-shadow: 0 0 15px rgba(46,204,113,0.8);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255, 180, 0, 0.9);
+  box-shadow: 0 0 18px rgba(255,180,0,0.9);
 }
 
 .answers button {
@@ -58,13 +76,8 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
 }
 
 #circles {
@@ -84,28 +97,18 @@ button.premium {
   font-weight: bold;
 }
 
-.circle.low {
-  background: #e74c3c;
-}
-
-.circle.mid {
-  background: #f1c40f;
-  color: #000;
-}
-
-.circle.high {
-  background: #2ecc71;
-  color: #000;
-}
+.circle.low { background:#e74c3c; }
+.circle.mid { background:#f1c40f; color:#000; }
+.circle.high { background:#2ecc71; color:#000; }
 
 .legal {
-  font-size: 0.75em;
-  opacity: 0.7;
+  font-size: .75em;
+  opacity: .7;
   cursor: pointer;
 }
 
 .question-note {
-  font-size: 0.75em;
-  opacity: 0.75;
+  font-size: .75em;
+  opacity: .75;
   margin-bottom: 10px;
 }
