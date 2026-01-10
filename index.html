@@ -5,14 +5,11 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTE -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css?v=FINAL">
 </head>
 
@@ -21,12 +18,13 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1>HUMANÓMETRO</h1>
+    <h1 class="logo">HUMANÓMETRO</h1>
 
     <p>
       No es un espejo. Es tu humanidad reflejada.<br>
-      Una herramienta de autoobservación basada en tus elecciones y vivencias.<br>
-      ¿Conocés tu nivel de conciencia humana actual?
+      Según tus vivencias y experiencias, esta herramienta observa tus elecciones
+      para brindarte una lectura de tu conciencia humana actual.<br>
+      ¿Conocés tu nivel de conciencia humana hoy?
     </p>
 
     <button onclick="startTest(false)">Versión Común</button>
@@ -65,7 +63,28 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
+    <div id="weeklyEntry"></div>
+
     <button onclick="restart()">Reiniciar</button>
+  </section>
+
+  <!-- CONTEO SEMANAL -->
+  <section id="weekly" class="hidden">
+    <h2 class="weekly-title">Bloque: Amor / Pareja</h2>
+
+    <p class="weekly-intro">
+      ¿Cómo fue tu semana?<br>
+      Respondé con total sinceridad para conocer tu tendencia humana actual
+      en este aspecto de tu vida.
+    </p>
+
+    <p id="weeklyQuestion"></p>
+
+    <div class="answers">
+      <button onclick="weeklyAnswer(2)">Sí</button>
+      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
+      <button onclick="weeklyAnswer(0)">No</button>
+    </div>
   </section>
 
   <!-- PRIVACIDAD -->
