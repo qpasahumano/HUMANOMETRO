@@ -1,6 +1,3 @@
-/* =========================
-   RESET Y BASE
-========================= */
 * {
   box-sizing: border-box;
 }
@@ -8,61 +5,33 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: #0b1220 url("bg-humanometro.png") center / cover no-repeat fixed;
+  background: #0b1220;
   color: white;
 }
 
-/* =========================
-   CONTENEDOR APP
-========================= */
 #app {
   max-width: 520px;
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(11, 18, 32, 0.85);
-  border-radius: 16px;
 }
 
-/* =========================
-   UTILIDADES
-========================= */
 .hidden {
   display: none;
 }
 
-.legal {
-  font-size: 0.75em;
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-/* =========================
-   TÍTULO PRINCIPAL
-========================= */
 .brand {
-  font-family: "Mystery Quest", cursive;
-  letter-spacing: 0.18em;
   font-size: 2.2em;
-  margin-bottom: 2px;
-  text-shadow:
-    0 0 6px rgba(0, 255, 200, 0.6),
-    0 0 14px rgba(0, 180, 255, 0.4);
+  letter-spacing: 0.15em;
 }
 
-/* V.1 — versión chica, sin LED */
-.brand + .legal {
-  font-family: "Poppins", sans-serif;
+.version {
+  display: block;
   font-size: 0.7em;
-  letter-spacing: normal;
-  text-shadow: none;
-  opacity: 0.65;
-  margin-top: 4px;
+  opacity: 0.7;
+  margin-bottom: 15px;
 }
 
-/* =========================
-   BOTONES
-========================= */
 button {
   width: 90%;
   max-width: 340px;
@@ -74,40 +43,24 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 0 15px rgba(46,204,113,.8);
+  transition: box-shadow .2s ease;
 }
 
 button:active {
-  transform: scale(0.97);
-  box-shadow: 0 0 22px rgba(46, 204, 113, 1);
+  box-shadow: 0 0 25px rgba(46,204,113,1);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255, 180, 0, 0.9);
+  box-shadow: 0 0 18px rgba(255,180,0,.9);
 }
 
 .answers button {
   background: #3498db;
   color: #fff;
-  box-shadow: 0 0 14px rgba(52, 152, 219, 0.7);
 }
 
-/* =========================
-   TÍTULOS DE BLOQUES
-========================= */
-#areaTitle {
-  font-size: 1.3em;
-  margin-bottom: 10px;
-  text-shadow:
-    0 0 6px rgba(120, 255, 255, 0.7),
-    0 0 14px rgba(120, 180, 255, 0.4);
-}
-
-/* =========================
-   TERMÓMETRO
-========================= */
 #thermometer {
   width: 100%;
   height: 14px;
@@ -115,36 +68,15 @@ button.premium {
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  box-shadow:
-    0 0 10px rgba(255,255,255,0.5),
-    0 0 18px rgba(46,204,113,0.6);
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
 }
 
-/* =========================
-   NOTA DE PREGUNTA
-========================= */
-#questionNote {
-  font-size: 0.75em;
-  opacity: 0.75;
-  margin-bottom: 10px;
-}
-
-/* =========================
-   RESULTADOS – CÍRCULOS
-========================= */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -152,86 +84,18 @@ button.premium {
 }
 
 .circle {
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
-  position: relative;
-  overflow: hidden;
-  animation: fadeIn 0.6s ease forwards;
 }
 
-/* Cielo boreal interno */
-.circle::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(0,255,200,0.25),
-    rgba(120,180,255,0.25),
-    rgba(180,120,255,0.25)
-  );
-  animation: auroraMove 6s linear infinite;
-  z-index: 0;
+.legal {
+  font-size: .75em;
+  opacity: .7;
+  cursor: pointer;
 }
-
-.circle * {
-  position: relative;
-  z-index: 1;
-}
-
-.circle.low {
-  box-shadow: 0 0 18px rgba(231,76,60,0.9);
-}
-
-.circle.mid {
-  box-shadow: 0 0 18px rgba(241,196,15,0.9);
-  color: #000;
-}
-
-.circle.high {
-  box-shadow: 0 0 18px rgba(46,204,113,1);
-  color: #000;
-}
-
-/* =========================
-   CONTEO SEMANAL
-========================= */
-#weeklyBox {
-  margin-top: 30px;
-  padding: 18px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.25);
-  box-shadow:
-    0 0 18px rgba(120, 255, 255, 0.25);
-}
-
-#weeklyBox h3 {
-  margin-bottom: 10px;
-  text-shadow:
-    0 0 6px rgba(120, 255, 255, 0.7),
-    0 0 14px rgba(120, 180, 255, 0.4);
-}
-
-#weeklyBox p {
-  margin-bottom: 12px;
-}
-
-/* =========================
-   ANIMACIONES
-========================= */
-@keyframes auroraMove {
-  0% { transform: translateX(-20%); }
-  50% { transform: translateX(20%); }
-  100% { transform: translateX(-20%); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-   }
