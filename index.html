@@ -2,18 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Humanómetro</title>
+  <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTE -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260118">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -21,26 +21,18 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1>
-      HUMANÓMETRO
-      <small style="font-size:.6em;opacity:.7;">v.1®</small>
-    </h1>
+    <h1 class="brand">HUMANÓMETRO</h1>
 
-    <p>No es un espejo. Es tu humanidad reflejada.</p>
+    <p class="intro">
+      Esta herramienta no mide perfección ni juicio.<br>
+      A lo largo de tus experiencias y vivencias, observa cómo se alinean
+      intención, coherencia y humanidad en tu forma de actuar.
+    </p>
 
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-    <!-- BOTÓN PWA -->
-    <button id="installBtn" class="premium hidden">Instalar Humanómetro</button>
-
-    <p class="legal">
-      Humanómetro es una herramienta de autoevaluación humana basada en tus vivencias.<br>
-      El resultado surge del conjunto de elecciones que realizás según cómo actuás, sentís y respondés en distintas situaciones de tu vida.<br>
-      No mide respuestas aisladas, sino coherencia humana a lo largo de tus experiencias.<br><br>
-      <strong>¿Conocés tu nivel de conciencia humana actual?</strong>
-    </p>
-
+    <p class="legal">v.1 ®</p>
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
@@ -53,6 +45,7 @@
     </div>
 
     <p id="questionText"></p>
+    <small id="questionNote" class="legal"></small>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
