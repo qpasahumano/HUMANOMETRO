@@ -1,4 +1,9 @@
-* { box-sizing: border-box; }
+/* =========================
+   RESET Y BASE
+========================= */
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -7,41 +12,52 @@ body {
   color: white;
 }
 
+/* =========================
+   CONTENEDOR APP
+========================= */
 #app {
   max-width: 520px;
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(11, 18, 32, 0.82);
+  background: rgba(11, 18, 32, 0.85);
   border-radius: 16px;
 }
 
-.hidden { display: none; }
+/* =========================
+   UTILIDADES
+========================= */
+.hidden {
+  display: none;
+}
 
-/* LOGO */
+.legal {
+  font-size: 0.75em;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+/* =========================
+   TÍTULO PRINCIPAL
+========================= */
 .brand {
-  margin: 10px 0 14px;
-  text-align: center;
-}
-
-.brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: clamp(1.6rem, 6.5vw, 2.3rem);
-  letter-spacing: 0.08em;
-  line-height: 1.15;
-  color: #b9fff2;
+  letter-spacing: 0.18em;
+  font-size: 2.2em;
+  margin-bottom: 5px;
   text-shadow:
-    0 0 4px rgba(120,255,230,.7),
-    0 0 10px rgba(120,255,230,.5);
-  white-space: nowrap;
+    0 0 6px rgba(0, 255, 200, 0.6),
+    0 0 14px rgba(0, 180, 255, 0.4);
 }
 
-.brand-meta {
-  font-size: 0.65rem;
-  margin-left: 6px;
-  opacity: 0.75;
+/* versión debajo */
+.brand + .legal {
+  margin-top: 0;
 }
 
+/* =========================
+   BOTONES
+========================= */
 button {
   width: 90%;
   max-width: 340px;
@@ -53,44 +69,77 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46,204,113,.8);
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 22px rgba(46, 204, 113, 1);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,.9);
+  box-shadow: 0 0 18px rgba(255, 180, 0, 0.9);
 }
 
 .answers button {
   background: #3498db;
   color: #fff;
+  box-shadow: 0 0 14px rgba(52, 152, 219, 0.7);
 }
 
-#thermometer, .weekly-thermo {
+/* =========================
+   TÍTULOS DE BLOQUES
+========================= */
+#areaTitle {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  text-shadow:
+    0 0 6px rgba(120, 255, 255, 0.7),
+    0 0 14px rgba(120, 180, 255, 0.4);
+}
+
+/* =========================
+   TERMÓMETRO LED
+========================= */
+#thermometer {
   width: 100%;
   height: 14px;
   background: #111;
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.5),
+    0 0 18px rgba(46,204,113,0.6);
+  transition: width 0.4s ease;
 }
 
-/* Termómetro semanal LED */
-#weeklyThermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 10px rgba(255,255,255,.6);
-  transition: width .4s ease;
+/* =========================
+   NOTA DE PREGUNTA
+========================= */
+#questionNote {
+  font-size: 0.75em;
+  opacity: 0.75;
+  margin-bottom: 10px;
 }
 
+/* =========================
+   RESULTADOS – CÍRCULOS
+========================= */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -106,19 +155,56 @@ button.premium {
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.6s ease forwards;
 }
 
-.circle.low { background:#e74c3c; }
-.circle.mid { background:#f1c40f; color:#000; }
-.circle.high { background:#2ecc71; color:#000; }
-
-.legal {
-  font-size: .75em;
-  opacity: .7;
+/* cielo boreal interno */
+.circle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(0,255,200,0.25),
+    rgba(120,180,255,0.25),
+    rgba(180,120,255,0.25)
+  );
+  animation: auroraMove 6s linear infinite;
+  z-index: 0;
 }
 
-.weekly-intro {
-  font-size: .9em;
-  opacity: .9;
-  margin-bottom: 12px;
+/* texto arriba del efecto */
+.circle * {
+  position: relative;
+  z-index: 1;
+}
+
+.circle.low {
+  box-shadow: 0 0 18px rgba(231,76,60,0.9);
+}
+
+.circle.mid {
+  box-shadow: 0 0 18px rgba(241,196,15,0.9);
+  color: #000;
+}
+
+.circle.high {
+  box-shadow: 0 0 18px rgba(46,204,113,1);
+  color: #000;
+}
+
+/* =========================
+   ANIMACIONES
+========================= */
+@keyframes auroraMove {
+  0% { transform: translateX(-20%); }
+  50% { transform: translateX(20%); }
+  100% { transform: translateX(-20%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
