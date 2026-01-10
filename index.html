@@ -5,10 +5,14 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -62,6 +66,7 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
+    <!-- Acceso a conteo semanal (solo Premium) -->
     <div id="weeklyAccess"></div>
 
     <button onclick="restart()">Reiniciar</button>
@@ -69,7 +74,16 @@
 
   <!-- CONTEO SEMANAL -->
   <section id="weekly" class="hidden">
-    <h2>Conteo semanal – Vínculos</h2>
+    <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
+
+    <p class="weekly-intro">
+      ¿Cómo fue tu semana?<br>
+      Respondé con sinceridad para reconocer tu tendencia humana actual.
+    </p>
+
+    <div id="weeklyThermometer" class="weekly-thermo">
+      <div id="weeklyThermoFill"></div>
+    </div>
 
     <p id="weeklyQuestion"></p>
 
@@ -77,6 +91,16 @@
       <button onclick="weeklyAnswer(2)">Sí</button>
       <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
       <button onclick="weeklyAnswer(0)">No</button>
+    </div>
+
+    <div id="weeklyResult" class="hidden">
+      <p id="weeklyText"></p>
+      <p id="weeklyAdvice" class="legal"></p>
+
+      <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+      <button onclick="restart()">Volver</button>
+
+      <p id="weeklySaved" class="legal hidden">✔ Conteo semanal guardado correctamente.</p>
     </div>
   </section>
 
