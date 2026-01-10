@@ -4,11 +4,12 @@ let currentQuestion = 0;
 let modules = [];
 let scores = {};
 
-/* === BLOQUE NUEVO: CONTEO SEMANAL === */
+/* ===============================
+   CONTEO SEMANAL (INAMOVIBLE)
+================================ */
 let weeklyIndex = 0;
 let weeklyScores = [];
 
-/* PREGUNTAS SEMANALES (BOOST textual aprobado) */
 const WEEKLY_QUESTIONS = [
   "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
   "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
@@ -74,7 +75,9 @@ function saveWeekly() {
   weeklySaved.classList.remove("hidden");
 }
 
-/* === TEST PRINCIPAL (BASE INTACTA) === */
+/* ===============================
+   TEST PRINCIPAL
+================================ */
 
 const BASE_MODULES = [
   { name:"Familia", questions:[
@@ -153,22 +156,50 @@ function showResults(){
     const max=m.questions.length*2;
     const p=Math.round(scores[m.name]/max*100);
     total+=p;
-    circles.innerHTML+=`<div class="circle ${p<40?"low":p<70?"mid":"high"}"><strong>${p}%</strong><small>${m.name}</small></div>`;
+    circles.innerHTML+=`
+      <div class="circle ${p<40?"low":p<70?"mid":"high"}">
+        <strong>${p}%</strong>
+        <small>${m.name}</small>
+      </div>`;
+    
     if(mode==="premium"){
-      tips.innerHTML+=`<li>En ${m.name}: ${p<40?"desconexión":p<70?"fluctuación":"coherencia"}.</li>`;
+      tips.innerHTML+=`
+        <li>
+          En <strong>${m.name}</strong>:
+          ${p<40
+            ? "hay una desconexión interna. Tomar conciencia sin castigarte es el primer paso."
+            : p<70
+              ? "existe intención, pero aún es inestable. La constancia puede fortalecerla."
+              : "hay coherencia y presencia humana. Sostenerla refuerza tu equilibrio."
+          }
+        </li>`;
     }
   });
 
-  globalResult.innerText="Humanidad global: "+Math.round(total/modules.length)+"%";
+  const avg = Math.round(total/modules.length);
+  globalResult.innerText="Humanidad global: "+avg+"%";
+
+  /* === DEVOLUCIÓN TEST COMÚN (CORRECCIÓN APLICADA) === */
+  if(mode==="common"){
+    let text = "";
+    if(avg < 40){
+      text = "Tus respuestas muestran una desconexión entre lo que sentís y cómo actuás. No es un juicio: es una señal. Observar tus reacciones cotidianas puede ayudarte a recuperar presencia y humanidad.";
+    } else if(avg < 70){
+      text = "Existe sensibilidad y conciencia humana, pero de forma fluctuante. En algunos momentos estás presente, en otros actuás en automático. La atención sostenida puede ayudarte a estabilizarte.";
+    } else {
+      text = "Mostrás un nivel de coherencia humana sólido. Hay alineación entre intención, pensamiento y acción. Sostener esta actitud en lo cotidiano fortalece tu equilibrio interno.";
+    }
+
+    tips.innerHTML += `<li>${text}</li>`;
+  }
 
   if(mode==="premium"){
     weeklyAccess.innerHTML=`
       <button class="premium" onclick="startWeekly()">Conteo semanal</button>
       <p class="legal">
-        Conteo semanal – versión Premium<br>
-        Este espacio se sostiene a través de aportes conscientes.<br>
-        Si sentís que esta herramienta te acompaña a observarte, crecer o sanar,
-        podés colaborar con una donación a voluntad para que siga existiendo.
+        Conteo semanal – versión Premium.<br>
+        Este espacio se sostiene a través de aportes conscientes y donaciones a voluntad.
+        Permite observar tu evolución humana semana a semana y construir una lectura mensual más profunda.
       </p>`;
   }
 }
@@ -183,6 +214,7 @@ function restart(){ showSection("start"); }
 function showPrivacy(){ showSection("privacy"); }
 
 function showSection(id){
-  ["start","test","results","weekly","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
+  ["start","test","results","weekly","privacy"]
+    .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
