@@ -111,39 +111,17 @@ function answer(value){
 }
 
 /* ======================
-   DEVOLUCIONES
+   DEVOLUCIONES GENERALES
 ====================== */
 
 function commonFeedback(avg){
   if(avg < 40){
-    return "Las respuestas indican una baja coherencia entre conciencia, empatía y acción. Predominan reacciones automáticas y desconexión emocional.";
+    return "La coherencia humana se encuentra baja. Predominan respuestas reactivas y una desconexión entre empatía, conciencia y acción.";
   }
   if(avg < 70){
-    return "Existe conciencia humana, aunque aparece de manera intermitente. En algunos contextos se sostiene y en otros se diluye.";
+    return "Existe conciencia humana, aunque de forma intermitente. Hay momentos de presencia y otros donde se pierde el eje interno.";
   }
-  return "La coherencia humana se encuentra activa. Hay presencia, empatía y responsabilidad emocional sostenida.";
-}
-
-function premiumFeedback(area, percent){
-  const variants = {
-    low: [
-      `En ${area}, se observa una desconexión interna entre lo que sentís y cómo actuás.`,
-      `En ${area}, predomina la reacción por sobre la conciencia.`,
-      `En ${area}, hay dificultad para sostener empatía y coherencia.`
-    ],
-    mid: [
-      `En ${area}, la conciencia aparece, pero no siempre se mantiene.`,
-      `En ${area}, la coherencia depende del contexto emocional.`,
-      `En ${area}, hay intención de cambio, aún inestable.`
-    ],
-    high: [
-      `En ${area}, hay coherencia interna y presencia consciente.`,
-      `En ${area}, las acciones reflejan empatía y responsabilidad.`,
-      `En ${area}, la humanidad se expresa de forma sostenida.`
-    ]
-  };
-  const g = percent < 40 ? "low" : percent < 70 ? "mid" : "high";
-  return variants[g][Math.floor(Math.random() * variants[g].length)];
+  return "La coherencia y congruencia humana están activas. Pensar, sentir y actuar tienden a alinearse de manera sostenida.";
 }
 
 /* ======================
@@ -169,19 +147,13 @@ function showResults(){
       <div class="circle ${pct < 40 ? "low" : pct < 70 ? "mid" : "high"}">
         <strong>${pct}%</strong><small>${m.name}</small>
       </div>`;
-
-    if(mode === "premium"){
-      tips.innerHTML += `<li>${premiumFeedback(m.name, pct)}</li>`;
-    }
   });
 
   const avg = Math.round(total / modules.length);
   document.getElementById("globalResult").innerText =
     "Humanidad global: " + avg + "%";
 
-  if(mode === "common"){
-    tips.innerHTML += `<li>${commonFeedback(avg)}</li>`;
-  }
+  tips.innerHTML += `<li>${commonFeedback(avg)}</li>`;
 
   if(mode === "premium"){
     const results = document.getElementById("results");
@@ -194,8 +166,9 @@ function showResults(){
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "Con esta versión podés medir semana a semana tu nivel de conciencia humana. " +
-      "El medidor semanal te permite observar tu estado actual y cómo evoluciona con el tiempo.";
+      "Con este medidor podés medir semana a semana tu nivel de conciencia humana, " +
+      "en el amor (pareja), en el trabajo, en lo social y en general. " +
+      "Actualizá tu consciencia.";
 
     results.appendChild(btn);
     results.appendChild(note);
@@ -203,7 +176,7 @@ function showResults(){
 }
 
 /* ======================
-   SEMANAL
+   MEDIDOR SEMANAL
 ====================== */
 
 const WEEKLY_QUESTIONS = [
@@ -234,31 +207,38 @@ function showWeeklyQuestion(){
 function weeklyAnswer(v){
   weeklyScore.push(v);
   weeklyIndex++;
-
-  weeklyIndex < WEEKLY_QUESTIONS.length
-    ? showWeeklyQuestion()
-    : showWeeklyResult();
+  weeklyIndex < WEEKLY_QUESTIONS.length ? showWeeklyQuestion() : showWeeklyResult();
 }
 
 function showWeeklyResult(){
   const avg = weeklyScore.reduce((a,b)=>a+b,0) / weeklyScore.length;
 
-  let color = avg < 0.8 ? "red" : avg < 1.5 ? "yellow" : "green";
-  let height = color === "red" ? "30%" : color === "yellow" ? "60%" : "100%";
+  let state, color, icon, advice;
 
-  let msg =
-    color === "green"
-      ? "Estado humano en ascenso. Conciencia y empatía presentes."
-      : color === "yellow"
-      ? "Estado humano intermedio. Conciencia fluctuante."
-      : "Estado humano bajo. Desconexión emocional y reactividad.";
+  if(avg >= 1.5){
+    state = "Estado humano en ascenso";
+    color = "#2ecc71";
+    icon = "🙂";
+    advice = "Seguí cultivando la escucha y la empatía. Estás construyendo coherencia interna.";
+  } else if(avg >= 0.8){
+    state = "Estado humano intermedio";
+    color = "#f1c40f";
+    icon = "😐";
+    advice = "Observá en qué momentos reaccionás y dónde podrías responder con más conciencia.";
+  } else {
+    state = "Estado humano bajo";
+    color = "#e74c3c";
+    icon = "☹️";
+    advice = "Poné foco en detenerte antes de reaccionar. Escuchar y sentir sin defenderte es un primer paso.";
+  }
 
   document.getElementById("results").innerHTML = `
-    <h3>Resultado semanal</h3>
-    <p>${msg}</p>
+    <h3>Resultado semanal ${icon}</h3>
+    <p><strong>${state}</strong></p>
+    <p>${advice}</p>
 
     <div style="margin:20px auto;height:140px;width:24px;background:#111;border-radius:12px;overflow:hidden;">
-      <div style="height:${height};background:${color};box-shadow:0 0 14px ${color};"></div>
+      <div style="height:${avg*50}%;background:${color};box-shadow:0 0 18px ${color};"></div>
     </div>
 
     <button onclick="restart()">Cerrar / Grabar nivel actual</button>
