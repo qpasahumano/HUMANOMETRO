@@ -6,7 +6,7 @@ let weeklyIndex=0;
 let weeklyScores=[];
 const WEEKLY_QUESTIONS=[
  "¿Tuviste algún conflicto con tu pareja esta semana?",
- "Si lo hubo, ¿intentaste comprender lo que sentía?",
+ "Si lo hubo, ¿intentaste comprender lo que sentía la otra persona?",
  "¿Pudiste soltar el enojo o quedó rencor?"
 ];
 
@@ -57,9 +57,9 @@ function startTest(p){
 
 function showQuestion(){
  const m=modules[currentModule];
+ areaTitle.innerText=m.name;
  questionText.innerText=m.questions[currentQuestion].q;
  questionNote.innerText=m.questions[currentQuestion].n;
- areaTitle.innerText=m.name;
 }
 
 function answer(v){
@@ -75,22 +75,44 @@ function showResults(){
  showSection("results");
  circles.innerHTML="";tips.innerHTML="";
  let total=0;
+
  modules.forEach(m=>{
   let max=m.questions.length*2;
-  let p=Math.round(scores[m.name]/max*100);total+=p;
+  let p=Math.round(scores[m.name]/max*100);
+  total+=p;
   circles.innerHTML+=`<div class="circle ${p<40?"low":p<70?"mid":"high"}"><strong>${p}%</strong><small>${m.name}</small></div>`;
+
   if(mode==="premium"){
-   tips.innerHTML+=`<li>En ${m.name}, ${p<40?"hay desconexión. Observar sin juzgar ayuda a recomponer.":p<70?"hay intención inestable. Sostener atención puede equilibrar.":"hay coherencia interna. Continuá cultivándola."}</li>`;
+   tips.innerHTML+=`<li><strong>${m.name}:</strong> ${
+    p<40
+     ?"Hay desconexión entre intención y acción. Observarte sin juzgar puede ser el primer paso para sanar este aspecto."
+     :p<70
+      ?"Hay intención, pero aún inestable. Prestar más atención consciente puede ayudarte a equilibrar este área."
+      :"Hay coherencia y presencia. Sostener este nivel fortalece tu humanidad."
+   }</li>`;
   }
  });
+
  let avg=Math.round(total/modules.length);
  globalResult.innerText="Humanidad global: "+avg+"%";
+
  if(mode==="common"){
-  tips.innerHTML+=`<li>${avg<40?"Predomina desconexión. Reconocerlo es el inicio.":avg<70?"Humanidad presente pero fluctuante.":"Coherencia humana sostenida."}</li>`;
+  tips.innerHTML+=`<li>${
+    avg<40
+     ?"Se observa una carencia de coherencia general. Tal vez sea momento de revisar dónde se pierde la intención y volver a habitarte con más presencia."
+     :avg<70
+      ?"Tu humanidad está presente, aunque fluctúa. Podrías fortalecerla prestando más atención a tus reacciones cotidianas."
+      :"Hay una coherencia humana estable. Continuar en este camino consciente puede profundizar tu equilibrio interno."
+  }</li>`;
  }
+
  if(mode==="premium"){
   weeklyEntry.innerHTML=`<button class="premium" onclick="startWeekly()">Medidor semanal</button>
-  <p class="legal">Con este medidor podés medir semana a semana tu nivel de conciencia humana en el amor, trabajo y vínculos. Actualizá tu consciencia.</p>`;
+  <p class="legal">
+    Con este medidor podés medir semana a semana tu nivel de conciencia humana,
+    en el amor (pareja), en el trabajo, en lo social y en tu coherencia general.
+    Actualizá tu consciencia.
+  </p>`;
  }
 }
 
@@ -104,9 +126,17 @@ function weeklyAnswer(v){
  weeklyScores.push(v);weeklyIndex++;
  if(weeklyIndex>=WEEKLY_QUESTIONS.length){
   let avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
-  alert(avg<0.8?"Nivel humano en descenso. Observá y cuidá.":avg<1.5?"Nivel humano inestable. Podés equilibrar.":"Nivel humano en ascenso. Buen momento.");
+  alert(
+    avg<0.8
+     ?"Tu nivel humano semanal muestra un descenso. Tal vez sea buen momento para observar qué situación te deshumanizó y darle atención."
+     :avg<1.5
+      ?"Tu nivel humano semanal es inestable. Podrías enfocarte en responder con más empatía ante las situaciones vividas."
+      :"Tu nivel humano semanal está en ascenso. Seguí cultivando la conciencia en tus vínculos."
+  );
   restart();
- }else weeklyQuestion.innerText=WEEKLY_QUESTIONS[weeklyIndex];
+ } else {
+  weeklyQuestion.innerText=WEEKLY_QUESTIONS[weeklyIndex];
+ }
 }
 
 function updateThermometer(){
