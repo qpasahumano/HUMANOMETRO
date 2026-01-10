@@ -22,20 +22,17 @@ body {
 .logo {
   margin-bottom: 10px;
 }
+
 .logo-text {
-  display: block;
-  letter-spacing: 6px;
-  font-weight: 600;
+  font-family: "Mystery Quest", cursive;
+  font-size: 2.4em;
+  font-weight: normal;
   color: #b9fff2;
+  white-space: nowrap;
   text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 12px rgba(120,255,230,.6),
-    0 0 20px rgba(120,255,230,.4);
-}
-.logo-meta {
-  font-size: .85em;
-  margin-left: 4px;
-  opacity: .9;
+    0 0 6px rgba(120,255,230,.7),
+    0 0 12px rgba(120,255,230,.5),
+    0 0 18px rgba(120,255,230,.3);
 }
 
 button {
@@ -80,48 +77,4 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
-
-#circles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.circle {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.circle.low { background:#e74c3c; }
-.circle.mid { background:#f1c40f; color:#000; }
-.circle.high { background:#2ecc71; color:#000; }
-
-.weekly-title {
-  color: #ffd700;
-  text-shadow: 0 0 12px rgba(255,215,0,.9);
-}
-
-.weekly-intro {
-  font-size: .9em;
-  opacity: .85;
-}
-
-.question-note {
-  font-size: .75em;
-  opacity: .75;
-}
-
-.legal {
-  font-size: .75em;
-  opacity: .7;
-  cursor: pointer;
-}
+  background: linear-gradient(90deg,#e74c3c,#f1c
