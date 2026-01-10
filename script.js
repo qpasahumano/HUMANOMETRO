@@ -148,4 +148,4 @@ function showSection(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
-}
+        }
