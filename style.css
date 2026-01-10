@@ -1,4 +1,72 @@
-.weekly-thermo {
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #0b1220 url("bg-humanometro.png") center / cover no-repeat fixed;
+  color: white;
+}
+
+#app {
+  max-width: 520px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  background: rgba(11, 18, 32, 0.82);
+  border-radius: 16px;
+}
+
+.hidden { display: none; }
+
+/* LOGO */
+.brand {
+  margin: 10px 0 14px;
+  text-align: center;
+}
+
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: clamp(1.6rem, 6.5vw, 2.3rem);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  color: #b9fff2;
+  text-shadow:
+    0 0 4px rgba(120,255,230,.7),
+    0 0 10px rgba(120,255,230,.5);
+  white-space: nowrap;
+}
+
+.brand-meta {
+  font-size: 0.65rem;
+  margin-left: 6px;
+  opacity: 0.75;
+}
+
+button {
+  width: 90%;
+  max-width: 340px;
+  margin: 12px auto;
+  padding: 15px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  background: #2ecc71;
+  color: #000;
+  box-shadow: 0 0 15px rgba(46,204,113,.8);
+}
+
+button.premium {
+  background: linear-gradient(45deg, gold, orange);
+  box-shadow: 0 0 18px rgba(255,180,0,.9);
+}
+
+.answers button {
+  background: #3498db;
+  color: #fff;
+}
+
+#thermometer, .weekly-thermo {
   width: 100%;
   height: 14px;
   background: #111;
@@ -7,20 +75,50 @@
   overflow: hidden;
 }
 
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
+}
+
+/* Termómetro semanal LED */
 #weeklyThermoFill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 12px rgba(255,255,255,.6);
+  box-shadow: 0 0 10px rgba(255,255,255,.6);
   transition: width .4s ease;
 }
 
-#weeklyFace {
-  font-size: 2.4em;
-  margin: 10px 0;
+#circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-#monthlyResult {
-  margin-top: 12px;
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-weight: bold;
+}
+
+.circle.low { background:#e74c3c; }
+.circle.mid { background:#f1c40f; color:#000; }
+.circle.high { background:#2ecc71; color:#000; }
+
+.legal {
+  font-size: .75em;
+  opacity: .7;
+}
+
+.weekly-intro {
+  font-size: .9em;
+  opacity: .9;
+  margin-bottom: 12px;
 }
