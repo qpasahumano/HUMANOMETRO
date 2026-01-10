@@ -18,8 +18,24 @@ body {
 
 .hidden { display: none; }
 
+/* LOGO */
 .logo {
-  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.logo-text {
+  display: block;
+  letter-spacing: 6px;
+  font-weight: 600;
+  color: #b9fff2;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 12px rgba(120,255,230,.6),
+    0 0 20px rgba(120,255,230,.4);
+}
+.logo-meta {
+  font-size: .85em;
+  margin-left: 4px;
+  opacity: .9;
 }
 
 button {
