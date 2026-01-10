@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -22,20 +20,24 @@ body {
 
 /* LOGO */
 .brand {
-  margin-bottom: 10px;
+  margin: 10px 0 14px;
+  text-align: center;
 }
 
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: 2.2em;
+  font-size: clamp(1.6rem, 6.5vw, 2.3rem);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
   color: #b9fff2;
   text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 12px rgba(120,255,230,.6);
+    0 0 4px rgba(120,255,230,.7),
+    0 0 10px rgba(120,255,230,.5);
+  white-space: nowrap;
 }
 
 .brand-meta {
-  font-size: 0.65em;
+  font-size: 0.65rem;
   margin-left: 6px;
   opacity: 0.75;
 }
@@ -51,12 +53,12 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46,204,113,0.8);
+  box-shadow: 0 0 15px rgba(46,204,113,.8);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 18px rgba(255,180,0,0.9);
+  box-shadow: 0 0 18px rgba(255,180,0,.9);
 }
 
 .answers button {
@@ -64,7 +66,7 @@ button.premium {
   color: #fff;
 }
 
-#thermometer {
+#thermometer, .weekly-thermo {
   width: 100%;
   height: 14px;
   background: #111;
@@ -77,6 +79,15 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
+}
+
+/* Termómetro semanal con LED */
+#weeklyThermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  box-shadow: 0 0 10px rgba(255,255,255,.6);
   transition: width .4s ease;
 }
 
@@ -104,12 +115,10 @@ button.premium {
 .legal {
   font-size: .75em;
   opacity: .7;
-  cursor: pointer;
 }
 
-.question-note {
-  font-size: .75em;
-  opacity: .75;
-  margin-bottom: 10px;
+.weekly-intro {
+  font-size: .9em;
+  opacity: .9;
+  margin-bottom: 12px;
 }
-
