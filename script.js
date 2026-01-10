@@ -8,10 +8,11 @@ let scores = {};
 let weeklyIndex = 0;
 let weeklyScores = [];
 
+/* PREGUNTAS SEMANALES (BOOST textual aprobado) */
 const WEEKLY_QUESTIONS = [
-  "¿Tuviste algún conflicto emocional relevante esta semana?",
-  "Ante esa situación, ¿intentaste comprender al otro antes de reaccionar?",
-  "¿Lograste soltar la carga emocional generada por esa experiencia?"
+  "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
+  "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
+  "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
 ];
 
 function startWeekly() {
@@ -21,6 +22,7 @@ function startWeekly() {
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   weeklyThermoFill.style.width = "0%";
   weeklyResult.classList.add("hidden");
+  weeklySaved.classList.add("hidden");
 }
 
 function weeklyAnswer(value) {
@@ -61,7 +63,6 @@ function showWeeklyResult() {
 
 function saveWeekly() {
   const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
-
   const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
   history.push({
@@ -163,7 +164,12 @@ function showResults(){
   if(mode==="premium"){
     weeklyAccess.innerHTML=`
       <button class="premium" onclick="startWeekly()">Conteo semanal</button>
-      <p class="legal">Medí tu conciencia humana semana a semana desde tus vivencias reales.</p>`;
+      <p class="legal">
+        Conteo semanal – versión Premium<br>
+        Este espacio se sostiene a través de aportes conscientes.<br>
+        Si sentís que esta herramienta te acompaña a observarte, crecer o sanar,
+        podés colaborar con una donación a voluntad para que siga existiendo.
+      </p>`;
   }
 }
 
@@ -179,4 +185,4 @@ function showPrivacy(){ showSection("privacy"); }
 function showSection(id){
   ["start","test","results","weekly","privacy"].forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-     }
+}
