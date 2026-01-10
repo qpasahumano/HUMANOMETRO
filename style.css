@@ -1,9 +1,11 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: #0b1220 url("bg-humanometro.png") center/cover no-repeat fixed;
+  background: #0b1220 url("bg-humanometro.png") center / cover no-repeat fixed;
   color: white;
 }
 
@@ -12,27 +14,12 @@ body {
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(11,18,32,0.85);
-  border-radius: 18px;
+  background: rgba(11, 18, 32, 0.82);
+  border-radius: 16px;
 }
 
-.hidden { display: none; }
-
-/* LOGO */
-.logo {
-  margin-bottom: 10px;
-}
-
-.logo-text {
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.4em;
-  font-weight: normal;
-  color: #b9fff2;
-  white-space: nowrap;
-  text-shadow:
-    0 0 6px rgba(120,255,230,.7),
-    0 0 12px rgba(120,255,230,.5),
-    0 0 18px rgba(120,255,230,.3);
+.hidden {
+  display: none;
 }
 
 button {
@@ -46,18 +33,12 @@ button {
   cursor: pointer;
   background: #2ecc71;
   color: #000;
-  box-shadow: 0 0 15px rgba(46,204,113,.8);
-  transition: transform .15s, box-shadow .15s;
-}
-
-button:active {
-  transform: scale(0.97);
-  box-shadow: 0 0 25px rgba(46,204,113,1);
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
 }
 
 button.premium {
   background: linear-gradient(45deg, gold, orange);
-  box-shadow: 0 0 20px rgba(255,180,0,.9);
+  box-shadow: 0 0 18px rgba(255, 180, 0, 0.9);
 }
 
 .answers button {
@@ -77,4 +58,54 @@ button.premium {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  transition: width 0.4s ease;
+}
+
+#circles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.circle.low {
+  background: #e74c3c;
+}
+
+.circle.mid {
+  background: #f1c40f;
+  color: #000;
+}
+
+.circle.high {
+  background: #2ecc71;
+  color: #000;
+}
+
+.legal {
+  font-size: 0.75em;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.question-note {
+  font-size: 0.75em;
+  opacity: 0.75;
+  margin-bottom: 10px;
+}
