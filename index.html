@@ -9,11 +9,11 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=FINAL">
 </head>
 
 <body>
@@ -21,12 +21,12 @@
 
   <!-- INICIO -->
   <section id="start">
-    <h1 class="brand">HUMANÓMETRO</h1>
+    <h1>HUMANÓMETRO</h1>
 
-    <p class="intro">
-      Esta herramienta no mide perfección ni juicio.<br>
-      A lo largo de tus experiencias y vivencias, observa cómo se alinean
-      intención, coherencia y humanidad en tu forma de actuar.
+    <p>
+      No es un espejo. Es tu humanidad reflejada.<br>
+      Una herramienta de autoobservación basada en tus elecciones y vivencias.<br>
+      ¿Conocés tu nivel de conciencia humana actual?
     </p>
 
     <button onclick="startTest(false)">Versión Común</button>
@@ -45,7 +45,7 @@
     </div>
 
     <p id="questionText"></p>
-    <small id="questionNote" class="legal"></small>
+    <p class="question-note" id="questionNote"></p>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
@@ -82,6 +82,6 @@
 
 </main>
 
-<script src="script.js"></script>
+<script src="script.js?v=FINAL"></script>
 </body>
 </html>
