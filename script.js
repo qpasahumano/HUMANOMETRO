@@ -10,7 +10,7 @@ let scores = {};
 const BASE_MODULES = [
   { name: "Familia", questions: [
     { q: "¿Estuviste emocionalmente presente con tu familia?", n: "Se mide presencia, no perfección." },
-    { q: "¿Escuchaste sin juzgar?", n: "Se mide apertura, no acuerdo." },
+    { q: "¿Escuchaste sin juzgar?", n: "Se mide apertura." },
     { q: "¿Expresaste afecto sin que te lo pidan?", n: "Se mide intención genuina." }
   ]},
   { name: "Social", questions: [
@@ -21,25 +21,25 @@ const BASE_MODULES = [
   { name: "Amistad", questions: [
     { q: "¿Estuviste presente para tus amistades?", n: "Presencia real." },
     { q: "¿Cuidaste el vínculo aun sin coincidir?", n: "Se mide cuidado del lazo." },
-    { q: "¿Escuchaste sin imponer tu visión?", n: "Se mide respeto mutuo." }
+    { q: "¿Escuchaste sin imponer tu visión?", n: "Respeto mutuo." }
   ]},
   { name: "Laboral", questions: [
-    { q: "¿Generaste buen clima laboral aun estando incómodo?", n: "Se mide responsabilidad humana." },
-    { q: "¿Respetaste a tus compañeros?", n: "Se mide trato." },
-    { q: "¿Evitaste sobrecargar a otros con tu función?", n: "Se mide equidad." }
+    { q: "¿Generaste buen clima laboral aun estando incómodo?", n: "Responsabilidad humana." },
+    { q: "¿Respetaste a tus compañeros?", n: "Trato consciente." },
+    { q: "¿Evitaste sobrecargar a otros con tu función?", n: "Equidad." }
   ]},
   { name: "Planeta", questions: [
-    { q: "¿Reconociste a los animales como seres sensibles?", n: "Se mide empatía." },
-    { q: "¿Cuidaste tu entorno inmediato?", n: "Se mide conciencia cotidiana." },
-    { q: "¿Reduciste tu impacto ambiental cuando pudiste?", n: "Se mide intención." }
+    { q: "¿Reconociste a los animales como seres sensibles?", n: "Empatía." },
+    { q: "¿Cuidaste tu entorno inmediato?", n: "Conciencia cotidiana." },
+    { q: "¿Reduciste tu impacto ambiental cuando pudiste?", n: "Intención posible." }
   ]}
 ];
 
 const PREMIUM_MODULES = [
   { name: "Conciencia Profunda", questions: [
-    { q: "¿Tomaste decisiones con conciencia?", n: "Se mide atención interna." },
-    { q: "¿Fuiste coherente entre pensamiento y acción?", n: "Se mide alineación." },
-    { q: "¿Asumiste tu impacto en otros?", n: "Se mide madurez emocional." }
+    { q: "¿Tomaste decisiones con conciencia?", n: "Atención interna." },
+    { q: "¿Fuiste coherente entre pensamiento y acción?", n: "Alineación." },
+    { q: "¿Asumiste tu impacto en otros?", n: "Madurez emocional." }
   ]}
 ];
 
@@ -47,12 +47,12 @@ const PREMIUM_MODULES = [
    CONTEO SEMANAL
 ========================= */
 const WEEKLY_QUESTIONS = [
-  "¿Cómo gestionaste tus emociones ante tensiones cotidianas esta semana?",
-  "¿Pudiste empatizar con alguien aun cuando te resultó difícil?",
-  "¿Cómo reaccionaste ante una situación incómoda o injusta?",
-  "¿Tuviste conciencia de tu forma de comunicarte con otros?",
+  "¿Tuviste tensiones esta semana con algún vínculo cercano?",
+  "¿Cómo gestionaste emocionalmente una situación incómoda?",
+  "¿Pudiste empatizar aun cuando no estabas de acuerdo?",
+  "¿Cuidaste tu forma de comunicarte en momentos de tensión?",
   "¿Actuaste con humanidad aun estando cansado o saturado?",
-  "¿Pudiste soltar rencor o enojo cuando apareció?"
+  "¿Lograste soltar enojo o rencor cuando apareció?"
 ];
 
 let weeklyIndex = 0;
@@ -94,9 +94,8 @@ function answer(value) {
     currentModule++;
   }
 
-  if (currentModule >= modules.length) {
-    showResults();
-  } else {
+  if (currentModule >= modules.length) showResults();
+  else {
     showQuestion();
     updateThermometer();
   }
@@ -155,13 +154,13 @@ function showResults() {
   if (mode === "premium") {
     const btn = document.createElement("button");
     btn.className = "premium";
-    btn.innerText = "Conteo semanal (versión paga / donación)";
+    btn.innerText = "Conteo semanal (donación a voluntad)";
     btn.onclick = startWeekly;
 
     const note = document.createElement("p");
     note.className = "legal";
     note.innerText =
-      "Registro consciente de vivencias semanales. Donación a voluntad.";
+      "Registro consciente de vivencias semanales. La lectura mensual se basa en tu constancia.";
 
     document.getElementById("results").appendChild(btn);
     document.getElementById("results").appendChild(note);
@@ -169,19 +168,28 @@ function showResults() {
 }
 
 /* =========================
-   CONTEO SEMANAL
+   CONTEO SEMANAL COMO BLOQUE
 ========================= */
 function startWeekly() {
   weeklyIndex = 0;
   weeklyScores = [];
+
+  let box = document.getElementById("weeklyBox");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "weeklyBox";
+    document.getElementById("results").appendChild(box);
+  }
   renderWeeklyQuestion();
 }
 
 function renderWeeklyQuestion() {
-  const results = document.getElementById("results");
-  results.innerHTML = `
+  const box = document.getElementById("weeklyBox");
+  box.innerHTML = `
     <h3>Conteo semanal</h3>
-    <p class="legal">Respondé con sinceridad para conocer tu tendencia humana actual.</p>
+    <p class="legal">
+      ¿Cómo fue tu semana? Respondé con sinceridad para reconocer tu tendencia humana actual.
+    </p>
     <p>${WEEKLY_QUESTIONS[weeklyIndex]}</p>
     <div class="answers">
       <button onclick="weeklyAnswer(2)">Sí</button>
@@ -203,33 +211,36 @@ function weeklyAnswer(val) {
 }
 
 function finishWeekly() {
-  const sum = weeklyScores.reduce((a, b) => a + b, 0);
-  const avg = sum / weeklyScores.length;
+  const box = document.getElementById("weeklyBox");
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
   let msg =
     avg < 0.8
-      ? "Semana de baja coherencia. Hay tensiones internas."
+      ? "Semana de baja coherencia humana. Es buen momento para observar y cuidar tus reacciones."
       : avg < 1.5
-      ? "Semana intermedia. Hay conciencia parcial."
-      : "Semana coherente. Presencia humana sostenida.";
+      ? "Semana intermedia. Hay conciencia parcial que puede fortalecerse."
+      : "Semana coherente. Presencia humana sostenida en tus acciones.";
 
-  document.getElementById("results").innerHTML = `
+  box.innerHTML = `
     <h3>Resultado semanal</h3>
     <p>${msg}</p>
     <button onclick="saveWeekly()">Grabar semana</button>
-    <p class="legal">El registro semanal permite luego una lectura mensual.</p>
+    <p class="legal">
+      El registro semanal permite construir una lectura mensual basada en tu constancia.
+    </p>
   `;
 }
 
 function saveWeekly() {
-  let data = JSON.parse(localStorage.getItem("weeklyHumanity") || "[]");
+  const data = JSON.parse(localStorage.getItem("weeklyHumanity") || "[]");
   data.push({ date: Date.now(), score: weeklyScores });
   localStorage.setItem("weeklyHumanity", JSON.stringify(data));
 
+  const box = document.getElementById("weeklyBox");
   const p = document.createElement("p");
   p.className = "legal";
   p.innerText = "Conteo semanal guardado.";
-  document.getElementById("results").appendChild(p);
+  box.appendChild(p);
 }
 
 /* =========================
