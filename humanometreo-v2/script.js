@@ -13,6 +13,7 @@ function startTest() {
   score = 0;
   show("test");
   loadQuestion();
+  updateThermo();
 }
 
 function loadQuestion() {
@@ -23,6 +24,7 @@ function loadQuestion() {
 function answer(value) {
   score += value;
   index++;
+  updateThermo();
 
   if (index >= QUESTIONS.length) {
     showResult();
@@ -35,10 +37,10 @@ function showResult() {
   show("result");
   const avg = score / QUESTIONS.length;
 
-  let text = "Resultado neutro.";
-  if (avg < 0.8) text = "Humanidad baja esta semana.";
-  else if (avg < 1.5) text = "Humanidad estable esta semana.";
-  else text = "Humanidad en crecimiento.";
+  let text = "Humanidad estable esta semana.";
+  if (avg < 0.8) text = "Tu humanidad estuvo baja esta semana.";
+  else if (avg < 1.5) text = "Tu humanidad se mantuvo estable.";
+  else text = "Tu humanidad mostró crecimiento.";
 
   document.getElementById("resultText").innerText = text;
 }
@@ -52,4 +54,9 @@ function show(id) {
     document.getElementById(s).classList.add("hidden")
   );
   document.getElementById(id).classList.remove("hidden");
+}
+
+function updateThermo() {
+  const pct = (index / QUESTIONS.length) * 100;
+  document.getElementById("thermoFill").style.width = pct + "%";
 }
