@@ -2,36 +2,21 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO</title>
+  <title>HUMANÓMETRO v2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INTRO V2 -->
+  <!-- INICIO V2 -->
   <section id="start">
-    <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span><br>
-      <span class="brand-meta">v.2 ®</span>
-    </h1>
+    <h1>HUMANÓMETRO v.2 ®</h1>
+    <p>Seguimiento mensual de conciencia humana.</p>
 
-    <p class="intro">
-      Este volumen continúa tu proceso humano de forma mensual.<br><br>
-      Cada semana se habilita de manera progresiva,
-      respetando tiempos reales de integración.
-    </p>
-
-    <!-- ✅ BOTÓN CORRECTO -->
-    <button class="primary" onclick="startV2Monthly()">
-      Continuar seguimiento mensual
-    </button>
+    <!-- 🔴 BOTÓN CORRECTO -->
+    <button onclick="startV2Monthly()">Iniciar seguimiento mensual</button>
   </section>
 
   <!-- TEST MENSUAL -->
@@ -43,7 +28,7 @@
     </div>
 
     <p id="v2-question"></p>
-    <small id="v2-note" class="legal"></small>
+    <small id="v2-note"></small>
 
     <div class="answers">
       <button onclick="v2Answer(2)">Sí</button>
@@ -54,14 +39,12 @@
 
   <!-- RESULTADO FINAL -->
   <section id="v2-result" class="hidden">
-    <h2>Resultado mensual</h2>
-
-    <div id="v2-symbol" style="font-size:3rem;"></div>
-
+    <h2>Lectura mensual</h2>
+    <div id="v2-symbol" style="font-size:3rem"></div>
     <p id="v2-result-text"></p>
-    <p id="v2-advice" class="legal"></p>
+    <p id="v2-advice"></p>
 
-    <button onclick="restart()">Volver</button>
+    <button onclick="restartV2()">Volver</button>
   </section>
 
 </main>
