@@ -1,39 +1,39 @@
 /* ===============================
-   ESTADO GENERAL
+   ESTADO
 ================================ */
-let currentWeek = 1;
-let questionIndex = 0;
+let currentQuestion = 0;
 let answers = [];
 
-const STORAGE_KEY = "humanometro_v2";
-
 /* ===============================
-   BLOQUES SEMANALES
+   SEMANA 2 – VOS ANTE EL MUNDO
 ================================ */
-const WEEKS = {
-  1: {
-    title: "Vos ante el mundo",
-    questions: [
-      { q: "Cuando ves noticias de conflictos o guerras, ¿te genera tristeza?", n: "Mide sensibilidad y empatía global." },
-      { q: "Cuando alguien te habla, ¿mirás a los ojos sin distraerte con el celular?", n: "Mide presencia humana real." },
-      { q: "¿Sentís impulso de involucrarte cuando ves una injusticia?", n: "Mide compromiso humano." },
-      { q: "¿Te afecta emocionalmente el sufrimiento ajeno?", n: "Mide apertura emocional." }
-    ]
-  }
+const WEEK = {
+  title: "Vos ante el mundo",
+  questions: [
+    {
+      q: "Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?",
+      n: "Mide empatía y sensibilidad humana."
+    },
+    {
+      q: "Cuando alguien te habla, ¿le prestás atención sin mirar el celular?",
+      n: "Mide presencia humana."
+    },
+    {
+      q: "¿Sentís impulso de involucrarte cuando ves una injusticia?",
+      n: "Mide compromiso humano."
+    },
+    {
+      q: "¿Te afecta emocionalmente el sufrimiento ajeno?",
+      n: "Mide apertura emocional."
+    }
+  ]
 };
 
 /* ===============================
    INICIO
 ================================ */
-function startWeek(week) {
-  if (!canAccessWeek(week)) {
-    alert("Este bloque se habilita cuando corresponde.");
-    return;
-  }
-  currentWeek = week;
-  questionIndex = 0;
-  answers = [];
-  showSection("test");
+function startV2() {
+  showSection("week");
   loadQuestion();
 }
 
@@ -41,18 +41,18 @@ function startWeek(week) {
    PREGUNTAS
 ================================ */
 function loadQuestion() {
-  const q = WEEKS[currentWeek].questions[questionIndex];
-  document.getElementById("weekTitle").innerText = WEEKS[currentWeek].title;
+  const q = WEEK.questions[currentQuestion];
+  document.getElementById("weekTitle").innerText = WEEK.title;
   document.getElementById("questionText").innerText = q.q;
   document.getElementById("questionNote").innerText = q.n;
 }
 
 function answer(value) {
   answers.push(value);
-  questionIndex++;
+  currentQuestion++;
   updateThermo();
 
-  if (questionIndex >= WEEKS[currentWeek].questions.length) {
+  if (currentQuestion >= WEEK.questions.length) {
     showResult();
   } else {
     loadQuestion();
@@ -65,71 +65,47 @@ function answer(value) {
 function showResult() {
   const avg = answers.reduce((a,b)=>a+b,0) / answers.length;
 
-  let text, advice, animal, color;
+  let animal, text, advice;
 
   if (avg < 0.8) {
     animal = "🦇";
-    text = "Tu humanidad está en repliegue.";
-    advice = "Volver a registrar al otro puede reactivar tu sensibilidad.";
-    color = "0%";
+    text = "Tu humanidad se mostró en repliegue.";
+    advice = "Detenerte a registrar al otro puede reactivar tu sensibilidad.";
   } else if (avg < 1.5) {
     animal = "🐞";
-    text = "Tu humanidad se mantiene estable.";
-    advice = "Pequeños actos conscientes pueden impulsarte.";
-    color = "50%";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
   } else {
     animal = "🐦";
     text = "Tu humanidad está en crecimiento.";
     advice = "Sostener esta apertura fortalece tu coherencia.";
-    color = "100%";
   }
 
   document.getElementById("animalSymbol").innerText = animal;
   document.getElementById("resultText").innerText = text;
   document.getElementById("resultAdvice").innerText = advice;
-  document.getElementById("thermoFill").style.height = color;
 
-  saveWeek();
   showSection("result");
-}
-
-/* ===============================
-   BLOQUEO SEMANAL
-================================ */
-function saveWeek() {
-  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  data[currentWeek] = {
-    date: Date.now(),
-    done: true
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function canAccessWeek(week) {
-  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  if (week === 1) return true;
-  if (!data[week-1]) return false;
-
-  const lastDate = data[week-1].date;
-  const diffDays = (Date.now() - lastDate) / (1000*60*60*24);
-  return diffDays >= 7;
 }
 
 /* ===============================
    NAVEGACIÓN
 ================================ */
-function continueFlow() {
+function backToStart() {
+  currentQuestion = 0;
+  answers = [];
+  document.getElementById("thermoFill").style.width = "0%";
   showSection("start");
 }
 
 function showSection(id) {
-  ["start","test","result"].forEach(s=>{
+  ["start","week","result"].forEach(s=>{
     document.getElementById(s).classList.add("hidden");
   });
   document.getElementById(id).classList.remove("hidden");
 }
 
 function updateThermo() {
-  const pct = (answers.length / WEEKS[currentWeek].questions.length) * 100;
-  document.getElementById("thermoFill").style.height = pct + "%";
+  const pct = (answers.length / WEEK.questions.length) * 100;
+  document.getElementById("thermoFill").style.width = pct + "%";
 }
