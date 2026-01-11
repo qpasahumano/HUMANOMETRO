@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO v.2</title>
+  <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- FUENTES -->
@@ -15,7 +15,7 @@
 <body>
 <main id="app">
 
-  <!-- INICIO V2 -->
+  <!-- INTRO -->
   <section id="start">
     <h1 class="brand">
       <span class="brand-main">HUMANÓMETRO</span><br>
@@ -62,9 +62,20 @@
     <p id="resultText"></p>
     <p id="resultAdvice" class="legal"></p>
 
-    <button class="primary" onclick="backToStart()">
-      Volver
+    <button class="primary" onclick="continueFlow()">
+      Continuar seguimiento mensual
     </button>
+  </section>
+
+  <!-- RESULTADO MENSUAL -->
+  <section id="monthly" class="hidden">
+    <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
+
+    <div class="vertical-thermo">
+      <div id="monthlyFill"></div>
+    </div>
+
+    <p id="monthlyText"></p>
   </section>
 
 </main>
