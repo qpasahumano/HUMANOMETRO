@@ -22,14 +22,13 @@
   <!-- INICIO -->
   <section id="start">
     <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span>
+      <span class="brand-main">HUMANÓMETRO</span><br>
       <span class="brand-meta">v.1 ®</span>
     </h1>
 
     <p class="intro">
       Esta herramienta no mide perfección ni juicio.<br>
-      A lo largo de tus experiencias y vivencias, observa cómo se alinean
-      intención, coherencia y humanidad en tu forma de actuar.
+      Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
     <button onclick="startTest(false)">Versión Común</button>
@@ -70,18 +69,6 @@
     <div id="weeklyAccess"></div>
 
     <button onclick="restart()">Reiniciar</button>
-
-    <!-- CONTINUIDAD VOLUMEN 2 (SUMA) -->
-    <div class="v2-continue">
-      <p class="legal">
-        Tu medición finalizó.<br>
-        Humanómetro continúa con un seguimiento humano semanal.
-      </p>
-
-      <button class="premium" onclick="goToV2()">
-        Continuidad de testeo
-      </button>
-    </div>
   </section>
 
   <!-- CONTEO SEMANAL -->
@@ -110,15 +97,22 @@
       <p id="weeklyAdvice" class="legal"></p>
 
       <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+
       <p class="legal">
-        Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas.
-        Esto permite observar con el tiempo si tu nivel de conciencia humana se mantiene,
-        evoluciona o desciende, y ofrecerte una lectura más profunda a nivel mensual.
+        Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+        para observar tu evolución humana.
+      </p>
+
+      <!-- ✅ CONTINUIDAD DE TESTEO (UBICACIÓN CORRECTA) -->
+      <button class="premium" onclick="goToV2()">
+        Continuar testeo
+      </button>
+
+      <p id="weeklySaved" class="legal hidden">
+        ✔ Conteo semanal guardado correctamente.
       </p>
 
       <button onclick="restart()">Volver</button>
-
-      <p id="weeklySaved" class="legal hidden">✔ Conteo semanal guardado correctamente.</p>
     </div>
   </section>
 
