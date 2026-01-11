@@ -2,68 +2,68 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO v.2</title>
+  <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INTRO -->
-  <section id="intro">
+  <!-- INICIO V2 -->
+  <section id="start">
     <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span><br>
+      <span class="brand-main">HUMANÓMETRO</span>
       <span class="brand-meta">v.2 ®</span>
     </h1>
 
-    <p class="intro-text">
-      Humanómetro no se recorre de una sola vez.<br>
-      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br><br>
-      Cada bloque se habilita únicamente cuando completaste el anterior
-      y pasó el tiempo necesario para integrar lo vivido.<br><br>
-      Las semanas no se adelantan ni se saltean.<br>
-      La humanidad se construye en movimiento, no en velocidad.
+    <p class="intro">
+      Este volumen continúa el recorrido iniciado.<br>
+      El seguimiento es semanal y progresivo.<br>
+      Cada bloque se habilita con el paso del tiempo.
     </p>
 
-    <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
+    <button class="premium" onclick="startWeek(1)">Iniciar seguimiento mensual</button>
+
+    <p class="legal">
+      El seguimiento se realiza semana a semana.<br>
+      No es posible adelantar bloques.
+    </p>
   </section>
 
-  <!-- SEMANAS -->
-  <section id="week" class="hidden">
-    <h2 id="weekTitle" class="led-title"></h2>
+  <!-- TEST SEMANAL -->
+  <section id="test" class="hidden">
+    <h2 id="weekTitle" class="neon-title"></h2>
 
-    <div class="thermo">
+    <div id="thermometer" class="vertical-thermo">
       <div id="thermoFill"></div>
     </div>
 
-    <p id="question"></p>
-    <small id="measure"></small>
+    <p id="questionText"></p>
+    <small id="questionNote" class="legal"></small>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
       <button onclick="answer(1)">Tal vez / A veces</button>
       <button onclick="answer(0)">No</button>
     </div>
-
-    <div id="micro" class="hidden">
-      <p id="microText"></p>
-      <p id="microAdvice"></p>
-      <button onclick="next()">Siguiente</button>
-    </div>
   </section>
 
-  <!-- CIERRE MENSUAL -->
-  <section id="monthly" class="hidden">
-    <h2 class="led-title">Tu humanidad en movimiento este mes</h2>
+  <!-- RESULTADO SEMANAL -->
+  <section id="result" class="hidden">
+    <h2 class="neon-title">Lectura de la semana</h2>
 
-    <div class="vertical-thermo">
-      <div id="verticalFill"></div>
-    </div>
+    <div id="animalSymbol"></div>
 
-    <p id="monthlyText" class="hidden"></p>
+    <p id="resultText"></p>
+    <p id="resultAdvice" class="legal"></p>
+
+    <button class="premium" onclick="continueFlow()">Continuar seguimiento mensual</button>
   </section>
 
 </main>
