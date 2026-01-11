@@ -27,7 +27,7 @@ let modules = [];
 let scores = {};
 
 /* ===============================
-   CONTEO SEMANAL (INAMOVIBLE)
+   CONTEO SEMANAL
 ================================ */
 let weeklyIndex = 0;
 let weeklyScores = [];
@@ -174,7 +174,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS (PREMIUM RESTAURADO)
+   RESULTADOS (DONACIÓN + PAGO RESTAURADOS)
 ================================ */
 function showResults() {
   showSection("results");
@@ -209,7 +209,7 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML = `
-      <button class="premium" onclick="startWeekly()">Conteo semanal</button>
+      <button class="premium" onclick="weeklyWithDonation()">Conteo semanal</button>
       <p class="legal">
         Conteo semanal – versión Premium.<br>
         Aporte voluntario y consciente.<br>
@@ -250,6 +250,14 @@ function updateThermometer() {
 }
 
 /* ===============================
+   DONACIÓN (LINK MERCADO PAGO)
+================================ */
+function weeklyWithDonation() {
+  window.open("https://mpago.la/1eCGrKX", "_blank");
+  startWeekly();
+}
+
+/* ===============================
    NAVEGACIÓN
 ================================ */
 function restart() { showSection("start"); }
@@ -263,4 +271,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+   }
