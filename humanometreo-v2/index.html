@@ -1,57 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>HUMANÓMETRO v.2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
+<!-- =========================
+     VOLUMEN 2 – BLOQUE MENSUAL
+========================= -->
+<section id="v2-monthly" class="hidden">
 
-<body>
-<main id="app">
+  <h2 class="neon-title">
+    HUMANÓMETRO<br>
+    <small class="brand-meta">v.2 ®</small>
+  </h2>
 
-  <!-- START -->
-  <section id="start" class="screen active">
-    <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span><br>
-      <span class="brand-meta">v.2 ®</span>
-    </h1>
+  <h3 id="v2-week-title"></h3>
 
-    <p class="intro">
-      Seguimiento humano semanal.<br>
-      La humanidad se construye en movimiento, no en velocidad.
-    </p>
+  <div class="thermo">
+    <div id="v2-thermo-fill"></div>
+  </div>
 
-    <button class="primary" onclick="startTest()">Comenzar seguimiento</button>
-  </section>
+  <p id="v2-question"></p>
+  <small id="v2-note" class="legal"></small>
 
-  <!-- TEST -->
-  <section id="test" class="screen hidden">
-    <h2 id="title" class="neon-title"></h2>
+  <div class="answers">
+    <button onclick="v2Answer(2)">Sí</button>
+    <button onclick="v2Answer(1)">Tal vez / A veces</button>
+    <button onclick="v2Answer(0)">No</button>
+  </div>
+</section>
 
-    <div class="thermo">
-      <div id="thermoFill"></div>
-    </div>
+<section id="v2-result" class="hidden">
+  <h2 class="neon-title">Lectura mensual</h2>
 
-    <p id="question" class="question"></p>
+  <div id="v2-symbol" class="animal"></div>
 
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">Tal vez / A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
+  <p id="v2-result-text"></p>
+  <p id="v2-advice" class="legal"></p>
 
-  <!-- RESULT -->
-  <section id="result" class="screen hidden">
-    <h2 class="neon-title">Lectura de la semana</h2>
-    <p id="resultText" class="result-text"></p>
-    <button class="primary" onclick="restart()">Volver</button>
-  </section>
-
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
+  <button class="primary" onclick="restart()">Finalizar</button>
+</section>
