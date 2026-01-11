@@ -5,8 +5,8 @@ body {
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(120,255,230,0.25), transparent 45%),
-    radial-gradient(circle at bottom, rgba(80,120,255,0.25), transparent 50%),
+    radial-gradient(circle at top, rgba(120,255,230,.25), transparent 45%),
+    radial-gradient(circle at bottom, rgba(80,120,255,.25), transparent 55%),
     #0b1220;
   color: #eafff9;
 }
@@ -16,7 +16,7 @@ body {
   margin: auto;
   padding: 24px;
   text-align: center;
-  background: rgba(11,18,32,0.88);
+  background: rgba(11,18,32,.88);
   border-radius: 18px;
   box-shadow: 0 0 35px rgba(120,255,230,.25);
 }
@@ -58,6 +58,12 @@ body {
   text-shadow:
     0 0 6px rgba(120,255,230,.8),
     0 0 16px rgba(120,255,230,.6);
+  animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: .85; }
+  to { opacity: 1; }
 }
 
 /* BOTONES */
@@ -83,7 +89,7 @@ button {
   color: #fff;
 }
 
-/* TERMÓMETRO */
+/* TERMÓMETROS */
 .thermo {
   width: 100%;
   height: 14px;
@@ -98,6 +104,22 @@ button {
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
   transition: width .4s ease;
+}
+
+.vertical-thermo {
+  width: 30px;
+  height: 220px;
+  background: #111;
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
 }
 
 /* ANIMAL */
