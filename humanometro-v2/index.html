@@ -15,31 +15,57 @@
 <body>
 <main id="app">
 
-  <!-- INICIO V2 -->
-  <section id="start-v2">
+  <!-- INTRO V2 -->
+  <section id="start">
     <h1 class="brand">
       <span class="brand-main">HUMANÓMETRO</span><br>
       <span class="brand-meta">v.2 ®</span>
     </h1>
 
     <p class="intro">
-      Este volumen continúa tu proceso humano de forma semanal y progresiva.
+      Este volumen continúa tu proceso humano de forma mensual.<br><br>
+      Cada semana se habilita de manera progresiva,
+      respetando tiempos reales de integración.
     </p>
 
-    <button class="primary" onclick="startMonthly()">
-      Comenzar seguimiento mensual
+    <!-- ✅ BOTÓN CORRECTO -->
+    <button class="primary" onclick="startV2Monthly()">
+      Continuar seguimiento mensual
     </button>
   </section>
 
-  <!-- CONTENIDO (próxima pantalla) -->
-  <section id="monthly" class="hidden">
-    <h2>Volumen 2 activo</h2>
-    <p>El botón funciona correctamente.</p>
+  <!-- TEST MENSUAL -->
+  <section id="v2-monthly" class="hidden">
+    <h2 id="v2-week-title"></h2>
+
+    <div class="thermo">
+      <div id="v2-thermo-fill"></div>
+    </div>
+
+    <p id="v2-question"></p>
+    <small id="v2-note" class="legal"></small>
+
+    <div class="answers">
+      <button onclick="v2Answer(2)">Sí</button>
+      <button onclick="v2Answer(1)">Tal vez / A veces</button>
+      <button onclick="v2Answer(0)">No</button>
+    </div>
+  </section>
+
+  <!-- RESULTADO FINAL -->
+  <section id="v2-result" class="hidden">
+    <h2>Resultado mensual</h2>
+
+    <div id="v2-symbol" style="font-size:3rem;"></div>
+
+    <p id="v2-result-text"></p>
+    <p id="v2-advice" class="legal"></p>
+
+    <button onclick="restart()">Volver</button>
   </section>
 
 </main>
 
-<!-- JS (OBLIGATORIO) -->
 <script src="script.js"></script>
 </body>
 </html>
