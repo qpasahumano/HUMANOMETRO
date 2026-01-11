@@ -65,13 +65,12 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <!-- Acceso a conteo semanal (solo Premium) -->
     <div id="weeklyAccess"></div>
 
     <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- CONTEO SEMANAL -->
+  <!-- CONTEO SEMANAL – PREGUNTAS -->
   <section id="weekly" class="hidden">
     <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
 
@@ -91,29 +90,27 @@
       <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
       <button onclick="weeklyAnswer(0)">No</button>
     </div>
+  </section>
 
-    <div id="weeklyResult" class="hidden">
-      <p id="weeklyText"></p>
-      <p id="weeklyAdvice" class="legal"></p>
+  <!-- CONTEO SEMANAL – RESULTADO FINAL -->
+  <section id="weeklyResultScreen" class="hidden">
+    <p id="weeklyText"></p>
+    <p id="weeklyAdvice" class="legal"></p>
 
-      <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+    <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
 
-      <p class="legal">
-        Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
-        para observar tu evolución humana.
-      </p>
+    <button class="premium" onclick="goToV2()">Continuar testeo</button>
 
-      <!-- ✅ CONTINUIDAD DE TESTEO (UBICACIÓN CORRECTA) -->
-      <button class="premium" onclick="goToV2()">
-        Continuar testeo
-      </button>
+    <p class="legal">
+      Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+      para observar tu evolución humana.
+    </p>
 
-      <p id="weeklySaved" class="legal hidden">
-        ✔ Conteo semanal guardado correctamente.
-      </p>
+    <p id="weeklySaved" class="legal hidden">
+      ✔ Conteo semanal guardado correctamente.
+    </p>
 
-      <button onclick="restart()">Volver</button>
-    </div>
+    <button onclick="restart()">Volver</button>
   </section>
 
   <!-- PRIVACIDAD -->
