@@ -27,24 +27,24 @@ let modules = [];
 let scores = {};
 
 /* ===============================
-   CONTEO SEMANAL (SELLADO)
+   CONTEO SEMANAL (INAMOVIBLE)
 ================================ */
+let weeklyIndex = 0;
+let weeklyScores = [];
+
 const WEEKLY_QUESTIONS = [
   "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
   "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
   "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
 ];
 
-let weeklyIndex = 0;
-let weeklyScores = [];
-
 function startWeekly() {
   weeklyIndex = 0;
   weeklyScores = [];
-  weeklySaved.classList.add("hidden");
-  weeklyThermoFill.style.width = "0%";
-  weeklyQuestion.innerText = WEEKLY_QUESTIONS[0];
   showSection("weekly");
+  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+  weeklyThermoFill.style.width = "0%";
+  weeklySaved.classList.add("hidden");
 }
 
 function weeklyAnswer(value) {
@@ -52,19 +52,17 @@ function weeklyAnswer(value) {
   weeklyIndex++;
 
   weeklyThermoFill.style.width =
-    Math.round((weeklyIndex / WEEKLY_QUESTIONS.length) * 100) + "%";
+    Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
 
-  if (weeklyIndex === WEEKLY_QUESTIONS.length) {
+  if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
     showWeeklyResult();
-    return;
+  } else {
+    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   }
-
-  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
 function showWeeklyResult() {
-  const avg =
-    weeklyScores.reduce((a, b) => a + b, 0) / WEEKLY_QUESTIONS.length;
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
   let text = "";
   let advice = "";
@@ -88,11 +86,11 @@ function showWeeklyResult() {
 
 function saveWeekly() {
   const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
   history.push({
     date: new Date().toISOString().slice(0, 10),
-    score:
-      weeklyScores.reduce((a, b) => a + b, 0) / WEEKLY_QUESTIONS.length
+    score: avg
   });
 
   localStorage.setItem("humanometro_semanal", JSON.stringify(history));
@@ -100,7 +98,7 @@ function saveWeekly() {
 }
 
 /* ===============================
-   TEST PRINCIPAL (SIN CAMBIOS)
+   TEST PRINCIPAL
 ================================ */
 const BASE_MODULES = [
   { name: "Familia", questions: [
@@ -174,6 +172,9 @@ function answer(v) {
   updateThermometer();
 }
 
+/* ===============================
+   RESULTADOS
+================================ */
 function showResults() {
   showSection("results");
   circles.innerHTML = "";
@@ -192,6 +193,10 @@ function showResults() {
         <strong>${p}%</strong>
         <small>${m.name}</small>
       </div>`;
+
+    if (mode === "premium") {
+      tips.innerHTML += `<li>${premiumFeedback(m.name, p)}</li>`;
+    }
   });
 
   const avg = Math.round(total / modules.length);
@@ -208,12 +213,28 @@ function showResults() {
   }
 }
 
+/* ===============================
+   DEVOLUCIONES
+================================ */
 function commonFeedback(avg) {
   if (avg < 40) return "Se observa una desconexión entre intención y acción.";
   if (avg < 70) return "Tu humanidad está presente, aunque con fluctuaciones.";
   return "Existe coherencia entre lo que sentís, pensás y hacés.";
 }
 
+function premiumFeedback(area, p) {
+  if (p < 40) {
+    return `En ${area}, se observa una desconexión entre intención y acción. La conciencia comienza al reconocerlo.`;
+  }
+  if (p < 70) {
+    return `En ${area}, tu humanidad estuvo presente, aunque de forma inestable. La observación consciente puede fortalecerla.`;
+  }
+  return `En ${area}, se manifestó coherencia, empatía y responsabilidad humana activa.`;
+}
+
+/* ===============================
+   TERMÓMETRO
+================================ */
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
   const answered =
@@ -223,6 +244,9 @@ function updateThermometer() {
   thermoFill.style.width = Math.round((answered / totalQ) * 100) + "%";
 }
 
+/* ===============================
+   NAVEGACIÓN
+================================ */
 function restart() { showSection("start"); }
 function showPrivacy() { showSection("privacy"); }
 
