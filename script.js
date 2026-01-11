@@ -13,7 +13,6 @@ const weeklyAccess = document.getElementById("weeklyAccess");
 
 const weeklyQuestion = document.getElementById("weeklyQuestion");
 const weeklyThermoFill = document.getElementById("weeklyThermoFill");
-const weeklyResult = document.getElementById("weeklyResult");
 const weeklyText = document.getElementById("weeklyText");
 const weeklyAdvice = document.getElementById("weeklyAdvice");
 const weeklySaved = document.getElementById("weeklySaved");
@@ -45,7 +44,6 @@ function startWeekly() {
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   weeklyThermoFill.style.width = "0%";
-  weeklyResult.classList.add("hidden");
   weeklySaved.classList.add("hidden");
 }
 
@@ -57,7 +55,7 @@ function weeklyAnswer(value) {
     Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
 
   if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
-    showWeeklyResult();
+    showWeeklyResult(); // 🔹 CAMBIO: va a pantalla separada
   } else {
     weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   }
@@ -82,7 +80,8 @@ function showWeeklyResult() {
 
   weeklyText.innerText = text;
   weeklyAdvice.innerText = advice;
-  weeklyResult.classList.remove("hidden");
+
+  showSection("weeklyResultScreen");
 }
 
 function saveWeekly() {
@@ -174,7 +173,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS – DEVOLUCIONES
+   RESULTADOS
 ================================ */
 function showResults() {
   showSection("results");
@@ -194,10 +193,6 @@ function showResults() {
         <strong>${p}%</strong>
         <small>${m.name}</small>
       </div>`;
-
-    if (mode === "premium") {
-      tips.innerHTML += `<li>${premiumFeedback(m.name, p)}</li>`;
-    }
   });
 
   const avg = Math.round(total / modules.length);
@@ -209,39 +204,22 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML = `
-      <button class="premium" onclick="weeklyWithDonation()">Conteo semanal</button>
-      <p class="legal">
-        Conteo semanal – versión Premium.<br>
-        Aporte voluntario y consciente.
-      </p>`;
+      <button class="premium" onclick="startWeekly()">Conteo semanal</button>
+      <p class="legal">Conteo semanal – versión Premium.</p>`;
   }
 }
 
 /* ===============================
-   DEVOLUCIONES HUMANAS
+   DEVOLUCIONES
 ================================ */
 function commonFeedback(avg) {
-  if (avg < 40) {
-    return "Se observa una desconexión entre intención y acción. Reconocerlo abre el camino a una conciencia más clara.";
-  }
-  if (avg < 70) {
-    return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
-  }
-  return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
-}
-
-function premiumFeedback(area, p) {
-  if (p < 40) {
-    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tus reacciones puede generar un cambio profundo.`;
-  }
-  if (p < 70) {
-    return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
-  }
-  return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
+  if (avg < 40) return "Se observa una desconexión entre intención y acción.";
+  if (avg < 70) return "Tu humanidad está presente, aunque con fluctuaciones.";
+  return "Existe coherencia entre lo que sentís, pensás y hacés.";
 }
 
 /* ===============================
-   TERMÓMETRO GENERAL
+   TERMÓMETRO
 ================================ */
 function updateThermometer() {
   const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
@@ -253,28 +231,17 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN
-================================ */
-function weeklyWithDonation() {
-  window.open("https://mpago.la/1eCGrKX", "_blank");
-  startWeekly();
-}
-
-/* ===============================
    NAVEGACIÓN
 ================================ */
 function restart() { showSection("start"); }
 function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
-  ["start", "test", "results", "weekly", "privacy"]
+  ["start","test","results","weekly","weeklyResultScreen","privacy"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-/* ===============================
-   CONTINUIDAD V1 → V2 (SUMA)
-================================ */
 function goToV2() {
-  window.location.href = "https://qpasahumano.github.io/HUMANOMETRO/humanometreo-v2/";
-}
+  window.location.href = "./humanometro-v2/";
+     }
