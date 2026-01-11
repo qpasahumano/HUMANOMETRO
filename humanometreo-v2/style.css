@@ -110,3 +110,69 @@ button {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.55);
 }
+/* =========================
+   BLOQUE VISUAL INICIO V.2
+   (SUMA – NO MODIFICA ESTILOS EXISTENTES)
+========================= */
+
+.hm-v2-start {
+  position: fixed;
+  inset: 0;
+  background: url("assets/v2/background-humanometro-v2.jpg")
+              center / cover no-repeat;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hm-v2-overlay {
+  text-align: center;
+  padding: 40px;
+  backdrop-filter: brightness(0.7);
+}
+
+/* Título principal */
+.hm-title {
+  font-size: 2.8rem;
+  letter-spacing: 2px;
+  color: #e9ffe9;
+  text-shadow: 0 0 12px rgba(0, 255, 120, 0.35);
+  margin-bottom: 4px;
+}
+
+/* Versión discreta */
+.hm-version {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(230, 255, 230, 0.6);
+  margin-bottom: 32px;
+}
+
+/* Botón LED + Touch */
+.hm-led-btn {
+  padding: 15px 38px;
+  font-size: 1rem;
+  border-radius: 40px;
+  border: 1px solid rgba(0, 255, 120, 0.6);
+  background: linear-gradient(145deg, #0c3f22, #118a4f);
+  color: #eaffea;
+  cursor: pointer;
+  box-shadow:
+    0 0 12px rgba(0, 255, 120, 0.55),
+    inset 0 0 8px rgba(0, 255, 120, 0.25);
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease;
+}
+
+.hm-led-btn:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 18px rgba(0, 255, 120, 0.9),
+    inset 0 0 12px rgba(0, 255, 120, 0.6);
+}
+
+/* Utilidad de ocultado */
+.hm-hidden {
+  display: none;
+}
