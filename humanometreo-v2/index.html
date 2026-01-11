@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>HUMANÓMETRO v.2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- HEADER -->
-  <section id="header">
+  <!-- INTRO -->
+  <section id="intro">
     <h1 class="brand">
       <span class="brand-main">HUMANÓMETRO</span><br>
       <span class="brand-meta">v.2 ®</span>
     </h1>
+
+    <p class="intro-text">
+      Humanómetro no se recorre de una sola vez.<br>
+      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br><br>
+      Cada bloque se habilita únicamente cuando completaste el anterior
+      y pasó el tiempo necesario para integrar lo vivido.<br><br>
+      Las semanas no se adelantan ni se saltean.<br>
+      La humanidad se construye en movimiento, no en velocidad.
+    </p>
+
+    <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
   </section>
 
   <!-- SEMANAS -->
   <section id="week" class="hidden">
     <h2 id="weekTitle" class="led-title"></h2>
 
-    <div id="thermometer">
+    <div class="thermo">
       <div id="thermoFill"></div>
     </div>
 
-    <p id="questionText"></p>
-    <small id="questionMeasure"></small>
+    <p id="question"></p>
+    <small id="measure"></small>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
@@ -39,9 +48,9 @@
       <button onclick="answer(0)">No</button>
     </div>
 
-    <div id="microFeedback" class="hidden">
-      <p class="feedback"></p>
-      <p class="advice"></p>
+    <div id="micro" class="hidden">
+      <p id="microText"></p>
+      <p id="microAdvice"></p>
       <button onclick="next()">Siguiente</button>
     </div>
   </section>
@@ -50,11 +59,11 @@
   <section id="monthly" class="hidden">
     <h2 class="led-title">Tu humanidad en movimiento este mes</h2>
 
-    <div id="verticalThermo">
+    <div class="vertical-thermo">
       <div id="verticalFill"></div>
     </div>
 
-    <div id="monthlyText" class="hidden"></div>
+    <p id="monthlyText" class="hidden"></p>
   </section>
 
 </main>
