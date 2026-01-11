@@ -1,7 +1,14 @@
-const DEV_MODE = true;
+/* ===============================
+   CONFIGURACIÓN
+================================ */
+const DEV_MODE = true; // ⚠️ CAMBIAR A false AL PUBLICAR
+
 const WEEK_DELAY_DAYS = 7;
 const STORAGE_KEY = "humanometro_v2_state";
 
+/* ===============================
+   SEMANAS (BASE VALIDADA)
+================================ */
 const WEEKS = [
   {
     title: "Vos ante el mundo",
@@ -16,9 +23,9 @@ const WEEKS = [
     title: "Vos y la tecnología",
     questions: [
       { q:"¿Podés dejar el celular cuando compartís con otros?", n:"Mide uso consciente." },
-      { q:"¿Controlás el tiempo frente a pantallas?", n:"Mide autocontrol digital." },
-      { q:"¿Recordás que hay personas detrás de cada pantalla?", n:"Mide empatía digital." },
-      { q:"¿La tecnología acompaña sin absorberte?", n:"Mide equilibrio tecnológico." }
+      { q:"¿Controlás el tiempo que pasás en pantallas?", n:"Mide autocontrol digital." },
+      { q:"¿Recordás que hay personas reales detrás de una pantalla?", n:"Mide empatía digital." },
+      { q:"¿La tecnología te acompaña sin absorberte?", n:"Mide equilibrio tecnológico." }
     ]
   },
   {
@@ -27,11 +34,14 @@ const WEEKS = [
       { q:"¿Sentís coherencia entre lo que pensás y hacés?", n:"Mide alineación interna." },
       { q:"¿Podés observarte sin juzgarte?", n:"Mide autoconciencia." },
       { q:"¿Te sentís responsable de tu impacto?", n:"Mide madurez humana." },
-      { q:"¿Sentís evolución en tu humanidad este mes?", n:"Mide integración global." }
+      { q:"¿Sentís que tu humanidad evolucionó este mes?", n:"Mide integración global." }
     ]
   }
 ];
 
+/* ===============================
+   ESTADO
+================================ */
 let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
   weekIndex: 0,
   lastDate: null,
@@ -41,6 +51,9 @@ let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
 let qIndex = 0;
 let weekScores = [];
 
+/* ===============================
+   INICIO
+================================ */
 function startV2() {
   if (!DEV_MODE && !canAccessWeek()) {
     alert("Este bloque se habilita cuando corresponda.");
@@ -52,6 +65,9 @@ function startV2() {
   loadQuestion();
 }
 
+/* ===============================
+   PREGUNTAS
+================================ */
 function loadQuestion() {
   const w = WEEKS[state.weekIndex];
   const q = w.questions[qIndex];
@@ -63,53 +79,51 @@ function loadQuestion() {
 function answer(v) {
   weekScores.push(v);
   qIndex++;
-  animateThermo();
+  updateThermo();
 
   if (qIndex >= WEEKS[state.weekIndex].questions.length) {
-    setTimeout(showWeeklyResult, 1200);
+    showWeeklyResult();
   } else {
-    setTimeout(loadQuestion, 400);
+    loadQuestion();
   }
 }
 
-function animateThermo() {
-  const pct = (weekScores.length / WEEKS[state.weekIndex].questions.length) * 100;
-  document.getElementById("thermoFill").style.width = pct + "%";
-}
-
+/* ===============================
+   RESULTADO SEMANAL
+================================ */
 function showWeeklyResult() {
   const avg = weekScores.reduce((a,b)=>a+b,0) / weekScores.length;
 
-  let animal, text, advice, motivation;
+  let animal, text, advice;
 
   if (avg < 0.8) {
     animal = "🦇";
-    text = "Esta semana tu humanidad estuvo más cerrada.";
-    advice = "Detenerte a registrar lo que evitás puede abrir un nuevo movimiento.";
-    motivation = "Toda conciencia empieza por notar lo que hoy cuesta.";
+    text = "Tu humanidad mostró señales de repliegue.";
+    advice = "Observar sin huir puede ayudarte a reconectar.";
   } else if (avg < 1.5) {
     animal = "🐞";
     text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños gestos conscientes pueden generar grandes cambios.";
-    motivation = "No subestimes lo simple: ahí vive la coherencia.";
+    advice = "Pequeños actos conscientes pueden impulsarte.";
   } else {
     animal = "🐦";
-    text = "Tu humanidad mostró crecimiento.";
-    advice = "Sostener esta apertura fortalece tu equilibrio interno.";
-    motivation = "Cuando hay presencia, el camino se vuelve más liviano.";
+    text = "Tu humanidad está en crecimiento.";
+    advice = "Sostener esta apertura fortalece tu coherencia.";
   }
 
   document.getElementById("animalSymbol").innerText = animal;
   document.getElementById("resultText").innerText = text;
   document.getElementById("resultAdvice").innerText = advice;
-  document.getElementById("resultMotivation").innerText = motivation;
 
   saveWeek(avg);
   showSection("result");
 }
 
+/* ===============================
+   CONTINUIDAD
+================================ */
 function continueFlow() {
   state.weekIndex++;
+
   if (!DEV_MODE) state.lastDate = Date.now();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
@@ -120,19 +134,46 @@ function continueFlow() {
   }
 }
 
+/* ===============================
+   RESULTADO MENSUAL (TERMÓMETRO REAL)
+================================ */
 function showMonthlyResult() {
   showSection("monthly");
-  const avg = state.scores.reduce((a,b)=>a+b,0) / state.scores.length;
-  document.getElementById("monthlyFill").style.height = Math.round((avg/2)*100) + "%";
 
-  setTimeout(()=>{
-    document.getElementById("monthlyText").innerText =
-      avg < 0.8 ? "Este mes pide pausa y revisión."
-      : avg < 1.5 ? "Tu humanidad estuvo activa, aunque fluctuante."
-      : "Tu humanidad se expresó con coherencia y crecimiento.";
-  }, 3000);
+  const avg =
+    state.scores.reduce((a,b)=>a+b,0) / state.scores.length;
+
+  const targetHeight = Math.round((avg / 2) * 100);
+  const fill = document.getElementById("monthlyFill");
+  const text = document.getElementById("monthlyText");
+
+  let current = 0;
+  fill.style.height = "0%";
+  text.innerText = "";
+
+  const interval = setInterval(() => {
+    current++;
+    fill.style.height = current + "%";
+
+    if (current >= targetHeight) {
+      clearInterval(interval);
+
+      setTimeout(() => {
+        if (avg < 0.8) {
+          text.innerText = "Este mes tu humanidad necesita pausa y revisión.";
+        } else if (avg < 1.5) {
+          text.innerText = "Tu humanidad estuvo activa, aunque fluctuante.";
+        } else {
+          text.innerText = "Tu humanidad mostró integración y crecimiento.";
+        }
+      }, 600);
+    }
+  }, 25);
 }
 
+/* ===============================
+   BLOQUEO
+================================ */
 function canAccessWeek() {
   if (state.weekIndex === 0) return true;
   if (!state.lastDate) return true;
@@ -145,9 +186,18 @@ function saveWeek(score) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+/* ===============================
+   UI
+================================ */
 function showSection(id) {
   ["start","week","result","monthly"].forEach(s=>{
     document.getElementById(s).classList.add("hidden");
   });
   document.getElementById(id).classList.remove("hidden");
 }
+
+function updateThermo() {
+  const pct =
+    (weekScores.length / WEEKS[state.weekIndex].questions.length) * 100;
+  document.getElementById("thermoFill").style.width = pct + "%";
+  }
