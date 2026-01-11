@@ -1,6 +1,6 @@
 /* CONFIG */
-const WEEK_LOCK_DAYS = 7;
-const LOCK_KEY = "humanometro_v2_week";
+const LOCK_DAYS = 7;
+const STATE_KEY = "humanometro_v2_state";
 
 /* DATA */
 const WEEKS = [
@@ -28,79 +28,103 @@ const WEEKS = [
       { q:"¿Te sentís cómodo en silencio con vos?", m:"Autoobservación." },
       { q:"¿Hay coherencia entre pensar, sentir y hacer?", m:"Integración interna." },
       { q:"¿Podés equivocarte sin castigarte?", m:"Madurez emocional." },
-      { q:"¿Tu vida tiene sentido para vos?", m:"Propósito vital." }
+      { q:"¿Sentís que tu vida tiene sentido?", m:"Propósito vital." }
     ]
   }
 ];
 
-let week = 0, qIndex = 0, score = [];
+let state = JSON.parse(localStorage.getItem(STATE_KEY)) || {
+  currentWeek: 0,
+  lastDate: null,
+  scores: []
+};
+
+let qIndex = 0;
 
 /* DOM */
+const intro = document.getElementById("intro");
 const weekBox = document.getElementById("week");
-const title = document.getElementById("weekTitle");
-const question = document.getElementById("questionText");
-const measure = document.getElementById("questionMeasure");
+const weekTitle = document.getElementById("weekTitle");
+const question = document.getElementById("question");
+const measure = document.getElementById("measure");
 const thermo = document.getElementById("thermoFill");
-const feedbackBox = document.getElementById("microFeedback");
-const feedback = document.querySelector(".feedback");
-const advice = document.querySelector(".advice");
+const micro = document.getElementById("micro");
+const microText = document.getElementById("microText");
+const microAdvice = document.getElementById("microAdvice");
 
-/* INIT */
-startWeek();
+/* START */
+function startV2(){
+  intro.classList.add("hidden");
+  checkWeek();
+}
+
+function checkWeek(){
+  if(state.currentWeek > 0 && state.lastDate){
+    const days = (Date.now() - state.lastDate) / (1000*60*60*24);
+    if(days < LOCK_DAYS){
+      alert("El próximo bloque se habilita cuando se complete el ciclo semanal.");
+      return;
+    }
+  }
+  startWeek();
+}
 
 function startWeek(){
-  title.innerText = WEEKS[week].title;
+  qIndex = 0;
+  weekTitle.innerText = WEEKS[state.currentWeek].title;
   showQuestion();
   weekBox.classList.remove("hidden");
 }
 
 function showQuestion(){
-  const q = WEEKS[week].questions[qIndex];
+  const q = WEEKS[state.currentWeek].questions[qIndex];
   question.innerText = q.q;
   measure.innerText = "Mide: " + q.m;
-  feedbackBox.classList.add("hidden");
+  micro.classList.add("hidden");
 }
 
 function answer(v){
-  score.push(v);
-  thermo.style.width = Math.round((score.length / 12) * 100) + "%";
+  state.scores.push(v);
+  thermo.style.width = Math.round((state.scores.length / 12) * 100) + "%";
 
-  feedback.innerText = "Registrar esto ya es un movimiento de conciencia.";
-  advice.innerText = "Observar este aspecto puede ayudarte a crecer.";
-  feedbackBox.classList.remove("hidden");
+  microText.innerText = "Registrar esto ya es un movimiento de conciencia.";
+  microAdvice.innerText = "Observar este aspecto puede ayudarte a crecer.";
+  micro.classList.remove("hidden");
 }
 
 function next(){
   qIndex++;
-  if(qIndex >= WEEKS[week].questions.length){
-    week++;
-    qIndex = 0;
-    saveLock();
-    if(week >= WEEKS.length){
+  if(qIndex >= WEEKS[state.currentWeek].questions.length){
+    state.currentWeek++;
+    state.lastDate = Date.now();
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+
+    if(state.currentWeek >= WEEKS.length){
       showMonthly();
       return;
     }
+    checkWeek();
+  } else {
+    showQuestion();
   }
-  showQuestion();
-}
-
-function saveLock(){
-  localStorage.setItem(LOCK_KEY, Date.now());
 }
 
 function showMonthly(){
-  document.getElementById("week").classList.add("hidden");
-  document.getElementById("monthly").classList.remove("hidden");
-
-  const avg = score.reduce((a,b)=>a+b,0) / score.length;
+  weekBox.classList.add("hidden");
+  const monthly = document.getElementById("monthly");
   const fill = document.getElementById("verticalFill");
+  const text = document.getElementById("monthlyText");
+
+  monthly.classList.remove("hidden");
+
+  const avg = state.scores.reduce((a,b)=>a+b,0)/state.scores.length;
   fill.style.height = Math.round((avg/2)*100) + "%";
 
   setTimeout(()=>{
-    document.getElementById("monthlyText").innerText =
+    text.innerText =
       avg > 1.5 ? "Tu humanidad mostró integración y presencia."
       : avg > .8 ? "Tu humanidad estuvo activa, aunque inestable."
       : "Tu humanidad necesita pausa y revisión.";
-    document.getElementById("monthlyText").classList.remove("hidden");
+    text.classList.remove("hidden");
   }, 3200);
-}
+    }
