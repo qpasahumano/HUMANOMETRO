@@ -12,82 +12,94 @@ body {
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(11,18,32,.85);
-  border-radius: 16px;
 }
 
 .hidden { display: none; }
 
-/* LOGO */
+/* BRAND */
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: clamp(1.9rem, 7vw, 2.6rem);
-  letter-spacing: .08em;
-  color: #7fffe1;
-  text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 14px rgba(120,255,230,.6);
+  font-size: 2.2rem;
+  color: #b9fff2;
+  text-shadow: 0 0 12px rgba(120,255,230,.9);
 }
 
 .brand-meta {
   font-size: .7rem;
-  opacity: .75;
+  opacity: .7;
 }
 
-/* SUB */
-.v2-subtitle {
-  margin: 10px 0 16px;
-  opacity: .9;
+/* TITLES */
+.led-title {
+  margin: 20px 0;
+  color: #aefcff;
+  text-shadow: 0 0 15px rgba(100,255,240,.8);
+  animation: glow 2.5s infinite alternate;
 }
 
-/* TERMÓMETRO */
-.weekly-thermo {
-  width: 100%;
+@keyframes glow {
+  from { opacity: .7; }
+  to { opacity: 1; }
+}
+
+/* THERMOMETER */
+#thermometer {
   height: 14px;
   background: #111;
   border-radius: 20px;
-  margin: 15px 0 25px;
   overflow: hidden;
+  margin: 20px 0;
 }
 
-#v2ThermoFill {
+#thermoFill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 14px rgba(255,255,255,.6);
-  transition: width .4s ease;
+  transition: width .5s ease;
 }
 
-/* PREGUNTA */
-.v2-question {
-  font-size: 1.05em;
-  margin-bottom: 6px;
+/* VERTICAL */
+#verticalThermo {
+  width: 40px;
+  height: 260px;
+  background: #111;
+  margin: 30px auto;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-/* BOTONES */
-button {
+#verticalFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
+}
+
+/* ANSWERS */
+.answers button,
+#microFeedback button {
   width: 90%;
-  max-width: 340px;
-  margin: 12px auto;
-  padding: 15px;
+  margin: 10px auto;
+  padding: 14px;
   border-radius: 40px;
   border: none;
-  font-size: 1em;
-  cursor: pointer;
   background: #3498db;
-  color: #fff;
-  box-shadow: 0 0 14px rgba(52,152,219,.8);
+  color: white;
+  font-size: 1em;
 }
 
-button:active { transform: scale(.96); }
-
-/* ANIMAL */
-.v2-animal {
-  font-size: 3.2rem;
-  margin: 14px 0;
+/* FEEDBACK */
+.feedback {
+  animation: fadeUp .6s ease;
 }
 
-.legal {
-  font-size: .75em;
-  opacity: .7;
+.advice {
+  font-size: .85em;
+  opacity: .8;
+  animation: fadeUp .9s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
