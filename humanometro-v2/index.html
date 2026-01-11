@@ -8,77 +8,38 @@
   <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
-  <!-- CSS (RUTA CORREGIDA PARA GITHUB PAGES) -->
-  <link rel="stylesheet" href="./style.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INTRO -->
-  <section id="start">
+  <!-- INICIO V2 -->
+  <section id="start-v2">
     <h1 class="brand">
       <span class="brand-main">HUMANÓMETRO</span><br>
       <span class="brand-meta">v.2 ®</span>
     </h1>
 
     <p class="intro">
-      Humanómetro no se recorre de una sola vez.<br><br>
-      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-      Cada bloque se habilita únicamente cuando completaste el anterior.<br><br>
-      La humanidad se construye en movimiento.
+      Este volumen continúa tu proceso humano de forma semanal y progresiva.
     </p>
 
-    <button class="primary" onclick="startV2()">
-      Continuar seguimiento mensual
+    <button class="primary" onclick="startMonthly()">
+      Comenzar seguimiento mensual
     </button>
   </section>
 
-  <!-- SEMANA -->
-  <section id="week" class="hidden">
-    <h2 id="weekTitle" class="neon-title"></h2>
-
-    <div class="thermo">
-      <div id="thermoFill"></div>
-    </div>
-
-    <p id="questionText"></p>
-    <small id="questionNote" class="legal"></small>
-
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">Tal vez / A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
-
-  <!-- RESULTADO SEMANAL -->
-  <section id="result" class="hidden">
-    <h2 class="neon-title">Lectura de la semana</h2>
-
-    <div id="animalSymbol" class="animal"></div>
-
-    <p id="resultText"></p>
-    <p id="resultAdvice" class="legal"></p>
-
-    <button class="primary" onclick="continueFlow()">
-      Continuar seguimiento mensual
-    </button>
-  </section>
-
-  <!-- RESULTADO MENSUAL -->
+  <!-- CONTENIDO (próxima pantalla) -->
   <section id="monthly" class="hidden">
-    <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
-
-    <div class="vertical-thermo">
-      <div id="monthlyFill"></div>
-    </div>
-
-    <p id="monthlyText"></p>
+    <h2>Volumen 2 activo</h2>
+    <p>El botón funciona correctamente.</p>
   </section>
 
 </main>
 
-<script src="./script.js"></script>
+<!-- JS (OBLIGATORIO) -->
+<script src="script.js"></script>
 </body>
-         </html>
+</html>
