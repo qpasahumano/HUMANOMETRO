@@ -41,10 +41,10 @@ const WEEKLY_QUESTIONS = [
 function startWeekly() {
   weeklyIndex = 0;
   weeklyScores = [];
-  showSection("weekly");
-  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   weeklyThermoFill.style.width = "0%";
   weeklySaved.classList.add("hidden");
+  showSection("weekly");
+  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
 function weeklyAnswer(value) {
@@ -55,32 +55,33 @@ function weeklyAnswer(value) {
     Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
 
   if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
-    showWeeklyResult();
+    showWeeklyResultScreen();
   } else {
     weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
   }
 }
 
-function showWeeklyResult() {
+function showWeeklyResultScreen() {
   const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  let text = "";
-  let advice = "";
-
   if (avg < 0.8) {
-    text = "Esta semana mostró una desconexión entre intención y acción.";
-    advice = "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
+    weeklyText.innerText =
+      "Esta semana mostró una desconexión entre intención y acción.";
+    weeklyAdvice.innerText =
+      "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
   } else if (avg < 1.5) {
-    text = "Tu humanidad estuvo presente, pero de forma fluctuante.";
-    advice = "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
+    weeklyText.innerText =
+      "Tu humanidad estuvo presente, pero de forma fluctuante.";
+    weeklyAdvice.innerText =
+      "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
   } else {
-    text = "Mostraste coherencia humana y presencia consciente esta semana.";
-    advice = "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
+    weeklyText.innerText =
+      "Mostraste coherencia humana y presencia consciente esta semana.";
+    weeklyAdvice.innerText =
+      "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
   }
 
-  weeklyText.innerText = text;
-  weeklyAdvice.innerText = advice;
-
+  saveWeekly();
   showSection("weeklyResultScreen");
 }
 
@@ -173,7 +174,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS
+   RESULTADOS (PREMIUM RESTAURADO)
 ================================ */
 function showResults() {
   showSection("results");
@@ -209,7 +210,11 @@ function showResults() {
   if (mode === "premium") {
     weeklyAccess.innerHTML = `
       <button class="premium" onclick="startWeekly()">Conteo semanal</button>
-      <p class="legal">Conteo semanal – versión Premium.</p>`;
+      <p class="legal">
+        Conteo semanal – versión Premium.<br>
+        Aporte voluntario y consciente.<br>
+        No es un pago, es una donación para sostener el proyecto.
+      </p>`;
   }
 }
 
@@ -217,19 +222,19 @@ function showResults() {
    DEVOLUCIONES
 ================================ */
 function commonFeedback(avg) {
-  if (avg < 40) return "Se observa una desconexión entre intención y acción.";
-  if (avg < 70) return "Tu humanidad está presente, aunque con fluctuaciones.";
-  return "Existe coherencia entre lo que sentís, pensás y hacés.";
+  if (avg < 40)
+    return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
+  if (avg < 70)
+    return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
+  return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
 }
 
 function premiumFeedback(area, p) {
-  if (p < 40) {
-    return `En ${area}, se observa una desconexión entre intención y acción. La conciencia comienza al reconocerlo.`;
-  }
-  if (p < 70) {
-    return `En ${area}, tu humanidad estuvo presente, aunque de forma inestable. La observación consciente puede fortalecerla.`;
-  }
-  return `En ${area}, se manifestó coherencia, empatía y responsabilidad humana activa.`;
+  if (p < 40)
+    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tus reacciones puede generar un cambio profundo.`;
+  if (p < 70)
+    return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
+  return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
 }
 
 /* ===============================
