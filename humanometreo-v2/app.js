@@ -1,66 +1,106 @@
-let v2Index = 0;
-let v2Scores = [];
+/* CONFIG */
+const WEEK_LOCK_DAYS = 7;
+const LOCK_KEY = "humanometro_v2_week";
 
-const V2_QUESTIONS = [
+/* DATA */
+const WEEKS = [
   {
-    q: "Cuando ves noticias de guerras o sufrimiento humano en el mundo, ¿te generan una emoción real?",
-    n: "Mide empatía global y sensibilidad humana."
+    title: "Vos ante el mundo",
+    questions: [
+      { q:"¿Una noticia de sufrimiento global te genera empatía?", m:"Empatía global." },
+      { q:"¿Te involucrás emocionalmente ante injusticias?", m:"Sensibilidad humana." },
+      { q:"¿Sentís tristeza ante el dolor ajeno?", m:"Conexión emocional." },
+      { q:"¿Creés que tus acciones influyen en el mundo?", m:"Responsabilidad colectiva." }
+    ]
   },
   {
-    q: "Cuando una persona te habla o te cuenta algo importante, ¿dejás el celular de lado?",
-    n: "Mide presencia consciente y respeto interpersonal."
+    title: "Vos y el mundo digital",
+    questions: [
+      { q:"¿Podés soltar el celular cuando estás con otros?", m:"Presencia consciente." },
+      { q:"¿Controlás el tiempo en pantalla?", m:"Autonomía digital." },
+      { q:"¿Recordás que hay personas detrás de una pantalla?", m:"Empatía digital." },
+      { q:"¿La tecnología te sirve más de lo que te absorbe?", m:"Equilibrio tecnológico." }
+    ]
   },
   {
-    q: "Cuando ves una situación de riesgo o maltrato hacia un animal, ¿sentís impulso de involucrarte?",
-    n: "Mide empatía activa y coherencia ética."
-  },
-  {
-    q: "Cuando presenciás una injusticia cotidiana, ¿te cuestionás tu rol en ese entorno?",
-    n: "Mide conciencia social y responsabilidad personal."
+    title: "Vos con vos mismo",
+    questions: [
+      { q:"¿Te sentís cómodo en silencio con vos?", m:"Autoobservación." },
+      { q:"¿Hay coherencia entre pensar, sentir y hacer?", m:"Integración interna." },
+      { q:"¿Podés equivocarte sin castigarte?", m:"Madurez emocional." },
+      { q:"¿Tu vida tiene sentido para vos?", m:"Propósito vital." }
+    ]
   }
 ];
 
-function updateV2() {
-  document.getElementById("v2Question").innerText = V2_QUESTIONS[v2Index].q;
-  document.getElementById("v2Note").innerText = V2_QUESTIONS[v2Index].n;
-  document.getElementById("v2ThermoFill").style.width =
-    Math.round((v2Scores.length / V2_QUESTIONS.length) * 100) + "%";
+let week = 0, qIndex = 0, score = [];
+
+/* DOM */
+const weekBox = document.getElementById("week");
+const title = document.getElementById("weekTitle");
+const question = document.getElementById("questionText");
+const measure = document.getElementById("questionMeasure");
+const thermo = document.getElementById("thermoFill");
+const feedbackBox = document.getElementById("microFeedback");
+const feedback = document.querySelector(".feedback");
+const advice = document.querySelector(".advice");
+
+/* INIT */
+startWeek();
+
+function startWeek(){
+  title.innerText = WEEKS[week].title;
+  showQuestion();
+  weekBox.classList.remove("hidden");
 }
 
-function v2Answer(val) {
-  v2Scores.push(val);
-  v2Index++;
+function showQuestion(){
+  const q = WEEKS[week].questions[qIndex];
+  question.innerText = q.q;
+  measure.innerText = "Mide: " + q.m;
+  feedbackBox.classList.add("hidden");
+}
 
-  if (v2Index >= V2_QUESTIONS.length) {
-    showV2Result();
-  } else {
-    updateV2();
+function answer(v){
+  score.push(v);
+  thermo.style.width = Math.round((score.length / 12) * 100) + "%";
+
+  feedback.innerText = "Registrar esto ya es un movimiento de conciencia.";
+  advice.innerText = "Observar este aspecto puede ayudarte a crecer.";
+  feedbackBox.classList.remove("hidden");
+}
+
+function next(){
+  qIndex++;
+  if(qIndex >= WEEKS[week].questions.length){
+    week++;
+    qIndex = 0;
+    saveLock();
+    if(week >= WEEKS.length){
+      showMonthly();
+      return;
+    }
   }
+  showQuestion();
 }
 
-function showV2Result() {
-  const avg = v2Scores.reduce((a,b)=>a+b,0) / v2Scores.length;
-
-  let animal, text, advice;
-
-  if (avg < .8) {
-    animal = "🦇";
-    text = "Se percibe una desconexión emocional con el entorno.";
-    advice = "Recuperar sensibilidad comienza por permitirte sentir sin huir.";
-  } else if (avg < 1.5) {
-    animal = "🐞";
-    text = "Tu humanidad se mantiene estable.";
-    advice = "Pequeños gestos conscientes pueden reactivar tu impacto humano.";
-  } else {
-    animal = "🐦";
-    text = "Tu humanidad está despierta y en expansión.";
-    advice = "Sostener esta coherencia amplifica tu vínculo con el mundo.";
-  }
-
-  document.getElementById("v2Animal").innerText = animal;
-  document.getElementById("v2Text").innerText = text;
-  document.getElementById("v2Advice").innerText = advice;
-  document.getElementById("v2Result").classList.remove("hidden");
+function saveLock(){
+  localStorage.setItem(LOCK_KEY, Date.now());
 }
 
-updateV2();
+function showMonthly(){
+  document.getElementById("week").classList.add("hidden");
+  document.getElementById("monthly").classList.remove("hidden");
+
+  const avg = score.reduce((a,b)=>a+b,0) / score.length;
+  const fill = document.getElementById("verticalFill");
+  fill.style.height = Math.round((avg/2)*100) + "%";
+
+  setTimeout(()=>{
+    document.getElementById("monthlyText").innerText =
+      avg > 1.5 ? "Tu humanidad mostró integración y presencia."
+      : avg > .8 ? "Tu humanidad estuvo activa, aunque inestable."
+      : "Tu humanidad necesita pausa y revisión.";
+    document.getElementById("monthlyText").classList.remove("hidden");
+  }, 3200);
+}
