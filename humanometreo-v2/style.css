@@ -1,178 +1,93 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; }
 
 body {
-  font-family: sans-serif;
-  height: 100vh;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
   background: #0b1220;
-  color: #ffffff;
+  color: white;
 }
 
-.start-screen {
+#app {
+  max-width: 520px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  background: rgba(11,18,32,.85);
+  border-radius: 16px;
+}
+
+.hidden { display: none; }
+
+/* LOGO */
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  letter-spacing: .08em;
+  color: #7fffe1;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 14px rgba(120,255,230,.6);
+}
+
+.brand-meta {
+  font-size: .7rem;
+  opacity: .75;
+}
+
+/* SUB */
+.v2-subtitle {
+  margin: 10px 0 16px;
+  opacity: .9;
+}
+
+/* TERMÓMETRO */
+.weekly-thermo {
+  width: 100%;
+  height: 14px;
+  background: #111;
+  border-radius: 20px;
+  margin: 15px 0 25px;
+  overflow: hidden;
+}
+
+#v2ThermoFill {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  box-shadow: 0 0 14px rgba(255,255,255,.6);
+  transition: width .4s ease;
 }
 
-.title {
-  font-size: 2.5rem;
-  letter-spacing: 2px;
+/* PREGUNTA */
+.v2-question {
+  font-size: 1.05em;
+  margin-bottom: 6px;
 }
 
-.version {
-  font-size: 0.9rem;
-  opacity: 0.7;
-  margin-bottom: 40px;
-}
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-image: url("assets/v2/background-humanometro-v2.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  font-family: sans-serif;
-  color: #ffffff;
-}
-
+/* BOTONES */
 button {
-  padding: 14px 22px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #2cffc8;
-  color: #000;
-  cursor: pointer;
-}
-/* ===== BLOQUE START V.2 ===== */
-
-.start-v2 {
-  position: relative;
-  min-height: 100vh;
-  background: url("assets/v2/background-humanometro-v2.jpg") center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay-v2 {
-  position: absolute;
-  inset: 0;
-  background: rgba(5, 20, 10, 0.55);
-  backdrop-filter: blur(1px);
-}
-
-.content-v2 {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-}
-
-.title-v2 {
-  font-size: 2.8rem;
-  letter-spacing: 2px;
-  color: #e8ffe8;
-  text-shadow: 0 0 12px rgba(120, 255, 160, 0.35);
-  margin-bottom: 2rem;
-}
-
-/* Botón LED */
-.btn-led {
-  background: linear-gradient(135deg, #2eff7a, #0fbf5f);
-  color: #0b1220;
-  border: none;
-  padding: 16px 36px;
-  font-size: 1.1rem;
+  width: 90%;
+  max-width: 340px;
+  margin: 12px auto;
+  padding: 15px;
   border-radius: 40px;
+  border: none;
+  font-size: 1em;
   cursor: pointer;
-  box-shadow:
-    0 0 12px rgba(46, 255, 122, 0.6),
-    inset 0 0 8px rgba(255, 255, 255, 0.25);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: #3498db;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(52,152,219,.8);
 }
 
-.btn-led:active {
-  transform: scale(0.96);
-  box-shadow:
-    0 0 6px rgba(46, 255, 122, 0.4),
-    inset 0 0 10px rgba(0, 0, 0, 0.4);
+button:active { transform: scale(.96); }
+
+/* ANIMAL */
+.v2-animal {
+  font-size: 3.2rem;
+  margin: 14px 0;
 }
 
-/* versión discreta */
-.version-v2 {
-  margin-top: 1.5rem;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.55);
-}
-/* =========================
-   BLOQUE VISUAL INICIO V.2
-   (SUMA – NO MODIFICA ESTILOS EXISTENTES)
-========================= */
-
-.hm-v2-start {
-  position: fixed;
-  inset: 0;
-  background: url("assets/v2/background-humanometro-v2.jpg")
-              center / cover no-repeat;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hm-v2-overlay {
-  text-align: center;
-  padding: 40px;
-  backdrop-filter: brightness(0.7);
-}
-
-/* Título principal */
-.hm-title {
-  font-size: 2.8rem;
-  letter-spacing: 2px;
-  color: #e9ffe9;
-  text-shadow: 0 0 12px rgba(0, 255, 120, 0.35);
-  margin-bottom: 4px;
-}
-
-/* Versión discreta */
-.hm-version {
-  display: block;
-  font-size: 0.75rem;
-  color: rgba(230, 255, 230, 0.6);
-  margin-bottom: 32px;
-}
-
-/* Botón LED + Touch */
-.hm-led-btn {
-  padding: 15px 38px;
-  font-size: 1rem;
-  border-radius: 40px;
-  border: 1px solid rgba(0, 255, 120, 0.6);
-  background: linear-gradient(145deg, #0c3f22, #118a4f);
-  color: #eaffea;
-  cursor: pointer;
-  box-shadow:
-    0 0 12px rgba(0, 255, 120, 0.55),
-    inset 0 0 8px rgba(0, 255, 120, 0.25);
-  transition: transform 0.15s ease,
-              box-shadow 0.15s ease;
-}
-
-.hm-led-btn:active {
-  transform: scale(0.96);
-  box-shadow:
-    0 0 18px rgba(0, 255, 120, 0.9),
-    inset 0 0 12px rgba(0, 255, 120, 0.6);
-}
-
-/* Utilidad de ocultado */
-.hm-hidden {
-  display: none;
+.legal {
+  font-size: .75em;
+  opacity: .7;
 }
