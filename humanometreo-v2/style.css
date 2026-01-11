@@ -50,3 +50,63 @@ button {
   color: #000;
   cursor: pointer;
 }
+/* ===== BLOQUE START V.2 ===== */
+
+.start-v2 {
+  position: relative;
+  min-height: 100vh;
+  background: url("assets/v2/background-humanometro-v2.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-v2 {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 20, 10, 0.55);
+  backdrop-filter: blur(1px);
+}
+
+.content-v2 {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.title-v2 {
+  font-size: 2.8rem;
+  letter-spacing: 2px;
+  color: #e8ffe8;
+  text-shadow: 0 0 12px rgba(120, 255, 160, 0.35);
+  margin-bottom: 2rem;
+}
+
+/* Botón LED */
+.btn-led {
+  background: linear-gradient(135deg, #2eff7a, #0fbf5f);
+  color: #0b1220;
+  border: none;
+  padding: 16px 36px;
+  font-size: 1.1rem;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow:
+    0 0 12px rgba(46, 255, 122, 0.6),
+    inset 0 0 8px rgba(255, 255, 255, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-led:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 6px rgba(46, 255, 122, 0.4),
+    inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/* versión discreta */
+.version-v2 {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+}
