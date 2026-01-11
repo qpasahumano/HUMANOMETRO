@@ -5,7 +5,10 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -20,9 +23,11 @@
     </h1>
 
     <p class="intro">
-      Este seguimiento no se recorre de una sola vez.<br><br>
-      Cada semana propone observar tu humanidad en acción,
-      integrar lo vivido y continuar cuando el tiempo hizo su parte.
+      Humanómetro no se recorre de una sola vez.<br><br>
+      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+      Cada bloque se habilita únicamente cuando completaste el anterior
+      y pasó el tiempo necesario para integrarlo.<br><br>
+      La humanidad se construye en movimiento, no en velocidad.
     </p>
 
     <button class="primary" onclick="startV2()">
@@ -54,9 +59,8 @@
 
     <div id="animalSymbol" class="animal"></div>
 
-    <p id="resultText" class="fade"></p>
-    <p id="resultAdvice" class="fade legal"></p>
-    <p id="resultMotivation" class="fade motivation"></p>
+    <p id="resultText"></p>
+    <p id="resultAdvice" class="legal"></p>
 
     <button class="primary" onclick="continueFlow()">
       Continuar seguimiento mensual
@@ -71,7 +75,7 @@
       <div id="monthlyFill"></div>
     </div>
 
-    <p id="monthlyText" class="fade"></p>
+    <p id="monthlyText"></p>
   </section>
 
 </main>
