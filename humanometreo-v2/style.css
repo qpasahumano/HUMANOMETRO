@@ -4,8 +4,12 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
-  background: #0b1220;
   color: #eafff9;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(120,255,230,.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(90,140,255,.25), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(60,180,120,.20), transparent 45%),
+    #0b1220;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,29 +18,70 @@ body {
 #app {
   width: 100%;
   max-width: 420px;
-  padding: 24px;
-  background: rgba(11,18,32,.9);
-  border-radius: 16px;
+  padding: 26px;
+  background: rgba(11,18,32,.88);
+  border-radius: 18px;
+  box-shadow: 0 0 35px rgba(120,255,230,.35);
   text-align: center;
 }
 
+/* Screens */
+.screen { animation: fadeIn .4s ease; }
 .hidden { display: none; }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Brand */
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  letter-spacing: .1em;
   color: #b9fff2;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.9),
+    0 0 18px rgba(120,255,230,.6);
 }
 
 .brand-meta {
   font-size: .7rem;
-  opacity: .7;
+  opacity: .75;
 }
 
+/* Titles */
+.neon-title {
+  color: #9fffe0;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 16px rgba(120,255,230,.6);
+  animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: .85; }
+  to { opacity: 1; }
+}
+
+/* Texts */
 .intro {
-  margin: 16px 0;
+  margin: 18px 0;
+  line-height: 1.5;
+  text-shadow: 0 0 6px rgba(0,0,0,.6);
 }
 
+.question {
+  font-size: 1.05rem;
+  margin: 16px 0 20px;
+  text-shadow: 0 0 6px rgba(0,0,0,.6);
+}
+
+.result-text {
+  margin: 20px 0;
+}
+
+/* Buttons */
 button {
   width: 100%;
   margin: 10px 0;
@@ -45,11 +90,33 @@ button {
   border: none;
   font-size: 1rem;
   cursor: pointer;
-  background: #2ecc71;
+}
+
+.primary {
+  background: linear-gradient(45deg,#2ecc71,#6affd3);
   color: #001c14;
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
 }
 
 .answers button {
   background: #3498db;
   color: #fff;
+  box-shadow: 0 0 14px rgba(52,152,219,.8);
+}
+
+/* Thermometer */
+.thermo {
+  width: 100%;
+  height: 14px;
+  background: #111;
+  border-radius: 20px;
+  margin: 14px 0 10px;
+  overflow: hidden;
+}
+
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
 }
