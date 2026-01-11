@@ -18,3 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// =========================
+// BLOQUE CONTROL INICIO V.2
+// (SUMA – NO ALTERA LÓGICA PREVIA)
+// =========================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const v2Screen = document.getElementById("hm-v2-start");
+  const continueBtn = document.getElementById("hmV2Continue");
+
+  if (!v2Screen || !continueBtn) return;
+
+  continueBtn.addEventListener("click", () => {
+    v2Screen.classList.add("hm-hidden");
+    console.log("Inicio testeo semanal HUMANÓMETRO v.2");
+    // aquí se conecta luego el flujo de test
+  });
+});
