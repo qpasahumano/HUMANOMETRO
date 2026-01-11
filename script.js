@@ -174,7 +174,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS – DEVOLUCIONES RESTAURADAS
+   RESULTADOS – DEVOLUCIONES
 ================================ */
 function showResults() {
   showSection("results");
@@ -270,4 +270,11 @@ function showSection(id) {
   ["start", "test", "results", "weekly", "privacy"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
+}
+
+/* ===============================
+   CONTINUIDAD V1 → V2 (SUMA)
+================================ */
+function goToV2() {
+  window.location.href = "https://qpasahumano.github.io/HUMANOMETRO/humanometreo-v2/";
 }
