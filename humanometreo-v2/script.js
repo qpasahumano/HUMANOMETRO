@@ -1,203 +1,55 @@
-/* ===============================
-   CONFIGURACIÓN
-================================ */
-const DEV_MODE = true; // ⚠️ CAMBIAR A false AL PUBLICAR
-
-const WEEK_DELAY_DAYS = 7;
-const STORAGE_KEY = "humanometro_v2_state";
-
-/* ===============================
-   SEMANAS (BASE VALIDADA)
-================================ */
-const WEEKS = [
-  {
-    title: "Vos ante el mundo",
-    questions: [
-      { q:"Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", n:"Mide empatía global." },
-      { q:"Cuando alguien te habla, ¿le prestás atención sin mirar el celular?", n:"Mide presencia humana." },
-      { q:"¿Sentís impulso de involucrarte ante una injusticia?", n:"Mide compromiso humano." },
-      { q:"¿Te afecta el sufrimiento ajeno?", n:"Mide sensibilidad emocional." }
-    ]
-  },
-  {
-    title: "Vos y la tecnología",
-    questions: [
-      { q:"¿Podés dejar el celular cuando compartís con otros?", n:"Mide uso consciente." },
-      { q:"¿Controlás el tiempo que pasás en pantallas?", n:"Mide autocontrol digital." },
-      { q:"¿Recordás que hay personas reales detrás de una pantalla?", n:"Mide empatía digital." },
-      { q:"¿La tecnología te acompaña sin absorberte?", n:"Mide equilibrio tecnológico." }
-    ]
-  },
-  {
-    title: "Integración humana",
-    questions: [
-      { q:"¿Sentís coherencia entre lo que pensás y hacés?", n:"Mide alineación interna." },
-      { q:"¿Podés observarte sin juzgarte?", n:"Mide autoconciencia." },
-      { q:"¿Te sentís responsable de tu impacto?", n:"Mide madurez humana." },
-      { q:"¿Sentís que tu humanidad evolucionó este mes?", n:"Mide integración global." }
-    ]
-  }
+const QUESTIONS = [
+  "¿Te afectó emocionalmente alguna noticia reciente?",
+  "¿Escuchaste con atención a alguien esta semana?",
+  "¿Actuaste con empatía ante una situación difícil?",
+  "¿Sentís coherencia entre lo que pensás y hacés?"
 ];
 
-/* ===============================
-   ESTADO
-================================ */
-let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-  weekIndex: 0,
-  lastDate: null,
-  scores: []
-};
+let index = 0;
+let score = 0;
 
-let qIndex = 0;
-let weekScores = [];
-
-/* ===============================
-   INICIO
-================================ */
-function startV2() {
-  if (!DEV_MODE && !canAccessWeek()) {
-    alert("Este bloque se habilita cuando corresponda.");
-    return;
-  }
-  qIndex = 0;
-  weekScores = [];
-  showSection("week");
+function startTest() {
+  index = 0;
+  score = 0;
+  show("test");
   loadQuestion();
 }
 
-/* ===============================
-   PREGUNTAS
-================================ */
 function loadQuestion() {
-  const w = WEEKS[state.weekIndex];
-  const q = w.questions[qIndex];
-  document.getElementById("weekTitle").innerText = w.title;
-  document.getElementById("questionText").innerText = q.q;
-  document.getElementById("questionNote").innerText = q.n;
+  document.getElementById("title").innerText = "Pregunta " + (index + 1);
+  document.getElementById("question").innerText = QUESTIONS[index];
 }
 
-function answer(v) {
-  weekScores.push(v);
-  qIndex++;
-  updateThermo();
+function answer(value) {
+  score += value;
+  index++;
 
-  if (qIndex >= WEEKS[state.weekIndex].questions.length) {
-    showWeeklyResult();
+  if (index >= QUESTIONS.length) {
+    showResult();
   } else {
     loadQuestion();
   }
 }
 
-/* ===============================
-   RESULTADO SEMANAL
-================================ */
-function showWeeklyResult() {
-  const avg = weekScores.reduce((a,b)=>a+b,0) / weekScores.length;
+function showResult() {
+  show("result");
+  const avg = score / QUESTIONS.length;
 
-  let animal, text, advice;
+  let text = "Resultado neutro.";
+  if (avg < 0.8) text = "Humanidad baja esta semana.";
+  else if (avg < 1.5) text = "Humanidad estable esta semana.";
+  else text = "Humanidad en crecimiento.";
 
-  if (avg < 0.8) {
-    animal = "🦇";
-    text = "Tu humanidad mostró señales de repliegue.";
-    advice = "Observar sin huir puede ayudarte a reconectar.";
-  } else if (avg < 1.5) {
-    animal = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños actos conscientes pueden impulsarte.";
-  } else {
-    animal = "🐦";
-    text = "Tu humanidad está en crecimiento.";
-    advice = "Sostener esta apertura fortalece tu coherencia.";
-  }
-
-  document.getElementById("animalSymbol").innerText = animal;
   document.getElementById("resultText").innerText = text;
-  document.getElementById("resultAdvice").innerText = advice;
-
-  saveWeek(avg);
-  showSection("result");
 }
 
-/* ===============================
-   CONTINUIDAD
-================================ */
-function continueFlow() {
-  state.weekIndex++;
-
-  if (!DEV_MODE) state.lastDate = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-
-  if (state.weekIndex >= WEEKS.length) {
-    showMonthlyResult();
-  } else {
-    showSection("start");
-  }
+function restart() {
+  show("start");
 }
 
-/* ===============================
-   RESULTADO MENSUAL (TERMÓMETRO REAL)
-================================ */
-function showMonthlyResult() {
-  showSection("monthly");
-
-  const avg =
-    state.scores.reduce((a,b)=>a+b,0) / state.scores.length;
-
-  const targetHeight = Math.round((avg / 2) * 100);
-  const fill = document.getElementById("monthlyFill");
-  const text = document.getElementById("monthlyText");
-
-  let current = 0;
-  fill.style.height = "0%";
-  text.innerText = "";
-
-  const interval = setInterval(() => {
-    current++;
-    fill.style.height = current + "%";
-
-    if (current >= targetHeight) {
-      clearInterval(interval);
-
-      setTimeout(() => {
-        if (avg < 0.8) {
-          text.innerText = "Este mes tu humanidad necesita pausa y revisión.";
-        } else if (avg < 1.5) {
-          text.innerText = "Tu humanidad estuvo activa, aunque fluctuante.";
-        } else {
-          text.innerText = "Tu humanidad mostró integración y crecimiento.";
-        }
-      }, 600);
-    }
-  }, 25);
-}
-
-/* ===============================
-   BLOQUEO
-================================ */
-function canAccessWeek() {
-  if (state.weekIndex === 0) return true;
-  if (!state.lastDate) return true;
-  const diff = (Date.now() - state.lastDate) / (1000*60*60*24);
-  return diff >= WEEK_DELAY_DAYS;
-}
-
-function saveWeek(score) {
-  state.scores.push(score);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-/* ===============================
-   UI
-================================ */
-function showSection(id) {
-  ["start","week","result","monthly"].forEach(s=>{
-    document.getElementById(s).classList.add("hidden");
-  });
+function show(id) {
+  ["start","test","result"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
   document.getElementById(id).classList.remove("hidden");
 }
-
-function updateThermo() {
-  const pct =
-    (weekScores.length / WEEKS[state.weekIndex].questions.length) * 100;
-  document.getElementById("thermoFill").style.width = pct + "%";
-  }
