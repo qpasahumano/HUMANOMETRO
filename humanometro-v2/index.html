@@ -5,53 +5,63 @@
   <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- FUENTE -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INICIO -->
+  <!-- INICIO V2 -->
   <section id="v2-start">
-    <h1 class="brand">HUMANÓMETRO v.2 ®</h1>
+    <h1 class="brand">
+      <span class="brand-main">HUMANÓMETRO v.2</span><br>
+      <span class="brand-meta">®</span>
+    </h1>
+
     <p class="intro">
       Seguimiento mensual de conciencia humana.<br>
       No mide perfección. Observa procesos.
     </p>
-    <button class="main-btn" onclick="startV2Monthly()">
+
+    <button class="primary" onclick="startV2Monthly()">
       Iniciar seguimiento mensual
     </button>
   </section>
 
   <!-- TEST MENSUAL -->
-  <section id="v2-test" class="hidden fade">
+  <section id="v2-monthly" class="hidden">
     <h2 id="v2-week-title"></h2>
 
-    <div class="thermo">
+    <div id="v2-thermometer">
       <div id="v2-thermo-fill"></div>
     </div>
 
-    <p id="v2-question" class="question"></p>
+    <p id="v2-question"></p>
     <small id="v2-note"></small>
 
     <div class="answers">
       <button onclick="v2Answer(2)">Sí</button>
-      <button onclick="v2Answer(1)">A veces</button>
+      <button onclick="v2Answer(1)">Tal vez</button>
       <button onclick="v2Answer(0)">No</button>
     </div>
   </section>
 
   <!-- RESULTADO FINAL -->
-  <section id="v2-result" class="hidden fade">
-    <div class="symbol" id="v2-symbol"></div>
-    <h2 id="v2-result-text"></h2>
-    <p id="v2-advice"></p>
+  <section id="v2-result" class="hidden">
+    <div id="v2-symbol" class="symbol"></div>
+    <h3 id="v2-result-text"></h3>
+    <p id="v2-advice" class="legal"></p>
 
-    <button class="main-btn" onclick="restartV2()">Volver</button>
+    <button onclick="restart()">Volver</button>
   </section>
 
 </main>
 
-<script src="script.js"></script>
+<!-- 🔴 ÚNICO CAMBIO REAL: defer -->
+<script src="script.js" defer></script>
 </body>
 </html>
