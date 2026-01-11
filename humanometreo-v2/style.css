@@ -3,115 +3,111 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  background: #0b1220;
+  background:
+    radial-gradient(circle at top, rgba(0,255,200,.15), transparent 60%),
+    radial-gradient(circle at bottom, rgba(0,120,255,.15), transparent 60%),
+    #0b1220;
   color: white;
+  min-height: 100vh;
 }
 
 #app {
   max-width: 520px;
   margin: auto;
-  padding: 20px;
+  padding: 22px;
   text-align: center;
+  background: rgba(11,18,32,.88);
+  border-radius: 18px;
+  box-shadow: 0 0 40px rgba(0,255,200,.15);
 }
 
 .hidden { display: none; }
 
-/* BRAND */
+/* LOGO */
 .brand-main {
   font-family: "Mystery Quest", cursive;
   font-size: 2.2rem;
+  letter-spacing: .1em;
   color: #b9fff2;
-  text-shadow: 0 0 12px rgba(120,255,230,.9);
+  text-shadow:
+    0 0 6px rgba(120,255,230,.9),
+    0 0 18px rgba(120,255,230,.6);
 }
 
 .brand-meta {
-  font-size: .7rem;
-  opacity: .7;
+  font-size: .65rem;
+  margin-left: 6px;
+  opacity: .75;
 }
 
-.intro-text {
-  font-size: .9em;
-  opacity: .9;
-  margin: 20px 0;
+/* TITULOS */
+.neon-title {
+  color: #9fffe0;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 16px rgba(120,255,230,.6);
+  animation: pulse 2.5s infinite;
 }
 
-.primary {
-  padding: 14px;
+@keyframes pulse {
+  0%,100% { opacity: .9; }
+  50% { opacity: 1; }
+}
+
+/* BOTONES */
+button {
   width: 90%;
+  max-width: 340px;
+  margin: 14px auto;
+  padding: 15px;
   border-radius: 40px;
   border: none;
+  font-size: 1em;
+  cursor: pointer;
   background: #2ecc71;
-  box-shadow: 0 0 15px rgba(46,204,113,.8);
+  color: #000;
+  box-shadow: 0 0 16px rgba(46,204,113,.8);
 }
 
-/* TITLES */
-.led-title {
-  margin: 20px 0;
-  color: #aefcff;
-  text-shadow: 0 0 15px rgba(100,255,240,.8);
-  animation: glow 2.5s infinite alternate;
+button.premium {
+  background: linear-gradient(45deg,#00ffd5,#00b3ff);
+  box-shadow: 0 0 22px rgba(0,255,230,.9);
 }
 
-@keyframes glow {
-  from { opacity: .7; }
-  to { opacity: 1; }
+.answers button {
+  background: #3498db;
+  color: #fff;
 }
 
-/* THERMOMETERS */
-.thermo {
-  height: 14px;
+/* TERMÓMETRO VERTICAL */
+.vertical-thermo {
+  width: 26px;
+  height: 180px;
+  margin: 20px auto;
   background: #111;
   border-radius: 20px;
   overflow: hidden;
-  margin: 20px 0;
 }
 
 #thermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
-
-.vertical-thermo {
-  width: 40px;
-  height: 260px;
-  background: #111;
-  border-radius: 20px;
-  margin: 30px auto;
-  overflow: hidden;
-}
-
-#verticalFill {
   width: 100%;
   height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
+  background: linear-gradient(
+    180deg,
+    #2ecc71,
+    #f1c40f,
+    #e74c3c
+  );
+  transition: height 1.2s ease;
 }
 
-/* ANSWERS */
-.answers button, #micro button {
-  width: 90%;
-  margin: 10px auto;
-  padding: 14px;
-  border-radius: 40px;
-  border: none;
-  background: #3498db;
-  color: white;
+/* ANIMAL */
+#animalSymbol {
+  font-size: 3rem;
+  margin: 12px 0;
 }
 
-/* MICRO FEEDBACK */
-#microText {
-  animation: fadeUp .5s ease;
-}
-
-#microAdvice {
-  font-size: .85em;
-  opacity: .8;
-  animation: fadeUp .8s ease;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.legal {
+  font-size: .75em;
+  opacity: .75;
 }
