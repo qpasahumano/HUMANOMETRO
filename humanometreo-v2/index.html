@@ -1,15 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>HUMANÓMETRO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>HUMANÓMETRO v.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-<!-- ================= VOLUMEN 2 ================= -->
+  <!-- HEADER -->
+  <section id="header">
+    <h1 class="brand">
+      <span class="brand-main">HUMANÓMETRO</span><br>
+      <span class="brand-meta">v.2 ®</span>
+    </h1>
+  </section>
+
+  <!-- SEMANAS -->
+  <section id="week" class="hidden">
+    <h2 id="weekTitle" class="led-title"></h2>
+
+    <div id="thermometer">
+      <div id="thermoFill"></div>
+    </div>
+
+    <p id="questionText"></p>
+    <small id="questionMeasure"></small>
+
+    <div class="answers">
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
+      <button onclick="answer(0)">No</button>
+    </div>
+
+    <div id="microFeedback" class="hidden">
+      <p class="feedback"></p>
+      <p class="advice"></p>
+      <button onclick="next()">Siguiente</button>
+    </div>
+  </section>
+
+  <!-- CIERRE MENSUAL -->
+  <section id="monthly" class="hidden">
+    <h2 class="led-title">Tu humanidad en movimiento este mes</h2>
+
+    <div id="verticalThermo">
+      <div id="verticalFill"></div>
+    </div>
+
+    <div id="monthlyText" class="hidden"></div>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
