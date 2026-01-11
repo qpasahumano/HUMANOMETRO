@@ -2,49 +2,52 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO v2</title>
+  <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INICIO V2 -->
-  <section id="start">
-    <h1>HUMANÓMETRO v.2 ®</h1>
-    <p>Seguimiento mensual de conciencia humana.</p>
-
-    <!-- 🔴 BOTÓN CORRECTO -->
-    <button onclick="startV2Monthly()">Iniciar seguimiento mensual</button>
+  <!-- INICIO -->
+  <section id="v2-start">
+    <h1 class="brand">HUMANÓMETRO v.2 ®</h1>
+    <p class="intro">
+      Seguimiento mensual de conciencia humana.<br>
+      No mide perfección. Observa procesos.
+    </p>
+    <button class="main-btn" onclick="startV2Monthly()">
+      Iniciar seguimiento mensual
+    </button>
   </section>
 
   <!-- TEST MENSUAL -->
-  <section id="v2-monthly" class="hidden">
+  <section id="v2-test" class="hidden fade">
     <h2 id="v2-week-title"></h2>
 
     <div class="thermo">
       <div id="v2-thermo-fill"></div>
     </div>
 
-    <p id="v2-question"></p>
+    <p id="v2-question" class="question"></p>
     <small id="v2-note"></small>
 
     <div class="answers">
       <button onclick="v2Answer(2)">Sí</button>
-      <button onclick="v2Answer(1)">Tal vez / A veces</button>
+      <button onclick="v2Answer(1)">A veces</button>
       <button onclick="v2Answer(0)">No</button>
     </div>
   </section>
 
   <!-- RESULTADO FINAL -->
-  <section id="v2-result" class="hidden">
-    <h2>Lectura mensual</h2>
-    <div id="v2-symbol" style="font-size:3rem"></div>
-    <p id="v2-result-text"></p>
+  <section id="v2-result" class="hidden fade">
+    <div class="symbol" id="v2-symbol"></div>
+    <h2 id="v2-result-text"></h2>
     <p id="v2-advice"></p>
 
-    <button onclick="restartV2()">Volver</button>
+    <button class="main-btn" onclick="restartV2()">Volver</button>
   </section>
 
 </main>
