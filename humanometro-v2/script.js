@@ -1,132 +1,118 @@
-/* =========================
-   CONFIG
-========================= */
-const DEV_MODE = true;
-const V2_STORAGE = "humanometro_v2";
-const V2_DELAY_DAYS = 7;
+/* ======================
+   DATOS MENSUALES
+====================== */
 
-/* =========================
-   DATOS
-========================= */
 const V2_WEEKS = [
   {
     title: "Vos ante el mundo",
     questions: [
-      ["¿Te afecta el dolor ajeno?", "Empatía global"],
-      ["¿Te entristecen las guerras?", "Sensibilidad humana"],
-      ["¿Sentís responsabilidad colectiva?", "Conciencia social"],
-      ["¿Te importa lo que pasa lejos?", "Humanidad expandida"]
+      ["¿Te afectó emocionalmente el dolor ajeno?", "Sensibilidad humana."],
+      ["¿Te impactan las injusticias aunque no te toquen directo?", "Conciencia colectiva."],
+      ["¿Evitaste anestesiarte emocionalmente?", "Presencia interna."],
+      ["¿Sentiste responsabilidad por lo común?", "Humanidad expandida."]
     ]
   },
   {
-    title: "Vos y la tecnología",
+    title: "Tecnología y presencia",
     questions: [
-      ["¿Podés soltar el celular?", "Presencia real"],
-      ["¿La pantalla te absorbe?", "Dependencia digital"],
-      ["¿Escuchás sin mirar el teléfono?", "Atención humana"],
-      ["¿Elegís contacto real?", "Prioridad humana"]
+      ["¿Pudiste soltar la pantalla conscientemente?", "Dominio atencional."],
+      ["¿Elegiste presencia real?", "Prioridad humana."],
+      ["¿Escuchaste sin mirar el teléfono?", "Disponibilidad real."],
+      ["¿Notaste saturación digital?", "Autopercepción."]
     ]
   },
   {
     title: "Vínculos cotidianos",
     questions: [
-      ["¿Escuchás sin interrumpir?", "Respeto"],
-      ["¿Respondés con empatía?", "Conciencia emocional"],
-      ["¿Cuidás el vínculo?", "Intención afectiva"],
-      ["¿Evitás reaccionar?", "Autorregulación"]
+      ["¿Escuchaste sin interrumpir?", "Respeto vincular."],
+      ["¿Regulaste tu reacción emocional?", "Autorregulación."],
+      ["¿Cuidaste el vínculo incluso en tensión?", "Conciencia afectiva."],
+      ["¿Elegiste empatía antes que defensa?", "Madurez humana."]
     ]
   },
   {
     title: "Integración humana",
     questions: [
-      ["¿Hay coherencia interna?", "Alineación"],
-      ["¿Te observás sin juzgar?", "Conciencia"],
-      ["¿Asumís tu impacto?", "Responsabilidad"],
-      ["¿Sentís evolución humana?", "Integración"]
+      ["¿Sentiste coherencia interna?", "Alineación."],
+      ["¿Te observaste sin juzgar?", "Conciencia plena."],
+      ["¿Asumiste tu impacto?", "Responsabilidad."],
+      ["¿Percibís evolución personal?", "Integración."]
     ]
   }
 ];
 
-/* =========================
-   ESTADO
-========================= */
-let v2State = JSON.parse(localStorage.getItem(V2_STORAGE)) || {
-  week: 0,
-  scores: [],
-  lastDate: null
-};
+let week = 0;
+let qIndex = 0;
+let scores = [];
 
-let v2Q = 0;
-let v2WeekScore = 0;
-
-/* =========================
+/* ======================
    INICIO
-========================= */
+====================== */
+
 function startV2Monthly() {
-  if (!DEV_MODE && !canAccessV2()) return;
-  v2Q = 0;
-  v2WeekScore = 0;
-  showV2("v2-monthly");
-  loadV2Question();
+  week = 0;
+  qIndex = 0;
+  scores = [];
+  show("v2-test");
+  loadQuestion();
 }
 
-/* =========================
+/* ======================
    PREGUNTAS
-========================= */
-function loadV2Question() {
-  const w = V2_WEEKS[v2State.week];
+====================== */
+
+function loadQuestion() {
+  const w = V2_WEEKS[week];
   document.getElementById("v2-week-title").innerText = w.title;
-  document.getElementById("v2-question").innerText = w.questions[v2Q][0];
-  document.getElementById("v2-note").innerText = w.questions[v2Q][1];
+  document.getElementById("v2-question").innerText = w.questions[qIndex][0];
+  document.getElementById("v2-note").innerText = w.questions[qIndex][1];
+
+  document.getElementById("v2-thermo-fill").style.width =
+    ((qIndex) / 4) * 100 + "%";
 }
 
 function v2Answer(value) {
-  v2WeekScore += value;
-  v2Q++;
+  scores.push(value);
+  qIndex++;
 
   document.getElementById("v2-thermo-fill").style.width =
-    (v2Q / 4) * 100 + "%";
+    (qIndex / 4) * 100 + "%";
 
-  if (v2Q >= 4) finishV2Week();
-  else loadV2Question();
+  if (qIndex >= 4) {
+    week++;
+    qIndex = 0;
+
+    if (week >= 4) {
+      showResult();
+    } else {
+      loadQuestion();
+    }
+  } else {
+    loadQuestion();
+  }
 }
 
-/* =========================
-   CIERRE SEMANA
-========================= */
-function finishV2Week() {
-  v2State.scores.push(v2WeekScore / 4);
-  v2State.week++;
-  v2State.lastDate = Date.now();
-  localStorage.setItem(V2_STORAGE, JSON.stringify(v2State));
+/* ======================
+   RESULTADO
+====================== */
 
-  if (v2State.week >= 4) showV2Result();
-  else restartV2();
-}
+function showResult() {
+  show("v2-result");
 
-/* =========================
-   RESULTADO FINAL
-========================= */
-function showV2Result() {
-  showV2("v2-result");
+  const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
 
-  const avg =
-    v2State.scores.reduce((a, b) => a + b, 0) / v2State.scores.length;
-
-  let symbol, text, advice;
+  let symbol = "🐞";
+  let text = "Tu humanidad se sostuvo en equilibrio.";
+  let advice = "Observarte sin exigencia fortalece tu proceso.";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Tu humanidad estuvo retraída este mes.";
-    advice = "Detenerte y observar puede reactivar tu sensibilidad.";
-  } else if (avg < 1.5) {
-    symbol = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños actos conscientes pueden impulsarte.";
-  } else {
+    text = "Tu sensibilidad estuvo retraída este mes.";
+    advice = "Detenerte y sentir puede reactivar tu humanidad.";
+  } else if (avg > 1.5) {
     symbol = "🐦";
-    text = "Tu humanidad está en expansión.";
-    advice = "Sostener esta coherencia fortalece tu camino humano.";
+    text = "Tu conciencia humana está en expansión.";
+    advice = "Sostener coherencia refuerza tu camino interno.";
   }
 
   document.getElementById("v2-symbol").innerText = symbol;
@@ -134,25 +120,16 @@ function showV2Result() {
   document.getElementById("v2-advice").innerText = advice;
 }
 
-/* =========================
-   BLOQUEO
-========================= */
-function canAccessV2() {
-  if (v2State.week === 0) return true;
-  const days =
-    (Date.now() - v2State.lastDate) / (1000 * 60 * 60 * 24);
-  return days >= V2_DELAY_DAYS;
-}
-
-/* =========================
-   UI
-========================= */
-function showV2(id) {
-  ["start", "v2-monthly", "v2-result"]
-    .forEach(s => document.getElementById(s).classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
+/* ======================
+   NAVEGACIÓN
+====================== */
 
 function restartV2() {
-  showV2("start");
+  show("v2-start");
 }
+
+function show(id) {
+  ["v2-start","v2-test","v2-result"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+       }
