@@ -12,7 +12,7 @@
 <main id="app">
 
   <!-- START -->
-  <section id="start">
+  <section id="start" class="screen active">
     <h1 class="brand">
       <span class="brand-main">HUMANÓMETRO</span><br>
       <span class="brand-meta">v.2 ®</span>
@@ -20,30 +20,34 @@
 
     <p class="intro">
       Seguimiento humano semanal.<br>
-      Probá esta base funcional.
+      La humanidad se construye en movimiento, no en velocidad.
     </p>
 
-    <button onclick="startTest()">Comenzar</button>
+    <button class="primary" onclick="startTest()">Comenzar seguimiento</button>
   </section>
 
   <!-- TEST -->
-  <section id="test" class="hidden">
-    <h2 id="title"></h2>
+  <section id="test" class="screen hidden">
+    <h2 id="title" class="neon-title"></h2>
 
-    <p id="question"></p>
+    <div class="thermo">
+      <div id="thermoFill"></div>
+    </div>
+
+    <p id="question" class="question"></p>
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">Tal vez</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
       <button onclick="answer(0)">No</button>
     </div>
   </section>
 
   <!-- RESULT -->
-  <section id="result" class="hidden">
-    <h2>Resultado</h2>
-    <p id="resultText"></p>
-    <button onclick="restart()">Volver</button>
+  <section id="result" class="screen hidden">
+    <h2 class="neon-title">Lectura de la semana</h2>
+    <p id="resultText" class="result-text"></p>
+    <button class="primary" onclick="restart()">Volver</button>
   </section>
 
 </main>
