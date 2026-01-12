@@ -224,3 +224,31 @@ button {
   line-height: 1.6;
   text-align: left;
   }
+/* ===== UNIFICACIÓN DE BOTONES v.2 ===== */
+
+/* botones principales y de flujo */
+button,
+.answers button {
+  background: linear-gradient(45deg, #2ecc71, #6affd3);
+  color: #001c14;
+  box-shadow:
+    0 0 14px rgba(46,204,113,.75),
+    0 0 26px rgba(106,255,211,.45);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+/* efecto humano al tocar */
+button:hover,
+.answers button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 18px rgba(46,204,113,.9),
+    0 0 32px rgba(106,255,211,.6);
+}
+
+/* clic */
+button:active {
+  transform: translateY(0);
+  box-shadow:
+    0 0 10px rgba(46,204,113,.6);
+}
