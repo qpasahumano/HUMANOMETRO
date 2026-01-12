@@ -1,20 +1,26 @@
+/* ===== FONDO CON LÁMINA CONTROLADA (V2) ===== */
+
+body {
+  background: url("activos/v2/fondo-bosque.jpg") center / cover no-repeat fixed;
+}
+
+/* lámina tipo versión 1 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 18, 32, 0.55); /* nivel versión 1 + 1 */
+  z-index: 0;
+}
+
+/* app por encima de la lámina */
 #app {
-  max-width: 520px;
-  margin: auto;
-  padding: 24px;
+  position: relative;
+  z-index: 2;
+}
 
-  /* LÁMINA TRANSPARENTE – MOLDE V1 */
-  background: rgba(20, 22, 28, 0.62);
-
-  /* leve efecto vidrio, NO borroso */
-  backdrop-filter: blur(1.5px);
-
-  border-radius: 18px;
-
-  /* sombra suave como v1 */
-  box-shadow:
-    0 0 30px rgba(0, 0, 0, 0.45),
-    inset 0 0 40px rgba(0, 0, 0, 0.35);
-
-  text-align: center;
+/* botones SIEMPRE arriba */
+button {
+  position: relative;
+  z-index: 3;
 }
