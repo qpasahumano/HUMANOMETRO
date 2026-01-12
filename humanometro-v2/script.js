@@ -210,3 +210,40 @@ Humanómetro va a estar acá para volver a medirlo.
 function goBack() {
   show("monthlyResult");
 }
+// ================================
+// BLOQUEO SEMANAL REAL (7 DÍAS)
+// ================================
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+function canAccessWeek(targetWeek) {
+  if (targetWeek === 0) return true;
+
+  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
+  if (!lastDone) return false;
+
+  const diff = Date.now() - parseInt(lastDone, 10);
+  return diff >= WEEK_MS;
+}
+
+// Guardar cierre de semana
+const _originalShowWeeklyResult = showWeeklyResult;
+showWeeklyResult = function () {
+  localStorage.setItem("week_" + week + "_done", Date.now().toString());
+  _originalShowWeeklyResult();
+};
+
+// Bloquear avance si no pasaron 7 días
+const _originalNextWeek = nextWeek;
+nextWeek = function () {
+  if (!canAccessWeek(week + 1)) {
+    alert(
+      "Este proceso es consecutivo.\n\n" +
+      "Para medir tu humanidad de forma real,\n" +
+      "necesitás vivir una semana de experiencias (7 días)."
+    );
+    restart();
+    return;
+  }
+  _originalNextWeek();
+};
