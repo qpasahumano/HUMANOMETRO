@@ -5,6 +5,7 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
+  /* FONDO BOSQUE */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -15,33 +16,40 @@ body {
   position: relative;
 }
 
-/* ===== OVERLAY GLOBAL ===== */
+/* ===== OVERLAY GLOBAL (más bajo que v.1) ===== */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top,
-      rgba(160,255,235,0.14),
-      transparent 45%),
-    radial-gradient(circle at bottom,
-      rgba(120,180,255,0.14),
-      transparent 55%),
-    rgba(0,0,0,0.24);
+    radial-gradient(
+      circle at top,
+      rgba(160,255,235,0.12),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(120,180,255,0.12),
+      transparent 55%
+    ),
+    rgba(0,0,0,0.20); /* ⬅ overlay reducido */
   pointer-events: none;
   z-index: -1;
 }
 
-/* ===== CONTENEDOR ===== */
+/* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
   margin: 40px auto;
   padding: 26px;
+
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
+
   box-shadow:
     0 0 28px rgba(0,0,0,.45),
     0 0 60px rgba(120,255,230,.12);
+
   text-align: center;
 }
 
@@ -53,10 +61,11 @@ body::before {
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #eafff8;
+
   text-shadow:
-    0 0 3px rgba(200,255,245,.8),
-    0 0 8px rgba(120,255,230,.6),
-    0 0 14px rgba(0,0,0,.9);
+    0 0 4px rgba(200,255,245,.9),
+    0 0 10px rgba(120,255,230,.7),
+    0 0 18px rgba(0,0,0,.9);
 }
 
 .brand-meta {
@@ -71,15 +80,22 @@ body::before {
   margin: 20px 0;
 }
 
+.legal {
+  font-size: .75rem;
+  opacity: .9;
+}
+
 /* ===== TÍTULOS ===== */
 .neon-title {
   color: #9fffe0;
-  text-shadow: 0 0 8px rgba(120,255,230,.9);
+  text-shadow:
+    0 0 6px rgba(120,255,230,.9),
+    0 0 14px rgba(120,255,230,.6);
   animation: glow 2.5s infinite alternate;
 }
 
 @keyframes glow {
-  from { opacity: .9; }
+  from { opacity: .85; }
   to { opacity: 1; }
 }
 
@@ -87,11 +103,6 @@ body::before {
 .question {
   font-size: 1.05rem;
   margin-top: 20px;
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .9;
 }
 
 /* ===== BOTONES ===== */
@@ -112,9 +123,12 @@ button {
   color: #001c14;
 }
 
-/* =========================
-   TERMÓMETRO HORIZONTAL (VIVO)
-========================= */
+.answers button {
+  background: rgba(255,255,255,0.95);
+  color: #001c14;
+}
+
+/* ===== TERMÓMETRO SEMANAL (VIVO) ===== */
 .thermo {
   width: 100%;
   height: 14px;
@@ -127,16 +141,19 @@ button {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
   transition: width .45s ease;
 }
 
-/* =========================
-   TERMÓMETRO VERTICAL (VIVO)
-========================= */
+/* ===== TERMÓMETRO MENSUAL (VIVO + EXPECTATIVA) ===== */
 .vertical-thermo {
-  width: 32px;
-  height: 230px;
+  width: 30px;
+  height: 220px;
   background: rgba(0,0,0,0.35);
   border-radius: 20px;
   margin: 30px auto;
@@ -146,36 +163,37 @@ button {
 #monthlyFill {
   width: 100%;
   height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
+  background: linear-gradient(
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  transition: height 3s ease-in-out;
 }
 
-/* =========================
-   EMOTICONES ANIMADOS
-========================= */
+/* ===== EMOTICONES (REINCORPORADOS) ===== */
 .symbol {
-  font-size: 3.2rem;
+  font-size: 3.6rem;   /* ⬅ tamaño restaurado */
   margin: 18px 0;
-  animation: float 2.6s infinite ease-in-out;
-  filter: drop-shadow(0 0 10px rgba(120,255,230,.6));
+  animation: float 2.8s infinite ease-in-out;
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-8px); }
   100% { transform: translateY(0); }
 }
 
-/* =========================
-   LECTURA MENSUAL COMPLETA
-========================= */
+/* ===== LECTURA MENSUAL COMPLETA ===== */
 .monthly-scroll {
   max-height: 60vh;
   overflow-y: auto;
   padding: 18px;
   margin: 20px 0;
+
   background: rgba(11,18,32,0.45);
   border-radius: 16px;
+
   box-shadow:
     inset 0 0 18px rgba(0,0,0,.6),
     0 0 25px rgba(120,255,230,.12);
