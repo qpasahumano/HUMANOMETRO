@@ -4,43 +4,42 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* 🌲 FONDO BOSQUE */
+  /* FONDO BOSQUE */
   background:
     linear-gradient(
-      rgba(11,18,32,0.75),
-      rgba(11,18,32,0.75)
+      rgba(11,18,32,0.65),
+      rgba(11,18,32,0.65)
     ),
-    url("activos-b2/fondo-bosque.jpg") center / cover no-repeat fixed;
+    url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
 
+  background-size: cover;
   color: #eafff9;
-  min-height: 100vh;
 }
 
 /* CONTENEDOR PRINCIPAL */
 #app {
   max-width: 520px;
-  margin: auto;
+  margin: 40px auto;
   padding: 24px;
-  text-align: center;
 
-  /* 🔑 CLAVE: transparencia para que se vea el bosque */
-  background: rgba(11,18,32,0.65);
+  /* EFECTO VIDRIO (NO OPACO) */
+  background: rgba(11,18,32,0.55);
+  backdrop-filter: blur(6px);
 
-  border-radius: 18px;
+  border-radius: 22px;
   box-shadow: 0 0 35px rgba(120,255,230,.25);
+  text-align: center;
 }
 
 .hidden { display: none; }
 
-/* BRAND */
+/* MARCA */
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   letter-spacing: .08em;
   color: #b9fff2;
-  text-shadow:
-    0 0 6px rgba(120,255,230,.9),
-    0 0 18px rgba(120,255,230,.6);
+  text-shadow: 0 0 10px rgba(120,255,230,.9);
 }
 
 .brand-meta {
@@ -48,36 +47,34 @@ body {
   opacity: .8;
 }
 
-/* TEXTOS */
+/* TEXTO */
 .intro {
   font-size: .95rem;
   line-height: 1.5;
   margin: 20px 0;
 }
 
-.question {
-  font-size: 1.05rem;
-  margin-top: 20px;
-}
-
-/* LEGALES */
-.legal {
-  font-size: .75rem;
-  opacity: .75;
-}
-
-/* TITULOS NEON */
+/* TÍTULOS */
 .neon-title {
   color: #9fffe0;
-  text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 16px rgba(120,255,230,.6);
+  text-shadow: 0 0 8px rgba(120,255,230,.8);
   animation: glow 2.5s infinite alternate;
 }
 
 @keyframes glow {
   from { opacity: .85; }
   to { opacity: 1; }
+}
+
+/* PREGUNTAS */
+.question {
+  font-size: 1.05rem;
+  margin-top: 20px;
+}
+
+.legal {
+  font-size: .75rem;
+  opacity: .8;
 }
 
 /* BOTONES */
@@ -98,16 +95,17 @@ button {
   color: #001c14;
 }
 
+/* RESPUESTAS */
 .answers button {
-  background: #3498db;
-  color: white;
+  background: rgba(255,255,255,0.9);
+  color: #001c14;
 }
 
 /* TERMÓMETRO HORIZONTAL */
 .thermo {
   width: 100%;
   height: 14px;
-  background: #111;
+  background: rgba(0,0,0,0.5);
   border-radius: 20px;
   margin: 20px 0;
 }
@@ -119,11 +117,11 @@ button {
   transition: width .4s ease;
 }
 
-/* TERMÓMETRO MENSUAL */
+/* TERMÓMETRO VERTICAL */
 .vertical-thermo {
   width: 30px;
   height: 220px;
-  background: #111;
+  background: rgba(0,0,0,0.5);
   border-radius: 20px;
   margin: 30px auto;
   overflow: hidden;
@@ -136,7 +134,7 @@ button {
   transition: height 3s ease;
 }
 
-/* SÍMBOLOS */
+/* ÍCONOS */
 .symbol {
   font-size: 3rem;
   margin: 16px 0;
@@ -147,20 +145,4 @@ button {
   0% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
   100% { transform: translateY(0); }
-  }
-/* ===== FONDO BOSQUE v2 – SOLO ESTÉTICA ===== */
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("activos/v2/fondo-bosque.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: brightness(1.15) saturate(1.05);
-  opacity: 0.28; /* controla qué tanto se ve el bosque */
-  z-index: -1;
 }
-
-/* ========================================== */
