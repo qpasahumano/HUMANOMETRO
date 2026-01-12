@@ -55,6 +55,7 @@
 <section id="weeklyResult" class="hidden">
   <h2 class="neon-title">Lectura semanal</h2>
 
+  <!-- emoticón animado -->
   <div id="weeklySymbol" class="symbol"></div>
 
   <p id="weeklyText"></p>
@@ -63,19 +64,23 @@
   <button class="primary" onclick="nextWeek()">Continuar</button>
 </section>
 
-<!-- RESULTADO MENSUAL -->
+<!-- RESULTADO MENSUAL (RESUMEN + TERMÓMETRO VIVO) -->
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
+  <!-- termómetro -->
   <div class="vertical-thermo">
     <div id="monthlyFill"></div>
   </div>
 
+  <!-- emoticón animado -->
   <div id="monthlySymbol" class="symbol"></div>
 
+  <!-- devolución resumida -->
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
+  <!-- botón correcto -->
   <button class="primary" onclick="openMonthlyFull()">
     Ver lectura mensual completa
   </button>
@@ -95,8 +100,8 @@
     necesitás vivir una semana de experiencias (7 días).
   </p>
 
-  <!-- ✅ BOTÓN VOLVER ARREGLADO -->
-  <button class="primary" onclick="goBack()">Volver</button>
+  <!-- 🔒 AJUSTE ÚNICO: vuelve al resultado mensual -->
+  <button class="primary" onclick="closeMonthlyFull()">Volver</button>
 </section>
 
 </main>
