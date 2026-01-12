@@ -4,104 +4,84 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – NÍTIDO */
-  background-image: url("activos/v2/fondo-bosque.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-
-  color: #f6fffc;
-  position: relative;
-}
-
-/* OVERLAY GLOBAL – MISMA LÓGICA v.1, UN NIVEL MÁS */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
+  /* FONDO BOSQUE – MUY VISIBLE */
   background:
-    radial-gradient(circle at top,
-      rgba(160,255,235,0.14),
-      transparent 45%),
-    radial-gradient(circle at bottom,
-      rgba(120,180,255,0.14),
-      transparent 55%),
-    rgba(0,0,0,0.22); /* ← v.1 tenía ~0.30 */
-  pointer-events: none;
-  z-index: -1;
+    linear-gradient(
+      rgba(11,18,32,0.06),
+      rgba(11,18,32,0.06)
+    ),
+    url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
+
+  background-size: cover;
+  color: #eafff9;
 }
 
-/* CONTENEDOR */
+/* CONTENEDOR PRINCIPAL */
 #app {
   max-width: 520px;
   margin: 40px auto;
-  padding: 26px;
+  padding: 24px;
 
-  /* CLAVE: referencia v.1 + 1 nivel */
-  background: rgba(11,18,32,0.38);
+  /* OPACIDAD CASI TRANSPARENTE */
+  background: rgba(11,18,32,0.06);
 
+  backdrop-filter: blur(1.5px);
   border-radius: 22px;
-  box-shadow:
-    0 0 28px rgba(0,0,0,.45),
-    0 0 60px rgba(120,255,230,.12);
+  box-shadow: 0 0 30px rgba(120,255,230,.15);
   text-align: center;
 }
 
 .hidden { display: none; }
 
-/* ===== MARCA ===== */
+/* MARCA */
 .brand-main {
   font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
   letter-spacing: .08em;
-  color: #eafff8;
-
-  /* LED limpio, estilo v.1 */
+  color: #b9fff2;
   text-shadow:
-    0 0 3px rgba(200,255,245,.8),
-    0 0 8px rgba(120,255,230,.6),
-    0 0 14px rgba(0,0,0,.9);
+    0 0 12px rgba(120,255,230,1),
+    0 0 24px rgba(120,255,230,.6);
 }
 
 .brand-meta {
   font-size: .7rem;
-  opacity: .9;
-  text-shadow: 0 0 6px rgba(0,0,0,.9);
+  opacity: 1;
 }
 
-/* ===== TEXTOS ===== */
-.intro,
-.question,
-p,
-.legal {
-  color: #f6fffc;
+/* TEXTO */
+.intro {
+  font-size: .95rem;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+/* TÍTULOS */
+.neon-title {
+  color: #9fffe0;
   text-shadow:
-    0 0 2px rgba(200,255,245,.5),
-    0 0 6px rgba(0,0,0,.85);
+    0 0 10px rgba(120,255,230,1),
+    0 0 22px rgba(120,255,230,.6);
+  animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: .94; }
+  to { opacity: 1; }
+}
+
+/* PREGUNTAS */
+.question {
+  font-size: 1.05rem;
+  margin-top: 20px;
 }
 
 .legal {
   font-size: .75rem;
-  opacity: .85;
+  opacity: .95;
 }
 
-/* ===== TÍTULOS ===== */
-.neon-title {
-  color: #d9fff4;
-  text-shadow:
-    0 0 4px rgba(180,255,240,.8),
-    0 0 10px rgba(120,255,230,.6),
-    0 0 20px rgba(0,0,0,.9);
-  animation: glow 3s infinite alternate;
-}
-
-@keyframes glow {
-  from { opacity: .92; }
-  to { opacity: 1; }
-}
-
-/* ===== BOTONES ===== */
+/* BOTONES */
 button {
   width: 90%;
   max-width: 340px;
@@ -115,37 +95,58 @@ button {
 
 .primary {
   background: linear-gradient(45deg,#2ecc71,#6affd3);
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
   color: #001c14;
-  box-shadow:
-    0 0 10px rgba(46,204,113,.8),
-    0 0 22px rgba(46,204,113,.6);
 }
 
+/* RESPUESTAS */
 .answers button {
   background: rgba(255,255,255,0.96);
   color: #001c14;
-  box-shadow: 0 0 12px rgba(0,0,0,.35);
 }
 
-/* ===== TERMÓMETROS ===== */
-.thermo,
-.vertical-thermo {
-  background: rgba(0,0,0,0.32);
+/* TERMÓMETRO HORIZONTAL */
+.thermo {
+  width: 100%;
+  height: 14px;
+  background: rgba(0,0,0,0.18);
   border-radius: 20px;
+  margin: 20px 0;
 }
 
-/* ===== ICONOS ===== */
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
+}
+
+/* TERMÓMETRO VERTICAL */
+.vertical-thermo {
+  width: 30px;
+  height: 220px;
+  background: rgba(0,0,0,0.18);
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
+}
+
+/* ÍCONOS */
 .symbol {
   font-size: 3rem;
   margin: 16px 0;
-  animation: float 2.8s infinite ease-in-out;
-  text-shadow:
-    0 0 6px rgba(255,255,255,.9),
-    0 0 14px rgba(120,255,230,.6);
+  animation: float 2.5s infinite ease-in-out;
 }
 
 @keyframes float {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-6px); }
   100% { transform: translateY(0); }
 }
