@@ -204,3 +204,29 @@ button {
   line-height: 1.6;
   text-align: left;
 }
+/* ===== FORZADO FINAL – NO BORRAR ===== */
+
+/* FORZAR TAMAÑO DE EMOTICONES */
+#weeklySymbol,
+#monthlySymbol {
+  font-size: 4.2rem !important;
+  margin: 22px 0 !important;
+  animation: floatForce 2.6s infinite ease-in-out !important;
+}
+
+/* ANIMACIÓN FORZADA */
+@keyframes floatForce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* FORZAR TERMÓMETRO MENSUAL VIVO */
+#monthlyFill {
+  transition: height 3.5s ease-in-out !important;
+}
+
+/* FORZAR TERMÓMETRO SEMANAL VIVO */
+#thermoFill {
+  transition: width .6s ease-in-out !important;
+  }
