@@ -1,82 +1,89 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>HUMANÓMETRO</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0b1220, #05070c);
+  color: #eaf0ff;
+  min-height: 100vh;
+}
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-</head>
+main {
+  max-width: 480px;
+  margin: auto;
+  padding: 40px 20px;
+}
 
-<body>
-<main id="app">
+h1, h2 {
+  text-align: center;
+}
 
-  <!-- INTRO -->
-  <section id="start">
-    <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span><br>
-      <span class="brand-meta">v.2 ®</span>
-    </h1>
+.intro {
+  opacity: 0.9;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
 
-    <p class="intro">
-      Humanómetro no se recorre de una sola vez.<br><br>
-      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-      Cada bloque se habilita únicamente cuando completaste el anterior
-      y pasó el tiempo necesario para integrarlo.<br><br>
-      La humanidad se construye en movimiento, no en velocidad.
-    </p>
+.primary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  background: #ffffff;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-    <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
-  </section>
+.hidden {
+  display: none;
+}
 
-  <!-- TEST SEMANAL -->
-  <section id="week" class="hidden">
-    <h2 id="weekTitle" class="neon-title"></h2>
+.question {
+  font-size: 18px;
+  margin-top: 30px;
+}
 
-    <div class="thermo">
-      <div id="thermoFill"></div>
-    </div>
+.measure {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 6px;
+}
 
-    <p id="questionText" class="question"></p>
-    <small id="questionMeasure" class="legal"></small>
+.answers {
+  margin-top: 25px;
+  display: flex;
+  gap: 10px;
+}
 
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">Tal vez / A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
+.answers button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
 
-  <!-- RESULTADO SEMANAL -->
-  <section id="weeklyResult" class="hidden">
-    <h2 class="neon-title">Lectura semanal</h2>
+.thermo {
+  width: 100%;
+  height: 10px;
+  background: #1b2233;
+  border-radius: 10px;
+  margin-top: 20px;
+}
 
-    <div id="animal" class="animal"></div>
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #5affc9, #ffd86b);
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
 
-    <p id="weeklyText"></p>
-    <p id="weeklyAdvice" class="legal"></p>
-
-    <button class="primary" onclick="continueFlow()">Continuar</button>
-  </section>
-
-  <!-- RESULTADO MENSUAL -->
-  <section id="monthlyResult" class="hidden">
-    <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
-
-    <div class="vertical-thermo">
-      <div id="monthlyFill"></div>
-    </div>
-
-    <p id="monthlyText"></p>
-    <p id="monthlyAdvice" class="legal"></p>
-  </section>
-
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
+.symbol {
+  font-size: 48px;
+  text-align: center;
+  margin: 20px 0;
+}
