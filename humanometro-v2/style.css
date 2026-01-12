@@ -1,26 +1,14 @@
-/* ===== FONDO CON LÁMINA CONTROLADA (V2) ===== */
-
 body {
-  background: url("activos/v2/fondo-bosque.jpg") center / cover no-repeat fixed;
-}
+  margin: 0;
+  font-family: "Poppins", sans-serif;
 
-/* lámina tipo versión 1 */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(11, 18, 32, 0.55); /* nivel versión 1 + 1 */
-  z-index: 0;
-}
+  /* fondo imagen bosque */
+  background: 
+    linear-gradient(
+      rgba(11,18,32,0.30),   /* ⬅️ lámina bajada 50% */
+      rgba(11,18,32,0.30)
+    ),
+    url("assets-b2/fondo-bosque.jpg") center / cover no-repeat fixed;
 
-/* app por encima de la lámina */
-#app {
-  position: relative;
-  z-index: 2;
-}
-
-/* botones SIEMPRE arriba */
-button {
-  position: relative;
-  z-index: 3;
+  color: #eafff9;
 }
