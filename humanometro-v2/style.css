@@ -1,89 +1,128 @@
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #0b1220, #05070c);
-  color: #eaf0ff;
-  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(120,255,230,.25), transparent 45%),
+    radial-gradient(circle at bottom, rgba(80,120,255,.25), transparent 55%),
+    #0b1220;
+  color: #eafff9;
 }
 
-main {
-  max-width: 480px;
+#app {
+  max-width: 520px;
   margin: auto;
-  padding: 40px 20px;
-}
-
-h1, h2 {
+  padding: 24px;
+  background: rgba(11,18,32,.88);
+  border-radius: 18px;
+  box-shadow: 0 0 35px rgba(120,255,230,.25);
   text-align: center;
 }
 
+.hidden { display: none; }
+
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: 2.2rem;
+  letter-spacing: .08em;
+  color: #b9fff2;
+  text-shadow: 0 0 8px rgba(120,255,230,.9);
+}
+
+.brand-meta {
+  font-size: .7rem;
+  opacity: .8;
+}
+
 .intro {
-  opacity: 0.9;
-  line-height: 1.6;
-  margin-bottom: 30px;
+  font-size: .95rem;
+  line-height: 1.5;
+  margin: 20px 0;
 }
 
-.primary {
-  width: 100%;
-  padding: 14px;
-  border-radius: 30px;
-  border: none;
-  background: #ffffff;
-  color: #000;
-  font-size: 16px;
-  cursor: pointer;
+.neon-title {
+  color: #9fffe0;
+  text-shadow: 0 0 8px rgba(120,255,230,.8);
+  animation: glow 2.5s infinite alternate;
 }
 
-.hidden {
-  display: none;
+@keyframes glow {
+  from { opacity: .8; }
+  to { opacity: 1; }
 }
 
 .question {
-  font-size: 18px;
-  margin-top: 30px;
+  font-size: 1.05rem;
+  margin-top: 20px;
 }
 
-.measure {
-  font-size: 13px;
-  opacity: 0.7;
-  margin-top: 6px;
+.legal {
+  font-size: .75rem;
+  opacity: .75;
 }
 
-.answers {
-  margin-top: 25px;
-  display: flex;
-  gap: 10px;
+button {
+  width: 90%;
+  max-width: 340px;
+  margin: 14px auto;
+  padding: 14px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.primary {
+  background: linear-gradient(45deg,#2ecc71,#6affd3);
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
+  color: #001c14;
 }
 
 .answers button {
-  flex: 1;
-  padding: 12px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
+  background: #3498db;
+  color: white;
 }
 
 .thermo {
   width: 100%;
-  height: 10px;
-  background: #1b2233;
-  border-radius: 10px;
-  margin-top: 20px;
+  height: 14px;
+  background: #111;
+  border-radius: 20px;
+  margin: 20px 0;
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #5affc9, #ffd86b);
-  border-radius: 10px;
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
+}
+
+.vertical-thermo {
+  width: 30px;
+  height: 220px;
+  background: #111;
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
 }
 
 .symbol {
-  font-size: 48px;
-  text-align: center;
-  margin: 20px 0;
+  font-size: 3rem;
+  margin: 16px 0;
+  animation: float 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
 }
