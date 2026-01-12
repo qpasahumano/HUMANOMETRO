@@ -23,11 +23,9 @@ body {
 
 .hidden { display: none; }
 
-/* MARCA */
 .brand-main {
   font-family: "Mystery Quest", cursive;
   font-size: 2.2rem;
-  letter-spacing: .1em;
   color: #b9fff2;
   text-shadow: 0 0 8px rgba(120,255,230,.9);
 }
@@ -37,19 +35,23 @@ body {
   opacity: .75;
 }
 
-/* TEXTO */
 .intro {
-  font-size: .95rem;
-  line-height: 1.5;
   margin: 20px 0;
 }
 
-.legal {
-  font-size: .75em;
-  opacity: .75;
+.question {
+  font-size: 1.05rem;
+  margin: 18px 0 6px;
+  text-shadow: 0 0 6px rgba(120,255,230,.4);
 }
 
-/* TITULOS */
+.measure {
+  font-size: .75rem;
+  opacity: .75;
+  margin-bottom: 14px;
+  display: block;
+}
+
 .neon-title {
   color: #9fffe0;
   text-shadow: 0 0 10px rgba(120,255,230,.8);
@@ -61,7 +63,6 @@ body {
   to { opacity: 1; }
 }
 
-/* BOTONES */
 button {
   width: 90%;
   max-width: 340px;
@@ -84,14 +85,12 @@ button {
   color: #fff;
 }
 
-/* TERMÓMETROS */
 .thermo {
   width: 100%;
   height: 14px;
   background: #111;
   border-radius: 20px;
   margin: 20px 0;
-  overflow: hidden;
 }
 
 #thermoFill {
@@ -114,10 +113,8 @@ button {
   width: 100%;
   height: 0%;
   background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
 }
 
-/* ANIMAL */
 .animal {
   font-size: 3rem;
   margin: 14px 0;
@@ -128,4 +125,9 @@ button {
   0% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
   100% { transform: translateY(0); }
-  }
+}
+
+.legal {
+  font-size: .75em;
+  opacity: .75;
+}
