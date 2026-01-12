@@ -1,9 +1,6 @@
-/* CONFIG */
-const DEV_MODE = true; // cambiar a false al publicar
-const DELAY_DAYS = 7;
+const DEV_MODE = true;
 const STORAGE = "humanometro_v2";
 
-/* PREGUNTAS (CONGELADAS) */
 const WEEKS = [
   {
     title: "Vos ante el mundo",
@@ -34,26 +31,21 @@ const WEEKS = [
   }
 ];
 
-/* ESTADO */
 let state = JSON.parse(localStorage.getItem(STORAGE)) || {
   week: 0,
-  scores: [],
-  lastDate: null
+  scores: []
 };
 
 let qIndex = 0;
 let weekScore = 0;
 
-/* INICIO */
 function startV2() {
-  if (!DEV_MODE && !canAccess()) return alert("Bloque aún no habilitado.");
   qIndex = 0;
   weekScore = 0;
   show("week");
   loadQuestion();
 }
 
-/* PREGUNTAS */
 function loadQuestion() {
   const w = WEEKS[state.week];
   document.getElementById("weekTitle").innerText = w.title;
@@ -70,7 +62,6 @@ function answer(v) {
   else loadQuestion();
 }
 
-/* RESULTADO SEMANAL */
 function showWeeklyResult() {
   const avg = weekScore / 4;
   let animal, text, advice;
@@ -78,11 +69,11 @@ function showWeeklyResult() {
   if (avg < 0.8) {
     animal = "🦇";
     text = "Tu humanidad mostró un repliegue esta semana.";
-    advice = "Detenerte y observar puede ayudarte a reconectar.";
+    advice = "Observá dónde te cerraste y elegí un gesto consciente.";
   } else if (avg < 1.5) {
     animal = "🐞";
     text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños actos conscientes pueden impulsarte.";
+    advice = "Un pequeño acto más puede inclinar la balanza.";
   } else {
     animal = "🐦";
     text = "Tu humanidad está en crecimiento.";
@@ -94,48 +85,49 @@ function showWeeklyResult() {
   document.getElementById("weeklyAdvice").innerText = advice;
 
   state.scores.push(avg);
-  state.lastDate = Date.now();
   localStorage.setItem(STORAGE, JSON.stringify(state));
-
   show("weeklyResult");
 }
 
-/* CONTINUIDAD */
 function continueFlow() {
   state.week++;
   localStorage.setItem(STORAGE, JSON.stringify(state));
 
-  if (state.week >= WEEKS.length) showMonthlyResult();
-  else show("start");
+  if (state.week < WEEKS.length) show("start");
+  else showMonthlyResult();
 }
 
-/* RESULTADO MENSUAL */
 function showMonthlyResult() {
   show("monthlyResult");
 
   const avg = state.scores.reduce((a,b)=>a+b,0) / state.scores.length;
-  document.getElementById("monthlyFill").style.height = Math.round((avg/2)*100) + "%";
+  const fill = document.getElementById("monthlyFill");
 
-  setTimeout(()=>{
+  let current = 0;
+  const target = Math.round((avg / 2) * 100);
+
+  const interval = setInterval(() => {
+    current++;
+    fill.style.height = current + "%";
+    if (current >= target) clearInterval(interval);
+  }, 25);
+
+  setTimeout(() => {
     document.getElementById("monthlyText").innerText =
       avg < 0.8 ? "Tu humanidad necesita pausa y revisión."
       : avg < 1.5 ? "Tu humanidad estuvo activa, aunque inestable."
       : "Tu humanidad mostró integración y crecimiento.";
-  }, 3000);
+
+    document.getElementById("monthlyAdvice").innerText =
+      avg < 0.8 ? "Reducí estímulos y priorizá presencia real."
+      : avg < 1.5 ? "Elegí conscientemente un vínculo a cuidar."
+      : "Continuá sosteniendo actos coherentes día a día.";
+  }, 3500);
 }
 
-/* BLOQUEO */
-function canAccess() {
-  if (state.week === 0) return true;
-  if (!state.lastDate) return true;
-  const days = (Date.now() - state.lastDate) / (1000*60*60*24);
-  return days >= DELAY_DAYS;
-}
-
-/* UI */
 function show(id) {
   ["start","week","weeklyResult","monthlyResult"].forEach(s=>{
     document.getElementById(s).classList.add("hidden");
   });
   document.getElementById(id).classList.remove("hidden");
-       }
+}
