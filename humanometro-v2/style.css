@@ -4,11 +4,11 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – MUCHO MÁS VISIBLE */
+  /* FONDO BOSQUE */
   background:
     linear-gradient(
-      rgba(11,18,32,0.30),
-      rgba(11,18,32,0.30)
+      rgba(11,18,32,0.22),
+      rgba(11,18,32,0.22)
     ),
     url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
 
@@ -16,18 +16,23 @@ body {
   color: #eafff9;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* CONTENEDOR PRINCIPAL (LÁMINA) */
 #app {
   max-width: 520px;
   margin: 40px auto;
-  padding: 24px;
+  padding: 26px;
 
-  /* OPACIDAD REDUCIDA AL MÍNIMO SEGURO */
-  background: rgba(11,18,32,0.22);
+  /* LÁMINA TRANSPARENTE – 50% MÁS SUAVE */
+  background: rgba(11,18,32,0.18);
 
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
   border-radius: 22px;
-  box-shadow: 0 0 35px rgba(120,255,230,.25);
+  box-shadow:
+    0 0 30px rgba(120,255,230,.18),
+    inset 0 0 40px rgba(0,0,0,.25);
+
   text-align: center;
 }
 
@@ -38,8 +43,11 @@ body {
   font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
   letter-spacing: .08em;
-  color: #b9fff2;
-  text-shadow: 0 0 10px rgba(120,255,230,.9);
+  color: #d9fff4;
+
+  text-shadow:
+    0 0 6px rgba(120,255,230,.9),
+    0 0 14px rgba(120,255,230,.6);
 }
 
 .brand-meta {
@@ -50,55 +58,70 @@ body {
 /* TEXTO */
 .intro {
   font-size: .95rem;
-  line-height: 1.5;
-  margin: 20px 0;
+  line-height: 1.55;
+  margin: 22px 0;
+
+  text-shadow: 0 0 6px rgba(0,0,0,.65);
 }
 
 /* TÍTULOS */
 .neon-title {
-  color: #9fffe0;
-  text-shadow: 0 0 8px rgba(120,255,230,.9);
-  animation: glow 2.5s infinite alternate;
-}
-
-@keyframes glow {
-  from { opacity: .9; }
-  to { opacity: 1; }
+  color: #baffec;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.8),
+    0 0 14px rgba(120,255,230,.4);
 }
 
 /* PREGUNTAS */
 .question {
   font-size: 1.05rem;
-  margin-top: 20px;
+  margin-top: 22px;
+  text-shadow: 0 0 6px rgba(0,0,0,.7);
 }
 
 .legal {
   font-size: .75rem;
-  opacity: .9;
+  opacity: .95;
+  text-shadow: 0 0 4px rgba(0,0,0,.6);
 }
 
-/* BOTONES */
+/* BOTONES – RESTAURADOS */
 button {
   width: 90%;
   max-width: 340px;
   margin: 14px auto;
   padding: 14px;
+
   border-radius: 40px;
   border: none;
   font-size: 1em;
   cursor: pointer;
+
+  transition: transform .15s ease, box-shadow .15s ease;
 }
 
+button:active {
+  transform: scale(0.98);
+}
+
+/* BOTÓN PRINCIPAL */
 .primary {
   background: linear-gradient(45deg,#2ecc71,#6affd3);
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
-  color: #001c14;
+  color: #002018;
+
+  box-shadow:
+    0 0 14px rgba(46,204,113,.8),
+    inset 0 0 10px rgba(255,255,255,.25);
 }
 
-/* RESPUESTAS */
+/* BOTONES RESPUESTA */
 .answers button {
-  background: rgba(255,255,255,0.95);
-  color: #001c14;
+  background: rgba(255,255,255,0.92);
+  color: #002018;
+
+  box-shadow:
+    0 0 8px rgba(0,0,0,.25),
+    inset 0 0 6px rgba(255,255,255,.6);
 }
 
 /* TERMÓMETRO HORIZONTAL */
@@ -107,7 +130,7 @@ button {
   height: 14px;
   background: rgba(0,0,0,0.35);
   border-radius: 20px;
-  margin: 20px 0;
+  margin: 22px 0;
 }
 
 #thermoFill {
@@ -138,11 +161,5 @@ button {
 .symbol {
   font-size: 3rem;
   margin: 16px 0;
-  animation: float 2.5s infinite ease-in-out;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
+  text-shadow: 0 0 10px rgba(0,0,0,.6);
 }
