@@ -146,3 +146,65 @@ function show(id) {
 function restart() {
   show("start");
 }
+function openMonthlyFull() {
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+
+  let text = "";
+
+  if (avg < 0.8) {
+    text = `
+Este mes muestra una retracción de tu humanidad consciente.
+No como un error, sino como un mensaje.
+
+Cuando la sensibilidad baja, suele ser señal de cansancio,
+sobrecarga emocional o desconexión con lo que sentís.
+
+Revisar tus tiempos, tus vínculos y tus límites puede ser
+el primer paso para volver a habitarte con más presencia.
+
+La humanidad no se pierde: se apaga cuando no se la cuida.
+`;
+  } else if (avg < 1.5) {
+    text = `
+Tu humanidad se mantuvo activa, aunque de forma irregular.
+Hubo momentos de presencia y otros de automatismo.
+
+Este resultado habla de una conciencia en proceso,
+que aparece cuando la recordás y se diluye cuando
+las exigencias externas toman el mando.
+
+Pequeños actos diarios —escuchar, pausar, sentir—
+pueden estabilizar ese equilibrio interno.
+`;
+  } else {
+    text = `
+Este mes refleja una humanidad integrada y en expansión.
+Tus respuestas muestran coherencia entre lo que sentís,
+pensás y hacés.
+
+No significa perfección, sino alineación.
+Estás habitando tus decisiones con conciencia
+y eso se traduce en impacto humano real.
+
+Sostener esta apertura requiere cuidado,
+porque la sensibilidad también necesita descanso.
+`;
+  }
+
+  text += `
+\n\nEste proceso es consecutivo.
+Para medir tu humanidad de forma real,
+necesitás vivir una semana de experiencias (siete días).
+
+Cuando sientas que algo cambió en vos,
+Humanómetro va a estar acá para volver a medirlo.
+`;
+
+  document.getElementById("monthlyFullText").innerText = text;
+  show("monthlyFull");
+}
+
+function closeMonthlyFull() {
+  show("monthlyResult");
+}
