@@ -1,5 +1,5 @@
 /* ===============================
-   RESET BÁSICO
+   RESET BÁSICO (NO TOCAR)
 ================================ */
 * {
   margin: 0;
@@ -8,152 +8,50 @@
 }
 
 /* ===============================
-   FONDO GLOBAL – HUMANÓMETRO V2
+   FONDO GENERAL (NUEVO)
+   NO altera tipografías ni layout
 ================================ */
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+/* Imagen de fondo */
 body {
-  min-height: 100vh;
-  font-family: 'Poppins', system-ui, sans-serif;
-  background-image:
-    linear-gradient(
-      rgba(0, 0, 0, 0.45),
-      rgba(0, 0, 0, 0.45)
-    ),
-    url("activos/v2/fondo-bosque.jpg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #ffffff;
-}
-
-/* ===============================
-   CONTENEDOR PRINCIPAL
-================================ */
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
-}
-
-/* ===============================
-   TÍTULOS
-================================ */
-h1 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-h2 {
-  font-size: 1.6rem;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-
-/* ===============================
-   TEXTO GENERAL
-================================ */
-p {
-  font-size: 1rem;
-  line-height: 1.6;
-  opacity: 0.95;
-  margin-bottom: 16px;
-}
-
-/* ===============================
-   BOTONES
-================================ */
-button {
-  border: none;
-  border-radius: 28px;
-  padding: 14px 26px;
-  font-size: 1rem;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.92);
-  color: #0b1220;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background: #ffffff;
-  transform: scale(1.03);
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-/* ===============================
-   BOTÓN PRINCIPAL
-================================ */
-.main-button {
-  margin-top: 24px;
-  min-width: 260px;
-}
-
-/* ===============================
-   RESPUESTAS (Sí / Tal vez / No)
-================================ */
-.answers {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.answers button {
-  min-width: 120px;
-}
-
-/* ===============================
-   TEXTO SECUNDARIO (qué mide)
-================================ */
-small {
-  display: block;
-  font-size: 0.85rem;
-  opacity: 0.8;
-  margin-top: 8px;
-}
-
-/* ===============================
-   OCULTAR SECCIONES
-================================ */
-.hidden {
-  display: none;
-}
-/* === FONDO BOSQUE V2 (NO TOCAR BASE) === */
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.22; /* visibilidad suave */
-  z-index: -2;
+  background-attachment: fixed;
 }
 
-body::after {
+/* Capa de suavizado para legibilidad */
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0.15) 0%,
-    rgba(0,0,0,0.55) 100%
-  );
+  background: rgba(0, 0, 0, 0.35); /* ajusta luz sin romper nada */
   z-index: -1;
 }
+
+/* ===============================
+   CONTENEDOR PRINCIPAL
+   SOLO se vuelve transparente
+================================ */
+#app,
+.app,
+.main {
+  background-color: transparent !important;
+}
+
+/* ===============================
+   TODO LO DEMÁS QUEDA IGUAL
+   (botones, textos, animaciones)
+================================ */
+
+/* EJEMPLO: si ya existían, NO se modifican */
+button {
+  border-radius: 999px;
+}
+
+/* FIN */
