@@ -4,31 +4,30 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO NÍTIDO */
+  /* FONDO BOSQUE – NÍTIDO */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
 
-  /* LED ambiental SIN tocar imagen */
+  color: #f6fffc;
   position: relative;
-  color: #f4fffb;
 }
 
-/* OVERLAY SUAVE PARA CONTRASTE */
+/* OVERLAY GLOBAL – MISMA LÓGICA v.1, UN NIVEL MÁS */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
     radial-gradient(circle at top,
-      rgba(120,255,230,0.12),
+      rgba(160,255,235,0.14),
       transparent 45%),
     radial-gradient(circle at bottom,
-      rgba(80,120,255,0.14),
+      rgba(120,180,255,0.14),
       transparent 55%),
-    rgba(0,0,0,0.18);
+    rgba(0,0,0,0.22); /* ← v.1 tenía ~0.30 */
   pointer-events: none;
   z-index: -1;
 }
@@ -39,13 +38,13 @@ body::before {
   margin: 40px auto;
   padding: 26px;
 
-  /* CLAVE: este valor mantiene imagen visible pero texto claro */
-  background: rgba(11,18,32,0.32);
+  /* CLAVE: referencia v.1 + 1 nivel */
+  background: rgba(11,18,32,0.38);
 
   border-radius: 22px;
   box-shadow:
-    0 0 30px rgba(0,0,0,.45),
-    0 0 60px rgba(120,255,230,.15);
+    0 0 28px rgba(0,0,0,.45),
+    0 0 60px rgba(120,255,230,.12);
   text-align: center;
 }
 
@@ -54,101 +53,18 @@ body::before {
 /* ===== MARCA ===== */
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: 2.5rem;
-  letter-spacing: .1em;
+  font-size: 2.4rem;
+  letter-spacing: .08em;
   color: #eafff8;
 
-  /* LED limpio (no mareo) */
+  /* LED limpio, estilo v.1 */
   text-shadow:
-    0 0 3px rgba(200,255,245,.9),
-    0 0 8px rgba(120,255,230,.7),
+    0 0 3px rgba(200,255,245,.8),
+    0 0 8px rgba(120,255,230,.6),
     0 0 14px rgba(0,0,0,.9);
 }
 
 .brand-meta {
   font-size: .7rem;
   opacity: .9;
-  text-shadow: 0 0 6px rgba(0,0,0,.9);
-}
-
-/* ===== TEXTOS ===== */
-.intro,
-.question,
-p,
-.legal {
-  color: #f4fffb;
-
-  /* contraste firme, sin glow excesivo */
-  text-shadow:
-    0 0 2px rgba(200,255,245,.6),
-    0 0 6px rgba(0,0,0,.85);
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .85;
-}
-
-/* ===== TÍTULOS ===== */
-.neon-title {
-  color: #d6fff3;
-  text-shadow:
-    0 0 4px rgba(180,255,240,.9),
-    0 0 10px rgba(120,255,230,.6),
-    0 0 20px rgba(0,0,0,.9);
-  animation: glow 3s infinite alternate;
-}
-
-@keyframes glow {
-  from { opacity: .9; }
-  to { opacity: 1; }
-}
-
-/* ===== BOTONES ===== */
-button {
-  width: 90%;
-  max-width: 340px;
-  margin: 14px auto;
-  padding: 14px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-}
-
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  color: #001c14;
-  box-shadow:
-    0 0 10px rgba(46,204,113,.8),
-    0 0 22px rgba(46,204,113,.6);
-}
-
-.answers button {
-  background: rgba(255,255,255,0.96);
-  color: #001c14;
-  box-shadow: 0 0 12px rgba(0,0,0,.35);
-}
-
-/* ===== TERMÓMETROS ===== */
-.thermo,
-.vertical-thermo {
-  background: rgba(0,0,0,0.35);
-  border-radius: 20px;
-}
-
-/* ===== ICONOS ===== */
-.symbol {
-  font-size: 3rem;
-  margin: 16px 0;
-  animation: float 2.8s infinite ease-in-out;
-  text-shadow:
-    0 0 6px rgba(255,255,255,.9),
-    0 0 14px rgba(120,255,230,.6);
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
+  text-shadow
