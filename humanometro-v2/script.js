@@ -1,133 +1,102 @@
-const DEV_MODE = true;
-const STORAGE = "humanometro_v2";
-
 const WEEKS = [
   {
     title: "Vos ante el mundo",
     questions: [
-      ["Cuando ves noticias de guerras u conflictos, ¿te genera tristeza?", "Mide empatía global."],
-      ["Cuando alguien te habla, ¿le prestás atención sin mirar el celular?", "Mide presencia humana."],
-      ["¿Sentís impulso de involucrarte ante una injusticia?", "Mide compromiso humano."],
+      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
+      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
       ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
     ]
   },
   {
     title: "Vos y la tecnología",
     questions: [
-      ["¿Podés dejar el celular cuando compartís con otros?", "Mide uso consciente."],
-      ["¿Controlás el tiempo que pasás en pantallas?", "Mide autocontrol digital."],
+      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
+      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
       ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
-      ["¿La tecnología te acompaña sin absorberte?", "Mide equilibrio tecnológico."]
+      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
     ]
   },
   {
     title: "Integración humana",
     questions: [
-      ["¿Sentís coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
       ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
-      ["¿Te sentís responsable de tu impacto?", "Mide madurez humana."],
-      ["¿Sentís que tu humanidad evolucionó este mes?", "Mide integración global."]
+      ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
+      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
     ]
   }
 ];
 
-let state = JSON.parse(localStorage.getItem(STORAGE)) || {
-  week: 0,
-  scores: []
-};
-
-let qIndex = 0;
-let weekScore = 0;
+let week = 0, q = 0, scores = [], current = [];
 
 function startV2() {
-  qIndex = 0;
-  weekScore = 0;
+  q = 0;
+  current = [];
   show("week");
   loadQuestion();
 }
 
 function loadQuestion() {
-  const w = WEEKS[state.week];
-  document.getElementById("weekTitle").innerText = w.title;
-  document.getElementById("questionText").innerText = w.questions[qIndex][0];
-  document.getElementById("questionNote").innerText = w.questions[qIndex][1];
+  const data = WEEKS[week].questions[q];
+  document.getElementById("weekTitle").innerText = WEEKS[week].title;
+  document.getElementById("questionText").innerText = data[0];
+  document.getElementById("questionMeasure").innerText = data[1];
 }
 
 function answer(v) {
-  weekScore += v;
-  qIndex++;
-  document.getElementById("thermoFill").style.width = (qIndex / 4) * 100 + "%";
+  current.push(v);
+  q++;
+  document.getElementById("thermoFill").style.width = (q / 4) * 100 + "%";
 
-  if (qIndex >= 4) showWeeklyResult();
-  else loadQuestion();
+  if (q >= 4) return showWeekly();
+  loadQuestion();
 }
 
-function showWeeklyResult() {
-  const avg = weekScore / 4;
-  let animal, text, advice;
+function showWeekly() {
+  const avg = current.reduce((a,b)=>a+b,0)/4;
+  scores.push(avg);
 
-  if (avg < 0.8) {
-    animal = "🦇";
-    text = "Tu humanidad mostró un repliegue esta semana.";
-    advice = "Observá dónde te cerraste y elegí un gesto consciente.";
-  } else if (avg < 1.5) {
-    animal = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
-    advice = "Un pequeño acto más puede inclinar la balanza.";
-  } else {
-    animal = "🐦";
-    text = "Tu humanidad está en crecimiento.";
-    advice = "Sostener esta apertura fortalece tu coherencia.";
-  }
+  let animal="🐞", text="", advice="";
+
+  if (avg < .8) { animal="🦇"; text="Humanidad retraída."; advice="Detenerte y observar puede reactivar sensibilidad."; }
+  else if (avg < 1.5) { animal="🐞"; text="Humanidad estable."; advice="Pequeños gestos pueden impulsarte."; }
+  else { animal="🐦"; text="Humanidad en crecimiento."; advice="Sostener esta coherencia fortalece tu camino."; }
 
   document.getElementById("animal").innerText = animal;
   document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
 
-  state.scores.push(avg);
-  localStorage.setItem(STORAGE, JSON.stringify(state));
   show("weeklyResult");
 }
 
 function continueFlow() {
-  state.week++;
-  localStorage.setItem(STORAGE, JSON.stringify(state));
-
-  if (state.week < WEEKS.length) show("start");
-  else showMonthlyResult();
+  week++;
+  q = 0;
+  if (week >= WEEKS.length) return showMonthly();
+  startV2();
 }
 
-function showMonthlyResult() {
+function showMonthly() {
   show("monthlyResult");
+  const avg = scores.reduce((a,b)=>a+b,0)/scores.length;
+  setTimeout(()=> {
+    document.getElementById("monthlyFill").style.height = (avg/2)*100 + "%";
+  }, 500);
 
-  const avg = state.scores.reduce((a,b)=>a+b,0) / state.scores.length;
-  const fill = document.getElementById("monthlyFill");
-
-  let current = 0;
-  const target = Math.round((avg / 2) * 100);
-
-  const interval = setInterval(() => {
-    current++;
-    fill.style.height = current + "%";
-    if (current >= target) clearInterval(interval);
-  }, 25);
-
-  setTimeout(() => {
+  setTimeout(()=> {
     document.getElementById("monthlyText").innerText =
-      avg < 0.8 ? "Tu humanidad necesita pausa y revisión."
-      : avg < 1.5 ? "Tu humanidad estuvo activa, aunque inestable."
-      : "Tu humanidad mostró integración y crecimiento.";
-
+      avg < .8 ? "Humanidad dormida." :
+      avg < 1.5 ? "Humanidad estable." :
+      "Humanidad en expansión.";
     document.getElementById("monthlyAdvice").innerText =
-      avg < 0.8 ? "Reducí estímulos y priorizá presencia real."
-      : avg < 1.5 ? "Elegí conscientemente un vínculo a cuidar."
-      : "Continuá sosteniendo actos coherentes día a día.";
+      "Tomá conciencia de un gesto concreto para elevar tu humanidad.";
   }, 3500);
 }
 
 function show(id) {
-  ["start","week","weeklyResult","monthlyResult"].forEach(s=>{
-    document.getElementById(s).classList.add("hidden");
-  });
+  ["start","week","weeklyResult","monthlyResult"].forEach(s =>
+    document.getElementById(s).classList.add("hidden")
+  );
   document.getElementById(id).classList.remove("hidden");
-}
+    }
