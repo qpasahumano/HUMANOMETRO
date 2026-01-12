@@ -132,3 +132,28 @@ small {
 .hidden {
   display: none;
 }
+/* === FONDO BOSQUE V2 (NO TOCAR BASE) === */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("activos/v2/fondo-bosque.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.22; /* visibilidad suave */
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0.55) 100%
+  );
+  z-index: -1;
+}
