@@ -138,7 +138,7 @@ function updateThermo() {
 }
 
 function show(id) {
-  ["start","test","weeklyResult","monthlyResult"]
+  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
@@ -146,6 +146,7 @@ function show(id) {
 function restart() {
   show("start");
 }
+
 function openMonthlyFull() {
   const avg =
     weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
@@ -205,6 +206,7 @@ Humanómetro va a estar acá para volver a medirlo.
   show("monthlyFull");
 }
 
-function closeMonthlyFull() {
+/* 🔒 FUNCIÓN DEFINITIVA DEL BOTÓN VOLVER */
+function goBack() {
   show("monthlyResult");
 }
