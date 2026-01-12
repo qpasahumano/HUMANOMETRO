@@ -1,133 +1,82 @@
-* { box-sizing: border-box; }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>HUMANÓMETRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(120,255,230,.25), transparent 45%),
-    radial-gradient(circle at bottom, rgba(80,120,255,.25), transparent 55%),
-    #0b1220;
-  color: #eafff9;
-}
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
-#app {
-  max-width: 520px;
-  margin: auto;
-  padding: 24px;
-  text-align: center;
-  background: rgba(11,18,32,.88);
-  border-radius: 18px;
-  box-shadow: 0 0 35px rgba(120,255,230,.25);
-}
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
 
-.hidden { display: none; }
+<body>
+<main id="app">
 
-.brand-main {
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.2rem;
-  color: #b9fff2;
-  text-shadow: 0 0 8px rgba(120,255,230,.9);
-}
+  <!-- INTRO -->
+  <section id="start">
+    <h1 class="brand">
+      <span class="brand-main">HUMANÓMETRO</span><br>
+      <span class="brand-meta">v.2 ®</span>
+    </h1>
 
-.brand-meta {
-  font-size: .7rem;
-  opacity: .75;
-}
+    <p class="intro">
+      Humanómetro no se recorre de una sola vez.<br><br>
+      Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+      Cada bloque se habilita únicamente cuando completaste el anterior
+      y pasó el tiempo necesario para integrarlo.<br><br>
+      La humanidad se construye en movimiento, no en velocidad.
+    </p>
 
-.intro {
-  margin: 20px 0;
-}
+    <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
+  </section>
 
-.question {
-  font-size: 1.05rem;
-  margin: 18px 0 6px;
-  text-shadow: 0 0 6px rgba(120,255,230,.4);
-}
+  <!-- TEST SEMANAL -->
+  <section id="week" class="hidden">
+    <h2 id="weekTitle" class="neon-title"></h2>
 
-.measure {
-  font-size: .75rem;
-  opacity: .75;
-  margin-bottom: 14px;
-  display: block;
-}
+    <div class="thermo">
+      <div id="thermoFill"></div>
+    </div>
 
-.neon-title {
-  color: #9fffe0;
-  text-shadow: 0 0 10px rgba(120,255,230,.8);
-  animation: glow 2.5s infinite alternate;
-}
+    <p id="questionText" class="question"></p>
+    <small id="questionMeasure" class="legal"></small>
 
-@keyframes glow {
-  from { opacity: .8; }
-  to { opacity: 1; }
-}
+    <div class="answers">
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
+      <button onclick="answer(0)">No</button>
+    </div>
+  </section>
 
-button {
-  width: 90%;
-  max-width: 340px;
-  margin: 16px auto;
-  padding: 15px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-}
+  <!-- RESULTADO SEMANAL -->
+  <section id="weeklyResult" class="hidden">
+    <h2 class="neon-title">Lectura semanal</h2>
 
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  color: #001c14;
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
-}
+    <div id="animal" class="animal"></div>
 
-.answers button {
-  background: #3498db;
-  color: #fff;
-}
+    <p id="weeklyText"></p>
+    <p id="weeklyAdvice" class="legal"></p>
 
-.thermo {
-  width: 100%;
-  height: 14px;
-  background: #111;
-  border-radius: 20px;
-  margin: 20px 0;
-}
+    <button class="primary" onclick="continueFlow()">Continuar</button>
+  </section>
 
-#thermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
+  <!-- RESULTADO MENSUAL -->
+  <section id="monthlyResult" class="hidden">
+    <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
-.vertical-thermo {
-  width: 30px;
-  height: 220px;
-  background: #111;
-  border-radius: 20px;
-  margin: 30px auto;
-  overflow: hidden;
-}
+    <div class="vertical-thermo">
+      <div id="monthlyFill"></div>
+    </div>
 
-#monthlyFill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-}
+    <p id="monthlyText"></p>
+    <p id="monthlyAdvice" class="legal"></p>
+  </section>
 
-.animal {
-  font-size: 3rem;
-  margin: 14px 0;
-  animation: float 3s ease-in-out infinite;
-}
+</main>
 
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
-
-.legal {
-  font-size: .75em;
-  opacity: .75;
-}
+<script src="script.js"></script>
+</body>
+</html>
