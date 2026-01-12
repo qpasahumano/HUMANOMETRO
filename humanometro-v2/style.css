@@ -16,7 +16,8 @@ body {
   position: relative;
 }
 
-/* ===== OVERLAY GLOBAL (más bajo que v.1) ===== */
+/* ===== OVERLAY GLOBAL ===== */
+/* Más bajo que v.1 */
 body::before {
   content: "";
   position: fixed;
@@ -32,7 +33,7 @@ body::before {
       rgba(120,180,255,0.12),
       transparent 55%
     ),
-    rgba(0,0,0,0.20); /* ⬅ overlay reducido */
+    rgba(0,0,0,0.20);
   pointer-events: none;
   z-index: -1;
 }
@@ -44,13 +45,15 @@ body::before {
   padding: 26px;
 
   background: rgba(11,18,32,0.38);
-  border-radius: 22px;
 
+  border-radius: 22px;
   box-shadow:
     0 0 28px rgba(0,0,0,.45),
     0 0 60px rgba(120,255,230,.12);
 
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .hidden { display: none; }
@@ -147,7 +150,7 @@ button {
     #f1c40f,
     #2ecc71
   );
-  transition: width .45s ease;
+  transition: width .6s ease-in-out;
 }
 
 /* ===== TERMÓMETRO MENSUAL (VIVO + EXPECTATIVA) ===== */
@@ -158,6 +161,8 @@ button {
   border-radius: 20px;
   margin: 30px auto;
   overflow: hidden;
+  position: relative;
+  z-index: 3;
 }
 
 #monthlyFill {
@@ -168,19 +173,34 @@ button {
     #f1c40f,
     #2ecc71
   );
-  transition: height 3s ease-in-out;
+  transition: height 3.5s ease-in-out;
 }
 
-/* ===== EMOTICONES (REINCORPORADOS) ===== */
+/* ===== EMOTICONES (VIVOS + GRANDES) ===== */
 .symbol {
-  font-size: 3.6rem;   /* ⬅ tamaño restaurado */
+  font-size: 3.6rem;
   margin: 18px 0;
-  animation: float 2.8s infinite ease-in-out;
+  display: block;
+  animation: floatBase 2.8s infinite ease-in-out;
 }
 
-@keyframes float {
+@keyframes floatBase {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* ===== FORZADO FINAL (BOSS) ===== */
+#weeklySymbol,
+#monthlySymbol {
+  font-size: 4.2rem !important;
+  margin: 22px 0 !important;
+  animation: floatForce 2.6s infinite ease-in-out !important;
+}
+
+@keyframes floatForce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
 
@@ -203,30 +223,4 @@ button {
   font-size: .95rem;
   line-height: 1.6;
   text-align: left;
-}
-/* ===== FORZADO FINAL – NO BORRAR ===== */
-
-/* FORZAR TAMAÑO DE EMOTICONES */
-#weeklySymbol,
-#monthlySymbol {
-  font-size: 4.2rem !important;
-  margin: 22px 0 !important;
-  animation: floatForce 2.6s infinite ease-in-out !important;
-}
-
-/* ANIMACIÓN FORZADA */
-@keyframes floatForce {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-/* FORZAR TERMÓMETRO MENSUAL VIVO */
-#monthlyFill {
-  transition: height 3.5s ease-in-out !important;
-}
-
-/* FORZAR TERMÓMETRO SEMANAL VIVO */
-#thermoFill {
-  transition: width .6s ease-in-out !important;
   }
