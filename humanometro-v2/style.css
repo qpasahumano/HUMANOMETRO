@@ -22,10 +22,10 @@ body {
   margin: 40px auto;
   padding: 24px;
 
-  /* EFECTO VIDRIO (NO OPACO) */
-  background: rgba(11,18,32,0.55);
-  backdrop-filter: blur(6px);
+  /* 🔽 MENOS OPACO – MÁS BOSQUE */
+  background: rgba(11,18,32,0.45);
 
+  backdrop-filter: blur(6px);
   border-radius: 22px;
   box-shadow: 0 0 35px rgba(120,255,230,.25);
   text-align: center;
