@@ -1,137 +1,45 @@
-* { box-sizing: border-box; }
+/* ===== BOTONES – REPARACIÓN VISUAL ===== */
 
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-
-  background-image: url("activos/v2/fondo-bosque.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-
-  color: #f7fffd;
-  position: relative;
-}
-
-/* OVERLAY CONTROLADO */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at top,
-      rgba(180,255,240,0.10),
-      transparent 45%),
-    radial-gradient(circle at bottom,
-      rgba(140,200,255,0.10),
-      transparent 55%),
-    rgba(0,0,0,0.18);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* CONTENEDOR */
-#app {
-  max-width: 520px;
-  margin: 40px auto;
-  padding: 26px;
-  background: rgba(11,18,32,0.34);
-  border-radius: 22px;
-  box-shadow:
-    0 0 20px rgba(0,0,0,.6),
-    0 0 36px rgba(120,255,230,.25);
-  text-align: center;
-}
-
-.hidden { display: none; }
-
-/* ===== TEXTO ===== */
-p, .question, .intro, .legal {
-  color: #f7fffd;
-  text-shadow:
-    0 0 2px rgba(255,255,255,.6),
-    0 0 6px rgba(0,0,0,.9);
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .9;
-}
-
-/* ===== TÍTULOS ===== */
-.brand-main {
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.4rem;
-  letter-spacing: .08em;
-  color: #ecfffa;
-  text-shadow:
-    0 0 6px rgba(200,255,245,.9),
-    0 0 14px rgba(120,255,230,.7),
-    0 0 26px rgba(0,0,0,.95);
-}
-
-.neon-title {
-  color: #e6fff6;
-  text-shadow:
-    0 0 6px rgba(200,255,245,.9),
-    0 0 14px rgba(120,255,230,.7),
-    0 0 26px rgba(0,0,0,.95);
-}
-
-/* ===== BOTONES (ARREGLADOS) ===== */
 button {
   width: 90%;
   max-width: 340px;
   margin: 14px auto;
-  padding: 15px;
+  padding: 16px;
   border-radius: 40px;
   border: none;
-  font-size: 1em;
+  font-size: 1.05em;
   font-weight: 600;
   cursor: pointer;
-
-  background: #ffffff;
-  color: #001c14;
-
+  background: linear-gradient(
+    135deg,
+    rgba(90, 255, 190, 0.95),
+    rgba(40, 200, 140, 0.95)
+  );
+  color: #052018;
   box-shadow:
-    0 0 8px rgba(0,0,0,.45),
-    0 0 16px rgba(120,255,230,.35);
-
+    0 0 18px rgba(120, 255, 200, 0.55),
+    0 0 36px rgba(120, 255, 200, 0.35);
   transition: transform .2s ease, box-shadow .2s ease;
 }
 
 button:hover {
-  transform: translateY(-1px);
+  transform: scale(1.03);
   box-shadow:
-    0 0 10px rgba(0,0,0,.55),
-    0 0 22px rgba(120,255,230,.55);
+    0 0 26px rgba(150, 255, 220, 0.75),
+    0 0 50px rgba(150, 255, 220, 0.55);
 }
 
-button:active {
-  transform: scale(0.98);
-}
+/* Botones de respuesta */
 
-/* BOTÓN PRINCIPAL */
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  color: #001c14;
-  box-shadow:
-    0 0 14px rgba(46,204,113,.9),
-    0 0 30px rgba(46,204,113,.7);
-}
-
-/* RESPUESTAS */
 .answers button {
-  background: #ffffff;
-  color: #001c14;
+  background: rgba(15, 30, 25, 0.75);
+  color: #eafff9;
+  box-shadow:
+    0 0 10px rgba(120, 255, 200, 0.25);
 }
 
-/* ===== TERMÓMETROS ===== */
-.thermo,
-.vertical-thermo {
-  background: rgba(0,0,0,0.30);
-  border-radius: 20px;
+.answers button:hover {
+  background: rgba(25, 50, 40, 0.85);
+  box-shadow:
+    0 0 18px rgba(120, 255, 200, 0.45);
 }
-
-/*
