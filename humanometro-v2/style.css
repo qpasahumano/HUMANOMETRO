@@ -4,162 +4,67 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE */
-  background:
-    linear-gradient(
-      rgba(11,18,32,0.22),
-      rgba(11,18,32,0.22)
-    ),
-    url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
-
+  /* FONDO BOSQUE – NÍTIDO */
+  background-image: url("activos/v2/fondo-bosque.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
-  color: #eafff9;
+  background-attachment: fixed;
+
+  color: #f6fffc;
+  position: relative;
 }
 
-/* CONTENEDOR PRINCIPAL (LÁMINA) */
+/* OVERLAY GLOBAL – MISMA LÓGICA v.1, UN NIVEL MÁS */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top,
+      rgba(160,255,235,0.14),
+      transparent 45%),
+    radial-gradient(circle at bottom,
+      rgba(120,180,255,0.14),
+      transparent 55%),
+    rgba(0,0,0,0.22); /* ← v.1 tenía ~0.30 */
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* CONTENEDOR */
 #app {
   max-width: 520px;
   margin: 40px auto;
   padding: 26px;
 
-  /* LÁMINA TRANSPARENTE – 50% MÁS SUAVE */
-  background: rgba(11,18,32,0.18);
-
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  /* CLAVE: referencia v.1 + 1 nivel */
+  background: rgba(11,18,32,0.38);
 
   border-radius: 22px;
   box-shadow:
-    0 0 30px rgba(120,255,230,.18),
-    inset 0 0 40px rgba(0,0,0,.25);
-
+    0 0 28px rgba(0,0,0,.45),
+    0 0 60px rgba(120,255,230,.12);
   text-align: center;
 }
 
 .hidden { display: none; }
 
-/* MARCA */
+/* ===== MARCA ===== */
 .brand-main {
   font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
   letter-spacing: .08em;
-  color: #d9fff4;
+  color: #eafff8;
 
+  /* LED limpio, estilo v.1 */
   text-shadow:
-    0 0 6px rgba(120,255,230,.9),
-    0 0 14px rgba(120,255,230,.6);
+    0 0 3px rgba(200,255,245,.8),
+    0 0 8px rgba(120,255,230,.6),
+    0 0 14px rgba(0,0,0,.9);
 }
 
 .brand-meta {
   font-size: .7rem;
   opacity: .9;
-}
-
-/* TEXTO */
-.intro {
-  font-size: .95rem;
-  line-height: 1.55;
-  margin: 22px 0;
-
-  text-shadow: 0 0 6px rgba(0,0,0,.65);
-}
-
-/* TÍTULOS */
-.neon-title {
-  color: #baffec;
-  text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 14px rgba(120,255,230,.4);
-}
-
-/* PREGUNTAS */
-.question {
-  font-size: 1.05rem;
-  margin-top: 22px;
-  text-shadow: 0 0 6px rgba(0,0,0,.7);
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .95;
-  text-shadow: 0 0 4px rgba(0,0,0,.6);
-}
-
-/* BOTONES – RESTAURADOS */
-button {
-  width: 90%;
-  max-width: 340px;
-  margin: 14px auto;
-  padding: 14px;
-
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-
-button:active {
-  transform: scale(0.98);
-}
-
-/* BOTÓN PRINCIPAL */
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  color: #002018;
-
-  box-shadow:
-    0 0 14px rgba(46,204,113,.8),
-    inset 0 0 10px rgba(255,255,255,.25);
-}
-
-/* BOTONES RESPUESTA */
-.answers button {
-  background: rgba(255,255,255,0.92);
-  color: #002018;
-
-  box-shadow:
-    0 0 8px rgba(0,0,0,.25),
-    inset 0 0 6px rgba(255,255,255,.6);
-}
-
-/* TERMÓMETRO HORIZONTAL */
-.thermo {
-  width: 100%;
-  height: 14px;
-  background: rgba(0,0,0,0.35);
-  border-radius: 20px;
-  margin: 22px 0;
-}
-
-#thermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
-
-/* TERMÓMETRO VERTICAL */
-.vertical-thermo {
-  width: 30px;
-  height: 220px;
-  background: rgba(0,0,0,0.35);
-  border-radius: 20px;
-  margin: 30px auto;
-  overflow: hidden;
-}
-
-#monthlyFill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
-}
-
-/* ÍCONOS */
-.symbol {
-  font-size: 3rem;
-  margin: 16px 0;
-  text-shadow: 0 0 10px rgba(0,0,0,.6);
-}
+  text-shadow
