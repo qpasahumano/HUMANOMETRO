@@ -4,32 +4,33 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – NÍTIDO */
-  background:
-    url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
-
+  /* ✅ FONDO DIRECTO, SIN FILTROS */
+  background-image: url("activos/v2/fondo-bosque.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
+  background-attachment: fixed;
 
-  /* 🔹 AJUSTE DE IMAGEN */
-  filter: brightness(1.08) contrast(1.05);
+  /* ❌ NADA DE FILTER */
+  filter: none;
 
   color: #eafff9;
 }
 
-/* CONTENEDOR PRINCIPAL */
+/* CONTENEDOR */
 #app {
   max-width: 520px;
   margin: 40px auto;
   padding: 24px;
 
-  /* 🔹 CASI TRANSPARENTE – SIN MATAR NITIDEZ */
-  background: rgba(11,18,32,0.02);
+  /* ✅ TRANSPARENCIA REAL, SIN BLUR */
+  background: rgba(11,18,32,0.25);
 
-  /* ❌ quitamos blur fuerte */
+  /* ❌ ELIMINADO COMPLETAMENTE */
   backdrop-filter: none;
 
   border-radius: 22px;
-  box-shadow: 0 0 25px rgba(0,0,0,.35);
+  box-shadow: 0 0 30px rgba(0,0,0,.45);
   text-align: center;
 }
 
@@ -42,7 +43,7 @@ body {
   letter-spacing: .08em;
   color: #b9fff2;
 
-  /* 🔹 SOMBRA PARA LEGIBILIDAD */
+  /* ✅ LEGIBILIDAD SIN OPACAR FONDO */
   text-shadow:
     0 0 6px rgba(0,0,0,.9),
     0 0 14px rgba(120,255,230,.6);
@@ -54,11 +55,10 @@ body {
 }
 
 /* TEXTOS */
-.intro {
-  font-size: .95rem;
-  line-height: 1.5;
-  margin: 20px 0;
-  text-shadow: 0 0 6px rgba(0,0,0,.85);
+.intro,
+.question,
+.legal {
+  text-shadow: 0 0 6px rgba(0,0,0,.9);
 }
 
 /* TÍTULOS */
@@ -73,19 +73,6 @@ body {
 @keyframes glow {
   from { opacity: .95; }
   to { opacity: 1; }
-}
-
-/* PREGUNTAS */
-.question {
-  font-size: 1.05rem;
-  margin-top: 20px;
-  text-shadow: 0 0 6px rgba(0,0,0,.85);
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: 1;
-  text-shadow: 0 0 6px rgba(0,0,0,.85);
 }
 
 /* BOTONES */
@@ -106,19 +93,16 @@ button {
   color: #001c14;
 }
 
-/* RESPUESTAS */
 .answers button {
   background: rgba(255,255,255,0.98);
   color: #001c14;
 }
 
 /* TERMÓMETROS */
-.thermo {
-  width: 100%;
-  height: 14px;
-  background: rgba(0,0,0,0.25);
+.thermo,
+.vertical-thermo {
+  background: rgba(0,0,0,0.3);
   border-radius: 20px;
-  margin: 20px 0;
 }
 
 #thermoFill {
@@ -126,15 +110,6 @@ button {
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
   transition: width .4s ease;
-}
-
-.vertical-thermo {
-  width: 30px;
-  height: 220px;
-  background: rgba(0,0,0,0.25);
-  border-radius: 20px;
-  margin: 30px auto;
-  overflow: hidden;
 }
 
 #monthlyFill {
