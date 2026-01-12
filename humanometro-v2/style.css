@@ -228,4 +228,10 @@ button {
   position: relative;
   z-index: 5;
 }
+.answers button {
+  background: linear-gradient(45deg,#2ecc71,#6affd3);
+  box-shadow: 0 0 14px rgba(46,204,113,.8);
+  color: #001c14;
+  font-weight: 600;
+}
 
