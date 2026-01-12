@@ -1,128 +1,134 @@
-* { box-sizing: border-box; }
-
-body {
+/* ===============================
+   RESET BÁSICO
+================================ */
+* {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(120,255,230,.25), transparent 45%),
-    radial-gradient(circle at bottom, rgba(80,120,255,.25), transparent 55%),
-    #0b1220;
-  color: #eafff9;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* ===============================
+   FONDO GLOBAL – HUMANÓMETRO V2
+================================ */
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', system-ui, sans-serif;
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url("activos/v2/fondo-bosque.jpg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #ffffff;
+}
+
+/* ===============================
+   CONTENEDOR PRINCIPAL
+================================ */
 #app {
-  max-width: 520px;
-  margin: auto;
-  padding: 24px;
-  background: rgba(11,18,32,.88);
-  border-radius: 18px;
-  box-shadow: 0 0 35px rgba(120,255,230,.25);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  padding: 24px;
 }
 
-.hidden { display: none; }
-
-.brand-main {
-  font-family: "Mystery Quest", cursive;
+/* ===============================
+   TÍTULOS
+================================ */
+h1 {
   font-size: 2.2rem;
-  letter-spacing: .08em;
-  color: #b9fff2;
-  text-shadow: 0 0 8px rgba(120,255,230,.9);
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.brand-meta {
-  font-size: .7rem;
-  opacity: .8;
+h2 {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
-.intro {
-  font-size: .95rem;
-  line-height: 1.5;
-  margin: 20px 0;
+h3 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 8px;
 }
 
-.neon-title {
-  color: #9fffe0;
-  text-shadow: 0 0 8px rgba(120,255,230,.8);
-  animation: glow 2.5s infinite alternate;
+/* ===============================
+   TEXTO GENERAL
+================================ */
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  margin-bottom: 16px;
 }
 
-@keyframes glow {
-  from { opacity: .8; }
-  to { opacity: 1; }
-}
-
-.question {
-  font-size: 1.05rem;
-  margin-top: 20px;
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .75;
-}
-
+/* ===============================
+   BOTONES
+================================ */
 button {
-  width: 90%;
-  max-width: 340px;
-  margin: 14px auto;
-  padding: 14px;
-  border-radius: 40px;
   border: none;
-  font-size: 1em;
+  border-radius: 28px;
+  padding: 14px 26px;
+  font-size: 1rem;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0b1220;
+  transition: all 0.3s ease;
 }
 
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
-  color: #001c14;
+button:hover {
+  background: #ffffff;
+  transform: scale(1.03);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* ===============================
+   BOTÓN PRINCIPAL
+================================ */
+.main-button {
+  margin-top: 24px;
+  min-width: 260px;
+}
+
+/* ===============================
+   RESPUESTAS (Sí / Tal vez / No)
+================================ */
+.answers {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .answers button {
-  background: #3498db;
-  color: white;
+  min-width: 120px;
 }
 
-.thermo {
-  width: 100%;
-  height: 14px;
-  background: #111;
-  border-radius: 20px;
-  margin: 20px 0;
+/* ===============================
+   TEXTO SECUNDARIO (qué mide)
+================================ */
+small {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 8px;
 }
 
-#thermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
-
-.vertical-thermo {
-  width: 30px;
-  height: 220px;
-  background: #111;
-  border-radius: 20px;
-  margin: 30px auto;
-  overflow: hidden;
-}
-
-#monthlyFill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
-}
-
-.symbol {
-  font-size: 3rem;
-  margin: 16px 0;
-  animation: float 2.5s infinite ease-in-out;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
+/* ===============================
+   OCULTAR SECCIONES
+================================ */
+.hidden {
+  display: none;
 }
