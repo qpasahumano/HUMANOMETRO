@@ -4,11 +4,11 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – MUCHO MÁS VISIBLE */
+  /* FONDO BOSQUE – MUY VISIBLE */
   background:
     linear-gradient(
-      rgba(11,18,32,0.30),
-      rgba(11,18,32,0.30)
+      rgba(11,18,32,0.20),
+      rgba(11,18,32,0.20)
     ),
     url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
 
@@ -22,12 +22,12 @@ body {
   margin: 40px auto;
   padding: 24px;
 
-  /* OPACIDAD REDUCIDA AL MÍNIMO SEGURO */
-  background: rgba(11,18,32,0.22);
+  /* OPACIDAD AÚN MÁS BAJA */
+  background: rgba(11,18,32,0.16);
 
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
   border-radius: 22px;
-  box-shadow: 0 0 35px rgba(120,255,230,.25);
+  box-shadow: 0 0 35px rgba(120,255,230,.22);
   text-align: center;
 }
 
@@ -44,7 +44,7 @@ body {
 
 .brand-meta {
   font-size: .7rem;
-  opacity: .9;
+  opacity: .95;
 }
 
 /* TEXTO */
@@ -74,7 +74,7 @@ body {
 
 .legal {
   font-size: .75rem;
-  opacity: .9;
+  opacity: .95;
 }
 
 /* BOTONES */
@@ -97,7 +97,7 @@ button {
 
 /* RESPUESTAS */
 .answers button {
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.97);
   color: #001c14;
 }
 
@@ -105,7 +105,7 @@ button {
 .thermo {
   width: 100%;
   height: 14px;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.28);
   border-radius: 20px;
   margin: 20px 0;
 }
@@ -113,4 +113,36 @@ button {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .4s ease;
+}
+
+/* TERMÓMETRO VERTICAL */
+.vertical-thermo {
+  width: 30px;
+  height: 220px;
+  background: rgba(0,0,0,0.28);
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
+}
+
+/* ÍCONOS */
+.symbol {
+  font-size: 3rem;
+  margin: 16px 0;
+  animation: float 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
