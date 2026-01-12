@@ -1,57 +1,182 @@
-/* ===============================
-   RESET BÁSICO (NO TOCAR)
-================================ */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 /* ===============================
-   FONDO GENERAL (NUEVO)
-   NO altera tipografías ni layout
+   BODY – FONDO BOSQUE (AJUSTE ÚNICO)
 ================================ */
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
-/* Imagen de fondo */
 body {
-  background-image: url("activos/v2/fondo-bosque.jpg");
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+
+  /* Fondo con imagen + capa de lectura */
+  background:
+    linear-gradient(
+      rgba(11,18,32,0.65),
+      rgba(11,18,32,0.65)
+    ),
+    url("assets-b2/fondo-bosque.jpg");
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
 
-/* Capa de suavizado para legibilidad */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35); /* ajusta luz sin romper nada */
-  z-index: -1;
+  color: #eafff9;
+  min-height: 100vh;
 }
 
 /* ===============================
-   CONTENEDOR PRINCIPAL
-   SOLO se vuelve transparente
+   APP CONTENEDOR (NO TOCADO)
 ================================ */
-#app,
-.app,
-.main {
-  background-color: transparent !important;
+#app {
+  max-width: 520px;
+  margin: auto;
+  padding: 24px;
+  background: rgba(11,18,32,0.88);
+  border-radius: 18px;
+  box-shadow: 0 0 35px rgba(120,255,230,0.25);
+  text-align: center;
 }
 
 /* ===============================
-   TODO LO DEMÁS QUEDA IGUAL
-   (botones, textos, animaciones)
+   UTILIDADES
 ================================ */
+.hidden {
+  display: none;
+}
 
-/* EJEMPLO: si ya existían, NO se modifican */
+/* ===============================
+   BRAND
+================================ */
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: 2.2rem;
+  letter-spacing: 0.08em;
+  color: #b9fff2;
+  text-shadow:
+    0 0 6px rgba(120,255,230,0.9),
+    0 0 18px rgba(120,255,230,0.6);
+}
+
+.brand-meta {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+/* ===============================
+   TEXTOS
+================================ */
+.intro {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.legal {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+/* ===============================
+   TÍTULOS NEÓN
+================================ */
+.neon-title {
+  color: #9fffe0;
+  text-shadow:
+    0 0 6px rgba(120,255,230,0.8),
+    0 0 16px rgba(120,255,230,0.6);
+  animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: 0.85; }
+  to   { opacity: 1; }
+}
+
+/* ===============================
+   BOTONES
+================================ */
 button {
-  border-radius: 999px;
+  width: 90%;
+  max-width: 340px;
+  margin: 14px auto;
+  padding: 14px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
 }
 
-/* FIN */
+.primary {
+  background: linear-gradient(45deg, #2ecc71, #6affd3);
+  box-shadow: 0 0 18px rgba(46,204,113,0.9);
+  color: #001c14;
+}
+
+.answers button {
+  background: #3498db;
+  color: #ffffff;
+}
+
+/* ===============================
+   TERMÓMETRO HORIZONTAL
+================================ */
+.thermo {
+  width: 100%;
+  height: 14px;
+  background: #111;
+  border-radius: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  transition: width 0.4s ease;
+}
+
+/* ===============================
+   TERMÓMETRO VERTICAL MENSUAL
+================================ */
+.vertical-thermo {
+  width: 30px;
+  height: 220px;
+  background: #111;
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(
+    #e74c3c,
+    #f1c40f,
+    #2ecc71
+  );
+  transition: height 3s ease;
+}
+
+/* ===============================
+   SÍMBOLOS / ANIMALES
+================================ */
+.symbol {
+  font-size: 3rem;
+  margin: 16px 0;
+  animation: float 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+   }
