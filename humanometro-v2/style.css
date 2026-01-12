@@ -5,7 +5,6 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE NÍTIDO */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -17,36 +16,28 @@ body {
 }
 
 /* ===== OVERLAY GLOBAL ===== */
-/* Más bajo que v.1 → deja ver más la imagen */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(
-      circle at top,
+    radial-gradient(circle at top,
       rgba(160,255,235,0.14),
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at bottom,
+      transparent 45%),
+    radial-gradient(circle at bottom,
       rgba(120,180,255,0.14),
-      transparent 55%
-    ),
-    rgba(0,0,0,0.24); /* ⬅ más bajo que v.1 */
+      transparent 55%),
+    rgba(0,0,0,0.24);
   pointer-events: none;
   z-index: -1;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* ===== CONTENEDOR ===== */
 #app {
   max-width: 520px;
   margin: 40px auto;
   padding: 26px;
-
-  /* LÁMINA v.1 + 1 nivel */
   background: rgba(11,18,32,0.38);
-
   border-radius: 22px;
   box-shadow:
     0 0 28px rgba(0,0,0,.45),
@@ -103,7 +94,7 @@ body::before {
   opacity: .9;
 }
 
-/* ===== BOTONES (RESTAURADOS) ===== */
+/* ===== BOTONES ===== */
 button {
   width: 90%;
   max-width: 340px;
@@ -121,17 +112,70 @@ button {
   color: #001c14;
 }
 
-/*
-/* ===== LECTURA MENSUAL COMPLETA ===== */
+/* =========================
+   TERMÓMETRO HORIZONTAL (VIVO)
+========================= */
+.thermo {
+  width: 100%;
+  height: 14px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+#thermoFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .45s ease;
+}
+
+/* =========================
+   TERMÓMETRO VERTICAL (VIVO)
+========================= */
+.vertical-thermo {
+  width: 32px;
+  height: 230px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
+}
+
+/* =========================
+   EMOTICONES ANIMADOS
+========================= */
+.symbol {
+  font-size: 3.2rem;
+  margin: 18px 0;
+  animation: float 2.6s infinite ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(120,255,230,.6));
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* =========================
+   LECTURA MENSUAL COMPLETA
+========================= */
 .monthly-scroll {
   max-height: 60vh;
   overflow-y: auto;
   padding: 18px;
   margin: 20px 0;
-
   background: rgba(11,18,32,0.45);
   border-radius: 16px;
-
   box-shadow:
     inset 0 0 18px rgba(0,0,0,.6),
     0 0 25px rgba(120,255,230,.12);
@@ -141,4 +185,4 @@ button {
   font-size: .95rem;
   line-height: 1.6;
   text-align: left;
-    }
+}
