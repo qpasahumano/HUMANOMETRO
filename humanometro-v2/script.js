@@ -1,102 +1,149 @@
 const WEEKS = [
   {
-    title: "Vos ante el mundo",
+    title: "Semana 1 · Vos ante el mundo",
     questions: [
-      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
-      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
-      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
-      ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
+      ["¿Te afecta el dolor ajeno?", "Mide empatía global."],
+      ["¿Te entristecen las guerras?", "Mide sensibilidad humana."],
+      ["¿Sentís responsabilidad colectiva?", "Mide conciencia social."],
+      ["¿Te importa lo que pasa lejos?", "Mide humanidad expandida."]
     ]
   },
   {
-    title: "Vos y la tecnología",
+    title: "Semana 2 · Vos y la tecnología",
     questions: [
-      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
-      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
-      ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
-      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
+      ["¿Podés soltar el celular cuando estás con otros?", "Mide presencia real."],
+      ["¿La pantalla te absorbe emocionalmente?", "Mide dependencia digital."],
+      ["¿Escuchás sin mirar el teléfono?", "Mide atención humana."],
+      ["¿Elegís contacto real cuando podés?", "Mide prioridad humana."]
     ]
   },
   {
-    title: "Integración humana",
+    title: "Semana 3 · Vínculos cotidianos",
     questions: [
-      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
-      ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
+      ["¿Escuchás sin interrumpir?", "Mide respeto."],
+      ["¿Respondés con empatía?", "Mide conciencia emocional."],
+      ["¿Cuidás el vínculo aun en conflicto?", "Mide intención afectiva."],
+      ["¿Evitás reaccionar impulsivamente?", "Mide autorregulación."]
+    ]
+  },
+  {
+    title: "Semana 4 · Integración humana",
+    questions: [
+      ["¿Sentís coherencia interna?", "Mide alineación."],
+      ["¿Te observás sin juzgarte?", "Mide conciencia."],
       ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
-      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
+      ["¿Percibís evolución humana?", "Mide integración."]
     ]
   }
 ];
 
-let week = 0, q = 0, scores = [], current = [];
+let week = 0;
+let q = 0;
+let score = 0;
+let monthlyScores = [];
 
 function startV2() {
+  week = 0;
   q = 0;
-  current = [];
-  show("week");
+  score = 0;
+  monthlyScores = [];
+  show("weekly");
   loadQuestion();
 }
 
 function loadQuestion() {
-  const data = WEEKS[week].questions[q];
-  document.getElementById("weekTitle").innerText = WEEKS[week].title;
-  document.getElementById("questionText").innerText = data[0];
-  document.getElementById("questionMeasure").innerText = data[1];
+  const w = WEEKS[week];
+  document.getElementById("weekTitle").innerText = w.title;
+  document.getElementById("questionText").innerText = w.questions[q][0];
+  document.getElementById("questionMeasure").innerText = w.questions[q][1];
+  updateThermo();
 }
 
-function answer(v) {
-  current.push(v);
+function answerV2(v) {
+  score += v;
   q++;
-  document.getElementById("thermoFill").style.width = (q / 4) * 100 + "%";
+  updateThermo();
 
-  if (q >= 4) return showWeekly();
-  loadQuestion();
+  if (q >= 4) {
+    showWeeklyResult();
+  } else {
+    loadQuestion();
+  }
 }
 
-function showWeekly() {
-  const avg = current.reduce((a,b)=>a+b,0)/4;
-  scores.push(avg);
+function showWeeklyResult() {
+  show("weeklyResult");
+  const avg = score / 4;
 
-  let animal="🐞", text="", advice="";
+  let text, advice;
 
-  if (avg < .8) { animal="🦇"; text="Humanidad retraída."; advice="Detenerte y observar puede reactivar sensibilidad."; }
-  else if (avg < 1.5) { animal="🐞"; text="Humanidad estable."; advice="Pequeños gestos pueden impulsarte."; }
-  else { animal="🐦"; text="Humanidad en crecimiento."; advice="Sostener esta coherencia fortalece tu camino."; }
+  if (avg < 0.8) {
+    text = "Esta semana mostró desconexión interna.";
+    advice = "Observar sin juzgar es el primer paso.";
+  } else if (avg < 1.5) {
+    text = "Tu humanidad estuvo presente con fluctuaciones.";
+    advice = "Sostener atención consciente puede estabilizarla.";
+  } else {
+    text = "Mostraste coherencia humana esta semana.";
+    advice = "Seguir así fortalece tu equilibrio interno.";
+  }
 
-  document.getElementById("animal").innerText = animal;
   document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
-
-  show("weeklyResult");
 }
 
-function continueFlow() {
-  week++;
+function continueV2() {
+  monthlyScores.push(score / 4);
+  score = 0;
   q = 0;
-  if (week >= WEEKS.length) return showMonthly();
-  startV2();
+  week++;
+
+  if (week >= 4) {
+    showMonthlyResult();
+  } else {
+    show("weekly");
+    loadQuestion();
+  }
 }
 
-function showMonthly() {
+function showMonthlyResult() {
   show("monthlyResult");
-  const avg = scores.reduce((a,b)=>a+b,0)/scores.length;
-  setTimeout(()=> {
-    document.getElementById("monthlyFill").style.height = (avg/2)*100 + "%";
-  }, 500);
 
-  setTimeout(()=> {
-    document.getElementById("monthlyText").innerText =
-      avg < .8 ? "Humanidad dormida." :
-      avg < 1.5 ? "Humanidad estable." :
-      "Humanidad en expansión.";
-    document.getElementById("monthlyAdvice").innerText =
-      "Tomá conciencia de un gesto concreto para elevar tu humanidad.";
-  }, 3500);
+  const avg =
+    monthlyScores.reduce((a, b) => a + b, 0) / monthlyScores.length;
+
+  let symbol, text, advice;
+
+  if (avg < 0.8) {
+    symbol = "🦇";
+    text = "Tu humanidad estuvo retraída este mes.";
+    advice = "Detenerte y observar puede reactivar tu sensibilidad.";
+  } else if (avg < 1.5) {
+    symbol = "🐞";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños actos conscientes pueden impulsarte.";
+  } else {
+    symbol = "🐦";
+    text = "Tu humanidad está en expansión.";
+    advice = "Sostener esta coherencia fortalece tu camino humano.";
+  }
+
+  document.getElementById("monthlySymbol").innerText = symbol;
+  document.getElementById("monthlyText").innerText = text;
+  document.getElementById("monthlyAdvice").innerText = advice;
+}
+
+function updateThermo() {
+  document.getElementById("thermoFill").style.width =
+    (q / 4) * 100 + "%";
 }
 
 function show(id) {
-  ["start","week","weeklyResult","monthlyResult"].forEach(s =>
-    document.getElementById(s).classList.add("hidden")
-  );
+  ["start","weekly","weeklyResult","monthlyResult"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-    }
+}
+
+function restart() {
+  show("start");
+}
