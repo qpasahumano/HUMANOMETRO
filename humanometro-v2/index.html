@@ -2,11 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO v.2</title>
+  <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- FUENTE -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -15,53 +15,66 @@
 <body>
 <main id="app">
 
-  <!-- INICIO V2 -->
-  <section id="v2-start">
+  <!-- INICIO -->
+  <section id="start">
     <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO v.2</span><br>
-      <span class="brand-meta">®</span>
+      <span class="brand-main">HUMANÓMETRO</span><br>
+      <span class="brand-meta">v.2 ®</span>
     </h1>
 
     <p class="intro">
-      Seguimiento mensual de conciencia humana.<br>
-      No mide perfección. Observa procesos.
+      Este volumen continúa tu proceso humano de forma semanal.<br><br>
+      Cada bloque se habilita solo cuando completaste el anterior
+      y pasó el tiempo necesario para integrarlo.<br><br>
+      La humanidad se construye en movimiento.
     </p>
 
-    <button class="primary" onclick="startV2Monthly()">
-      Iniciar seguimiento mensual
-    </button>
+    <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
   </section>
 
-  <!-- TEST MENSUAL -->
-  <section id="v2-monthly" class="hidden">
-    <h2 id="v2-week-title"></h2>
+  <!-- TEST SEMANAL -->
+  <section id="week" class="hidden">
+    <h2 id="weekTitle" class="neon-title"></h2>
 
-    <div id="v2-thermometer">
-      <div id="v2-thermo-fill"></div>
+    <div class="thermo">
+      <div id="thermoFill"></div>
     </div>
 
-    <p id="v2-question"></p>
-    <small id="v2-note"></small>
+    <p id="questionText"></p>
+    <small id="questionNote" class="legal"></small>
 
     <div class="answers">
-      <button onclick="v2Answer(2)">Sí</button>
-      <button onclick="v2Answer(1)">Tal vez</button>
-      <button onclick="v2Answer(0)">No</button>
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
+      <button onclick="answer(0)">No</button>
     </div>
   </section>
 
-  <!-- RESULTADO FINAL -->
-  <section id="v2-result" class="hidden">
-    <div id="v2-symbol" class="symbol"></div>
-    <h3 id="v2-result-text"></h3>
-    <p id="v2-advice" class="legal"></p>
+  <!-- RESULTADO SEMANAL -->
+  <section id="weeklyResult" class="hidden">
+    <h2 class="neon-title">Lectura semanal</h2>
 
-    <button onclick="restart()">Volver</button>
+    <div id="animal" class="animal"></div>
+
+    <p id="weeklyText"></p>
+    <p id="weeklyAdvice" class="legal"></p>
+
+    <button class="primary" onclick="continueFlow()">Continuar</button>
+  </section>
+
+  <!-- RESULTADO MENSUAL -->
+  <section id="monthlyResult" class="hidden">
+    <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
+
+    <div class="vertical-thermo">
+      <div id="monthlyFill"></div>
+    </div>
+
+    <p id="monthlyText"></p>
   </section>
 
 </main>
 
-<!-- 🔴 ÚNICO CAMBIO REAL: defer -->
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 </body>
 </html>
