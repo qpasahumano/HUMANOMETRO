@@ -4,11 +4,11 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – MUY VISIBLE */
+  /* FONDO BOSQUE – MUCHO MÁS VISIBLE */
   background:
     linear-gradient(
-      rgba(11,18,32,0.06),
-      rgba(11,18,32,0.06)
+      rgba(11,18,32,0.30),
+      rgba(11,18,32,0.30)
     ),
     url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
 
@@ -22,12 +22,12 @@ body {
   margin: 40px auto;
   padding: 24px;
 
-  /* OPACIDAD CASI TRANSPARENTE */
-  background: rgba(11,18,32,0.06);
+  /* OPACIDAD REDUCIDA AL MÍNIMO SEGURO */
+  background: rgba(11,18,32,0.22);
 
-  backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(4px);
   border-radius: 22px;
-  box-shadow: 0 0 30px rgba(120,255,230,.15);
+  box-shadow: 0 0 35px rgba(120,255,230,.25);
   text-align: center;
 }
 
@@ -39,14 +39,12 @@ body {
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #b9fff2;
-  text-shadow:
-    0 0 12px rgba(120,255,230,1),
-    0 0 24px rgba(120,255,230,.6);
+  text-shadow: 0 0 10px rgba(120,255,230,.9);
 }
 
 .brand-meta {
   font-size: .7rem;
-  opacity: 1;
+  opacity: .9;
 }
 
 /* TEXTO */
@@ -59,14 +57,12 @@ body {
 /* TÍTULOS */
 .neon-title {
   color: #9fffe0;
-  text-shadow:
-    0 0 10px rgba(120,255,230,1),
-    0 0 22px rgba(120,255,230,.6);
+  text-shadow: 0 0 8px rgba(120,255,230,.9);
   animation: glow 2.5s infinite alternate;
 }
 
 @keyframes glow {
-  from { opacity: .94; }
+  from { opacity: .9; }
   to { opacity: 1; }
 }
 
@@ -78,7 +74,7 @@ body {
 
 .legal {
   font-size: .75rem;
-  opacity: .95;
+  opacity: .9;
 }
 
 /* BOTONES */
@@ -101,7 +97,7 @@ button {
 
 /* RESPUESTAS */
 .answers button {
-  background: rgba(255,255,255,0.96);
+  background: rgba(255,255,255,0.95);
   color: #001c14;
 }
 
@@ -109,7 +105,7 @@ button {
 .thermo {
   width: 100%;
   height: 14px;
-  background: rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.35);
   border-radius: 20px;
   margin: 20px 0;
 }
@@ -125,7 +121,7 @@ button {
 .vertical-thermo {
   width: 30px;
   height: 220px;
-  background: rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.35);
   border-radius: 20px;
   margin: 30px auto;
   overflow: hidden;
