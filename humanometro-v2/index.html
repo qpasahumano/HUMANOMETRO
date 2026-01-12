@@ -60,7 +60,7 @@
   <button class="primary" onclick="nextWeek()">Continuar</button>
 </section>
 
-<!-- RESULTADO MENSUAL -->
+<!-- RESULTADO MENSUAL (VISUAL + TERMÓMETRO) -->
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
@@ -72,23 +72,31 @@
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
-  <!-- BOTÓN NUEVO (NO ROMPE NADA) -->
+  <!-- ✅ BOTÓN NUEVO CORRECTO -->
   <button class="primary" onclick="openMonthlyFull()">
     Ver lectura mensual completa
   </button>
-
-  <button onclick="restart()">Volver</button>
 </section>
 
-<!-- LECTURA MENSUAL COMPLETA -->
+<!-- LECTURA MENSUAL COMPLETA (SCROLL) -->
 <section id="monthlyFull" class="hidden">
   <h2 class="neon-title">Lectura mensual completa</h2>
 
   <div class="monthly-scroll">
-    <p id="monthlyFullText"></p>
+    <p id="monthlyFullText">
+      <!-- Este texto se completa dinámicamente desde JS
+           en base a las 4 semanas respondidas -->
+    </p>
   </div>
 
-  <button class="primary" onclick="closeMonthlyFull()">Volver</button>
+  <p class="legal" style="margin-top:16px;">
+    La humanidad no es un estado fijo.<br>
+    Si sentís que tu proceso continúa, podés volver a medirlo
+    en otro momento del camino.
+  </p>
+
+  <!-- ÚLTIMO BOTÓN DE TODA LA APP -->
+  <button class="primary" onclick="restart()">Volver</button>
 </section>
 
 </main>
