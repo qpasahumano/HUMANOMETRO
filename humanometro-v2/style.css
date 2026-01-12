@@ -4,130 +4,60 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* ✅ FONDO DIRECTO, SIN FILTROS */
+  /* FONDO NÍTIDO */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
 
-  /* ❌ NADA DE FILTER */
   filter: none;
-
-  color: #eafff9;
+  color: #f0fffb;
 }
 
 /* CONTENEDOR */
 #app {
   max-width: 520px;
   margin: 40px auto;
-  padding: 24px;
+  padding: 26px;
 
-  /* ✅ TRANSPARENCIA REAL, SIN BLUR */
-  background: rgba(11,18,32,0.25);
+  /* un poco menos opaco para que respire el fondo */
+  background: rgba(11,18,32,0.22);
 
-  /* ❌ ELIMINADO COMPLETAMENTE */
   backdrop-filter: none;
-
   border-radius: 22px;
-  box-shadow: 0 0 30px rgba(0,0,0,.45);
+  box-shadow: 0 0 40px rgba(0,0,0,.45);
   text-align: center;
 }
 
 .hidden { display: none; }
 
-/* MARCA */
+/* ===== MARCA ===== */
 .brand-main {
   font-family: "Mystery Quest", cursive;
-  font-size: 2.4rem;
-  letter-spacing: .08em;
-  color: #b9fff2;
+  font-size: 2.5rem;
+  letter-spacing: .1em;
+  color: #cffff3;
 
-  /* ✅ LEGIBILIDAD SIN OPACAR FONDO */
+  /* LED real */
   text-shadow:
-    0 0 6px rgba(0,0,0,.9),
-    0 0 14px rgba(120,255,230,.6);
+    0 0 4px rgba(180,255,240,.9),
+    0 0 10px rgba(120,255,230,.8),
+    0 0 18px rgba(120,255,230,.6),
+    0 0 28px rgba(0,0,0,.9);
 }
 
 .brand-meta {
   font-size: .7rem;
-  opacity: 1;
-}
-
-/* TEXTOS */
-.intro,
-.question,
-.legal {
+  opacity: .9;
   text-shadow: 0 0 6px rgba(0,0,0,.9);
 }
 
-/* TÍTULOS */
-.neon-title {
-  color: #9fffe0;
-  text-shadow:
-    0 0 6px rgba(0,0,0,.9),
-    0 0 16px rgba(120,255,230,.7);
-  animation: glow 2.5s infinite alternate;
-}
+/* ===== TEXTOS GENERALES ===== */
+.intro,
+.question,
+.legal,
+p {
+  color: #f4fffc;
 
-@keyframes glow {
-  from { opacity: .95; }
-  to { opacity: 1; }
-}
-
-/* BOTONES */
-button {
-  width: 90%;
-  max-width: 340px;
-  margin: 14px auto;
-  padding: 14px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-}
-
-.primary {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
-  color: #001c14;
-}
-
-.answers button {
-  background: rgba(255,255,255,0.98);
-  color: #001c14;
-}
-
-/* TERMÓMETROS */
-.thermo,
-.vertical-thermo {
-  background: rgba(0,0,0,0.3);
-  border-radius: 20px;
-}
-
-#thermoFill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .4s ease;
-}
-
-#monthlyFill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
-  transition: height 3s ease;
-}
-
-/* ÍCONOS */
-.symbol {
-  font-size: 3rem;
-  margin: 16px 0;
-  animation: float 2.5s infinite ease-in-out;
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
+  /* contraste sin tapar imagen */
