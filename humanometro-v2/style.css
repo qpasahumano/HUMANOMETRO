@@ -148,3 +148,19 @@ button {
   50% { transform: translateY(-6px); }
   100% { transform: translateY(0); }
   }
+/* ===== FONDO BOSQUE v2 – SOLO ESTÉTICA ===== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("activos/v2/fondo-bosque.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(1.15) saturate(1.05);
+  opacity: 0.28; /* controla qué tanto se ve el bosque */
+  z-index: -1;
+}
+
+/* ========================================== */
