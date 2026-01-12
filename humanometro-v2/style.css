@@ -1,10 +1,11 @@
 * { box-sizing: border-box; }
 
+/* ===== BODY + FONDO ===== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – NÍTIDO */
+  /* FONDO BOSQUE NÍTIDO */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -15,30 +16,35 @@ body {
   position: relative;
 }
 
-/* OVERLAY GLOBAL – MISMA LÓGICA v.1, UN NIVEL MÁS */
+/* ===== OVERLAY GLOBAL ===== */
+/* Más bajo que v.1 → deja ver más la imagen */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top,
+    radial-gradient(
+      circle at top,
       rgba(160,255,235,0.14),
-      transparent 45%),
-    radial-gradient(circle at bottom,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom,
       rgba(120,180,255,0.14),
-      transparent 55%),
-    rgba(0,0,0,0.22); /* ← v.1 tenía ~0.30 */
+      transparent 55%
+    ),
+    rgba(0,0,0,0.24); /* ⬅ más bajo que v.1 */
   pointer-events: none;
   z-index: -1;
 }
 
-/* CONTENEDOR */
+/* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
   margin: 40px auto;
   padding: 26px;
 
-  /* CLAVE: referencia v.1 + 1 nivel */
+  /* LÁMINA v.1 + 1 nivel */
   background: rgba(11,18,32,0.38);
 
   border-radius: 22px;
@@ -56,8 +62,6 @@ body::before {
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #eafff8;
-
-  /* LED limpio, estilo v.1 */
   text-shadow:
     0 0 3px rgba(200,255,245,.8),
     0 0 8px rgba(120,255,230,.6),
@@ -67,4 +71,54 @@ body::before {
 .brand-meta {
   font-size: .7rem;
   opacity: .9;
-  text-shadow
+}
+
+/* ===== TEXTOS ===== */
+.intro {
+  font-size: .95rem;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+/* ===== TÍTULOS ===== */
+.neon-title {
+  color: #9fffe0;
+  text-shadow: 0 0 8px rgba(120,255,230,.9);
+  animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { opacity: .9; }
+  to { opacity: 1; }
+}
+
+/* ===== PREGUNTAS ===== */
+.question {
+  font-size: 1.05rem;
+  margin-top: 20px;
+}
+
+.legal {
+  font-size: .75rem;
+  opacity: .9;
+}
+
+/* ===== BOTONES (RESTAURADOS) ===== */
+button {
+  width: 90%;
+  max-width: 340px;
+  margin: 14px auto;
+  padding: 14px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.primary {
+  background: linear-gradient(45deg,#2ecc71,#6affd3);
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
+  color: #001c14;
+}
+
+/*
