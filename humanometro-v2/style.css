@@ -4,11 +4,11 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE – MUY PROTAGONISTA */
+  /* FONDO BOSQUE – MUY VISIBLE */
   background:
     linear-gradient(
-      rgba(11,18,32,0.12),
-      rgba(11,18,32,0.12)
+      rgba(11,18,32,0.06),
+      rgba(11,18,32,0.06)
     ),
     url("activos/v2/fondo-bosque.jpg") no-repeat center center fixed;
 
@@ -22,12 +22,12 @@ body {
   margin: 40px auto;
   padding: 24px;
 
-  /* OPACIDAD MUY BAJA */
-  background: rgba(11,18,32,0.10);
+  /* OPACIDAD CASI TRANSPARENTE */
+  background: rgba(11,18,32,0.06);
 
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(1.5px);
   border-radius: 22px;
-  box-shadow: 0 0 35px rgba(120,255,230,.18);
+  box-shadow: 0 0 30px rgba(120,255,230,.15);
   text-align: center;
 }
 
@@ -39,7 +39,9 @@ body {
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #b9fff2;
-  text-shadow: 0 0 10px rgba(120,255,230,.95);
+  text-shadow:
+    0 0 12px rgba(120,255,230,1),
+    0 0 24px rgba(120,255,230,.6);
 }
 
 .brand-meta {
@@ -57,12 +59,14 @@ body {
 /* TÍTULOS */
 .neon-title {
   color: #9fffe0;
-  text-shadow: 0 0 10px rgba(120,255,230,1);
+  text-shadow:
+    0 0 10px rgba(120,255,230,1),
+    0 0 22px rgba(120,255,230,.6);
   animation: glow 2.5s infinite alternate;
 }
 
 @keyframes glow {
-  from { opacity: .92; }
+  from { opacity: .94; }
   to { opacity: 1; }
 }
 
@@ -97,7 +101,7 @@ button {
 
 /* RESPUESTAS */
 .answers button {
-  background: rgba(255,255,255,0.98);
+  background: rgba(255,255,255,0.96);
   color: #001c14;
 }
 
@@ -105,7 +109,7 @@ button {
 .thermo {
   width: 100%;
   height: 14px;
-  background: rgba(0,0,0,0.22);
+  background: rgba(0,0,0,0.18);
   border-radius: 20px;
   margin: 20px 0;
 }
@@ -119,4 +123,30 @@ button {
 
 /* TERMÓMETRO VERTICAL */
 .vertical-thermo {
-  width:
+  width: 30px;
+  height: 220px;
+  background: rgba(0,0,0,0.18);
+  border-radius: 20px;
+  margin: 30px auto;
+  overflow: hidden;
+}
+
+#monthlyFill {
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  transition: height 3s ease;
+}
+
+/* ÍCONOS */
+.symbol {
+  font-size: 3rem;
+  margin: 16px 0;
+  animation: float 2.5s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
