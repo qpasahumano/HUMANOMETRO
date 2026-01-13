@@ -154,4 +154,30 @@ button.premium {
     0 0 25px rgba(255, 200, 80, 1),
     inset 0 0 10px rgba(255,255,255,0.6);
   }
+/* ===== BOTÓN PRINCIPAL HUMANÓMETRO ===== */
+.glow-btn {
+  background: linear-gradient(45deg, #2ecc71, #6affd3);
+  box-shadow: 0 0 18px rgba(46,204,113,.9);
+  transition: all .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,.4), transparent 60%);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.glow-btn:hover::after {
+  opacity: 1;
+}
+
+.glow-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 28px rgba(120,255,230,1);
+                              }
 
