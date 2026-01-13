@@ -1,59 +1,47 @@
-
-/* RESET */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
 }
 
-/* FONDO */
 body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #cfefff, #e9f7ff);
+  color: #0b1220;
   min-height: 100vh;
-  background: url('../assets/HUMANOMETRO_VOLUMEN_3_FONDO_ESPEJO_OFICIAL.png') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
 }
 
-/* CONTENEDOR PRINCIPAL */
-#v3-app {
-  width: 100%;
-  max-width: 420px;
-  padding: 24px;
+#app-v3 {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 32px;
   text-align: center;
 }
 
-/* TÍTULO */
-h1 {
-  font-size: 2rem;
+.brand-main {
+  font-family: "Mystery Quest", cursive;
+  font-size: 2.6rem;
   margin-bottom: 12px;
-  letter-spacing: 1px;
 }
 
-/* SUBTÍTULO */
-p.subtitle {
-  font-size: 1rem;
-  opacity: 0.85;
-  margin-bottom: 32px;
+.subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 24px;
 }
 
-/* BOTÓN PRINCIPAL */
-button.primary {
-  background: #0b3c5d;
-  color: #fff;
+.intro-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.btn-start {
+  padding: 16px 36px;
+  border-radius: 40px;
   border: none;
-  border-radius: 30px;
-  padding: 14px 28px;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(0, 180, 255, 0.6);
-  transition: all 0.3s ease;
-}
-
-button.primary:active {
-  box-shadow: 0 0 24px rgba(0, 180, 255, 1);
-  transform: scale(0.96);
+  background: linear-gradient(45deg, #0a3cff, #4fc3ff);
+  color: white;
+  box-shadow: 0 0 20px rgba(79,195,255,0.6);
 }
