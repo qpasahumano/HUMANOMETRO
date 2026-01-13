@@ -101,8 +101,7 @@ function nextWeek() {
 function showMonthlyResult() {
   show("monthlyResult");
 
-  const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
   setTimeout(() => {
     document.getElementById("monthlyFill").style.height =
@@ -143,107 +142,28 @@ function show(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
-function restart() {
-  show("start");
-}
-
 function openMonthlyFull() {
-  const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  let text = "";
-
-  if (avg < 0.8) {
-    text = `
-Este mes muestra una retracción de tu humanidad consciente.
-No como un error, sino como un mensaje.
-
-Cuando la sensibilidad baja, suele ser señal de cansancio,
-sobrecarga emocional o desconexión con lo que sentís.
-
-Revisar tus tiempos, tus vínculos y tus límites puede ser
-el primer paso para volver a habitarte con más presencia.
-
-La humanidad no se pierde: se apaga cuando no se la cuida.
-`;
-  } else if (avg < 1.5) {
-    text = `
-Tu humanidad se mantuvo activa, aunque de forma irregular.
-Hubo momentos de presencia y otros de automatismo.
-
-Este resultado habla de una conciencia en proceso,
-que aparece cuando la recordás y se diluye cuando
-las exigencias externas toman el mando.
-
-Pequeños actos diarios —escuchar, pausar, sentir—
-pueden estabilizar ese equilibrio interno.
-`;
-  } else {
-    text = `
-Este mes refleja una humanidad integrada y en expansión.
-Tus respuestas muestran coherencia entre lo que sentís,
-pensás y hacés.
-
-No significa perfección, sino alineación.
-Estás habitando tus decisiones con conciencia
-y eso se traduce en impacto humano real.
-
-Sostener esta apertura requiere cuidado,
-porque la sensibilidad también necesita descanso.
-`;
-  }
-
-  text += `
-\n\nEste proceso es consecutivo.
-Para medir tu humanidad de forma real,
-necesitás vivir una semana de experiencias (siete días).
-
-Cuando sientas que algo cambió en vos,
-Humanómetro va a estar acá para volver a medirlo.
-`;
-
-  document.getElementById("monthlyFullText").innerText = text;
   show("monthlyFull");
 }
 
-/* 🔒 FUNCIÓN DEFINITIVA DEL BOTÓN VOLVER */
-function goBack() {
-  show("monthlyResult");
-}
-// ================================
-// BLOQUEO SEMANAL REAL (7 DÍAS)
-// ================================
+/* ===== ESPEJO: BLOQUEO / DESBLOQUEO ===== */
 
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const isDev = new URLSearchParams(window.location.search).has("dev");
 
-function canAccessWeek(targetWeek) {
-  if (targetWeek === 0) return true;
+document.addEventListener("DOMContentLoaded", () => {
+  const mirrorBtn = document.getElementById("mirrorBtn");
+  if (!mirrorBtn) return;
 
-  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
-  if (!lastDone) return false;
-
-  const diff = Date.now() - parseInt(lastDone, 10);
-  return diff >= WEEK_MS;
-}
-
-// Guardar cierre de semana
-const _originalShowWeeklyResult = showWeeklyResult;
-showWeeklyResult = function () {
-  localStorage.setItem("week_" + week + "_done", Date.now().toString());
-  _originalShowWeeklyResult();
-};
-
-// Bloquear avance si no pasaron 7 días
-const _originalNextWeek = nextWeek;
-nextWeek = function () {
-  if (!canAccessWeek(week + 1)) {
-    alert(
-      "Este proceso es consecutivo.\n\n" +
-      "Para medir tu humanidad de forma real,\n" +
-      "necesitás vivir una semana de experiencias (7 días)."
-    );
-    restart();
-    return;
+  if (isDev) {
+    mirrorBtn.disabled = false;
+    mirrorBtn.innerText = "Espejo (DEV)";
+  } else {
+    mirrorBtn.disabled = true;
+    mirrorBtn.innerText = "Espejo (bloqueado)";
   }
-  _originalNextWeek();
-};
+});
+
+function goToMirror() {
+  if (!isDev) return;
+  alert("Acá arranca Volumen 3 – Espejo");
+}
