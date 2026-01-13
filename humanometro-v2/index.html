@@ -23,17 +23,15 @@
   </h1>
 
   <p class="intro">
-    Humanómetro no se recorre de una sola vez.<br><br>
-    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-    Cada bloque se habilita únicamente cuando completaste el anterior
-    y pasó el tiempo necesario para integrarlo.<br><br>
-    La humanidad se construye en movimiento, no en velocidad.
+    Esta es tu primera prueba.<br>
+    A partir de acá comienza una medición humana basada en el tiempo.
   </p>
 
-  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
+  <!-- BOTÓN PRINCIPAL -->
+  <button class="primary" onclick="startV2()">Primer prueba</button>
 </section>
 
-<!-- TEST SEMANAL -->
+<!-- TEST -->
 <section id="test" class="hidden">
   <h2 id="weekTitle" class="neon-title"></h2>
 
@@ -46,33 +44,31 @@
 
   <div class="answers">
     <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">Tal vez / A veces</button>
+    <button onclick="answer(1)">A veces</button>
     <button onclick="answer(0)">No</button>
   </div>
 </section>
 
 <!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Lectura semanal</h2>
+  <h2 class="neon-title">Resultado de esta etapa</h2>
 
   <div id="weeklySymbol" class="symbol"></div>
-
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
 
-  <button class="primary" onclick="nextWeek()">Continuar</button>
+  <button class="primary" onclick="nextWeek()">Semana 1/2</button>
 </section>
 
 <!-- RESULTADO MENSUAL -->
 <section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
+  <h2 class="neon-title">Tu humanidad en movimiento</h2>
 
   <div class="vertical-thermo">
     <div id="monthlyFill"></div>
   </div>
 
   <div id="monthlySymbol" class="symbol"></div>
-
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
@@ -83,19 +79,27 @@
 
 <!-- LECTURA MENSUAL COMPLETA -->
 <section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Lectura mensual completa</h2>
+  <h2 class="neon-title">Lectura final del mes</h2>
 
   <div class="monthly-scroll">
     <p id="monthlyFullText"></p>
   </div>
 
-  <p class="legal" style="margin-top:16px;">
-    Este proceso es consecutivo.<br>
-    Para medir tu humanidad de forma real,
-    necesitás vivir una semana de experiencias (7 días).
+  <!-- MEDICIÓN MENSUAL (SEMANA 1) -->
+  <button
+    class="primary"
+    id="weeklyBtn"
+    onclick="startWeekly()"
+    disabled
+  >
+    Medición mensual
+  </button>
+
+  <p id="weeklyLockText" class="legal">
+    En siete días podrás ingresar a la siguiente semana.
   </p>
 
-  <!-- BOTÓN ESPEJO (bloqueado por lógica JS) -->
+  <!-- ESPEJO -->
   <button
     class="primary"
     id="mirrorBtn"
