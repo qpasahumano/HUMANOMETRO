@@ -1,51 +1,59 @@
+
+/* RESET */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* ===== BODY ===== */
+/* FONDO */
 body {
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #cfefff, #e9f7ff);
-  color: #0b1220;
   min-height: 100vh;
+  background: url('../assets/HUMANOMETRO_VOLUMEN_3_FONDO_ESPEJO_OFICIAL.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
 }
 
-/* ===== CONTENEDOR ===== */
-#app-v3 {
-  max-width: 520px;
-  margin: 40px auto;
-  padding: 32px;
+/* CONTENEDOR PRINCIPAL */
+#v3-app {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
   text-align: center;
 }
 
-/* ===== TÍTULOS ===== */
-.brand-main {
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.4rem;
-  margin-bottom: 10px;
+/* TÍTULO */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 24px;
-  opacity: 0.85;
-}
-
-/* ===== TEXTO ===== */
-.intro-text {
+/* SUBTÍTULO */
+p.subtitle {
   font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 40px;
+  opacity: 0.85;
+  margin-bottom: 32px;
 }
 
-/* ===== BOTÓN ESPEJO ===== */
-.btn-start {
-  padding: 16px 32px;
-  border-radius: 40px;
+/* BOTÓN PRINCIPAL */
+button.primary {
+  background: #0b3c5d;
+  color: #fff;
   border: none;
+  border-radius: 30px;
+  padding: 14px 28px;
   font-size: 1rem;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 180, 255, 0.6);
+  transition: all 0.3s ease;
+}
 
-  background: linear-gradient(45deg, #0a
+button.primary:active {
+  box-shadow: 0 0 24px rgba(0, 180, 255, 1);
+  transform: scale(0.96);
+}
