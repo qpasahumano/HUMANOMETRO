@@ -212,3 +212,42 @@ sino por cómo las vivencias impactan en vos.
   document.getElementById("monthlyFullText").innerText = text;
   show("monthlyFull");
     }
+/* ===== BLOQUEO CONTEO SEMANAL (7 DÍAS) ===== */
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const isDev = new URLSearchParams(window.location.search).has("dev");
+
+function saveMainTestCompletion() {
+  localStorage.setItem("humanometro_main_done_at", Date.now());
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const weeklyBtn = document.getElementById("weeklyBtn");
+  const lockText = document.getElementById("weeklyLockText");
+
+  if (!weeklyBtn) return;
+
+  if (isDev) {
+    weeklyBtn.disabled = false;
+    if (lockText) lockText.classList.add("hidden");
+    return;
+  }
+
+  const doneAt = localStorage.getItem("humanometro_main_done_at");
+
+  if (!doneAt) {
+    weeklyBtn.disabled = true;
+    if (lockText) lockText.classList.remove("hidden");
+    return;
+  }
+
+  const elapsed = Date.now() - Number(doneAt);
+
+  if (elapsed >= WEEK_MS) {
+    weeklyBtn.disabled = false;
+    if (lockText) lockText.classList.add("hidden");
+  } else {
+    weeklyBtn.disabled = true;
+    if (lockText) lockText.classList.remove("hidden");
+  }
+});
