@@ -167,3 +167,48 @@ function goToMirror() {
   if (!isDev) return;
   alert("Acá arranca Volumen 3 – Espejo");
 }
+function openMonthlyFull() {
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+
+  let text = "";
+
+  if (avg < 0.8) {
+    text = `
+Este mes muestra una retracción de tu humanidad consciente.
+No como un error, sino como un mensaje.
+
+Cuando la sensibilidad baja, suele ser señal de cansancio,
+sobrecarga emocional o desconexión con lo que sentís.
+
+La humanidad no se pierde: se apaga cuando no se la cuida.
+`;
+  } else if (avg < 1.5) {
+    text = `
+Tu humanidad se mantuvo activa, aunque de forma irregular.
+Hubo momentos de presencia y otros de automatismo.
+
+Pequeños actos diarios —pausar, escuchar, sentir—
+pueden estabilizar tu equilibrio interno.
+`;
+  } else {
+    text = `
+Este mes refleja una humanidad integrada y en expansión.
+Tus respuestas muestran coherencia entre lo que sentís,
+pensás y hacés.
+
+No es perfección: es alineación.
+Sostener esto requiere cuidado y conciencia.
+`;
+  }
+
+  text += `
+\n\nEsta lectura surge de tu continuidad en Humanómetro.
+No se midieron opiniones, sino reacciones emocionales ante la vida.
+La humanidad no se evalúa por ideas,
+sino por cómo las vivencias impactan en vos.
+`;
+
+  document.getElementById("monthlyFullText").innerText = text;
+  show("monthlyFull");
+    }
