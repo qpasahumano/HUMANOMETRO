@@ -5,13 +5,17 @@
   <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
+<!-- INICIO -->
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
@@ -19,18 +23,22 @@
   </h1>
 
   <p class="intro">
-    Este es el inicio de tu medición mensual.<br>
-    La humanidad se observa en el tiempo, no en un instante.
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    Cada bloque se habilita cuando pasó el tiempo necesario para integrarlo.<br><br>
+    La humanidad se construye en movimiento, no en velocidad.
   </p>
 
-  <!-- 🔒 FUNCIÓN ORIGINAL -->
-  <button class="primary" onclick="startV2()">Primer semana</button>
+  <button class="primary" onclick="startV2()">
+    Primera semana
+  </button>
 
-  <p class="legal">
-    En siete días podrás evaluar tu primera semana de experiencias humanas.
+  <p class="legal" style="margin-top:8px;">
+    Dejá pasar siete días de experiencias antes de medir esta etapa.
   </p>
 </section>
 
+<!-- TEST SEMANAL -->
 <section id="test" class="hidden">
   <h2 id="weekTitle" class="neon-title"></h2>
 
@@ -48,21 +56,25 @@
   </div>
 </section>
 
+<!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
   <h2 class="neon-title">Resultado semanal</h2>
 
   <div id="weeklySymbol" class="symbol"></div>
+
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
 
-  <!-- 🔒 SOLO TEXTO CAMBIADO -->
-  <button class="primary" onclick="nextWeek()">Segunda semana</button>
+  <button class="primary" onclick="nextWeek()">
+    Segunda semana
+  </button>
 
-  <p class="legal">
-    Recordá dejar pasar una semana de vivencias antes de continuar.
+  <p class="legal" style="margin-top:8px;">
+    Recordá: Humanómetro se basa en vivencias reales, no en respuestas inmediatas.
   </p>
 </section>
 
+<!-- RESULTADO SEMANA 3 -->
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title">Tercera semana</h2>
 
@@ -76,23 +88,25 @@
   <p id="monthlyAdvice" class="legal"></p>
 
   <button class="primary" onclick="openMonthlyFull()">
-    Ver lectura completa
+    Continuar
   </button>
 </section>
 
+<!-- BLOQUE FINAL / ESPEJO -->
 <section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Cierre de la semana 3</h2>
+  <h2 class="neon-title">Cuarta semana · Espejo</h2>
 
   <div class="monthly-scroll">
     <p id="monthlyFullText"></p>
   </div>
 
-  <p class="legal">
-    La próxima etapa corresponde a la cuarta y última semana:
-    el Espejo humano.
+  <p class="legal" style="margin-top:16px;">
+    Cuarta y última semana de tu medición humana mensual.
   </p>
 
-  <button class="primary" onclick="restart()">Volver</button>
+  <button class="primary" onclick="restart()">
+    Volver
+  </button>
 </section>
 
 </main>
