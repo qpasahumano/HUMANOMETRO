@@ -31,14 +31,14 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <!-- BOTÓN RENOMBRADO -->
-    <button onclick="startTest(false)">Activar Humanómetro</button>
+    <!-- BOTÓN PRINCIPAL RENOMBRADO -->
+    <button class="premium" onclick="startTest(true)">
+      Activar Humanómetro
+    </button>
 
-    <!-- TEXTO NUEVO (solo visual) -->
-    <p class="legal">¿Estás listo para medirte?</p>
-
-    <!-- SE MANTIENE -->
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
+    <p class="legal" style="margin-top:8px;">
+      ¿Estás listo para medirte?
+    </p>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -104,7 +104,6 @@
     <p id="weeklyAdvice" class="legal"></p>
 
     <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
-
     <button class="premium" onclick="goToV2()">Continuar testeo</button>
 
     <p class="legal">
