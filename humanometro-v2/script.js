@@ -148,3 +148,49 @@ function restart() {
 function openMonthlyFull() {
   show("monthlyFull");
 }
+/* ================================
+   🔗 CIERRE VOLUMEN 2 + CONTINUIDAD
+   + DEV MODE (DESBLOQUEO)
+================================ */
+
+// 🔓 MODO DESARROLLADOR (solo para vos)
+const DEV_MODE = true;
+
+// Forzar desbloqueo de semanas si sos dev
+function canAccessWeek(targetWeek) {
+  if (DEV_MODE) return true;
+
+  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
+  if (!lastDone) return false;
+
+  const diff = Date.now() - parseInt(lastDone, 10);
+  return diff >= WEEK_MS;
+}
+
+// Guardar semana completada (no se borra nada previo)
+const __showWeeklyResult = showWeeklyResult;
+showWeeklyResult = function () {
+  localStorage.setItem("week_" + week + "_done", Date.now().toString());
+  __showWeeklyResult();
+};
+
+// Continuar correctamente después de la devolución
+const __nextWeek = nextWeek;
+nextWeek = function () {
+  if (!canAccessWeek(week + 1)) {
+    alert(
+      "Este proceso es semanal.\n" +
+      "Viví una semana de experiencias antes de continuar."
+    );
+    return;
+  }
+
+  __nextWeek();
+
+  // Si terminó Volumen 2 → mostrar devolución completa
+  if (week >= WEEKS.length) {
+    setTimeout(() => {
+      openMonthlyFull();
+    }, 600);
+  }
+};
