@@ -198,3 +198,30 @@ function canAccessWeek(targetWeek) {
 
   return Date.now() - parseInt(lastDone, 10) >= WEEK_MS;
 }
+// ================================
+// 🔓 DESBLOQUEO TOTAL FORZADO (DEV)
+// ================================
+
+// 1️⃣ Limpia cualquier bloqueo previo
+Object.keys(localStorage).forEach(k => {
+  if (k.startsWith("week_")) localStorage.removeItem(k);
+});
+
+// 2️⃣ Fuerza acceso a todas las semanas
+function canAccessWeek() {
+  return true;
+}
+
+// 3️⃣ Sobrescribe nextWeek para que NUNCA bloquee
+nextWeek = function () {
+  week++;
+  q = 0;
+  currentScore = 0;
+
+  if (week >= WEEKS.length) {
+    showMonthlyResult();
+  } else {
+    show("test");
+    loadQuestion();
+  }
+};
