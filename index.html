@@ -5,126 +5,65 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1220">
 
-  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INICIO -->
-  <section id="start">
-    <h1 class="brand">
-      <span class="brand-main">HUMANÓMETRO</span><br>
-      <span class="brand-meta">v.1 ®</span>
-    </h1>
+<!-- INICIO -->
+<section id="start">
+  <h1 class="brand">
+    <span class="brand-main">HUMANÓMETRO</span><br>
+    <span class="brand-meta">v.1 ®</span>
+  </h1>
 
-    <p class="intro">
-      Esta herramienta no mide perfección ni juicio.<br>
-      Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
-    </p>
+  <p class="intro">
+    Esta herramienta no mide perfección ni juicio.<br>
+    Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
+  </p>
 
-    <!-- CHECKLIST 1 -->
-    <button class="premium" onclick="startTest(true)">
-      Humanómetro – comenzá a medirte
-    </button>
+  <!-- CHECKLIST 1 -->
+  <button class="premium" onclick="startTest(true)">
+    Activar Humanómetro
+  </button>
 
-    <p class="legal">
-      ¿Estás listo para medirte?
-    </p>
+  <p class="legal">¿Estás listo para medirte?</p>
 
-    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-  </section>
+  <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+</section>
 
-  <!-- TEST -->
-  <section id="test" class="hidden">
-    <h2 id="areaTitle"></h2>
+<!-- TEST -->
+<section id="test" class="hidden">
+  <h2 id="areaTitle"></h2>
 
-    <div id="thermometer">
-      <div id="thermoFill"></div>
-    </div>
+  <div id="thermometer">
+    <div id="thermoFill"></div>
+  </div>
 
-    <p id="questionText"></p>
-    <small id="questionNote" class="legal"></small>
+  <p id="questionText"></p>
+  <small id="questionNote" class="legal"></small>
 
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">Tal vez / A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
+  <div class="answers">
+    <button onclick="answer(2)">Sí</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
+    <button onclick="answer(0)">No</button>
+  </div>
+</section>
 
-  <!-- RESULTADOS -->
-  <section id="results" class="hidden">
-    <h2>Resultado Humanómetro</h2>
+<!-- RESULTADOS -->
+<section id="results" class="hidden">
+  <h2>Resultado Humanómetro</h2>
 
-    <div id="circles"></div>
-    <h3 id="globalResult"></h3>
+  <div id="circles"></div>
+  <h3 id="globalResult"></h3>
 
-    <h3>Lectura humana</h3>
-    <ul id="tips"></ul>
+  <h3>Lectura humana</h3>
+  <ul id="tips"></ul>
 
-    <!-- CHECKLIST 2 -->
-    <div id="weeklyAccess">
-      <button class="premium" onclick="startWeekly()">
-        Semana 1
-      </button>
-
-      <p class="legal">
-        Finalizaste tu primer test.<br>
-        Ahora necesitás vivir una semana de experiencias reales.<br>
-        En 7 días podrás evaluar tu primera semana de humanidad.
-      </p>
-    </div>
-
-    <button onclick="restart()">Reiniciar</button>
-  </section>
-
-  <!-- CONTEO SEMANAL – PREGUNTAS -->
-  <section id="weekly" class="hidden">
-    <h2 id="weeklyTitle">Semana 1 – Conciencia humana</h2>
-
-    <p class="weekly-intro">
-      ¿Cómo fue tu semana?<br>
-      Respondé con sinceridad para observar tu humanidad en movimiento.
-    </p>
-
-    <div id="weeklyThermometer" class="weekly-thermo">
-      <div id="weeklyThermoFill"></div>
-    </div>
-
-    <p id="weeklyQuestion"></p>
-
-    <div class="answers">
-      <button onclick="weeklyAnswer(2)">Sí</button>
-      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-      <button onclick="weeklyAnswer(0)">No</button>
-    </div>
-  </section>
-
-  <!-- CONTEO SEMANAL – RESULTADO -->
-  <section id="weeklyResultScreen" class="hidden">
-    <p id="weeklyText"></p>
-    <p id="weeklyAdvice" class="legal"></p>
-
-    <p class="legal">
-      Tu registro se guarda automáticamente en este dispositivo.
-    </p>
-
-    <p id="weeklySaved" class="legal hidden">
-      ✔ Análisis guardado localmente.
-    </p>
-
-    <button class="premium" onclick="goToV2()">Continuar proceso</button>
-    <button onclick="restart()">Volver</button>
-  </section>
-
-  <!-- PRIVACIDAD -->
-  <section id
+  <!-- CHECKLIST 2 -->
+  <div id
