@@ -31,7 +31,7 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <!-- CHECKLIST 1 – SE MANTIENE TAL CUAL -->
+    <!-- CHECKLIST 1 -->
     <button onclick="startTest(false)">Versión Común</button>
     <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
@@ -66,14 +66,21 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <div id="weeklyAccess"></div>
+    <!-- CHECKLIST 2 -->
+    <div id="weeklyAccess">
+      <button class="premium" onclick="goToWeekly()">Semana 1</button>
+      <p class="legal">
+        Desde aquí comienza tu medición humana semanal.<br>
+        Dejá pasar 7 días de experiencias antes de evaluar tu primera semana.
+      </p>
+    </div>
 
     <button onclick="restart()">Reiniciar</button>
   </section>
 
   <!-- CONTEO SEMANAL – PREGUNTAS -->
   <section id="weekly" class="hidden">
-    <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
+    <h2 id="weeklyTitle">Semana 1 – Conciencia humana</h2>
 
     <p class="weekly-intro">
       ¿Cómo fue tu semana?<br>
@@ -96,4 +103,37 @@
   <!-- CONTEO SEMANAL – RESULTADO FINAL -->
   <section id="weeklyResultScreen" class="hidden">
     <p id="weeklyText"></p>
-    <p id="weeklyAdvice" class="legal"></p
+    <p id="weeklyAdvice" class="legal"></p>
+
+    <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+
+    <button class="premium" onclick="goToV2()">Continuar testeo</button>
+
+    <p class="legal">
+      Tu registro se guarda de forma local y forma parte de tu evolución humana semanal.
+    </p>
+
+    <p id="weeklySaved" class="legal hidden">
+      ✔ Conteo semanal guardado correctamente.
+    </p>
+
+    <button onclick="restart()">Volver</button>
+  </section>
+
+  <!-- PRIVACIDAD -->
+  <section id="privacy" class="hidden">
+    <h2>Privacidad y uso</h2>
+    <p>
+      Humanómetro no recopila datos personales.<br>
+      Todo ocurre localmente.<br>
+      No es diagnóstico médico ni psicológico.<br>
+      Es una herramienta reflexiva.
+    </p>
+    <button onclick="restart()">Volver</button>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
