@@ -31,14 +31,8 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <!-- BOTÓN PRINCIPAL RENOMBRADO -->
-    <button class="premium" onclick="startTest(true)">
-      Activar Humanómetro
-    </button>
-
-    <p class="legal" style="margin-top:8px;">
-      ¿Estás listo para medirte?
-    </p>
+    <button onclick="startTest(false)">Versión Común</button>
+    <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -104,34 +98,13 @@
     <p id="weeklyAdvice" class="legal"></p>
 
     <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
-    <button class="premium" onclick="goToV2()">Continuar testeo</button>
 
-    <p class="legal">
-      Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
-      para observar tu evolución humana.
-    </p>
+    <!-- 🔁 BOTÓN AJUSTADO -->
+    <button class="premium" onclick="goToV2()">
+      Semana 1
+    </button>
 
-    <p id="weeklySaved" class="legal hidden">
-      ✔ Conteo semanal guardado correctamente.
-    </p>
-
-    <button onclick="restart()">Volver</button>
-  </section>
-
-  <!-- PRIVACIDAD -->
-  <section id="privacy" class="hidden">
-    <h2>Privacidad y uso</h2>
-    <p>
-      Humanómetro no recopila datos personales.<br>
-      Todo ocurre localmente.<br>
-      No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva.
-    </p>
-    <button onclick="restart()">Volver</button>
-  </section>
-
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
+    <!-- 📝 TEXTO ACLARATORIO -->
+    <p class="legal" style="margin-top:10px;">
+      Esta es tu primera semana de medición humana.<br>
+      Viví siete días de experiencias antes de evaluarte nuevamente
