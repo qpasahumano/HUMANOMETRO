@@ -27,60 +27,70 @@ let modules = [];
 let scores = {};
 
 /* ===============================
-   CONTEO SEMANAL
+   TEST PRINCIPAL
 ================================ */
-let weeklyIndex = 0;
-let weeklyScores = [];
-
-const WEEKLY_QUESTIONS = [
-  "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
-  "¿Lograste registrar alguna emoción intensa sin reaccionar automáticamente?",
-  "¿Sentiste coherencia entre lo que pensaste, dijiste e hiciste esta semana?"
+const MODULES_COMMON = [
+  {
+    title: "Vos y el mundo",
+    questions: [
+      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad emocional"],
+      ["¿Te detenés a escuchar cuando alguien habla?", "Presencia humana"],
+      ["¿Sentís empatía ante injusticias?", "Empatía social"]
+    ]
+  }
 ];
 
-function weeklyAnswer(value) {
-  weeklyScores.push(value);
-  weeklyIndex++;
+const MODULES_PREMIUM = [
+  {
+    title: "Conciencia humana",
+    questions: [
+      ["¿Podés observar tus reacciones antes de actuar?", "Autoconciencia"],
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Coherencia interna"],
+      ["¿Asumís tu impacto en otros?", "Responsabilidad"]
+    ]
+  }
+];
 
-  weeklyThermoFill.style.width =
-    (weeklyIndex / WEEKLY_QUESTIONS.length) * 100 + "%";
+function startTest(isPremium) {
+  mode = isPremium ? "premium" : "common";
+  modules = isPremium ? MODULES_PREMIUM : MODULES_COMMON;
+  currentModule = 0;
+  currentQuestion = 0;
+  scores = {};
+  show("test");
+  loadQuestion();
+}
 
-  if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
-    showWeeklyResult();
+function loadQuestion() {
+  const mod = modules[currentModule];
+  areaTitle.innerText = mod.title;
+  questionText.innerText = mod.questions[currentQuestion][0];
+  questionNote.innerText = mod.questions[currentQuestion][1];
+  updateThermo();
+}
+
+function answer(value) {
+  const key = modules[currentModule].title;
+  scores[key] = (scores[key] || 0) + value;
+  currentQuestion++;
+
+  if (currentQuestion >= modules[currentModule].questions.length) {
+    currentModule++;
+    currentQuestion = 0;
+
+    if (currentModule >= modules.length) {
+      showResults();
+    } else {
+      loadQuestion();
+    }
   } else {
-    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+    loadQuestion();
   }
 }
 
-function showWeeklyResult() {
-  document.getElementById("weekly").classList.add("hidden");
-  document.getElementById("weeklyResultScreen").classList.remove("hidden");
-
-  const avg =
-    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
-
-  let text = "";
-  let advice = "";
-
-  if (avg < 0.8) {
-    text = "Esta semana hubo baja conciencia emocional.";
-    advice = "Registrar tus reacciones es el primer paso para transformarlas.";
-  } else if (avg < 1.5) {
-    text = "Tu conciencia emocional fue intermitente.";
-    advice = "Pequeñas pausas pueden ayudarte a sostener presencia.";
-  } else {
-    text = "Mostraste buena coherencia emocional esta semana.";
-    advice = "Sostener esta observación fortalece tu humanidad.";
-  }
-
-  weeklyText.innerText = text;
-  weeklyAdvice.innerText = advice;
+function updateThermo() {
+  thermoFill.style.width =
+    (currentQuestion / modules[currentModule].questions.length) * 100 + "%";
 }
 
-function saveWeekly() {
-  weeklySaved.classList.remove("hidden");
-}
-
-function goToV2() {
-  window.location.href = "v2/index.html";
-}
+/* =================
