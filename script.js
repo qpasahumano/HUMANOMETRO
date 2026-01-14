@@ -1,104 +1,76 @@
 /* ===============================
-   MODO DEV
+   MOTOR DE FLUJO BASE – HUMANÓMETRO
+   (NO contiene preguntas ni textos)
 ================================ */
-const isDev = new URLSearchParams(window.location.search).has("dev");
+
+const SCREENS = [
+  "start",
+  "test",
+  "results",
+  "weekly",
+  "weeklyResultScreen",
+  "privacy"
+];
 
 /* ===============================
-   BLOQUEO SEMANA 1
+   CONTROL DE PANTALLAS
 ================================ */
+
+function show(screenId) {
+  SCREENS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+  });
+
+  const target = document.getElementById(screenId);
+  if (target) target.classList.remove("hidden");
+}
+
+/* ===============================
+   BOTONES DE INICIO
+================================ */
+
+function startTest(isPremium) {
+  window.__HM_MODE__ = isPremium ? "premium" : "common";
+  show("test");
+}
+
+function showPrivacy() {
+  show("privacy");
+}
+
+function restart() {
+  show("start");
+}
+
+/* ===============================
+   BLOQUEO TEMPORAL (BASE)
+================================ */
+
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-function canAccessWeek1() {
-  if (isDev) return true;
-
-  const doneAt = localStorage.getItem("humanometro_init_done");
-  if (!doneAt) return false;
-
-  return (Date.now() - Number(doneAt)) >= WEEK_MS;
+function saveBlockDone(blockName) {
+  localStorage.setItem(
+    "hm_block_" + blockName,
+    Date.now().toString()
+  );
 }
 
-function saveInitialTest() {
-  localStorage.setItem("humanometro_init_done", Date.now());
+function canAccessBlock(blockName, days = 7) {
+  const last = localStorage.getItem("hm_block_" + blockName);
+  if (!last) return false;
+
+  return Date.now() - Number(last) >= days * 24 * 60 * 60 * 1000;
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("week1Btn");
-  const txt = document.getElementById("week1LockText");
-  if (!btn) return;
-
-  if (canAccessWeek1()) {
-    btn.disabled = false;
-    txt.style.display = "none";
-  } else {
-    btn.disabled = true;
-    txt.style.display = "block";
-  }
-});
 
 /* ===============================
-   FLUJO EXISTENTE
-   (NO SE TOCA)
-================================ */
-// startTest(), answer(), restart(), showPrivacy(), etc
-// se mantienen tal como ya funcionan
-
-function goWeekly() {
-  if (!canAccessWeek1()) {
-    alert(
-      "Este proceso es consecutivo.\n\n" +
-      "Humanómetro necesita que vivas una semana real\n" +
-      "antes de evaluar tu Semana 1."
-    );
-    return;
-  }
-  show("weekly");
-}
-/* ===============================
-   CHECKLIST 2 – BLOQUEO SEMANA 1
-   (NO rompe funciones base)
+   UTILIDAD CHECKLIST FUTUROS
 ================================ */
 
-const isDev = new URLSearchParams(window.location.search).has("dev");
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-function canAccessWeek1() {
-  if (isDev) return true;
-
-  const doneAt = localStorage.getItem("humanometro_init_done");
-  if (!doneAt) return false;
-
-  return (Date.now() - Number(doneAt)) >= WEEK_MS;
+function blockedMessage() {
+  alert(
+    "Este proceso es consecutivo.\n\n" +
+    "Humanómetro se mide con tiempo vivido.\n" +
+    "Volvé cuando hayan pasado 7 días."
+  );
 }
-
-function saveInitialTestIfNeeded() {
-  if (!localStorage.getItem("humanometro_init_done")) {
-    localStorage.setItem("humanometro_init_done", Date.now());
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("week1Btn");
-  const txt = document.getElementById("week1LockText");
-  if (!btn || !txt) return;
-
-  if (canAccessWeek1()) {
-    btn.disabled = false;
-    txt.style.display = "none";
-  } else {
-    btn.disabled = true;
-    txt.style.display = "block";
-  }
-});
-
-function goWeekly() {
-  if (!canAccessWeek1()) {
-    alert(
-      "Este proceso es consecutivo.\n\n" +
-      "Necesitás vivir 7 días de experiencias reales\n" +
-      "antes de evaluar tu Semana 1."
-    );
-    return;
-  }
-  show("weekly");
-}
-
