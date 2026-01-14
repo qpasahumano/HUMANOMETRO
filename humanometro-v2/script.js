@@ -77,3 +77,35 @@ function show(id) {
   );
   document.getElementById(id).classList.remove("hidden");
 }
+/* ================================
+   🔓 DESBLOQUEO DESARROLLADOR
+   (NO BORRA NADA – SOLO HABILITA)
+================================ */
+
+// Forzar acceso total a todas las semanas
+window.DEV_MODE = true;
+
+// Override seguro de bloqueo semanal
+if (typeof canAccessWeek === "function") {
+  const _canAccessWeek = canAccessWeek;
+  canAccessWeek = function () {
+    return true;
+  };
+}
+
+// Evitar retorno forzado al inicio
+if (typeof nextWeek === "function") {
+  const _nextWeek = nextWeek;
+  nextWeek = function () {
+    week++;
+    q = 0;
+    currentScore = 0;
+
+    if (week >= WEEKS.length) {
+      showMonthlyResult();
+    } else {
+      show("test");
+      loadQuestion();
+    }
+  };
+}
