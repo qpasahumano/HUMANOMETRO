@@ -1,7 +1,6 @@
 /* ===============================
    CONFIGURACIÓN DESARROLLADOR
 ================================ */
-// 🔓 SOLO PARA VOS – desactivar cuando lances la app
 const DEV_MODE = true;
 
 /* ===============================
@@ -78,66 +77,100 @@ function showWeeklyResult() {
   show("weeklyResult");
 
   const avg = currentScore / 4;
-  let symbol = "🐞", text = "", advice = "";
+  let symbol = "🐞", shortText = "", advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Esta semana mostró una desconexión humana.";
+    shortText = "Esta semana mostró una desconexión humana.";
     advice = "Detenerte y observar puede ayudarte a reconectar.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
+    shortText = "Tu humanidad se mantuvo estable.";
     advice = "Pequeños gestos conscientes pueden impulsarte.";
   } else {
     symbol = "🐦";
-    text = "Tu humanidad está en crecimiento.";
+    shortText = "Tu humanidad está en crecimiento.";
     advice = "Sostener esta coherencia fortalece tu camino.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
-  document.getElementById("weeklyText").innerText = text;
+  document.getElementById("weeklyText").innerText = shortText;
   document.getElementById("weeklyAdvice").innerText = advice;
 
   weeklyScores.push(avg);
   saveWeekProgress();
 }
 
-function nextWeek() {
-  week++;
-  q = 0;
-  currentScore = 0;
-
-  if (week >= WEEKS.length) {
-    showMonthlyResult();
-  } else {
-    show("test");
-    loadQuestion();
-  }
-}
-
 /* ===============================
-   RESULTADO MENSUAL
+   RESULTADO FINAL → DEVOLUCIÓN
 ================================ */
 function showMonthlyResult() {
   show("monthlyResult");
 
   const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
+  // Termómetro
   setTimeout(() => {
     document.getElementById("monthlyFill").style.height =
       Math.round((avg / 2) * 100) + "%";
   }, 500);
+
+  // DEVOLUCIÓN CORTA
+  setTimeout(() => {
+    let shortText = "";
+
+    if (avg < 0.8)
+      shortText = "Tu humanidad mostró una retracción este ciclo.";
+    else if (avg < 1.5)
+      shortText = "Tu humanidad se mantuvo activa con fluctuaciones.";
+    else
+      shortText = "Tu humanidad mostró integración y expansión.";
+
+    document.getElementById("monthlyText").innerText = shortText;
+  }, 1200);
+
+  // DEVOLUCIÓN COMPLETA
+  setTimeout(() => {
+    document.getElementById("monthlyAdvice").innerText = buildFullDevolution(avg);
+  }, 2500);
+}
+
+function buildFullDevolution(avg) {
+  if (avg < 0.8) {
+    return `
+Esta devolución no señala un error, sino un estado.
+Cuando la sensibilidad baja, suele ser señal de cansancio,
+sobrecarga emocional o desconexión con lo que sentís.
+
+Observar sin juzgar es el primer paso para volver a habitarte.
+`;
+  } else if (avg < 1.5) {
+    return `
+Este resultado muestra una humanidad presente,
+aunque con oscilaciones entre conciencia y automatismo.
+
+Pequeños actos cotidianos pueden estabilizar ese equilibrio.
+`;
+  } else {
+    return `
+Esta devolución refleja coherencia entre lo que sentís,
+pensás y hacés.
+
+No habla de perfección, sino de alineación consciente.
+Sostenerla requiere cuidado y descanso.
+`;
+  }
 }
 
 /* ===============================
-   ENGANCHE → VOLUMEN 3 (ESPEJO)
+   ENGANCHE → VOLUMEN 3
 ================================ */
 function goToMirrorV3() {
   window.location.href = "./humanometro-v3/";
 }
 
 /* ===============================
-   BLOQUEO SEMANAL (REAL)
+   BLOQUEO SEMANAL
 ================================ */
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -146,15 +179,14 @@ function saveWeekProgress() {
 }
 
 function canAccessWeek(targetWeek) {
-  if (DEV_MODE) return true; // 🔓 DESBLOQUEO PARA VOS
+  if (DEV_MODE) return true;
 
   if (targetWeek === 0) return true;
 
   const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
   if (!lastDone) return false;
 
-  const diff = Date.now() - parseInt(lastDone, 10);
-  return diff >= WEEK_MS;
+  return Date.now() - parseInt(lastDone, 10) >= WEEK_MS;
 }
 
 /* ===============================
