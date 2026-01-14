@@ -26,11 +26,9 @@
     Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
   </p>
 
-  <button class="premium" onclick="startTest(true)">
-    Activar Humanómetro
-  </button>
-
+  <button class="premium" onclick="startTest(false)">Activar Humanómetro</button>
   <p class="legal">¿Estás listo para medirte?</p>
+
   <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
 </section>
 
@@ -46,7 +44,7 @@
 
   <div class="answers">
     <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">A veces</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
     <button onclick="answer(0)">No</button>
   </div>
 </section>
@@ -60,17 +58,14 @@
   <ul id="tips"></ul>
 
   <div id="weeklyAccess"></div>
-  <button onclick="restart()">Volver</button>
+  <button onclick="restart()">Reiniciar</button>
 </section>
 
 <section id="weekly" class="hidden">
-  <h2>Semana 1 · Conciencia humana</h2>
+  <h2>Semana 1</h2>
+  <p class="weekly-intro">Conteo semanal – Conciencia humana</p>
 
-  <p class="weekly-intro">
-    Viví siete días de experiencias reales antes de responder.
-  </p>
-
-  <div id="weeklyThermometer" class="weekly-thermo">
+  <div id="weeklyThermometer">
     <div id="weeklyThermoFill"></div>
   </div>
 
@@ -78,7 +73,7 @@
 
   <div class="answers">
     <button onclick="weeklyAnswer(2)">Sí</button>
-    <button onclick="weeklyAnswer(1)">A veces</button>
+    <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
     <button onclick="weeklyAnswer(0)">No</button>
   </div>
 </section>
@@ -86,19 +81,16 @@
 <section id="weeklyResultScreen" class="hidden">
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
-
-  <p class="legal">✔ Análisis guardado localmente en tu dispositivo.</p>
-
-  <button class="premium" onclick="goToV2()">Segunda semana</button>
+  <p class="legal">✔ Análisis guardado localmente</p>
   <button onclick="restart()">Volver</button>
 </section>
 
 <section id="privacy" class="hidden">
   <h2>Privacidad y uso</h2>
   <p>
-    Humanómetro no recopila datos personales.<br>
-    Todo se guarda localmente.<br>
-    No es diagnóstico médico ni psicológico.
+    Todo ocurre localmente.<br>
+    No se recopilan datos personales.<br>
+    Herramienta reflexiva, no diagnóstica.
   </p>
   <button onclick="restart()">Volver</button>
 </section>
