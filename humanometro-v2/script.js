@@ -1,3 +1,11 @@
+/* ===============================
+   HUMANÓMETRO – JS VOLUMEN 2
+   FLUJO FINAL CORREGIDO
+================================ */
+
+/* ===============================
+   DATOS
+================================ */
 const WEEKS = [
   {
     title: "Vos ante el mundo",
@@ -28,11 +36,17 @@ const WEEKS = [
   }
 ];
 
+/* ===============================
+   ESTADO
+================================ */
 let week = 0;
 let q = 0;
 let weeklyScores = [];
 let currentScore = 0;
 
+/* ===============================
+   INICIO
+================================ */
 function startV2() {
   week = 0;
   q = 0;
@@ -42,6 +56,9 @@ function startV2() {
   loadQuestion();
 }
 
+/* ===============================
+   PREGUNTAS
+================================ */
 function loadQuestion() {
   const w = WEEKS[week];
   document.getElementById("weekTitle").innerText = w.title;
@@ -59,25 +76,26 @@ function answer(v) {
   else loadQuestion();
 }
 
+/* ===============================
+   RESULTADO SEMANAL
+================================ */
 function showWeeklyResult() {
   show("weeklyResult");
-
   const avg = currentScore / 4;
-  weeklyScores.push(avg);
 
   let symbol = "🐞", text = "", advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Semana con desconexión humana.";
-    advice = "Observar tus reacciones puede ayudarte a reconectar.";
+    text = "Esta semana mostró una desconexión humana.";
+    advice = "Detenerte y observar puede ayudarte a reconectar.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    text = "Humanidad estable esta semana.";
-    advice = "Pequeños gestos conscientes pueden fortalecerla.";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
   } else {
     symbol = "🐦";
-    text = "Humanidad en crecimiento.";
+    text = "Tu humanidad está en crecimiento.";
     advice = "Sostener esta coherencia fortalece tu camino.";
   }
 
@@ -85,58 +103,122 @@ function showWeeklyResult() {
   document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
 
-  localStorage.setItem("week_" + week + "_done", Date.now().toString());
+  weeklyScores.push(avg);
 }
 
+/* ===============================
+   AVANZAR SEMANA
+================================ */
 function nextWeek() {
   week++;
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) {
-    showFinalResult();
-  } else {
+  if (week >= WEEKS.length) showMonthlyResult();
+  else {
     show("test");
     loadQuestion();
   }
 }
 
-function showFinalResult() {
+/* ===============================
+   RESULTADO FINAL – TERMÓMETRO VIVO + DEVOLUCIÓN DIFERIDA
+================================ */
+function showMonthlyResult() {
   show("monthlyResult");
 
   const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  document.getElementById("monthlyFill").style.height =
-    Math.round((avg / 2) * 100) + "%";
+  const fill = document.getElementById("monthlyFill");
+  fill.style.transition = "none";
+  fill.style.height = "0%";
 
-  let text = "", advice = "", symbol = "🐞";
+  setTimeout(() => {
+    fill.style.transition = "height 2.2s linear";
+    fill.style.height = Math.round((avg / 2) * 100) + "%";
+  }, 100);
 
-  if (avg < 0.8) {
-    symbol = "🦇";
-    text = "Tu humanidad estuvo retraída.";
-    advice = "No como error, sino como mensaje.";
-  } else if (avg < 1.5) {
-    symbol = "🐞";
-    text = "Humanidad presente pero inestable.";
-    advice = "La conciencia sostenida puede estabilizarla.";
-  } else {
-    symbol = "🐦";
-    text = "Humanidad integrada y consciente.";
-    advice = "Coherencia entre sentir, pensar y actuar.";
-  }
+  setTimeout(() => {
+    let symbol = "🐞", text = "", advice = "";
 
-  document.getElementById("monthlySymbol").innerText = symbol;
-  document.getElementById("monthlyText").innerText = text;
-  document.getElementById("monthlyAdvice").innerText = advice;
+    if (avg < 0.8) {
+      symbol = "🦇";
+      text = "Se observó una retracción en tu respuesta humana.";
+      advice = "No como error, sino como señal de cansancio o desconexión.";
+    } else if (avg < 1.5) {
+      symbol = "🐞";
+      text = "Tu humanidad se sostuvo, aunque de forma irregular.";
+      advice = "La conciencia aparece cuando la recordás.";
+    } else {
+      symbol = "🐦";
+      text = "Tu humanidad mostró coherencia y presencia.";
+      advice = "Estás habitando tus decisiones con conciencia.";
+    }
+
+    document.getElementById("monthlySymbol").innerText = symbol;
+    document.getElementById("monthlyText").innerText = text;
+    document.getElementById("monthlyAdvice").innerText = advice;
+
+  }, 2600);
 }
 
+/* ===============================
+   DEVOLUCIÓN FINAL (NO “LECTURA MENSUAL”)
+================================ */
+function openMonthlyFull() {
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+
+  let text = "";
+
+  if (avg < 0.8) {
+    text = `
+Esta devolución refleja una baja en la sensibilidad sostenida.
+No como juicio, sino como espejo.
+
+La humanidad no se pierde:
+se apaga cuando no se la cuida.
+`;
+  } else if (avg < 1.5) {
+    text = `
+Esta devolución muestra una humanidad activa,
+aunque intermitente.
+
+La conciencia aparece cuando la traés al presente.
+`;
+  } else {
+    text = `
+Esta devolución refleja coherencia interna
+entre sentir, pensar y actuar.
+
+No es perfección.
+Es presencia.
+`;
+  }
+
+  document.getElementById("monthlyFullText").innerText = text;
+  show("monthlyFull");
+}
+
+/* ===============================
+   ESPEJO (VOLUMEN 3)
+================================ */
+function goToMirror() {
+  window.location.href = "./humanometro-espejo/";
+}
+
+/* ===============================
+   TERMÓMETRO SEMANAL
+================================ */
 function updateThermo() {
   document.getElementById("thermoFill").style.width =
     (q / 4) * 100 + "%";
 }
 
+/* ===============================
+   NAVEGACIÓN
+================================ */
 function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
+  ["start", "test", "weeklyResult", "monthlyResult", "monthlyFull"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
@@ -145,52 +227,36 @@ function restart() {
   show("start");
 }
 
-function openMonthlyFull() {
-  show("monthlyFull");
-}
-/* ================================
-   🔗 CIERRE VOLUMEN 2 + CONTINUIDAD
-   + DEV MODE (DESBLOQUEO)
+/* ===============================
+   BLOQUEO REAL 7 DÍAS
 ================================ */
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-// 🔓 MODO DESARROLLADOR (solo para vos)
-const DEV_MODE = true;
-
-// Forzar desbloqueo de semanas si sos dev
 function canAccessWeek(targetWeek) {
-  if (DEV_MODE) return true;
+  if (targetWeek === 0) return true;
 
   const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
   if (!lastDone) return false;
 
-  const diff = Date.now() - parseInt(lastDone, 10);
-  return diff >= WEEK_MS;
+  return Date.now() - parseInt(lastDone, 10) >= WEEK_MS;
 }
 
-// Guardar semana completada (no se borra nada previo)
-const __showWeeklyResult = showWeeklyResult;
+const _originalShowWeeklyResult = showWeeklyResult;
 showWeeklyResult = function () {
   localStorage.setItem("week_" + week + "_done", Date.now().toString());
-  __showWeeklyResult();
+  _originalShowWeeklyResult();
 };
 
-// Continuar correctamente después de la devolución
-const __nextWeek = nextWeek;
+const _originalNextWeek = nextWeek;
 nextWeek = function () {
   if (!canAccessWeek(week + 1)) {
     alert(
-      "Este proceso es semanal.\n" +
-      "Viví una semana de experiencias antes de continuar."
+      "Este proceso es consecutivo.\n\n" +
+      "Para medir tu humanidad de forma real,\n" +
+      "necesitás vivir una semana de experiencias (7 días)."
     );
+    restart();
     return;
   }
-
-  __nextWeek();
-
-  // Si terminó Volumen 2 → mostrar devolución completa
-  if (week >= WEEKS.length) {
-    setTimeout(() => {
-      openMonthlyFull();
-    }, 600);
-  }
+  _originalNextWeek();
 };
