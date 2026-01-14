@@ -22,17 +22,12 @@
   </h1>
 
   <p class="intro">
-    Esta es una prueba inicial.<br>
-    Activás conscientemente tu medición humana.
+    Esta herramienta no mide perfección ni juicio.<br>
+    Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
   </p>
 
-  <button class="premium" onclick="startTest(true)">
-    Activar Humanómetro
-  </button>
-
-  <p class="legal">
-    ¿Estás listo para medirte?
-  </p>
+  <button onclick="startTest(false)">Versión Común</button>
+  <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
   <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
 </section>
@@ -65,14 +60,15 @@
 
   <div id="weeklyAccess"></div>
 
-  <button onclick="restart()">Volver</button>
+  <button onclick="restart()">Reiniciar</button>
 </section>
 
 <section id="weekly" class="hidden">
-  <h2>Primera semana</h2>
+  <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
 
   <p class="weekly-intro">
-    Esta etapa mide tu primera semana de experiencias reales.
+    ¿Cómo fue tu semana?<br>
+    Respondé con sinceridad para reconocer tu tendencia humana actual.
   </p>
 
   <div id="weeklyThermometer" class="weekly-thermo">
@@ -92,13 +88,17 @@
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
 
+  <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+  <button class="premium" onclick="goToV2()">Continuar testeo</button>
+
   <p class="legal">
-    ✔ Análisis guardado localmente en tu dispositivo.
+    Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+    para observar tu evolución humana.
   </p>
 
-  <button class="premium" onclick="goToV2()">
-    Segunda semana
-  </button>
+  <p id="weeklySaved" class="legal hidden">
+    ✔ Conteo semanal guardado correctamente.
+  </p>
 
   <button onclick="restart()">Volver</button>
 </section>
@@ -107,14 +107,14 @@
   <h2>Privacidad y uso</h2>
   <p>
     Humanómetro no recopila datos personales.<br>
-    Toda la información se guarda localmente en tu dispositivo.<br>
-    Es una herramienta reflexiva, no diagnóstica.
+    Todo ocurre localmente.<br>
+    No es diagnóstico médico ni psicológico.<br>
+    Es una herramienta reflexiva.
   </p>
   <button onclick="restart()">Volver</button>
 </section>
 
 </main>
-
 <script src="script.js"></script>
 </body>
 </html>
