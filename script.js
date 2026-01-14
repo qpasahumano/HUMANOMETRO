@@ -1,122 +1,85 @@
-document.addEventListener("DOMContentLoaded", () => {
+/* ===============================
+   ESTADO GENERAL
+================================ */
+let mode = "common";
+let currentQuestion = 0;
+let score = 0;
 
-  /* ===============================
-     REFERENCIAS DOM
-  ================================ */
-  const areaTitle = document.getElementById("areaTitle");
-  const questionText = document.getElementById("questionText");
-  const questionNote = document.getElementById("questionNote");
-  const thermoFill = document.getElementById("thermoFill");
+/* ===============================
+   INICIO
+================================ */
+function startTest(isPremium) {
+  mode = isPremium ? "premium" : "common";
+  currentQuestion = 0;
+  score = 0;
+  show("test");
+  loadQuestion();
+}
 
-  const circles = document.getElementById("circles");
-  const tips = document.getElementById("tips");
-  const globalResult = document.getElementById("globalResult");
-  const weeklyAccess = document.getElementById("weeklyAccess");
+function restart() {
+  show("start");
+}
 
-  const weeklyQuestion = document.getElementById("weeklyQuestion");
-  const weeklyThermoFill = document.getElementById("weeklyThermoFill");
-  const weeklyText = document.getElementById("weeklyText");
-  const weeklyAdvice = document.getElementById("weeklyAdvice");
-  const weeklySaved = document.getElementById("weeklySaved");
+/* ===============================
+   PREGUNTAS (ejemplo base)
+================================ */
+const QUESTIONS = [
+  "¿Te detenés a escuchar cuando alguien habla?",
+  "¿Sos consciente de tus reacciones?",
+  "¿Podés reconocer tus emociones?"
+];
 
-  /* ===============================
-     VARIABLES
-  ================================ */
-  let mode = "common";
-  let currentModule = 0;
-  let currentQuestion = 0;
-  let modules = [];
-  let scores = {};
+function loadQuestion() {
+  document.getElementById("questionText").innerText =
+    QUESTIONS[currentQuestion] || "";
+}
 
-  /* ===============================
-     DATOS
-  ================================ */
-  const MODULES_COMMON = [{
-    title: "Vos y el mundo",
-    questions: [
-      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad emocional"],
-      ["¿Escuchás cuando alguien habla?", "Presencia humana"],
-      ["¿Sentís empatía ante injusticias?", "Empatía social"]
-    ]
-  }];
+function answer(v) {
+  score += v;
+  currentQuestion++;
 
-  const MODULES_PREMIUM = [{
-    title: "Conciencia humana",
-    questions: [
-      ["¿Observás tus reacciones antes de actuar?", "Autoconciencia"],
-      ["¿Hay coherencia entre lo que pensás y hacés?", "Coherencia"],
-      ["¿Asumís tu impacto en otros?", "Responsabilidad"]
-    ]
-  }];
-
-  /* ===============================
-     TEST PRINCIPAL
-  ================================ */
-  window.startTest = function(isPremium) {
-    mode = isPremium ? "premium" : "common";
-    modules = isPremium ? MODULES_PREMIUM : MODULES_COMMON;
-    currentModule = 0;
-    currentQuestion = 0;
-    scores = {};
-    show("test");
+  if (currentQuestion >= QUESTIONS.length) {
+    finishTest();
+  } else {
     loadQuestion();
-  };
-
-  function loadQuestion() {
-    const mod = modules[currentModule];
-    areaTitle.innerText = mod.title;
-    questionText.innerText = mod.questions[currentQuestion][0];
-    questionNote.innerText = mod.questions[currentQuestion][1];
-    updateThermo();
   }
+}
 
-  window.answer = function(value) {
-    const key = modules[currentModule].title;
-    scores[key] = (scores[key] || 0) + value;
-    currentQuestion++;
+/* ===============================
+   RESULTADO
+================================ */
+function finishTest() {
+  show("results");
+  document.getElementById("globalResult").innerText =
+    "Tu humanidad fue registrada.";
 
-    if (currentQuestion >= modules[currentModule].questions.length) {
-      currentModule++;
-      currentQuestion = 0;
-      if (currentModule >= modules.length) showResults();
-      else loadQuestion();
-    } else {
-      loadQuestion();
-    }
-  };
+  // habilita acceso a conteo semanal
+  localStorage.setItem("humanometro_v1_done", Date.now().toString());
+}
 
-  function updateThermo() {
-    thermoFill.style.width =
-      (currentQuestion / modules[currentModule].questions.length) * 100 + "%";
-  }
+/* ===============================
+   PRIVACIDAD
+================================ */
+function showPrivacy() {
+  show("privacy");
+}
 
-  /* ===============================
-     RESULTADOS
-  ================================ */
-  function showResults() {
-    show("results");
-    circles.innerHTML = "";
-    tips.innerHTML = "";
+/* ===============================
+   UI
+================================ */
+function show(id) {
+  [
+    "start",
+    "test",
+    "results",
+    "weekly",
+    "weeklyResultScreen",
+    "privacy"
+  ].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.add("hidden");
+  });
 
-    Object.keys(scores).forEach(key => {
-      const score = scores[key];
-      const div = document.createElement("div");
-      div.className = "circle " + (score < 2 ? "low" : score < 4 ? "mid" : "high");
-      div.innerText = key;
-      circles.appendChild(div);
-    });
-
-    globalResult.innerText =
-      mode === "premium"
-        ? "Lectura profunda de tu humanidad"
-        : "Lectura inicial de tu humanidad";
-
-    weeklyAccess.innerHTML =
-      mode === "premium"
-        ? `<button class="premium" onclick="startWeekly()">Iniciar conteo semanal</button>`
-        : "";
-  }
-
-  /* ===============================
-     CONTEO SEMANAL
-  ================================ */
+  const target = document.getElementById(id);
+  if (target) target.classList.remove("hidden");
+}
