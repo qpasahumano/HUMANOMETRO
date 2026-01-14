@@ -15,7 +15,6 @@
 <body>
 <main id="app">
 
-<!-- INICIO -->
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
@@ -27,17 +26,15 @@
     Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
   </p>
 
-  <!-- 🔥 SOLO CAMBIO DE TEXTO -->
-  <button class="premium" onclick="startTest(false)">
+  <!-- 🔒 NO SE CAMBIA LA FUNCIÓN -->
+  <button class="premium" onclick="startTest(true)">
     Activar Humanómetro
   </button>
 
   <p class="legal">¿Estás listo para medirte?</p>
-
   <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
 </section>
 
-<!-- TEST -->
 <section id="test" class="hidden">
   <h2 id="areaTitle"></h2>
 
@@ -55,7 +52,6 @@
   </div>
 </section>
 
-<!-- RESULTADOS -->
 <section id="results" class="hidden">
   <h2>Resultado Humanómetro</h2>
 
@@ -67,43 +63,9 @@
 
   <div id="weeklyAccess"></div>
 
-  <button onclick="restart()">Reiniciar</button>
-</section>
-
-<!-- CONTEO SEMANAL -->
-<section id="weekly" class="hidden">
-  <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
-
-  <p class="weekly-intro">
-    ¿Cómo fue tu semana?<br>
-    Respondé con sinceridad para reconocer tu tendencia humana actual.
-  </p>
-
-  <div id="weeklyThermometer" class="weekly-thermo">
-    <div id="weeklyThermoFill"></div>
-  </div>
-
-  <p id="weeklyQuestion"></p>
-
-  <div class="answers">
-    <button onclick="weeklyAnswer(2)">Sí</button>
-    <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-    <button onclick="weeklyAnswer(0)">No</button>
-  </div>
-</section>
-
-<!-- RESULTADO SEMANAL -->
-<section id="weeklyResultScreen" class="hidden">
-  <p id="weeklyText"></p>
-  <p id="weeklyAdvice" class="legal"></p>
-
-  <p class="legal">✔ Análisis guardado localmente en este dispositivo.</p>
-
-  <button class="premium" onclick="goToV2()">Continuar testeo</button>
   <button onclick="restart()">Volver</button>
 </section>
 
-<!-- PRIVACIDAD -->
 <section id="privacy" class="hidden">
   <h2>Privacidad y uso</h2>
   <p>
