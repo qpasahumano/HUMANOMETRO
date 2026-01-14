@@ -5,13 +5,17 @@
   <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
+<!-- INICIO -->
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
@@ -19,66 +23,96 @@
   </h1>
 
   <p class="intro">
-    Este proceso se construye con el tiempo.<br>
-    Cada semana se mide a partir de tus vivencias reales.
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    Cada bloque se habilita únicamente cuando completaste el anterior
+    y pasó el tiempo necesario para integrarlo.<br><br>
+    La humanidad se construye en movimiento, no en velocidad.
   </p>
 
-  <!-- 🔁 RENOMBRE -->
-  <button class="primary" onclick="startV2()">
-    Primera semana
-  </button>
+  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
+</section>
 
-  <p class="legal">
-    Dejá pasar siete días de experiencias antes de evaluarte.
-  </p>
+<!-- TEST -->
+<section id="test" class="hidden">
+  <h2 id="weekTitle" class="neon-title"></h2>
+
+  <div class="thermo">
+    <div id="thermoFill"></div>
+  </div>
+
+  <p id="questionText" class="question"></p>
+  <small id="questionMeasure" class="legal"></small>
+
+  <div class="answers">
+    <button onclick="answer(2)">Sí</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
+    <button onclick="answer(0)">No</button>
+  </div>
 </section>
 
 <!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Resultado de la semana</h2>
+  <h2 class="neon-title">Lectura semanal</h2>
 
   <div id="weeklySymbol" class="symbol"></div>
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
 
-  <!-- 🔁 RENOMBRE -->
-  <button class="primary" onclick="nextWeek()">
-    Segunda semana
-  </button>
-
-  <p class="legal">
-    Humanómetro se mide a partir de tus vivencias.
-    Viví una semana antes de continuar.
-  </p>
+  <button class="primary" onclick="nextWeek()">Continuar</button>
 </section>
 
 <!-- RESULTADO MENSUAL -->
 <section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tercera semana</h2>
+  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
   <div class="vertical-thermo">
     <div id="monthlyFill"></div>
   </div>
 
-  <div id="monthlySymbol"></div>
+  <div id="monthlySymbol" class="symbol"></div>
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
   <button class="primary" onclick="openMonthlyFull()">
-    Ver lectura completa
+    Ver lectura mensual completa
   </button>
 </section>
 
-<!-- ESPEJO -->
+<!-- LECTURA MENSUAL COMPLETA -->
 <section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Espejo</h2>
+  <h2 class="neon-title">Lectura mensual completa</h2>
 
   <div class="monthly-scroll">
     <p id="monthlyFullText"></p>
   </div>
 
-  <p class="legal">
-    Cuarta y última semana de tu medición humana mensual.
+  <!-- DEVOLUCIONES INTRAPERSONALES -->
+  <div class="intrapersonal-block">
+    <h3 class="neon-title">Lectura intrapersonal</h3>
+
+    <p class="legal">
+      Esta lectura no evalúa ideas ni opiniones.<br>
+      Refleja cómo tus vivencias impactaron en vos.
+    </p>
+
+    <ul class="legal">
+      <li>Coherencia entre emoción y acción</li>
+      <li>Presencia en vínculos cercanos</li>
+      <li>Relación con el tiempo y la atención</li>
+      <li>Capacidad de observación sin juicio</li>
+    </ul>
+
+    <p class="legal">
+      La humanidad no se mide por lo que pensás,<br>
+      sino por cómo reaccionás ante la vida.
+    </p>
+  </div>
+
+  <p class="legal" style="margin-top:16px;">
+    Este proceso es consecutivo.<br>
+    Para medir tu humanidad de forma real,
+    necesitás vivir una semana de experiencias (7 días).
   </p>
 
   <button class="primary" onclick="restart()">Volver</button>
