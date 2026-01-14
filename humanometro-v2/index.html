@@ -5,10 +5,7 @@
   <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -23,20 +20,18 @@
   </h1>
 
   <p class="intro">
-    A partir de ahora comienza tu medición humana basada en el tiempo.<br><br>
-    Cada semana requiere experiencias reales para poder medirse.
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    Cada bloque se habilita únicamente cuando completaste el anterior
+    y pasó el tiempo necesario para integrarlo.<br><br>
+    La humanidad se construye en movimiento, no en velocidad.
   </p>
 
-  <button class="primary" onclick="startV2()">
-    Primera semana
-  </button>
-
-  <p class="legal">
-    Debés vivir 7 días de experiencias antes de continuar.
-  </p>
+  <!-- BOTÓN RENOMBRADO -->
+  <button class="primary" onclick="startV2()">Primera semana</button>
 </section>
 
-<!-- TEST SEMANAL -->
+<!-- TEST -->
 <section id="test" class="hidden">
   <h2 id="weekTitle" class="neon-title"></h2>
 
@@ -56,24 +51,14 @@
 
 <!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Resultado de la semana</h2>
+  <h2 class="neon-title">Resultado semanal</h2>
 
   <div id="weeklySymbol" class="symbol"></div>
-
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
 
-  <button class="primary" onclick="nextWeek()">
-    Segunda semana
-  </button>
-
-  <p class="legal">
-    Recordá: Humanómetro mide vivencias reales, no respuestas rápidas.
-  </p>
-
-  <p class="legal">
-    ✔ Análisis guardado localmente en tu dispositivo.
-  </p>
+  <!-- BOTÓN RENOMBRADO -->
+  <button class="primary" onclick="nextWeek()">Segunda semana</button>
 </section>
 
 <!-- RESULTADO MENSUAL -->
@@ -85,7 +70,6 @@
   </div>
 
   <div id="monthlySymbol" class="symbol"></div>
-
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
@@ -94,20 +78,20 @@
   </button>
 </section>
 
-<!-- LECTURA FINAL -->
+<!-- LECTURA COMPLETA -->
 <section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Cuarta y última semana</h2>
+  <h2 class="neon-title">Cierre de la tercera semana</h2>
 
   <div class="monthly-scroll">
     <p id="monthlyFullText"></p>
   </div>
 
   <p class="legal">
-    Esta última etapa corresponde al bloque espejo.<br>
-    Requiere haber integrado todo el mes de experiencias humanas.
+    Cuarta y última semana de tu medición humana mensual.
   </p>
 
-  <button class="primary" onclick="restart()">Volver</button>
+  <!-- ESPEJO (bloque final futuro) -->
+  <button class="primary" onclick="restart()">Espejo</button>
 </section>
 
 </main>
