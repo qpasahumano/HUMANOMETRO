@@ -1,11 +1,3 @@
-/* ================================
-   CONFIG DEV (DESBLOQUEO FORZADO)
-================================ */
-const DEV_FORCE_UNLOCK = true;
-
-/* ================================
-   CONTENIDO SEMANAL
-================================ */
 const WEEKS = [
   {
     title: "Vos ante el mundo",
@@ -41,9 +33,6 @@ let q = 0;
 let weeklyScores = [];
 let currentScore = 0;
 
-/* ================================
-   INICIO
-================================ */
 function startV2() {
   week = 0;
   q = 0;
@@ -53,9 +42,6 @@ function startV2() {
   loadQuestion();
 }
 
-/* ================================
-   PREGUNTAS
-================================ */
 function loadQuestion() {
   const w = WEEKS[week];
   document.getElementById("weekTitle").innerText = w.title;
@@ -73,27 +59,29 @@ function answer(v) {
   else loadQuestion();
 }
 
-/* ================================
-   RESULTADO SEMANAL
-================================ */
 function showWeeklyResult() {
   show("weeklyResult");
-
   const avg = currentScore / 4;
-  let symbol = "🐞", text = "", advice = "";
+
+  let symbol = "🐞";
+  let text = "";
+  let advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Esta semana mostró una desconexión humana.";
-    advice = "Detenerte y observar puede ayudarte a reconectar.";
+    text = "Tu humanidad mostró una retracción consciente.";
+    advice =
+      "No como falla, sino como señal. Cuando la sensibilidad baja, suele ser momento de pausa y revisión interna.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños gestos conscientes pueden impulsarte.";
+    text = "Tu humanidad se mantuvo presente, aunque con fluctuaciones.";
+    advice =
+      "Hubo conciencia en algunos momentos y automatismo en otros. Observar esas variaciones es parte del proceso.";
   } else {
     symbol = "🐦";
-    text = "Tu humanidad está en crecimiento.";
-    advice = "Sostener esta coherencia fortalece tu camino.";
+    text = "Tu humanidad mostró coherencia y expansión.";
+    advice =
+      "Existe alineación entre lo que sentís, pensás y hacés. Sostener esta apertura requiere cuidado y descanso.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
@@ -101,80 +89,64 @@ function showWeeklyResult() {
   document.getElementById("weeklyAdvice").innerText = advice;
 
   weeklyScores.push(avg);
-
-  // marcar semana como hecha (solo referencia)
-  localStorage.setItem("week_" + week + "_done", Date.now().toString());
 }
 
-/* ================================
-   AVANZAR DE SEMANA
-================================ */
 function nextWeek() {
   week++;
   q = 0;
   currentScore = 0;
 
   if (week >= WEEKS.length) {
-    showMonthlyResult();
+    showFinalResult();
   } else {
     show("test");
     loadQuestion();
   }
 }
 
-/* ================================
-   RESULTADO FINAL
-================================ */
-function showMonthlyResult() {
+function showFinalResult() {
   show("monthlyResult");
 
   const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  // termómetro animado
-  const fill = document.getElementById("monthlyFill");
-  fill.style.height = "0%";
-
+  // Termómetro vivo
   setTimeout(() => {
-    fill.style.height = Math.round((avg / 2) * 100) + "%";
-  }, 200);
+    document.getElementById("monthlyFill").style.height =
+      Math.round((avg / 2) * 100) + "%";
+  }, 300);
 
+  // Devolución después de la bajada
   setTimeout(() => {
-    let symbol="🐞", text="", advice="";
+    let text = "";
 
     if (avg < 0.8) {
-      symbol="🦇";
-      text="Tu humanidad estuvo retraída este mes.";
-      advice="Pausar y observar puede reactivar tu sensibilidad.";
+      text =
+        "Este recorrido mostró una desconexión entre intención y acción. No es un error: es información. La conciencia empieza cuando algo se hace visible.";
     } else if (avg < 1.5) {
-      symbol="🐞";
-      text="Tu humanidad se mantuvo estable.";
-      advice="Pequeños cambios conscientes pueden impulsarte.";
+      text =
+        "Tu recorrido mostró presencia humana intermitente. Hubo momentos de claridad y otros de respuesta automática. Reconocerlos abre profundidad.";
     } else {
-      symbol="🐦";
-      text="Tu humanidad está en expansión.";
-      advice="Sostener esta coherencia fortalece tu humanidad.";
+      text =
+        "Este recorrido reflejó coherencia interna. No perfección, sino conciencia activa. La sensibilidad está viva y en movimiento.";
     }
 
-    document.getElementById("monthlySymbol").innerText = symbol;
     document.getElementById("monthlyText").innerText = text;
-    document.getElementById("monthlyAdvice").innerText = advice;
-  }, 1800);
+    document.getElementById("monthlyAdvice").innerHTML = `
+      <button class="primary" onclick="goToMirror()">
+        Verte al espejo
+      </button>
+    `;
+  }, 2500);
 }
 
-/* ================================
-   TERMÓMETRO
-================================ */
 function updateThermo() {
   document.getElementById("thermoFill").style.width =
     (q / 4) * 100 + "%";
 }
 
-/* ================================
-   NAVEGACIÓN
-================================ */
 function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
+  ["start", "test", "weeklyResult", "monthlyResult"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
@@ -183,45 +155,7 @@ function restart() {
   show("start");
 }
 
-/* ================================
-   BLOQUEO SEMANAL
-   (ANULADO EN DEV)
-================================ */
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-function canAccessWeek(targetWeek) {
-  if (DEV_FORCE_UNLOCK) return true;
-
-  if (targetWeek === 0) return true;
-  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
-  if (!lastDone) return false;
-
-  return Date.now() - parseInt(lastDone, 10) >= WEEK_MS;
+function goToMirror() {
+  // Enganche preparado a Volumen 3
+  window.location.href = "./humanometro-v3/";
 }
-// ================================
-// 🔓 DESBLOQUEO TOTAL FORZADO (DEV)
-// ================================
-
-// 1️⃣ Limpia cualquier bloqueo previo
-Object.keys(localStorage).forEach(k => {
-  if (k.startsWith("week_")) localStorage.removeItem(k);
-});
-
-// 2️⃣ Fuerza acceso a todas las semanas
-function canAccessWeek() {
-  return true;
-}
-
-// 3️⃣ Sobrescribe nextWeek para que NUNCA bloquee
-nextWeek = function () {
-  week++;
-  q = 0;
-  currentScore = 0;
-
-  if (week >= WEEKS.length) {
-    showMonthlyResult();
-  } else {
-    show("test");
-    loadQuestion();
-  }
-};
