@@ -32,8 +32,13 @@
     </p>
 
     <!-- CHECKLIST 1 -->
-    <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
+    <button class="premium" onclick="startTest(true)">
+      Humanómetro – comenzá a medirte
+    </button>
+
+    <p class="legal">
+      ¿Estás listo para medirte?
+    </p>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -68,10 +73,14 @@
 
     <!-- CHECKLIST 2 -->
     <div id="weeklyAccess">
-      <button class="premium" onclick="goToWeekly()">Semana 1</button>
+      <button class="premium" onclick="startWeekly()">
+        Semana 1
+      </button>
+
       <p class="legal">
-        Desde aquí comienza tu medición humana semanal.<br>
-        Dejá pasar 7 días de experiencias antes de evaluar tu primera semana.
+        Finalizaste tu primer test.<br>
+        Ahora necesitás vivir una semana de experiencias reales.<br>
+        En 7 días podrás evaluar tu primera semana de humanidad.
       </p>
     </div>
 
@@ -84,7 +93,7 @@
 
     <p class="weekly-intro">
       ¿Cómo fue tu semana?<br>
-      Respondé con sinceridad para reconocer tu tendencia humana actual.
+      Respondé con sinceridad para observar tu humanidad en movimiento.
     </p>
 
     <div id="weeklyThermometer" class="weekly-thermo">
@@ -100,40 +109,22 @@
     </div>
   </section>
 
-  <!-- CONTEO SEMANAL – RESULTADO FINAL -->
+  <!-- CONTEO SEMANAL – RESULTADO -->
   <section id="weeklyResultScreen" class="hidden">
     <p id="weeklyText"></p>
     <p id="weeklyAdvice" class="legal"></p>
 
-    <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
-
-    <button class="premium" onclick="goToV2()">Continuar testeo</button>
-
     <p class="legal">
-      Tu registro se guarda de forma local y forma parte de tu evolución humana semanal.
+      Tu registro se guarda automáticamente en este dispositivo.
     </p>
 
     <p id="weeklySaved" class="legal hidden">
-      ✔ Conteo semanal guardado correctamente.
+      ✔ Análisis guardado localmente.
     </p>
 
+    <button class="premium" onclick="goToV2()">Continuar proceso</button>
     <button onclick="restart()">Volver</button>
   </section>
 
   <!-- PRIVACIDAD -->
-  <section id="privacy" class="hidden">
-    <h2>Privacidad y uso</h2>
-    <p>
-      Humanómetro no recopila datos personales.<br>
-      Todo ocurre localmente.<br>
-      No es diagnóstico médico ni psicológico.<br>
-      Es una herramienta reflexiva.
-    </p>
-    <button onclick="restart()">Volver</button>
-  </section>
-
-</main>
-
-<script src="script.js"></script>
-</body>
-</html>
+  <section id
