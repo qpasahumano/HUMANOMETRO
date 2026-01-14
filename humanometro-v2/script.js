@@ -7,17 +7,17 @@ const WEEKS = [
   {
     title: "Vos ante el mundo",
     questions: [
-      ["¿Te afecta el sufrimiento ajeno?", ""],
-      ["¿Sentís tristeza ante injusticias?", ""],
-      ["¿Te conmueven situaciones humanas?", ""]
+      ["¿Te afecta el sufrimiento ajeno?"],
+      ["¿Sentís tristeza ante injusticias?"],
+      ["¿Te conmueven situaciones humanas?"]
     ]
   },
   {
     title: "Vos y la tecnología",
     questions: [
-      ["¿La tecnología te absorbe?", ""],
-      ["¿Te cuesta desconectarte?", ""],
-      ["¿Postergás vínculos por pantallas?", ""]
+      ["¿La tecnología te absorbe?"],
+      ["¿Te cuesta desconectarte?"],
+      ["¿Postergás vínculos por pantallas?"]
     ]
   }
 ];
@@ -65,4 +65,4 @@ function showWeeklyResult() {
   if (avg < 0.8) {
     symbol = "🦇";
     text = "Se detectó desconexión humana.";
-  } else if (
+  } else if (avg > 1.
