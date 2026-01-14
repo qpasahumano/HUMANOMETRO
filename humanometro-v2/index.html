@@ -1,106 +1,249 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>HUMANÓMETRO v.2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+const WEEKS = [
+  {
+    title: "Vos ante el mundo",
+    questions: [
+      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
+      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
+      ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
+    ]
+  },
+  {
+    title: "Vos y la tecnología",
+    questions: [
+      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
+      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
+      ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
+      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
+    ]
+  },
+  {
+    title: "Integración humana",
+    questions: [
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
+      ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
+      ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
+      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
+    ]
+  }
+];
 
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+let week = 0;
+let q = 0;
+let weeklyScores = [];
+let currentScore = 0;
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-</head>
+function startV2() {
+  week = 0;
+  q = 0;
+  weeklyScores = [];
+  currentScore = 0;
+  show("test");
+  loadQuestion();
+}
 
-<body>
-<main id="app">
+function loadQuestion() {
+  const w = WEEKS[week];
+  document.getElementById("weekTitle").innerText = w.title;
+  document.getElementById("questionText").innerText = w.questions[q][0];
+  document.getElementById("questionMeasure").innerText = w.questions[q][1];
+  updateThermo();
+}
 
-<!-- INICIO -->
-<section id="start">
-  <h1 class="brand">
-    <span class="brand-main">HUMANÓMETRO</span><br>
-    <span class="brand-meta">v.2 ®</span>
-  </h1>
+function answer(v) {
+  currentScore += v;
+  q++;
+  updateThermo();
 
-  <p class="intro">
-    Humanómetro no se recorre de una sola vez.<br><br>
-    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-    Cada bloque se habilita únicamente cuando completaste el anterior
-    y pasó el tiempo necesario para integrarlo.<br><br>
-    La humanidad se construye en movimiento, no en velocidad.
-  </p>
+  if (q >= 4) showWeeklyResult();
+  else loadQuestion();
+}
 
-  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
-</section>
+function showWeeklyResult() {
+  show("weeklyResult");
+  const avg = currentScore / 4;
 
-<!-- TEST SEMANAL -->
-<section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title"></h2>
+  let symbol = "🐞", text = "", advice = "";
 
-  <div class="thermo">
-    <div id="thermoFill"></div>
-  </div>
+  if (avg < 0.8) {
+    symbol = "🦇";
+    text = "Esta semana mostró una desconexión humana.";
+    advice = "Detenerte y observar puede ayudarte a reconectar.";
+  } else if (avg < 1.5) {
+    symbol = "🐞";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
+  } else {
+    symbol = "🐦";
+    text = "Tu humanidad está en crecimiento.";
+    advice = "Sostener esta coherencia fortalece tu camino.";
+  }
 
-  <p id="questionText" class="question"></p>
-  <small id="questionMeasure" class="legal"></small>
+  document.getElementById("weeklySymbol").innerText = symbol;
+  document.getElementById("weeklyText").innerText = text;
+  document.getElementById("weeklyAdvice").innerText = advice;
 
-  <div class="answers">
-    <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">Tal vez / A veces</button>
-    <button onclick="answer(0)">No</button>
-  </div>
-</section>
+  weeklyScores.push(avg);
+}
 
-<!-- RESULTADO SEMANAL -->
-<section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Lectura semanal</h2>
+function nextWeek() {
+  week++;
+  q = 0;
+  currentScore = 0;
 
-  <div id="weeklySymbol" class="symbol"></div>
+  if (week >= WEEKS.length) showMonthlyResult();
+  else {
+    show("test");
+    loadQuestion();
+  }
+}
 
-  <p id="weeklyText"></p>
-  <p id="weeklyAdvice" class="legal"></p>
+function showMonthlyResult() {
+  show("monthlyResult");
 
-  <button class="primary" onclick="nextWeek()">Continuar</button>
-</section>
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
-<!-- RESULTADO MENSUAL -->
-<section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
+  setTimeout(() => {
+    document.getElementById("monthlyFill").style.height =
+      Math.round((avg / 2) * 100) + "%";
+  }, 500);
 
-  <div class="vertical-thermo">
-    <div id="monthlyFill"></div>
-  </div>
+  setTimeout(() => {
+    let symbol="🐞", text="", advice="";
 
-  <div id="monthlySymbol" class="symbol"></div>
+    if (avg < 0.8) {
+      symbol="🦇";
+      text="Tu humanidad estuvo retraída este mes.";
+      advice="Pausar y observar puede reactivar tu sensibilidad.";
+    } else if (avg < 1.5) {
+      symbol="🐞";
+      text="Tu humanidad se mantuvo estable.";
+      advice="Pequeños cambios conscientes pueden impulsarte.";
+    } else {
+      symbol="🐦";
+      text="Tu humanidad está en expansión.";
+      advice="Sostener esta coherencia fortalece tu humanidad.";
+    }
 
-  <p id="monthlyText"></p>
-  <p id="monthlyAdvice" class="legal"></p>
+    document.getElementById("monthlySymbol").innerText = symbol;
+    document.getElementById("monthlyText").innerText = text;
+    document.getElementById("monthlyAdvice").innerText = advice;
+  }, 3500);
+}
 
-  <button class="primary" onclick="openMonthlyFull()">
-    Ver lectura mensual completa
-  </button>
-</section>
+function updateThermo() {
+  document.getElementById("thermoFill").style.width =
+    (q / 4) * 100 + "%";
+}
 
-<!-- LECTURA MENSUAL COMPLETA -->
-<section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Lectura mensual completa</h2>
+function show(id) {
+  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 
-  <div class="monthly-scroll">
-    <p id="monthlyFullText"></p>
-  </div>
+function restart() {
+  show("start");
+}
 
-  <p class="legal" style="margin-top:16px;">
-    Este proceso es consecutivo.<br>
-    Para medir tu humanidad de forma real,
-    necesitás vivir una semana de experiencias (7 días).
-  </p>
+function openMonthlyFull() {
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
-  <!-- 🔒 BOTÓN VOLVER CORRECTO Y DEFINITIVO -->
-  <button class="primary" onclick="restart()">Volver</button>
-</section>
+  let text = "";
 
-</main>
+  if (avg < 0.8) {
+    text = `
+Este mes muestra una retracción de tu humanidad consciente.
+No como un error, sino como un mensaje.
 
-<script src="script.js"></script>
-</body>
-</html>
+Cuando la sensibilidad baja, suele ser señal de cansancio,
+sobrecarga emocional o desconexión con lo que sentís.
+
+Revisar tus tiempos, tus vínculos y tus límites puede ser
+el primer paso para volver a habitarte con más presencia.
+
+La humanidad no se pierde: se apaga cuando no se la cuida.
+`;
+  } else if (avg < 1.5) {
+    text = `
+Tu humanidad se mantuvo activa, aunque de forma irregular.
+Hubo momentos de presencia y otros de automatismo.
+
+Este resultado habla de una conciencia en proceso,
+que aparece cuando la recordás y se diluye cuando
+las exigencias externas toman el mando.
+
+Pequeños actos diarios —escuchar, pausar, sentir—
+pueden estabilizar ese equilibrio interno.
+`;
+  } else {
+    text = `
+Este mes refleja una humanidad integrada y en expansión.
+Tus respuestas muestran coherencia entre lo que sentís,
+pensás y hacés.
+
+No significa perfección, sino alineación.
+Estás habitando tus decisiones con conciencia
+y eso se traduce en impacto humano real.
+
+Sostener esta apertura requiere cuidado,
+porque la sensibilidad también necesita descanso.
+`;
+  }
+
+  text += `
+\n\nEste proceso es consecutivo.
+Para medir tu humanidad de forma real,
+necesitás vivir una semana de experiencias (siete días).
+
+Cuando sientas que algo cambió en vos,
+Humanómetro va a estar acá para volver a medirlo.
+`;
+
+  document.getElementById("monthlyFullText").innerText = text;
+  show("monthlyFull");
+}
+
+/* 🔒 FUNCIÓN DEFINITIVA DEL BOTÓN VOLVER */
+function goBack() {
+  show("monthlyResult");
+}
+// ================================
+// BLOQUEO SEMANAL REAL (7 DÍAS)
+// ================================
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+function canAccessWeek(targetWeek) {
+  if (targetWeek === 0) return true;
+
+  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
+  if (!lastDone) return false;
+
+  const diff = Date.now() - parseInt(lastDone, 10);
+  return diff >= WEEK_MS;
+}
+
+// Guardar cierre de semana
+const _originalShowWeeklyResult = showWeeklyResult;
+showWeeklyResult = function () {
+  localStorage.setItem("week_" + week + "_done", Date.now().toString());
+  _originalShowWeeklyResult();
+};
+
+// Bloquear avance si no pasaron 7 días
+const _originalNextWeek = nextWeek;
+nextWeek = function () {
+  if (!canAccessWeek(week + 1)) {
+    alert(
+      "Este proceso es consecutivo.\n\n" +
+      "Para medir tu humanidad de forma real,\n" +
+      "necesitás vivir una semana de experiencias (7 días)."
+    );
+    restart();
+    return;
+  }
+  _originalNextWeek();
+};
