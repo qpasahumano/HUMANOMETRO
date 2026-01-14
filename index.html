@@ -31,8 +31,10 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
+    <!-- ✅ ÚNICO BOTÓN – ANTES ERA “Versión Premium” -->
+    <button class="premium" onclick="startTest(true)">
+      Comenzar medición
+    </button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -98,7 +100,6 @@
     <p id="weeklyAdvice" class="legal"></p>
 
     <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
-
     <button class="premium" onclick="goToV2()">Continuar testeo</button>
 
     <p class="legal">
@@ -129,4 +130,4 @@
 
 <script src="script.js"></script>
 </body>
-      </html>
+    </html>
