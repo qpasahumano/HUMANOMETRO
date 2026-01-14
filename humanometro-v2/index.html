@@ -23,18 +23,16 @@
   </h1>
 
   <p class="intro">
-    Humanómetro no se recorre de una sola vez.<br><br>
-    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-    Cada bloque se habilita cuando pasó el tiempo necesario para integrarlo.<br><br>
-    La humanidad se construye en movimiento, no en velocidad.
+    A partir de ahora comienza tu medición humana basada en el tiempo.<br><br>
+    Cada semana requiere experiencias reales para poder medirse.
   </p>
 
   <button class="primary" onclick="startV2()">
     Primera semana
   </button>
 
-  <p class="legal" style="margin-top:8px;">
-    Dejá pasar siete días de experiencias antes de medir esta etapa.
+  <p class="legal">
+    Debés vivir 7 días de experiencias antes de continuar.
   </p>
 </section>
 
@@ -58,7 +56,7 @@
 
 <!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Resultado semanal</h2>
+  <h2 class="neon-title">Resultado de la semana</h2>
 
   <div id="weeklySymbol" class="symbol"></div>
 
@@ -69,12 +67,16 @@
     Segunda semana
   </button>
 
-  <p class="legal" style="margin-top:8px;">
-    Recordá: Humanómetro se basa en vivencias reales, no en respuestas inmediatas.
+  <p class="legal">
+    Recordá: Humanómetro mide vivencias reales, no respuestas rápidas.
+  </p>
+
+  <p class="legal">
+    ✔ Análisis guardado localmente en tu dispositivo.
   </p>
 </section>
 
-<!-- RESULTADO SEMANA 3 -->
+<!-- RESULTADO MENSUAL -->
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title">Tercera semana</h2>
 
@@ -88,25 +90,24 @@
   <p id="monthlyAdvice" class="legal"></p>
 
   <button class="primary" onclick="openMonthlyFull()">
-    Continuar
+    Ver lectura completa
   </button>
 </section>
 
-<!-- BLOQUE FINAL / ESPEJO -->
+<!-- LECTURA FINAL -->
 <section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Cuarta semana · Espejo</h2>
+  <h2 class="neon-title">Cuarta y última semana</h2>
 
   <div class="monthly-scroll">
     <p id="monthlyFullText"></p>
   </div>
 
-  <p class="legal" style="margin-top:16px;">
-    Cuarta y última semana de tu medición humana mensual.
+  <p class="legal">
+    Esta última etapa corresponde al bloque espejo.<br>
+    Requiere haber integrado todo el mes de experiencias humanas.
   </p>
 
-  <button class="primary" onclick="restart()">
-    Volver
-  </button>
+  <button class="primary" onclick="restart()">Volver</button>
 </section>
 
 </main>
