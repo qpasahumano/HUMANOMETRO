@@ -100,36 +100,6 @@ function nextWeek() {
 
 function showMonthlyResult() {
   show("monthlyResult");
-
-  const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  setTimeout(() => {
-    document.getElementById("monthlyFill").style.height =
-      Math.round((avg / 2) * 100) + "%";
-  }, 500);
-
-  setTimeout(() => {
-    let symbol="🐞", text="", advice="";
-
-    if (avg < 0.8) {
-      symbol="🦇";
-      text="Tu humanidad estuvo retraída este mes.";
-      advice="Pausar y observar puede reactivar tu sensibilidad.";
-    } else if (avg < 1.5) {
-      symbol="🐞";
-      text="Tu humanidad se mantuvo estable.";
-      advice="Pequeños cambios conscientes pueden impulsarte.";
-    } else {
-      symbol="🐦";
-      text="Tu humanidad está en expansión.";
-      advice="Sostener esta coherencia fortalece tu humanidad.";
-    }
-
-    document.getElementById("monthlySymbol").innerText = symbol;
-    document.getElementById("monthlyText").innerText = text;
-    document.getElementById("monthlyAdvice").innerText = advice;
-  }, 3500);
 }
 
 function updateThermo() {
@@ -148,10 +118,5 @@ function restart() {
 }
 
 function openMonthlyFull() {
-  const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  let text = "";
-
-  if (avg < 0.8) {
-    text =
+  show("monthlyFull");
+}
