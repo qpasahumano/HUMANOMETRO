@@ -1,99 +1,120 @@
-/* ===============================
-   CONFIG
-================================ */
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>HUMANÓMETRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-/* ===============================
-   DATA
-================================ */
-const WEEKS = [
-  { title: "Primera semana", questions: ["Pregunta 1", "Pregunta 2", "Pregunta 3"] },
-  { title: "Segunda semana", questions: ["Pregunta 1", "Pregunta 2", "Pregunta 3"] },
-  { title: "Tercera semana", questions: ["Pregunta 1", "Pregunta 2", "Pregunta 3"] }
-];
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
 
-let week = 0;
-let q = 0;
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
 
-/* ===============================
-   INICIO
-================================ */
-function startV2() {
-  week = 0;
-  q = 0;
-  show("test");
-  loadQuestion();
-}
+<body>
+<main id="app">
 
-function loadQuestion() {
-  document.getElementById("weekTitle").innerText = WEEKS[week].title;
-  document.getElementById("questionText").innerText =
-    WEEKS[week].questions[q];
-}
+<section id="start">
+  <h1 class="brand">
+    <span class="brand-main">HUMANÓMETRO</span><br>
+    <span class="brand-meta">v.1 ®</span>
+  </h1>
 
-/* ===============================
-   RESPUESTAS
-================================ */
-function answer() {
-  q++;
-  if (q >= WEEKS[week].questions.length) {
-    saveWeek();
-  } else {
-    loadQuestion();
-  }
-}
+  <p class="intro">
+    Esta herramienta no mide perfección ni juicio.<br>
+    Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
+  </p>
 
-/* ===============================
-   GUARDADO AUTOMÁTICO
-================================ */
-function saveWeek() {
-  localStorage.setItem(
-    "week_" + week + "_done",
-    Date.now().toString()
-  );
+  <button onclick="startTest(false)">Versión Común</button>
+  <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
-  alert("✔ Análisis guardado (local)");
+  <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+</section>
 
-  show("weeklyResult");
-}
+<section id="test" class="hidden">
+  <h2 id="areaTitle"></h2>
 
-/* ===============================
-   AVANCE CON BLOQUEO
-================================ */
-function nextWeek() {
-  const lastDone = localStorage.getItem("week_" + week + "_done");
-  if (!lastDone) return;
+  <div id="thermometer">
+    <div id="thermoFill"></div>
+  </div>
 
-  const diff = Date.now() - Number(lastDone);
-  if (diff < WEEK_MS) {
-    alert(
-      "Este proceso es consecutivo.\n\n" +
-      "Viví una semana de experiencias antes de continuar."
-    );
-    return;
-  }
+  <p id="questionText"></p>
+  <small id="questionNote" class="legal"></small>
 
-  week++;
-  q = 0;
+  <div class="answers">
+    <button onclick="answer(2)">Sí</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
+    <button onclick="answer(0)">No</button>
+  </div>
+</section>
 
-  if (week >= WEEKS.length) {
-    show("monthlyResult");
-  } else {
-    show("test");
-    loadQuestion();
-  }
-}
+<section id="results" class="hidden">
+  <h2>Resultado Humanómetro</h2>
 
-/* ===============================
-   UI
-================================ */
-function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
-    .forEach(s => {
-      const el = document.getElementById(s);
-      if (el) el.classList.add("hidden");
-    });
+  <div id="circles"></div>
+  <h3 id="globalResult"></h3>
 
-  const target = document.getElementById(id);
-  if (target) target.classList.remove("hidden");
-}
+  <h3>Lectura humana</h3>
+  <ul id="tips"></ul>
+
+  <div id="weeklyAccess"></div>
+
+  <button onclick="restart()">Reiniciar</button>
+</section>
+
+<section id="weekly" class="hidden">
+  <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
+
+  <p class="weekly-intro">
+    ¿Cómo fue tu semana?<br>
+    Respondé con sinceridad para reconocer tu tendencia humana actual.
+  </p>
+
+  <div id="weeklyThermometer" class="weekly-thermo">
+    <div id="weeklyThermoFill"></div>
+  </div>
+
+  <p id="weeklyQuestion"></p>
+
+  <div class="answers">
+    <button onclick="weeklyAnswer(2)">Sí</button>
+    <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
+    <button onclick="weeklyAnswer(0)">No</button>
+  </div>
+</section>
+
+<section id="weeklyResultScreen" class="hidden">
+  <p id="weeklyText"></p>
+  <p id="weeklyAdvice" class="legal"></p>
+
+  <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+  <button class="premium" onclick="goToV2()">Continuar testeo</button>
+
+  <p class="legal">
+    Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+    para observar tu evolución humana.
+  </p>
+
+  <p id="weeklySaved" class="legal hidden">
+    ✔ Conteo semanal guardado correctamente.
+  </p>
+
+  <button onclick="restart()">Volver</button>
+</section>
+
+<section id="privacy" class="hidden">
+  <h2>Privacidad y uso</h2>
+  <p>
+    Humanómetro no recopila datos personales.<br>
+    Todo ocurre localmente.<br>
+    No es diagnóstico médico ni psicológico.<br>
+    Es una herramienta reflexiva.
+  </p>
+  <button onclick="restart()">Volver</button>
+</section>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>
