@@ -1,60 +1,52 @@
-/* ===== CONFIG ===== */
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-/* ===== DATA ===== */
 const WEEKS = [
   {
-    title: "Primera semana",
+    title: "Vos ante el mundo",
     questions: [
-      "¿Te afectó el sufrimiento ajeno?",
-      "¿Te detuviste a escuchar a otros?",
-      "¿Actuaste con coherencia?"
+      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
+      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
+      ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
     ]
   },
   {
-    title: "Semana 2",
+    title: "Vos y la tecnología",
     questions: [
-      "¿La tecnología te absorbió?",
-      "¿Postergaste vínculos por pantallas?",
-      "¿Pudiste desconectarte?"
+      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
+      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
+      ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
+      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
     ]
   },
   {
-    title: "Semana 3",
+    title: "Integración humana",
     questions: [
-      "¿Fuiste consciente de tus emociones?",
-      "¿Evitaste reaccionar en automático?",
-      "¿Elegiste cómo actuar?"
-    ]
-  },
-  {
-    title: "Semana 4",
-    questions: [
-      "¿Sostuviste coherencia?",
-      "¿Sentís evolución humana?",
-      "¿Te observaste con honestidad?"
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
+      ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
+      ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
+      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
     ]
   }
 ];
 
 let week = 0;
 let q = 0;
+let weeklyScores = [];
 let currentScore = 0;
-let scores = [];
 
-/* ===== FLOW ===== */
 function startV2() {
   week = 0;
   q = 0;
+  weeklyScores = [];
   currentScore = 0;
-  scores = [];
   show("test");
   loadQuestion();
 }
 
 function loadQuestion() {
-  document.getElementById("weekTitle").innerText = WEEKS[week].title;
-  document.getElementById("questionText").innerText = WEEKS[week].questions[q];
+  const w = WEEKS[week];
+  document.getElementById("weekTitle").innerText = w.title;
+  document.getElementById("questionText").innerText = w.questions[q][0];
+  document.getElementById("questionMeasure").innerText = w.questions[q][1];
   updateThermo();
 }
 
@@ -63,32 +55,35 @@ function answer(v) {
   q++;
   updateThermo();
 
-  if (q >= 3) showStageResult();
+  if (q >= 4) showWeeklyResult();
   else loadQuestion();
 }
 
-function showStageResult() {
+function showWeeklyResult() {
   show("weeklyResult");
+  const avg = currentScore / 4;
 
-  const avg = currentScore / 3;
-  scores.push(avg);
-
-  let symbol = "🐞";
-  let text = "Tu humanidad se mantuvo estable.";
+  let symbol = "🐞", text = "", advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Se detectó desconexión humana.";
-  } else if (avg > 1.5) {
+    text = "Esta semana mostró una desconexión humana.";
+    advice = "Detenerte y observar puede ayudarte a reconectar.";
+  } else if (avg < 1.5) {
+    symbol = "🐞";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
+  } else {
     symbol = "🐦";
-    text = "Tu humanidad mostró coherencia.";
+    text = "Tu humanidad está en crecimiento.";
+    advice = "Sostener esta coherencia fortalece tu camino.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
   document.getElementById("weeklyText").innerText = text;
+  document.getElementById("weeklyAdvice").innerText = advice;
 
-  const btn = document.getElementById("continueBtn");
-  btn.innerText = week === 0 ? "Primera semana" : `Semana ${week + 1}`;
+  weeklyScores.push(avg);
 }
 
 function nextWeek() {
@@ -96,9 +91,8 @@ function nextWeek() {
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) {
-    showMonthlyResult();
-  } else {
+  if (week >= WEEKS.length) showMonthlyResult();
+  else {
     show("test");
     loadQuestion();
   }
@@ -107,35 +101,40 @@ function nextWeek() {
 function showMonthlyResult() {
   show("monthlyResult");
 
-  const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
-  document.getElementById("monthlyFill").style.height =
-    Math.round((avg / 2) * 100) + "%";
+  setTimeout(() => {
+    document.getElementById("monthlyFill").style.height =
+      Math.round((avg / 2) * 100) + "%";
+  }, 500);
 
-  document.getElementById("monthlySymbol").innerText =
-    avg > 1.5 ? "🐦" : avg > 0.8 ? "🐞" : "🦇";
+  setTimeout(() => {
+    let symbol="🐞", text="", advice="";
 
-  document.getElementById("monthlyText").innerText =
-    "Esta medición refleja tu humanidad a lo largo del mes.";
+    if (avg < 0.8) {
+      symbol="🦇";
+      text="Tu humanidad estuvo retraída este mes.";
+      advice="Pausar y observar puede reactivar tu sensibilidad.";
+    } else if (avg < 1.5) {
+      symbol="🐞";
+      text="Tu humanidad se mantuvo estable.";
+      advice="Pequeños cambios conscientes pueden impulsarte.";
+    } else {
+      symbol="🐦";
+      text="Tu humanidad está en expansión.";
+      advice="Sostener esta coherencia fortalece tu humanidad.";
+    }
+
+    document.getElementById("monthlySymbol").innerText = symbol;
+    document.getElementById("monthlyText").innerText = text;
+    document.getElementById("monthlyAdvice").innerText = advice;
+  }, 3500);
 }
 
-function openMonthlyFull() {
-  document.getElementById("monthlyFullText").innerText =
-`Esta lectura surge de tu continuidad en Humanómetro.
-No se midieron opiniones, sino reacciones emocionales sostenidas en el tiempo.
-La humanidad no se define por ideas,
-sino por cómo las vivencias impactan en vos.`;
-
-  show("monthlyFull");
-}
-
-function goToMirror() {
-  alert("Acá comienza Volumen 3 – Espejo");
-}
-
-/* ===== UI ===== */
 function updateThermo() {
-  document.getElementById("thermoFill").style.width = (q / 3) * 100 + "%";
+  document.getElementById("thermoFill").style.width =
+    (q / 4) * 100 + "%";
 }
 
 function show(id) {
@@ -143,3 +142,108 @@ function show(id) {
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
+
+function restart() {
+  show("start");
+}
+
+function openMonthlyFull() {
+  const avg =
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+
+  let text = "";
+
+  if (avg < 0.8) {
+    text = `
+Este mes muestra una retracción de tu humanidad consciente.
+No como un error, sino como un mensaje.
+
+Cuando la sensibilidad baja, suele ser señal de cansancio,
+sobrecarga emocional o desconexión con lo que sentís.
+
+Revisar tus tiempos, tus vínculos y tus límites puede ser
+el primer paso para volver a habitarte con más presencia.
+
+La humanidad no se pierde: se apaga cuando no se la cuida.
+`;
+  } else if (avg < 1.5) {
+    text = `
+Tu humanidad se mantuvo activa, aunque de forma irregular.
+Hubo momentos de presencia y otros de automatismo.
+
+Este resultado habla de una conciencia en proceso,
+que aparece cuando la recordás y se diluye cuando
+las exigencias externas toman el mando.
+
+Pequeños actos diarios —escuchar, pausar, sentir—
+pueden estabilizar ese equilibrio interno.
+`;
+  } else {
+    text = `
+Este mes refleja una humanidad integrada y en expansión.
+Tus respuestas muestran coherencia entre lo que sentís,
+pensás y hacés.
+
+No significa perfección, sino alineación.
+Estás habitando tus decisiones con conciencia
+y eso se traduce en impacto humano real.
+
+Sostener esta apertura requiere cuidado,
+porque la sensibilidad también necesita descanso.
+`;
+  }
+
+  text += `
+\n\nEste proceso es consecutivo.
+Para medir tu humanidad de forma real,
+necesitás vivir una semana de experiencias (siete días).
+
+Cuando sientas que algo cambió en vos,
+Humanómetro va a estar acá para volver a medirlo.
+`;
+
+  document.getElementById("monthlyFullText").innerText = text;
+  show("monthlyFull");
+}
+
+/* 🔒 FUNCIÓN DEFINITIVA DEL BOTÓN VOLVER */
+function goBack() {
+  show("monthlyResult");
+}
+// ================================
+// BLOQUEO SEMANAL REAL (7 DÍAS)
+// ================================
+
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+function canAccessWeek(targetWeek) {
+  if (targetWeek === 0) return true;
+
+  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
+  if (!lastDone) return false;
+
+  const diff = Date.now() - parseInt(lastDone, 10);
+  return diff >= WEEK_MS;
+}
+
+// Guardar cierre de semana
+const _originalShowWeeklyResult = showWeeklyResult;
+showWeeklyResult = function () {
+  localStorage.setItem("week_" + week + "_done", Date.now().toString());
+  _originalShowWeeklyResult();
+};
+
+// Bloquear avance si no pasaron 7 días
+const _originalNextWeek = nextWeek;
+nextWeek = function () {
+  if (!canAccessWeek(week + 1)) {
+    alert(
+      "Este proceso es consecutivo.\n\n" +
+      "Para medir tu humanidad de forma real,\n" +
+      "necesitás vivir una semana de experiencias (7 días)."
+    );
+    restart();
+    return;
+  }
+  _originalNextWeek();
+};
