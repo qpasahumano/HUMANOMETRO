@@ -1,11 +1,3 @@
-/* ===============================
-   CONFIGURACIÓN DESARROLLADOR
-================================ */
-const DEV_MODE = true;
-
-/* ===============================
-   DATOS DEL VOLUMEN 2
-================================ */
 const WEEKS = [
   {
     title: "Vos ante el mundo",
@@ -41,9 +33,6 @@ let q = 0;
 let weeklyScores = [];
 let currentScore = 0;
 
-/* ===============================
-   INICIO
-================================ */
 function startV2() {
   week = 0;
   q = 0;
@@ -70,128 +59,77 @@ function answer(v) {
   else loadQuestion();
 }
 
-/* ===============================
-   RESULTADO SEMANAL
-================================ */
 function showWeeklyResult() {
   show("weeklyResult");
 
   const avg = currentScore / 4;
-  let symbol = "🐞", shortText = "", advice = "";
+  weeklyScores.push(avg);
+
+  let symbol = "🐞", text = "", advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    shortText = "Esta semana mostró una desconexión humana.";
-    advice = "Detenerte y observar puede ayudarte a reconectar.";
+    text = "Semana con desconexión humana.";
+    advice = "Observar tus reacciones puede ayudarte a reconectar.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    shortText = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños gestos conscientes pueden impulsarte.";
+    text = "Humanidad estable esta semana.";
+    advice = "Pequeños gestos conscientes pueden fortalecerla.";
   } else {
     symbol = "🐦";
-    shortText = "Tu humanidad está en crecimiento.";
+    text = "Humanidad en crecimiento.";
     advice = "Sostener esta coherencia fortalece tu camino.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
-  document.getElementById("weeklyText").innerText = shortText;
+  document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
 
-  weeklyScores.push(avg);
-  saveWeekProgress();
-}
-
-/* ===============================
-   RESULTADO FINAL → DEVOLUCIÓN
-================================ */
-function showMonthlyResult() {
-  show("monthlyResult");
-
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  // Termómetro
-  setTimeout(() => {
-    document.getElementById("monthlyFill").style.height =
-      Math.round((avg / 2) * 100) + "%";
-  }, 500);
-
-  // DEVOLUCIÓN CORTA
-  setTimeout(() => {
-    let shortText = "";
-
-    if (avg < 0.8)
-      shortText = "Tu humanidad mostró una retracción este ciclo.";
-    else if (avg < 1.5)
-      shortText = "Tu humanidad se mantuvo activa con fluctuaciones.";
-    else
-      shortText = "Tu humanidad mostró integración y expansión.";
-
-    document.getElementById("monthlyText").innerText = shortText;
-  }, 1200);
-
-  // DEVOLUCIÓN COMPLETA
-  setTimeout(() => {
-    document.getElementById("monthlyAdvice").innerText = buildFullDevolution(avg);
-  }, 2500);
-}
-
-function buildFullDevolution(avg) {
-  if (avg < 0.8) {
-    return `
-Esta devolución no señala un error, sino un estado.
-Cuando la sensibilidad baja, suele ser señal de cansancio,
-sobrecarga emocional o desconexión con lo que sentís.
-
-Observar sin juzgar es el primer paso para volver a habitarte.
-`;
-  } else if (avg < 1.5) {
-    return `
-Este resultado muestra una humanidad presente,
-aunque con oscilaciones entre conciencia y automatismo.
-
-Pequeños actos cotidianos pueden estabilizar ese equilibrio.
-`;
-  } else {
-    return `
-Esta devolución refleja coherencia entre lo que sentís,
-pensás y hacés.
-
-No habla de perfección, sino de alineación consciente.
-Sostenerla requiere cuidado y descanso.
-`;
-  }
-}
-
-/* ===============================
-   ENGANCHE → VOLUMEN 3
-================================ */
-function goToMirrorV3() {
-  window.location.href = "./humanometro-v3/";
-}
-
-/* ===============================
-   BLOQUEO SEMANAL
-================================ */
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-function saveWeekProgress() {
   localStorage.setItem("week_" + week + "_done", Date.now().toString());
 }
 
-function canAccessWeek(targetWeek) {
-  if (DEV_MODE) return true;
+function nextWeek() {
+  week++;
+  q = 0;
+  currentScore = 0;
 
-  if (targetWeek === 0) return true;
-
-  const lastDone = localStorage.getItem("week_" + (targetWeek - 1) + "_done");
-  if (!lastDone) return false;
-
-  return Date.now() - parseInt(lastDone, 10) >= WEEK_MS;
+  if (week >= WEEKS.length) {
+    showFinalResult();
+  } else {
+    show("test");
+    loadQuestion();
+  }
 }
 
-/* ===============================
-   UTILIDADES
-================================ */
+function showFinalResult() {
+  show("monthlyResult");
+
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+
+  document.getElementById("monthlyFill").style.height =
+    Math.round((avg / 2) * 100) + "%";
+
+  let text = "", advice = "", symbol = "🐞";
+
+  if (avg < 0.8) {
+    symbol = "🦇";
+    text = "Tu humanidad estuvo retraída.";
+    advice = "No como error, sino como mensaje.";
+  } else if (avg < 1.5) {
+    symbol = "🐞";
+    text = "Humanidad presente pero inestable.";
+    advice = "La conciencia sostenida puede estabilizarla.";
+  } else {
+    symbol = "🐦";
+    text = "Humanidad integrada y consciente.";
+    advice = "Coherencia entre sentir, pensar y actuar.";
+  }
+
+  document.getElementById("monthlySymbol").innerText = symbol;
+  document.getElementById("monthlyText").innerText = text;
+  document.getElementById("monthlyAdvice").innerText = advice;
+}
+
 function updateThermo() {
   document.getElementById("thermoFill").style.width =
     (q / 4) * 100 + "%";
@@ -205,4 +143,8 @@ function show(id) {
 
 function restart() {
   show("start");
+}
+
+function openMonthlyFull() {
+  show("monthlyFull");
 }
