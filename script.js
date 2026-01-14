@@ -1,76 +1,71 @@
 /* ===============================
-   MOTOR DE FLUJO BASE – HUMANÓMETRO
-   (NO contiene preguntas ni textos)
+   REFERENCIAS DOM
 ================================ */
+const sections = {
+  start: document.getElementById("start"),
+  test: document.getElementById("test"),
+  results: document.getElementById("results"),
+  weekly: document.getElementById("weekly"),
+  weeklyResult: document.getElementById("weeklyResultScreen"),
+  privacy: document.getElementById("privacy")
+};
 
-const SCREENS = [
-  "start",
-  "test",
-  "results",
-  "weekly",
-  "weeklyResultScreen",
-  "privacy"
+const areaTitle = document.getElementById("areaTitle");
+const questionText = document.getElementById("questionText");
+const questionNote = document.getElementById("questionNote");
+const thermoFill = document.getElementById("thermoFill");
+
+const circles = document.getElementById("circles");
+const tips = document.getElementById("tips");
+const globalResult = document.getElementById("globalResult");
+
+/* ===============================
+   DATOS DEL TEST
+================================ */
+const MODULES = [
+  {
+    title: "Vos ante el mundo",
+    questions: [
+      ["¿Te conmueve el sufrimiento ajeno?", "Empatía humana"],
+      ["¿Te afectan las injusticias?", "Sensibilidad social"],
+      ["¿Te importa el impacto de tus actos?", "Responsabilidad"]
+    ]
+  },
+  {
+    title: "Vos con los demás",
+    questions: [
+      ["¿Escuchás con atención?", "Presencia"],
+      ["¿Podés frenar antes de reaccionar?", "Autocontrol"],
+      ["¿Reconocés errores?", "Humildad"]
+    ]
+  }
 ];
 
 /* ===============================
-   CONTROL DE PANTALLAS
+   VARIABLES
 ================================ */
-
-function show(screenId) {
-  SCREENS.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add("hidden");
-  });
-
-  const target = document.getElementById(screenId);
-  if (target) target.classList.remove("hidden");
-}
+let currentModule = 0;
+let currentQuestion = 0;
+let score = 0;
 
 /* ===============================
-   BOTONES DE INICIO
+   FUNCIONES DE FLUJO
 ================================ */
+function show(section) {
+  Object.values(sections).forEach(s => s.classList.add("hidden"));
+  sections[section].classList.remove("hidden");
+}
 
-function startTest(isPremium) {
-  window.__HM_MODE__ = isPremium ? "premium" : "common";
+function startTest() {
+  currentModule = 0;
+  currentQuestion = 0;
+  score = 0;
   show("test");
+  loadQuestion();
 }
 
-function showPrivacy() {
-  show("privacy");
-}
-
-function restart() {
-  show("start");
-}
-
-/* ===============================
-   BLOQUEO TEMPORAL (BASE)
-================================ */
-
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-function saveBlockDone(blockName) {
-  localStorage.setItem(
-    "hm_block_" + blockName,
-    Date.now().toString()
-  );
-}
-
-function canAccessBlock(blockName, days = 7) {
-  const last = localStorage.getItem("hm_block_" + blockName);
-  if (!last) return false;
-
-  return Date.now() - Number(last) >= days * 24 * 60 * 60 * 1000;
-}
-
-/* ===============================
-   UTILIDAD CHECKLIST FUTUROS
-================================ */
-
-function blockedMessage() {
-  alert(
-    "Este proceso es consecutivo.\n\n" +
-    "Humanómetro se mide con tiempo vivido.\n" +
-    "Volvé cuando hayan pasado 7 días."
-  );
-}
+function loadQuestion() {
+  const mod = MODULES[currentModule];
+  areaTitle.innerText = mod.title;
+  questionText.innerText = mod.questions[currentQuestion][0];
+  questionNote.innerText = mod.questions[currentQuestion][
