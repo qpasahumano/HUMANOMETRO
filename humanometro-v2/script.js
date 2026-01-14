@@ -27,7 +27,7 @@ let q = 0;
 let weeklyScores = [];
 let currentScore = 0;
 
-/* ===== TEST ===== */
+/* ===== TEST PRINCIPAL ===== */
 function startV2() {
   week = 0;
   q = 0;
@@ -65,99 +65,4 @@ function showWeeklyResult() {
   if (avg < 0.8) {
     symbol = "🦇";
     text = "Se detectó desconexión humana.";
-  } else if (avg > 1.5) {
-    symbol = "🐦";
-    text = "Tu humanidad mostró coherencia.";
-  }
-
-  document.getElementById("weeklySymbol").innerText = symbol;
-  document.getElementById("weeklyText").innerText = text;
-}
-
-function nextWeek() {
-  week++;
-  q = 0;
-  currentScore = 0;
-
-  if (week >= WEEKS.length) {
-    saveMainTestCompletion();
-    showMonthlyResult();
-  } else {
-    show("test");
-    loadQuestion();
-  }
-}
-
-/* ===== RESULTADOS ===== */
-function showMonthlyResult() {
-  show("monthlyResult");
-
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  setTimeout(() => {
-    document.getElementById("monthlyFill").style.height =
-      Math.round((avg / 2) * 100) + "%";
-  }, 500);
-}
-
-function openMonthlyFull() {
-  document.getElementById("monthlyFullText").innerText =
-`Esta lectura surge de tu continuidad en Humanómetro.
-No se midieron ideas, sino reacciones emocionales sostenidas en el tiempo.
-
-La humanidad no se define por lo que pensás,
-sino por cómo las vivencias impactan en vos.`;
-
-  show("monthlyFull");
-}
-
-/* ===== BLOQUEOS ===== */
-function saveMainTestCompletion() {
-  localStorage.setItem("humanometro_main_done_at", Date.now());
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const weeklyBtn = document.getElementById("weeklyBtn");
-  const lockText = document.getElementById("weeklyLockText");
-  const mirrorBtn = document.getElementById("mirrorBtn");
-
-  if (isDev) {
-    weeklyBtn.disabled = false;
-    mirrorBtn.disabled = false;
-    return;
-  }
-
-  const doneAt = localStorage.getItem("humanometro_main_done_at");
-  if (!doneAt) return;
-
-  const elapsed = Date.now() - Number(doneAt);
-
-  if (elapsed >= WEEK_MS) {
-    weeklyBtn.disabled = false;
-    lockText.style.display = "none";
-  }
-
-  if (elapsed >= WEEK_MS * 4) {
-    mirrorBtn.disabled = false;
-  }
-});
-
-function startWeekly() {
-  alert("Acá comienza la medición semanal.");
-}
-
-function goToMirror() {
-  alert("Acá comienza Volumen 3 – Espejo.");
-}
-
-/* ===== UI ===== */
-function updateThermo() {
-  document.getElementById("thermoFill").style.width =
-    (q / 3) * 100 + "%";
-}
-
-function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
-    .forEach(s => document.getElementById(s).classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-                          }
+  } else if (
