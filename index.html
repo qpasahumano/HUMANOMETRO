@@ -27,19 +27,17 @@
     </h1>
 
     <p class="intro">
-      Esta es tu primera prueba.<br>
-      A partir de acá comienza una medición humana basada en el tiempo.
+      Esta herramienta no mide perfección ni juicio.<br>
+      Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <!-- BOTÓN 1: PRIMERA PRUEBA -->
-    <button class="premium" onclick="startTest(true)">
-      Primer prueba
-    </button>
+    <button onclick="startTest(false)">Versión Común</button>
+    <button class="premium" onclick="startTest(true)">Versión Premium</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
 
-  <!-- TEST PRINCIPAL -->
+  <!-- TEST -->
   <section id="test" class="hidden">
     <h2 id="areaTitle"></h2>
 
@@ -52,12 +50,12 @@
 
     <div class="answers">
       <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">A veces</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
       <button onclick="answer(0)">No</button>
     </div>
   </section>
 
-  <!-- RESULTADO PRIMERA PRUEBA -->
+  <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
@@ -67,25 +65,18 @@
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
 
-    <!-- BOTÓN 2: PRIMERA SEMANA -->
-    <button class="premium" onclick="goToWeekly()">
-      Primera semana
-    </button>
+    <div id="weeklyAccess"></div>
 
-    <p class="legal">
-      Desde aquí comienza tu medición humana.<br>
-      En 7 días podrás autoevaluarte nuevamente.
-    </p>
-
-    <button onclick="restart()">Volver</button>
+    <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- SEMANA 1 -->
+  <!-- CONTEO SEMANAL – PREGUNTAS -->
   <section id="weekly" class="hidden">
-    <h2 id="weeklyTitle">Semana 1</h2>
+    <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
 
     <p class="weekly-intro">
-      Respondé según cómo viviste esta semana.
+      ¿Cómo fue tu semana?<br>
+      Respondé con sinceridad para reconocer tu tendencia humana actual.
     </p>
 
     <div id="weeklyThermometer" class="weekly-thermo">
@@ -96,21 +87,27 @@
 
     <div class="answers">
       <button onclick="weeklyAnswer(2)">Sí</button>
-      <button onclick="weeklyAnswer(1)">A veces</button>
+      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
       <button onclick="weeklyAnswer(0)">No</button>
     </div>
   </section>
 
-  <!-- RESULTADO SEMANAL -->
+  <!-- CONTEO SEMANAL – RESULTADO FINAL -->
   <section id="weeklyResultScreen" class="hidden">
     <p id="weeklyText"></p>
     <p id="weeklyAdvice" class="legal"></p>
 
-    <!-- BOTÓN 3: SEMANA 2 -->
-    <button class="premium" onclick="goToV2()">Semana 2</button>
+    <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
+
+    <button class="premium" onclick="goToV2()">Continuar testeo</button>
 
     <p class="legal">
-      Las semanas se habilitan con el paso del tiempo.
+      Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+      para observar tu evolución humana.
+    </p>
+
+    <p id="weeklySaved" class="legal hidden">
+      ✔ Conteo semanal guardado correctamente.
     </p>
 
     <button onclick="restart()">Volver</button>
