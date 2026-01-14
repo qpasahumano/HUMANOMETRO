@@ -1,117 +1,145 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>HUMANÓMETRO v.2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+/* ===== CONFIG ===== */
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+/* ===== DATA ===== */
+const WEEKS = [
+  {
+    title: "Primera semana",
+    questions: [
+      "¿Te afectó el sufrimiento ajeno?",
+      "¿Te detuviste a escuchar a otros?",
+      "¿Actuaste con coherencia?"
+    ]
+  },
+  {
+    title: "Semana 2",
+    questions: [
+      "¿La tecnología te absorbió?",
+      "¿Postergaste vínculos por pantallas?",
+      "¿Pudiste desconectarte?"
+    ]
+  },
+  {
+    title: "Semana 3",
+    questions: [
+      "¿Fuiste consciente de tus emociones?",
+      "¿Evitaste reaccionar en automático?",
+      "¿Elegiste cómo actuar?"
+    ]
+  },
+  {
+    title: "Semana 4",
+    questions: [
+      "¿Sostuviste coherencia?",
+      "¿Sentís evolución humana?",
+      "¿Te observaste con honestidad?"
+    ]
+  }
+];
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-</head>
+let week = 0;
+let q = 0;
+let currentScore = 0;
+let scores = [];
 
-<body>
-<main id="app">
+/* ===== FLOW ===== */
+function startV2() {
+  week = 0;
+  q = 0;
+  currentScore = 0;
+  scores = [];
+  show("test");
+  loadQuestion();
+}
 
-<!-- INICIO -->
-<section id="start">
-  <h1 class="brand">
-    <span class="brand-main">HUMANÓMETRO</span><br>
-    <span class="brand-meta">v.2 ®</span>
-  </h1>
+function loadQuestion() {
+  document.getElementById("weekTitle").innerText = WEEKS[week].title;
+  document.getElementById("questionText").innerText = WEEKS[week].questions[q];
+  updateThermo();
+}
 
-  <p class="intro">
-    Esta es tu primera prueba.<br>
-    A partir de acá comienza una medición humana basada en el tiempo.
-  </p>
+function answer(v) {
+  currentScore += v;
+  q++;
+  updateThermo();
 
-  <!-- BOTÓN PRINCIPAL -->
-  <button class="primary" onclick="startV2()">Primer prueba</button>
-</section>
+  if (q >= 3) showStageResult();
+  else loadQuestion();
+}
 
-<!-- TEST -->
-<section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title"></h2>
+function showStageResult() {
+  show("weeklyResult");
 
-  <div class="thermo">
-    <div id="thermoFill"></div>
-  </div>
+  const avg = currentScore / 3;
+  scores.push(avg);
 
-  <p id="questionText" class="question"></p>
-  <small id="questionMeasure" class="legal"></small>
+  let symbol = "🐞";
+  let text = "Tu humanidad se mantuvo estable.";
 
-  <div class="answers">
-    <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">A veces</button>
-    <button onclick="answer(0)">No</button>
-  </div>
-</section>
+  if (avg < 0.8) {
+    symbol = "🦇";
+    text = "Se detectó desconexión humana.";
+  } else if (avg > 1.5) {
+    symbol = "🐦";
+    text = "Tu humanidad mostró coherencia.";
+  }
 
-<!-- RESULTADO SEMANAL -->
-<section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Resultado de esta etapa</h2>
+  document.getElementById("weeklySymbol").innerText = symbol;
+  document.getElementById("weeklyText").innerText = text;
 
-  <div id="weeklySymbol" class="symbol"></div>
-  <p id="weeklyText"></p>
-  <p id="weeklyAdvice" class="legal"></p>
+  const btn = document.getElementById("continueBtn");
+  btn.innerText = week === 0 ? "Primera semana" : `Semana ${week + 1}`;
+}
 
-  <button class="primary" onclick="nextWeek()">Semana 1/2</button>
-</section>
+function nextWeek() {
+  week++;
+  q = 0;
+  currentScore = 0;
 
-<!-- RESULTADO MENSUAL -->
-<section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tu humanidad en movimiento</h2>
+  if (week >= WEEKS.length) {
+    showMonthlyResult();
+  } else {
+    show("test");
+    loadQuestion();
+  }
+}
 
-  <div class="vertical-thermo">
-    <div id="monthlyFill"></div>
-  </div>
+function showMonthlyResult() {
+  show("monthlyResult");
 
-  <div id="monthlySymbol" class="symbol"></div>
-  <p id="monthlyText"></p>
-  <p id="monthlyAdvice" class="legal"></p>
+  const avg = scores.reduce((a,b)=>a+b,0) / scores.length;
 
-  <button class="primary" onclick="openMonthlyFull()">
-    Ver lectura mensual completa
-  </button>
-</section>
+  document.getElementById("monthlyFill").style.height =
+    Math.round((avg / 2) * 100) + "%";
 
-<!-- LECTURA MENSUAL COMPLETA -->
-<section id="monthlyFull" class="hidden">
-  <h2 class="neon-title">Lectura final del mes</h2>
+  document.getElementById("monthlySymbol").innerText =
+    avg > 1.5 ? "🐦" : avg > 0.8 ? "🐞" : "🦇";
 
-  <div class="monthly-scroll">
-    <p id="monthlyFullText"></p>
-  </div>
+  document.getElementById("monthlyText").innerText =
+    "Esta medición refleja tu humanidad a lo largo del mes.";
+}
 
-  <!-- MEDICIÓN MENSUAL (SEMANA 1) -->
-  <button
-    class="primary"
-    id="weeklyBtn"
-    onclick="startWeekly()"
-    disabled
-  >
-    Medición mensual
-  </button>
+function openMonthlyFull() {
+  document.getElementById("monthlyFullText").innerText =
+`Esta lectura surge de tu continuidad en Humanómetro.
+No se midieron opiniones, sino reacciones emocionales sostenidas en el tiempo.
+La humanidad no se define por ideas,
+sino por cómo las vivencias impactan en vos.`;
 
-  <p id="weeklyLockText" class="legal">
-    En siete días podrás ingresar a la siguiente semana.
-  </p>
+  show("monthlyFull");
+}
 
-  <!-- ESPEJO -->
-  <button
-    class="primary"
-    id="mirrorBtn"
-    onclick="goToMirror()"
-    disabled
-  >
-    Espejo
-  </button>
-</section>
+function goToMirror() {
+  alert("Acá comienza Volumen 3 – Espejo");
+}
 
-</main>
+/* ===== UI ===== */
+function updateThermo() {
+  document.getElementById("thermoFill").style.width = (q / 3) * 100 + "%";
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+function show(id) {
+  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
