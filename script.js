@@ -174,7 +174,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS
+   RESULTADOS (DONACIÓN + PAGO RESTAURADOS)
 ================================ */
 function showResults() {
   showSection("results");
@@ -194,14 +194,47 @@ function showResults() {
         <strong>${p}%</strong>
         <small>${m.name}</small>
       </div>`;
+
+    if (mode === "premium") {
+      tips.innerHTML += `<li>${premiumFeedback(m.name, p)}</li>`;
+    }
   });
 
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
 
-  weeklyAccess.innerHTML = `
-    <button class="premium" onclick="startWeekly()">Semana 1</button>
-  `;
+  if (mode === "common") {
+    tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
+  }
+
+  if (mode === "premium") {
+    weeklyAccess.innerHTML = `
+      <button class="premium" onclick="weeklyWithDonation()">Conteo semanal</button>
+      <p class="legal">
+        Conteo semanal – versión Premium.<br>
+        Aporte voluntario y consciente.<br>
+        No es un pago, es una donación para sostener el proyecto.
+      </p>`;
+  }
+}
+
+/* ===============================
+   DEVOLUCIONES
+================================ */
+function commonFeedback(avg) {
+  if (avg < 40)
+    return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
+  if (avg < 70)
+    return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
+  return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
+}
+
+function premiumFeedback(area, p) {
+  if (p < 40)
+    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tus reacciones puede generar un cambio profundo.`;
+  if (p < 70)
+    return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
+  return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
 }
 
 /* ===============================
@@ -217,6 +250,14 @@ function updateThermometer() {
 }
 
 /* ===============================
+   DONACIÓN (LINK MERCADO PAGO)
+================================ */
+function weeklyWithDonation() {
+  window.open("https://mpago.la/1eCGrKX", "_blank");
+  startWeekly();
+}
+
+/* ===============================
    NAVEGACIÓN
 ================================ */
 function restart() { showSection("start"); }
@@ -228,9 +269,11 @@ function showSection(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
-/* ===============================
-   🔑 SALTO A VOLUMEN 2 (CORREGIDO)
-================================ */
 function goToV2() {
-  window.location.href = "./humanometro-v2/index.html";
-}
+  window.location.href = "./humanometro-v2/";
+   }
+
+
+
+
+     
