@@ -50,9 +50,10 @@ function showWeeklyResult(){
     weeklyAdvice.innerText="La coherencia fortalece el proceso humano.";
   }
 }
+
 function nextWeek(){ week++; q=0; currentScore=0; week>=WEEKS.length?showMonthlyResult():(show("test"),loadQuestion()); }
 
-/* ===== Secuencia TERMÓMETRO MENSUAL ===== */
+/* ===== TERMÓMETRO MENSUAL ===== */
 function showMonthlyResult(){
   show("monthlyResult");
   monthTextWrap.classList.add("hidden");
@@ -64,11 +65,12 @@ function showMonthlyResult(){
       monthGaugeWrap.classList.add("hidden");
       monthTextWrap.classList.remove("hidden");
       monthlyLongText.innerText =
-        "Este recorrido integra tus respuestas como un proceso continuo. "+
-        "No mide hechos aislados, sino cómo habitaste emociones, decisiones e impacto.";
+        "Este recorrido integra todas tus respuestas como un proceso continuo. "+
+        "No mide hechos aislados, sino cómo habitaste tus emociones, tus decisiones "+
+        "y el impacto que tuvieron en tu entorno a lo largo del tiempo.";
       monthlyText.innerText =
-        "El resultado refleja un estado dinámico de tu humanidad cuando emoción, pensamiento y acción se alinean.";
-    },400);
+        "La humanidad aparece cuando emoción, pensamiento y acción empiezan a dialogar.";
+    },2000);
   });
 }
 
@@ -94,12 +96,13 @@ function loadMirrorQuestion(){
   mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
   mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
 }
+
 function answerMirror(v){
   if(v!==null){ mirrorScore+=v; mirrorCount++; }
   mq++; mq>=MIRROR_QUESTIONS.length?showMirrorResult():loadMirrorQuestion();
 }
 
-/* ===== Secuencia TERMÓMETRO FINAL ===== */
+/* ===== TERMÓMETRO FINAL ===== */
 function showMirrorResult(){
   show("mirrorResult");
   mirrorTextWrap.classList.add("hidden");
@@ -111,10 +114,12 @@ function showMirrorResult(){
       mirrorGaugeWrap.classList.add("hidden");
       mirrorTextWrap.classList.remove("hidden");
       mirrorFullText.innerText =
-        "El resultado de un humanómetro integra todo tu recorrido. "+
-        "Muestra cómo reconociste, sostuviste o evitaste emociones y cómo influyeron en tus acciones. "+
+        "La lectura final de un humanómetro no señala aciertos ni errores. "+
+        "Integra todo tu recorrido dentro de la aplicación y refleja cómo "+
+        "reconociste, sostuviste o evitaste tus emociones, y de qué manera "+
+        "influyeron en tus decisiones y acciones.\n\n"+
         "La humanidad no se pierde, pero se apaga cuando no se la habita conscientemente.";
-    },500);
+    },2000);
   });
 }
 
@@ -124,12 +129,11 @@ function updateThermo(){ thermoFill.style.width=(q/4)*100+"%"; }
 
 function animateGauge(el,target,done){
   el.style.height="0%";
-  let h=0; const ease=(t)=>1-Math.pow(1-t,3);
-  const dur=900, start=performance.now();
+  const dur=1200, start=performance.now();
+  function ease(t){ return 1-Math.pow(1-t,3); }
   function step(now){
     const t=Math.min(1,(now-start)/dur);
-    h=Math.round(ease(t)*target);
-    el.style.height=h+"%";
+    el.style.height=Math.round(ease(t)*target)+"%";
     if(t<1) requestAnimationFrame(step);
     else if(done) done();
   }
@@ -141,4 +145,3 @@ function show(id){
     .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
-function restart(){ show("start"); }
