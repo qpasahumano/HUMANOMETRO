@@ -212,3 +212,12 @@ function show(id) {
 function restart() {
   show("start");
 }
+// === ENGANCHE SEGURO DEL BOTÓN INICIO V2 ===
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("btnStartV2");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      startV2();
+    });
+  }
+});
