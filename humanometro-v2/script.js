@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.querySelector(
     '#start button[onclick="startV2()"]'
   );
-  if (startBtn) {
-    startBtn.addEventListener("click", startV2);
-  }
+  if (startBtn) startBtn.addEventListener("click", startV2);
 });
 
 /* ================= CACHE ================= */
@@ -52,19 +50,16 @@ const WEEKS = [
   ]}
 ];
 
-let week = 0, q = 0;
-let weeklyScores = [];
-let weeklyRaw = [];
-let currentScore = 0;
+let week=0, q=0;
+let weeklyScores=[], weeklyRaw=[];
+let currentScore=0;
 
-/* ================= FLUJO V2 ================= */
+/* ================= FLUJO ================= */
 function startV2(){
   week=0; q=0;
-  weeklyScores=[];
-  weeklyRaw=[];
+  weeklyScores=[]; weeklyRaw=[];
   currentScore=0;
-  show("test");
-  loadQuestion();
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
@@ -76,8 +71,7 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore += v;
-  q++;
+  currentScore+=v; q++;
   q>=4 ? showWeeklyResult() : loadQuestion();
 }
 
@@ -89,16 +83,16 @@ function showWeeklyResult(){
 
   if(avg<0.8){
     weeklySymbol.innerText="🦇";
-    weeklyText.innerText="Durante esta semana predominó la reacción automática.";
-    weeklyAdvice.innerText="Hubo emociones activadas que no lograron traducirse en acciones conscientes.";
+    weeklyText.innerText="Predominó la reacción automática.";
+    weeklyAdvice.innerText="Las emociones se activaron sin lograr traducirse en acciones conscientes.";
   }else if(avg<1.5){
     weeklySymbol.innerText="🐞";
-    weeklyText.innerText="La presencia apareció de forma intermitente.";
-    weeklyAdvice.innerText="Alternaste momentos de conciencia con respuestas condicionadas.";
+    weeklyText.innerText="Conciencia intermitente.";
+    weeklyAdvice.innerText="Alternaste presencia con respuestas condicionadas.";
   }else{
     weeklySymbol.innerText="🐦";
-    weeklyText.innerText="Se sostuvo una coherencia activa.";
-    weeklyAdvice.innerText="Emoción, pensamiento y acción mostraron alineación creciente.";
+    weeklyText.innerText="Coherencia activa.";
+    weeklyAdvice.innerText="Emoción, pensamiento y acción dialogaron de forma sostenida.";
   }
 }
 
@@ -107,38 +101,31 @@ function nextWeek(){
   week>=WEEKS.length ? showMonthly() : (show("test"),loadQuestion());
 }
 
-/* ================= TERMÓMETRO MENSUAL ================= */
+/* ================= MENSUAL ================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
 
   const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
-  const delta = weeklyScores[weeklyScores.length-1] - weeklyScores[0];
+  const delta=weeklyScores.at(-1)-weeklyScores[0];
 
-  animateGauge(monthlyFill, Math.round((avg/2)*100), ()=>{
+  animateGauge(monthlyFill,Math.round((avg/2)*100),()=>{
     setTimeout(()=>{
       monthlyTextWrap.classList.remove("hidden");
 
-      if(avg<0.8){
-        monthlySymbol.innerText="🦇";
-        monthlyLongText.innerText =
-          "El proceso mensual mostró una base inicial frágil y sostenida dificultad para integrar emoción y acción.";
-      }else if(avg<1.5){
-        monthlySymbol.innerText="🐞";
-        monthlyLongText.innerText =
-          "El recorrido evidenció avances parciales, con oscilaciones entre presencia y automatismo.";
-      }else{
-        monthlySymbol.innerText="🐦";
-        monthlyLongText.innerText =
-          "A lo largo del mes se consolidó una integración progresiva, con mayor coherencia sostenida.";
-      }
+      monthlyLongText.innerText =
+        avg>1.4
+          ? "El recorrido mostró una integración progresiva y mayor coherencia sostenida."
+          : avg>0.9
+            ? "El proceso fue oscilante, con avances y retrocesos según el contexto."
+            : "Predominó la reactividad emocional y el desgaste acumulado.";
 
       monthlyText.innerText =
-        delta > 0
-          ? "Comparando el inicio con el cierre del mes, se observa un aumento de conciencia y regulación emocional."
-          : delta < 0
-            ? "El cierre del mes mostró desgaste respecto del inicio, señalando reactividad acumulada."
-            : "El nivel de conciencia se mantuvo estable durante todo el mes.";
+        delta>0
+          ? "El cierre del mes evidencia crecimiento respecto del inicio."
+          : delta<0
+            ? "El cierre del mes refleja mayor carga reactiva."
+            : "El nivel de conciencia se mantuvo estable.";
     },2000);
   });
 }
@@ -146,17 +133,16 @@ function showMonthly(){
 /* ================= ESPEJO ================= */
 const MIRROR_QUESTIONS=[
  {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
- {t:"¿La tristeza condicionó tus decisiones o energía?",e:"sad"},
+ {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
  {t:"¿El miedo te frenó?",e:"fear"},
- {t:"¿La ansiedad te llevó a reaccionar en automático?",e:"anx"},
+ {t:"¿La ansiedad te llevó a automatismos?",e:"anx"},
  {t:"¿Apareció culpa no resuelta?",e:"guilt"},
  {t:"¿Hubo desconexión emocional?",e:"flat"},
  {t:"¿La alegría fue genuina y sostenida?",e:"joy"},
  {t:"¿Evitaste alguna emoción dominante?",e:"q"}
 ];
 
-let mq=0, mirrorScore=0, mirrorCount=0;
-let mirrorLog = [];
+let mq=0, mirrorScore=0, mirrorCount=0, mirrorLog=[];
 
 function openMirror(){ show("mirrorIntro"); }
 
@@ -166,54 +152,45 @@ function startMirror(){
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorEmoji.className="emoji3d "+MIRROR_QUESTIONS[mq].e;
   mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
-  if(v!==null){
-    mirrorScore+=v;
-    mirrorCount++;
-    mirrorLog.push(v);
-  } else {
-    mirrorLog.push(0);
-  }
+  mirrorLog.push(v??0);
+  if(v!==null){ mirrorScore+=v; mirrorCount++; }
   mq++;
   mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
 }
 
-/* ================= DEVOLUCIÓN FINAL ================= */
+/* ================= FINAL ================= */
 function showMirror(){
   show("mirrorResult");
   mirrorTextWrap.classList.add("hidden");
 
-  const avg = mirrorCount ? mirrorScore/mirrorCount : 0;
-  const evitadas = mirrorLog.filter(v=>v===0).length;
+  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  const evitadas=mirrorLog.filter(v=>v===0).length;
 
-  animateGauge(mirrorFill, Math.round((avg/2)*100), ()=>{
+  mirrorTextWrap.className =
+    "result-text "+
+    (avg>1.4?"led-green":avg>0.9?"led-yellow":"led-red");
+
+  animateGauge(mirrorFill,Math.round((avg/2)*100),()=>{
     setTimeout(()=>{
       mirrorTextWrap.classList.remove("hidden");
 
       mirrorFullText.innerText =
-        "La lectura final integra todo tu recorrido en Humanómetro. " +
-        "Partiste de una base inicial que fue puesta a prueba a lo largo del mes. " +
-        "Las respuestas semanales mostraron cómo reaccionaste ante distintos contextos, " +
-        "y el espejo reveló qué emociones lograste sostener y cuáles tendiste a evitar.\n\n" +
-
+        "Esta lectura integra todo tu recorrido en Humanómetro.\n\n"+
         (avg>1.4
-          ? "Predominó la coherencia emocional y una capacidad activa de autorregulación."
+          ? "Predominó coherencia emocional y autorregulación consciente."
           : avg>0.9
-            ? "Hubo conciencia intermitente, con avances y retrocesos según el contexto."
-            : "La reactividad emocional tuvo un peso significativo en tus decisiones."
-        ) +
-
+            ? "La conciencia fue intermitente, con avances y retrocesos."
+            : "La reactividad emocional influyó de forma significativa.")+
         (evitadas>2
-          ? "\n\nSe observaron emociones evitadas, lo que indica zonas que aún no fueron integradas."
-          : "\n\nLa mayoría de las emociones fueron reconocidas y transitadas."
-        ) +
-
-        "\n\nEsta devolución no juzga. Refleja cómo te estuviste habitando.";
-    },2500);
+          ? "\n\nSe detectaron emociones evitadas, señalando zonas no integradas."
+          : "\n\nLas emociones fueron mayormente reconocidas y transitadas.")+
+        "\n\nEsto no juzga. Refleja cómo te estuviste habitando.";
+    },2000); // ⬅ medio segundo menos
   });
 }
 
@@ -233,4 +210,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
     .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-}
+    }
