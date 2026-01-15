@@ -147,10 +147,8 @@ button {
   height: 220px;
   background: rgba(0,0,0,0.35);
   border-radius: 20px;
-  margin: 30px auto;
   overflow: hidden;
   position: relative;
-  z-index: 3;
 }
 
 .gradient {
@@ -159,34 +157,45 @@ button {
   background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
 }
 
-/* ===== POSICIÓN LATERAL ===== */
-.right {
-  margin-left: auto;
-  margin-right: 10px;
-}
-
-/* ===== ESCENAS DE TERMÓMETRO ===== */
-.gauge-stage {
+/* ===== CONTENEDOR RESULTADOS LATERALES ===== */
+.result-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 260px;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 20px;
 }
 
-/* ===== PANEL BASE ===== */
+.result-text {
+  flex: 1;
+  text-align: left;
+}
+
+/* ===== SÍMBOLOS / DIBUJOS 3D ===== */
+.symbol {
+  font-size: 3.4rem;
+  margin-bottom: 10px;
+  animation: floatBase 2.6s infinite ease-in-out;
+}
+
+@keyframes floatBase {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* ===== PANEL / LÁMINA ===== */
 .panel {
   padding: 18px;
-  margin: 20px 0;
+  margin: 12px 0;
   border-radius: 16px;
 }
 
-/* ===== SCROLL INTERNO ===== */
 .scrollable {
   max-height: 60vh;
   overflow-y: auto;
 }
 
-/* ===== LÁMINA BLANCA ESPEJO ===== */
+/* ===== LÁMINA BLANCA (ESPEJO FINAL) ===== */
 .white-sheet {
   background: rgba(255,255,255,0.88);
   color: #001c14;
@@ -199,7 +208,6 @@ button {
 .scroll-hint {
   text-align: center;
   font-size: 1.2rem;
-  opacity: 0;
   animation: hintMove 1.6s infinite;
 }
 
@@ -221,12 +229,6 @@ button {
 
 .float {
   animation: floatBase 2.8s infinite ease-in-out;
-}
-
-@keyframes floatBase {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
 }
 
 /* ===== COLORES EMOCIONALES ===== */
