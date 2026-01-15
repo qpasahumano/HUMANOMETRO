@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.querySelector(
     '#start button[onclick="startV2()"]'
   );
-  if (startBtn) startBtn.addEventListener("click", startV2);
+  if (startBtn) {
+    startBtn.addEventListener("click", startV2);
+  }
 });
 
 /* ================= CACHE ================= */
@@ -50,12 +52,19 @@ const WEEKS = [
   ]}
 ];
 
-let week=0, q=0, weeklyScores=[], currentScore=0;
+let week = 0, q = 0;
+let weeklyScores = [];
+let weeklyRaw = [];
+let currentScore = 0;
 
-/* ================= FLUJO ================= */
+/* ================= FLUJO V2 ================= */
 function startV2(){
-  week=0; q=0; weeklyScores=[]; currentScore=0;
-  show("test"); loadQuestion();
+  week=0; q=0;
+  weeklyScores=[];
+  weeklyRaw=[];
+  currentScore=0;
+  show("test");
+  loadQuestion();
 }
 
 function loadQuestion(){
@@ -67,7 +76,8 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v; q++;
+  currentScore += v;
+  q++;
   q>=4 ? showWeeklyResult() : loadQuestion();
 }
 
@@ -75,19 +85,20 @@ function showWeeklyResult(){
   show("weeklyResult");
   const avg=currentScore/4;
   weeklyScores.push(avg);
+  weeklyRaw.push(currentScore);
 
   if(avg<0.8){
     weeklySymbol.innerText="🦇";
-    weeklyText.innerText="Desconexión entre emoción y acción.";
-    weeklyAdvice.innerText="Registrar lo sentido sin juzgar permite iniciar la integración.";
+    weeklyText.innerText="Durante esta semana predominó la reacción automática.";
+    weeklyAdvice.innerText="Hubo emociones activadas que no lograron traducirse en acciones conscientes.";
   }else if(avg<1.5){
     weeklySymbol.innerText="🐞";
-    weeklyText.innerText="Presencia intermitente.";
-    weeklyAdvice.innerText="Hubo conciencia parcial.";
+    weeklyText.innerText="La presencia apareció de forma intermitente.";
+    weeklyAdvice.innerText="Alternaste momentos de conciencia con respuestas condicionadas.";
   }else{
     weeklySymbol.innerText="🐦";
-    weeklyText.innerText="Coherencia sostenida.";
-    weeklyAdvice.innerText="La humanidad se fortalece cuando hay congruencia.";
+    weeklyText.innerText="Se sostuvo una coherencia activa.";
+    weeklyAdvice.innerText="Emoción, pensamiento y acción mostraron alineación creciente.";
   }
 }
 
@@ -96,17 +107,38 @@ function nextWeek(){
   week>=WEEKS.length ? showMonthly() : (show("test"),loadQuestion());
 }
 
-/* ================= MENSUAL ================= */
+/* ================= TERMÓMETRO MENSUAL ================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
 
   const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
+  const delta = weeklyScores[weeklyScores.length-1] - weeklyScores[0];
+
   animateGauge(monthlyFill, Math.round((avg/2)*100), ()=>{
     setTimeout(()=>{
       monthlyTextWrap.classList.remove("hidden");
+
+      if(avg<0.8){
+        monthlySymbol.innerText="🦇";
+        monthlyLongText.innerText =
+          "El proceso mensual mostró una base inicial frágil y sostenida dificultad para integrar emoción y acción.";
+      }else if(avg<1.5){
+        monthlySymbol.innerText="🐞";
+        monthlyLongText.innerText =
+          "El recorrido evidenció avances parciales, con oscilaciones entre presencia y automatismo.";
+      }else{
+        monthlySymbol.innerText="🐦";
+        monthlyLongText.innerText =
+          "A lo largo del mes se consolidó una integración progresiva, con mayor coherencia sostenida.";
+      }
+
       monthlyText.innerText =
-        "Esta lectura integra tu forma de sentir, decidir y actuar a lo largo del tiempo.";
+        delta > 0
+          ? "Comparando el inicio con el cierre del mes, se observa un aumento de conciencia y regulación emocional."
+          : delta < 0
+            ? "El cierre del mes mostró desgaste respecto del inicio, señalando reactividad acumulada."
+            : "El nivel de conciencia se mantuvo estable durante todo el mes.";
     },2000);
   });
 }
@@ -119,45 +151,69 @@ const MIRROR_QUESTIONS=[
  {t:"¿La ansiedad te llevó a reaccionar en automático?",e:"anx"},
  {t:"¿Apareció culpa no resuelta?",e:"guilt"},
  {t:"¿Hubo desconexión emocional?",e:"flat"},
- {t:"¿La alegría fue genuina?",e:"joy"},
+ {t:"¿La alegría fue genuina y sostenida?",e:"joy"},
  {t:"¿Evitaste alguna emoción dominante?",e:"q"}
 ];
 
 let mq=0, mirrorScore=0, mirrorCount=0;
+let mirrorLog = [];
 
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  mq=0; mirrorScore=0; mirrorCount=0;
+  mq=0; mirrorScore=0; mirrorCount=0; mirrorLog=[];
   show("mirrorTest"); loadMirror();
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d face "+MIRROR_QUESTIONS[mq].e;
+  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
   mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
-  if(v!==null){ mirrorScore+=v; mirrorCount++; }
+  if(v!==null){
+    mirrorScore+=v;
+    mirrorCount++;
+    mirrorLog.push(v);
+  } else {
+    mirrorLog.push(0);
+  }
   mq++;
   mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
 }
 
-/* ================= FINAL ================= */
+/* ================= DEVOLUCIÓN FINAL ================= */
 function showMirror(){
   show("mirrorResult");
   mirrorTextWrap.classList.add("hidden");
 
-  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  const avg = mirrorCount ? mirrorScore/mirrorCount : 0;
+  const evitadas = mirrorLog.filter(v=>v===0).length;
+
   animateGauge(mirrorFill, Math.round((avg/2)*100), ()=>{
     setTimeout(()=>{
       mirrorTextWrap.classList.remove("hidden");
+
       mirrorFullText.innerText =
-        "El espejo no mide aciertos ni errores. Integra todo tu recorrido en Humanómetro: "+
-        "la forma en que habitaste tus emociones, cómo influyeron en tus decisiones y qué grado "+
-        "de coherencia sostuviste en el tiempo. Algunas emociones fueron reconocidas, otras evitadas. "+
-        "Esta devolución no juzga: refleja. La humanidad no se pierde, pero se apaga cuando no se la vive conscientemente.";
-    },2500); // ⬅️ 0.5s menos
+        "La lectura final integra todo tu recorrido en Humanómetro. " +
+        "Partiste de una base inicial que fue puesta a prueba a lo largo del mes. " +
+        "Las respuestas semanales mostraron cómo reaccionaste ante distintos contextos, " +
+        "y el espejo reveló qué emociones lograste sostener y cuáles tendiste a evitar.\n\n" +
+
+        (avg>1.4
+          ? "Predominó la coherencia emocional y una capacidad activa de autorregulación."
+          : avg>0.9
+            ? "Hubo conciencia intermitente, con avances y retrocesos según el contexto."
+            : "La reactividad emocional tuvo un peso significativo en tus decisiones."
+        ) +
+
+        (evitadas>2
+          ? "\n\nSe observaron emociones evitadas, lo que indica zonas que aún no fueron integradas."
+          : "\n\nLa mayoría de las emociones fueron reconocidas y transitadas."
+        ) +
+
+        "\n\nEsta devolución no juzga. Refleja cómo te estuviste habitando.";
+    },2500);
   });
 }
 
@@ -177,4 +233,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
     .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-      }
+}
