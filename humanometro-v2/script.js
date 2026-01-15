@@ -61,29 +61,31 @@ function answer(v) {
 
 function showWeeklyResult() {
   show("weeklyResult");
-  const avg = currentScore / 4;
 
-  let symbol = "🐞", text = "", advice = "";
+  const avg = currentScore / 4;
+  weeklyScores.push(avg);
+
+  let symbol = "🐞";
+  let text = "";
+  let advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
     text = "Esta semana mostró una desconexión humana.";
-    advice = "Detenerte y observar puede ayudarte a reconectar.";
+    advice = "Puede indicar cansancio emocional, automatismo o distancia de lo que sentís.";
   } else if (avg < 1.5) {
     symbol = "🐞";
     text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños gestos conscientes pueden impulsarte.";
+    advice = "Hubo momentos de presencia y otros de dispersión. Estás en proceso.";
   } else {
     symbol = "🐦";
     text = "Tu humanidad está en crecimiento.";
-    advice = "Sostener esta coherencia fortalece tu camino.";
+    advice = "Se observa mayor coherencia entre sentir, pensar y actuar.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
   document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
-
-  weeklyScores.push(avg);
 }
 
 function nextWeek() {
@@ -91,66 +93,69 @@ function nextWeek() {
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) {
-    showMonthlyResult();
-  } else {
+  if (week >= WEEKS.length) showFinalResult();
+  else {
     show("test");
     loadQuestion();
   }
 }
 
-function showMonthlyResult() {
+function showFinalResult() {
   show("monthlyResult");
 
-  const avg =
-    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+
+  const fill = document.getElementById("monthlyFill");
+  fill.style.height = "0%";
 
   setTimeout(() => {
-    document.getElementById("monthlyFill").style.height =
-      Math.round((avg / 2) * 100) + "%";
-  }, 500);
+    fill.style.height = Math.round((avg / 2) * 100) + "%";
+  }, 300);
 
   setTimeout(() => {
-    let symbol = "🐞", text = "", advice = "";
+    let symbol = "🐞";
+    let text = "";
+    let advice = "";
 
     if (avg < 0.8) {
       symbol = "🦇";
       text = "Tu humanidad estuvo retraída en estos días.";
-      advice = "Pausar y observar puede reactivar tu sensibilidad.";
+      advice =
+        "No como un fallo, sino como una señal. Puede haber sobrecarga, cierre emocional o desconexión con lo que sentís. Detenerte y observar es el primer paso para reordenarte.";
     } else if (avg < 1.5) {
       symbol = "🐞";
-      text = "Tu humanidad se mantuvo estable en estos días.";
-      advice = "Pequeños cambios conscientes pueden impulsarte.";
+      text = "Tu humanidad se expresó de forma intermitente.";
+      advice =
+        "Hubo momentos de presencia real y otros de automatismo. Este estado habla de una conciencia activa, aunque aún inestable. Pequeños gestos diarios pueden ordenar ese equilibrio.";
     } else {
       symbol = "🐦";
-      text = "Tu humanidad está en expansión.";
-      advice = "Sostener esta coherencia fortalece tu humanidad.";
+      text = "Tu humanidad muestra coherencia y expansión.";
+      advice =
+        "Se observa alineación entre lo que sentís, pensás y hacés. No es perfección, es congruencia. Este estado fortalece tu vínculo con vos y con los demás.";
     }
 
     document.getElementById("monthlySymbol").innerText = symbol;
     document.getElementById("monthlyText").innerText = text;
     document.getElementById("monthlyAdvice").innerText = advice;
-  }, 3500);
+
+    document.getElementById("monthlyAdvice").insertAdjacentHTML(
+      "afterend",
+      `<button class="primary" onclick="goToMirror()">Verte al espejo</button>`
+    );
+
+  }, 1800);
+}
+
+function goToMirror() {
+  window.location.href = "../volumen3/index.html";
 }
 
 function updateThermo() {
-  document.getElementById("thermoFill").style.width =
-    (q / 4) * 100 + "%";
+  document.getElementById("thermoFill").style.width = (q / 4) * 100 + "%";
 }
 
 function show(id) {
-  ["start", "test", "weeklyResult", "monthlyResult", "monthlyFull"]
+  ["start", "test", "weeklyResult", "monthlyResult"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
-
-function restart() {
-  show("start");
-}
-
-/* ===============================
-   👉 BOTÓN DEFINITIVO: VERTE AL ESPEJO
-   =============================== */
-function goToMirror() {
-  window.location.href = "./volumen3/index.html";
-             }
