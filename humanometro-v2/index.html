@@ -2,108 +2,89 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>HUMANÓMETRO v.2</title>
+  <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-<section id="start">
-  <h1 class="brand">
-    <span class="brand-main">HUMANÓMETRO</span><br>
-    <span class="brand-meta">v.2 ®</span>
-  </h1>
+<!-- ================= ESPEJO / PREGUNTAS ================= -->
 
-  <p class="intro fade">
-    Humanómetro no se recorre de una sola vez.<br><br>
-    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-    La humanidad se construye en movimiento, no en velocidad.
-  </p>
+<section id="mirrorTest" class="screen">
+  <div id="emoji3d" class="emoji3d"></div>
+  <p id="mirrorQuestion" class="question"></p>
 
-  <button class="primary sky" onclick="startV2()">Continuar seguimiento</button>
-</section>
-
-<section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title fade"></h2>
-  <div class="thermo"><div id="thermoFill"></div></div>
-  <p id="questionText" class="question fade"></p>
-  <small id="questionMeasure" class="legal fade"></small>
   <div class="answers">
-    <button class="sky" onclick="answer(2)">Sí</button>
-    <button class="sky" onclick="answer(1)">A veces</button>
-    <button class="sky" onclick="answer(0)">No</button>
+    <button onclick="answerMirror(3)">MUCHO</button>
+    <button onclick="answerMirror(2)">POCO</button>
+    <button onclick="answerMirror(1)">NADA</button>
+    <button onclick="answerMirror(null)">NINGUNA</button>
   </div>
 </section>
 
-<section id="weeklyResult" class="hidden">
-  <h2 class="neon-title fade">Lectura semanal</h2>
-  <div id="weeklySymbol" class="symbol fade"></div>
-  <p id="weeklyText" class="fade"></p>
-  <p id="weeklyAdvice" class="legal fade"></p>
-  <button class="primary sky" onclick="nextWeek()">Continuar</button>
+<!-- ================= TERMÓMETRO FINAL ================= -->
+
+<section id="finalGauge" class="screen hidden">
+  <div class="thermo-vertical">
+    <div id="finalFill"></div>
+  </div>
 </section>
 
-<section id="monthlyResult" class="hidden">
-  <h2 class="neon-title fade">Tu humanidad en movimiento</h2>
+<!-- ================= DEVOLUCIÓN FINAL ================= -->
 
-  <div id="monthGaugeWrap" class="gauge-stage">
-    <div class="vertical-thermo right">
-      <div id="monthlyFill" class="gradient"></div>
+<section id="finalReading" class="screen hidden">
+  <div class="sheet">
+    <div class="sheet-content">
+
+      <h2>Lectura final de tu proceso humano</h2>
+
+      <p>
+        Este recorrido reflejó cómo te posicionaste humanamente a lo largo del tiempo,
+        no desde una respuesta aislada, sino desde la coherencia —o tensión—
+        entre lo que sentiste, pensaste y llevaste a la acción.
+      </p>
+
+      <p>
+        En el inicio, el proceso mostró tu base de conciencia: el modo en que estabas
+        habitando lo cotidiano, tu nivel de presencia y desde dónde partías en ese momento.
+        Esa base no definió quién sos, pero sí dejó ver tu punto de partida real.
+      </p>
+
+      <p>
+        Con el correr de las semanas, se volvió visible si esa conciencia inicial se sostuvo,
+        se debilitó o se transformó. En algunos tramos apareció mayor coherencia y responsabilidad;
+        en otros, respuestas más automáticas, desgaste emocional o desconexión.
+        Ese movimiento es clave: habla de cómo el tiempo impacta en tu humanidad.
+      </p>
+
+      <p>
+        El espejo integró todo el recorrido. Mostró si las emociones fueron reconocidas,
+        evitadas o elaboradas, y qué efecto tuvieron en vos y en tus vínculos cercanos.
+        La congruencia no es permanente: se construye cuando emoción, pensamiento y acción
+        comienzan a dialogar con mayor continuidad.
+      </p>
+
+      <p>
+        Este mes dejó información valiosa. Lo que hagas con ella forma parte del próximo movimiento.
+      </p>
+
     </div>
+
+    <div id="sheetHint" class="sheet-hint">⬇</div>
   </div>
 
-  <div id="monthTextWrap" class="hidden">
-    <div class="panel scrollable">
-      <p id="monthlyLongText" class="fade"></p>
-      <p id="monthlyText" class="fade"></p>
-    </div>
-    <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
-  </div>
-</section>
-
-<section id="mirrorIntro" class="hidden">
-  <h2 class="neon-title fade">EL ESPEJO</h2>
-  <p class="intro fade">
-    <strong>No muestra lo que sos.</strong><br>
-    Refleja lo que estás haciendo con lo que sentís.<br><br>
-    El espejo no juzga. Solo refleja.
+  <p class="legal">
+    Cuando quieras volver a medir tu humanidad,<br>
+    para eso está Humanómetro.
   </p>
-  <button class="primary sky" onclick="startMirror()">Comenzar</button>
-</section>
-
-<section id="mirrorTest" class="hidden">
-  <div id="mirrorEmoji" class="emoji3d float"></div>
-  <p id="mirrorQuestion" class="question fade"></p>
-  <div class="answers">
-    <button class="sky deep" onclick="answerMirror(3)">MUCHO</button>
-    <button class="sky deep" onclick="answerMirror(2)">POCO</button>
-    <button class="sky deep" onclick="answerMirror(1)">NADA</button>
-    <button class="sky deep" onclick="answerMirror(null)">NINGUNA</button>
-  </div>
-</section>
-
-<section id="mirrorResult" class="hidden full-screen">
-  <div id="mirrorGaugeWrap" class="gauge-stage">
-    <div class="vertical-thermo right">
-      <div id="mirrorFill" class="gradient"></div>
-    </div>
-  </div>
-
-  <div id="mirrorTextWrap" class="hidden">
-    <div class="panel scrollable">
-      <p id="mirrorFullText" class="legal small fade"></p>
-    </div>
-    <p class="legal small fade">
-      Cuando quieras volver a medir tu humanidad,<br>
-      Humanómetro está para eso.
-    </p>
-  </div>
 </section>
 
 </main>
+
 <script src="script.js"></script>
 </body>
 </html>
