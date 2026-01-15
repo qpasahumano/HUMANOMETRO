@@ -1,43 +1,41 @@
+/* ================= VOLUMEN 2 ================= */
+
 const WEEKS = [
   {
     title: "Vos ante el mundo",
     questions: [
-      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
-      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
-      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
-      ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
+      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Empatía global"],
+      ["Cuando alguien te habla, ¿dejás el celular?", "Presencia humana"],
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Compromiso"],
+      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad"]
     ]
   },
   {
     title: "Vos y la tecnología",
     questions: [
-      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
-      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
-      ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
-      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
+      ["¿Podés soltar el celular al compartir?", "Uso consciente"],
+      ["¿Controlás el tiempo en pantallas?", "Autocontrol"],
+      ["¿Recordás que hay personas reales detrás de una pantalla?", "Empatía digital"],
+      ["¿La tecnología acompaña sin absorberte?", "Equilibrio"]
     ]
   },
   {
     title: "Integración humana",
     questions: [
-      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
-      ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
-      ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
-      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Coherencia"],
+      ["¿Podés observarte sin juzgarte?", "Autoconciencia"],
+      ["¿Asumís tu impacto en otros?", "Responsabilidad"],
+      ["¿Sentís evolución humana?", "Integración"]
     ]
   }
 ];
 
-let week = 0;
-let q = 0;
+let week = 0, q = 0;
 let weeklyScores = [];
 let currentScore = 0;
 
 function startV2() {
-  week = 0;
-  q = 0;
-  weeklyScores = [];
-  currentScore = 0;
+  week = 0; q = 0; weeklyScores = []; currentScore = 0;
   show("test");
   loadQuestion();
 }
@@ -54,7 +52,6 @@ function answer(v) {
   currentScore += v;
   q++;
   updateThermo();
-
   if (q >= 4) showWeeklyResult();
   else loadQuestion();
 }
@@ -62,99 +59,150 @@ function answer(v) {
 function showWeeklyResult() {
   show("weeklyResult");
   const avg = currentScore / 4;
+  weeklyScores.push(avg);
 
   let symbol = "🐞", text = "", advice = "";
-
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Esta semana mostró una desconexión humana.";
-    advice = "Detenerte y observar puede ayudarte a reconectar.";
+    text = "Desconexión humana esta semana.";
+    advice = "Detenerte puede ayudarte a integrar.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    text = "Tu humanidad se mantuvo estable.";
-    advice = "Pequeños gestos conscientes pueden impulsarte.";
+    text = "Humanidad estable.";
+    advice = "Pequeños gestos suman.";
   } else {
     symbol = "🐦";
-    text = "Tu humanidad está en crecimiento.";
-    advice = "Sostener esta coherencia fortalece tu camino.";
+    text = "Humanidad en crecimiento.";
+    advice = "Sostené esta coherencia.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
   document.getElementById("weeklyText").innerText = text;
   document.getElementById("weeklyAdvice").innerText = advice;
-
-  weeklyScores.push(avg);
 }
 
 function nextWeek() {
-  week++;
-  q = 0;
-  currentScore = 0;
-
+  week++; q = 0; currentScore = 0;
   if (week >= WEEKS.length) showMonthlyResult();
-  else {
-    show("test");
-    loadQuestion();
-  }
+  else { show("test"); loadQuestion(); }
 }
 
 function showMonthlyResult() {
   show("monthlyResult");
 
-  const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  // termómetro en vivo
-  setTimeout(() => {
+  const avg = weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
+  setTimeout(()=>{
     document.getElementById("monthlyFill").style.height =
-      Math.round((avg / 2) * 100) + "%";
-  }, 300);
+      Math.round((avg/2)*100)+"%";
+  },300);
 
-  // devolución + botón espejo
-  setTimeout(() => {
-    let text = "";
-
-    if (avg < 0.8) {
-      text = "Este recorrido mostró una desconexión entre intención y acción.";
-    } else if (avg < 1.5) {
-      text = "Este recorrido reflejó presencia humana intermitente.";
-    } else {
-      text = "Este recorrido mostró coherencia entre lo que sentís y hacés.";
-    }
-
-    document.getElementById("monthlyText").innerText = text;
-
-    document.getElementById("monthlyAdvice").innerHTML = `
-      <button class="primary" onclick="goToMirror()">
-        Verte al espejo
-      </button>
-    `;
-
-    // 🔥 eliminar cualquier botón viejo colgado
-    const oldBtn = document.querySelector(
-      'button[onclick="openMonthlyFull()"]'
-    );
-    if (oldBtn) oldBtn.remove();
-
-  }, 2500);
+  setTimeout(()=>{
+    document.getElementById("monthlyText").innerText =
+      "Este recorrido refleja tu humanidad en movimiento.";
+    document.getElementById("monthlyAdvice").innerHTML =
+      `<button class="primary" onclick="openMirror()">Entrar al espejo</button>`;
+  },1500);
 }
+
+/* ================= EL ESPEJO ================= */
+
+const MIRROR_QUESTIONS = [
+  "¿Qué emoción predominó realmente ante una situación significativa?",
+  "¿Cuánto tiempo permaneciste en esa emoción?",
+  "¿Tomaste conciencia después de haber reaccionado?",
+  "¿Lo que hiciste fue coherente con lo que sentías?",
+  "¿Esa reacción impactó en vínculos cercanos?",
+  "¿Actuaste en automático o con presencia?",
+  "¿Asumiste responsabilidad emocional?",
+  "¿Integraste lo vivido en estas semanas?"
+];
+
+let mq = 0;
+let mirrorScore = 0;
+let mirrorCount = 0;
+
+function openMirror() {
+  show("mirrorIntro");
+}
+
+function startMirror() {
+  mq = 0; mirrorScore = 0; mirrorCount = 0;
+  show("mirrorTest");
+  loadMirrorQuestion();
+}
+
+function loadMirrorQuestion() {
+  document.getElementById("mirrorQuestion").innerText =
+    MIRROR_QUESTIONS[mq];
+}
+
+function answerMirror(v) {
+  if (v !== null) {
+    mirrorScore += v;
+    mirrorCount++;
+  }
+  mq++;
+  if (mq >= MIRROR_QUESTIONS.length) showMirrorResult();
+  else loadMirrorQuestion();
+}
+
+function showMirrorResult() {
+  show("mirrorResult");
+
+  const avg = mirrorCount === 0 ? 0 : mirrorScore / mirrorCount;
+
+  let state = "", shortText = "", fullText = "";
+
+  if (avg < 0.8) {
+    state = "Opaco";
+    shortText =
+      "El reflejo aparece distorsionado. No porque falte humanidad, sino porque las emociones no están siendo integradas.";
+    fullText =
+      "La incongruencia no apaga tu humanidad, pero la vuelve inestable. Cuando la emoción no se integra al pensamiento y la acción, la experiencia no deja aprendizaje.";
+  } else if (avg < 1.5) {
+    state = "Intermedio";
+    shortText =
+      "El reflejo es inestable. Hay conciencia, pero aún no se sostiene en el tiempo.";
+    fullText =
+      "Hay momentos de presencia y momentos de automatismo. La clave no es forzar el cambio, sino habitar lo que sentís con mayor continuidad.";
+  } else {
+    state = "Lúcido";
+    shortText =
+      "El reflejo es claro. Lo que sentís, pensás y hacés empieza a alinearse.";
+    fullText =
+      "La congruencia sostenida no es perfección: es presencia. Cuando emoción, pensamiento y acción dialogan, la humanidad se expande y se vuelve consciente.";
+  }
+
+  document.getElementById("mirrorState").innerText = state;
+  document.getElementById("mirrorShortText").innerText = shortText;
+  document.getElementById("mirrorFullText").innerText =
+    fullText +
+    "\n\nLa humanidad no se pierde, pero se apaga cuando no se la habita conscientemente.";
+
+  setTimeout(()=>{
+    document.getElementById("mirrorFill").style.height =
+      Math.round((avg/2)*100)+"%";
+  },300);
+}
+
+/* ================= UTILIDADES ================= */
 
 function updateThermo() {
   document.getElementById("thermoFill").style.width =
-    (q / 4) * 100 + "%";
+    (q/4)*100+"%";
 }
 
 function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
-    .forEach(s => document.getElementById(s).classList.add("hidden"));
+  [
+    "start","test","weeklyResult","monthlyResult",
+    "mirrorIntro","mirrorTest","mirrorResult"
+  ].forEach(s=>{
+    const el=document.getElementById(s);
+    if(el) el.classList.add("hidden");
+  });
   document.getElementById(id).classList.remove("hidden");
 }
 
 function restart() {
   show("start");
 }
-
-// 👉 ENGANCHE A VOLUMEN 3
-function goToMirror() {
-  window.location.href = "./humanometro-v3/";
-                            }
