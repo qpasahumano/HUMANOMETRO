@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,11 +16,13 @@
     <span class="brand-main">HUMANÓMETRO</span><br>
     <span class="brand-meta">v.2 ®</span>
   </h1>
+
   <p class="intro fade">
     Humanómetro no se recorre de una sola vez.<br><br>
     Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
     La humanidad se construye en movimiento, no en velocidad.
   </p>
+
   <button class="primary sky" onclick="startV2()">Continuar seguimiento</button>
 </section>
 
@@ -47,21 +49,18 @@
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title fade">Tu humanidad en movimiento</h2>
 
-  <!-- TERMÓMETRO (SOLO PARA EL EFECTO) -->
   <div id="monthGaugeWrap" class="gauge-stage">
     <div class="vertical-thermo right">
       <div id="monthlyFill" class="gradient"></div>
     </div>
   </div>
 
-  <!-- TEXTO (APARECE CUANDO EL TERMÓMETRO SE VA) -->
   <div id="monthTextWrap" class="hidden">
     <div class="panel scrollable">
       <p id="monthlyLongText" class="fade"></p>
       <p id="monthlyText" class="fade"></p>
     </div>
-    <div class="scroll-hint">⬇</div>
-    <button class="primary sky" onclick="openMirror()">Entrar al espejo</button>
+    <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
   </div>
 </section>
 
@@ -87,28 +86,24 @@
 </section>
 
 <section id="mirrorResult" class="hidden full-screen">
-  <!-- TERMÓMETRO FINAL (SOLO EFECTO) -->
   <div id="mirrorGaugeWrap" class="gauge-stage">
     <div class="vertical-thermo right">
       <div id="mirrorFill" class="gradient"></div>
     </div>
   </div>
 
-  <!-- TEXTO FINAL -->
   <div id="mirrorTextWrap" class="hidden">
     <div class="panel scrollable">
       <p id="mirrorFullText" class="legal small fade"></p>
     </div>
-    <div class="scroll-hint">⬇</div>
-    <p class="legal fade">
-      Volver a medir tu humanidad cuando quieras.<br>
+    <p class="legal small fade">
+      Cuando quieras volver a medir tu humanidad,<br>
       Humanómetro está para eso.
     </p>
-    <button class="primary sky" onclick="restart()">Cerrar el espejo</button>
   </div>
 </section>
 
 </main>
 <script src="script.js"></script>
 </body>
-      </html>
+</html>
