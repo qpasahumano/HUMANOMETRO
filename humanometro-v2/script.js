@@ -63,25 +63,20 @@ function showWeeklyResult() {
   show("weeklyResult");
   const avg = currentScore / 4;
 
-  let symbol = "🐞";
-  let text = "";
-  let advice = "";
+  let symbol = "🐞", text = "", advice = "";
 
   if (avg < 0.8) {
     symbol = "🦇";
-    text = "Tu humanidad mostró una retracción consciente.";
-    advice =
-      "No como falla, sino como señal. Cuando la sensibilidad baja, suele ser momento de pausa y revisión interna.";
+    text = "Esta semana mostró una desconexión humana.";
+    advice = "Detenerte y observar puede ayudarte a reconectar.";
   } else if (avg < 1.5) {
     symbol = "🐞";
-    text = "Tu humanidad se mantuvo presente, aunque con fluctuaciones.";
-    advice =
-      "Hubo conciencia en algunos momentos y automatismo en otros. Observar esas variaciones es parte del proceso.";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
   } else {
     symbol = "🐦";
-    text = "Tu humanidad mostró coherencia y expansión.";
-    advice =
-      "Existe alineación entre lo que sentís, pensás y hacés. Sostener esta apertura requiere cuidado y descanso.";
+    text = "Tu humanidad está en crecimiento.";
+    advice = "Sostener esta coherencia fortalece tu camino.";
   }
 
   document.getElementById("weeklySymbol").innerText = symbol;
@@ -96,47 +91,51 @@ function nextWeek() {
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) {
-    showFinalResult();
-  } else {
+  if (week >= WEEKS.length) showMonthlyResult();
+  else {
     show("test");
     loadQuestion();
   }
 }
 
-function showFinalResult() {
+function showMonthlyResult() {
   show("monthlyResult");
 
   const avg =
-    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
-  // Termómetro vivo
+  // termómetro en vivo
   setTimeout(() => {
     document.getElementById("monthlyFill").style.height =
       Math.round((avg / 2) * 100) + "%";
   }, 300);
 
-  // Devolución después de la bajada
+  // devolución + botón espejo
   setTimeout(() => {
     let text = "";
 
     if (avg < 0.8) {
-      text =
-        "Este recorrido mostró una desconexión entre intención y acción. No es un error: es información. La conciencia empieza cuando algo se hace visible.";
+      text = "Este recorrido mostró una desconexión entre intención y acción.";
     } else if (avg < 1.5) {
-      text =
-        "Tu recorrido mostró presencia humana intermitente. Hubo momentos de claridad y otros de respuesta automática. Reconocerlos abre profundidad.";
+      text = "Este recorrido reflejó presencia humana intermitente.";
     } else {
-      text =
-        "Este recorrido reflejó coherencia interna. No perfección, sino conciencia activa. La sensibilidad está viva y en movimiento.";
+      text = "Este recorrido mostró coherencia entre lo que sentís y hacés.";
     }
 
     document.getElementById("monthlyText").innerText = text;
+
     document.getElementById("monthlyAdvice").innerHTML = `
       <button class="primary" onclick="goToMirror()">
         Verte al espejo
       </button>
     `;
+
+    // 🔥 eliminar cualquier botón viejo colgado
+    const oldBtn = document.querySelector(
+      'button[onclick="openMonthlyFull()"]'
+    );
+    if (oldBtn) oldBtn.remove();
+
   }, 2500);
 }
 
@@ -146,7 +145,7 @@ function updateThermo() {
 }
 
 function show(id) {
-  ["start", "test", "weeklyResult", "monthlyResult"]
+  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
@@ -155,7 +154,7 @@ function restart() {
   show("start");
 }
 
+// 👉 ENGANCHE A VOLUMEN 3
 function goToMirror() {
-  // Enganche preparado a Volumen 3
   window.location.href = "./humanometro-v3/";
 }
