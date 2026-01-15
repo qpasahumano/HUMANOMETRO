@@ -2,28 +2,28 @@ const WEEKS = [
   {
     title: "Vos ante el mundo",
     questions: [
-      ["¿Te afectó el sufrimiento ajeno?", "Empatía emocional"],
-      ["¿Escuchaste con presencia?", "Atención consciente"],
-      ["¿Evitaste reaccionar en automático?", "Autoregulación"],
-      ["¿Sentiste conexión humana real?", "Vínculo"]
+      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Mide empatía global."],
+      ["Cuando alguien te habla, ¿dejás el celular?", "Mide presencia humana."],
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Mide compromiso humano."],
+      ["¿Te afecta el sufrimiento ajeno?", "Mide sensibilidad emocional."]
     ]
   },
   {
     title: "Vos y la tecnología",
     questions: [
-      ["¿Pudiste soltar la pantalla?", "Desapego digital"],
-      ["¿Usaste la tecnología con conciencia?", "Uso consciente"],
-      ["¿Priorizaste lo humano?", "Presencia"],
-      ["¿Te sentiste absorbido?", "Equilibrio"]
+      ["¿Podés soltar el celular al compartir?", "Mide uso consciente."],
+      ["¿Controlás el tiempo en pantallas?", "Mide autocontrol digital."],
+      ["¿Recordás que hay personas reales detrás de una pantalla?", "Mide empatía digital."],
+      ["¿La tecnología acompaña sin absorberte?", "Mide equilibrio tecnológico."]
     ]
   },
   {
     title: "Integración humana",
     questions: [
-      ["¿Hubo coherencia entre sentir y hacer?", "Congruencia"],
-      ["¿Te observaste sin juzgar?", "Autoconciencia"],
-      ["¿Asumiste tu impacto?", "Responsabilidad"],
-      ["¿Sentís evolución interna?", "Integración"]
+      ["¿Hay coherencia entre lo que pensás y hacés?", "Mide alineación interna."],
+      ["¿Podés observarte sin juzgarte?", "Mide autoconciencia."],
+      ["¿Asumís tu impacto en otros?", "Mide responsabilidad."],
+      ["¿Sentís que tu humanidad evolucionó?", "Mide integración global."]
     ]
   }
 ];
@@ -60,16 +60,46 @@ function answer(v) {
 }
 
 function showWeeklyResult() {
-  weeklyScores.push(currentScore / 4);
+  show("weeklyResult");
+  const avg = currentScore / 4;
+
+  let symbol = "🐞", text = "", advice = "";
+
+  if (avg < 0.8) {
+    symbol = "🦇";
+    text = "Esta semana mostró una desconexión humana.";
+    advice = "Detenerte y observar puede ayudarte a reconectar.";
+  } else if (avg < 1.5) {
+    symbol = "🐞";
+    text = "Tu humanidad se mantuvo estable.";
+    advice = "Pequeños gestos conscientes pueden impulsarte.";
+  } else {
+    symbol = "🐦";
+    text = "Tu humanidad está en crecimiento.";
+    advice = "Sostener esta coherencia fortalece tu camino.";
+  }
+
+  document.getElementById("weeklySymbol").innerText = symbol;
+  document.getElementById("weeklyText").innerText = text;
+  document.getElementById("weeklyAdvice").innerText = advice;
+
+  weeklyScores.push(avg);
+}
+
+function nextWeek() {
   week++;
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) showFinalResult();
-  else loadQuestion();
+  if (week >= WEEKS.length) {
+    showMonthlyResult();
+  } else {
+    show("test");
+    loadQuestion();
+  }
 }
 
-function showFinalResult() {
+function showMonthlyResult() {
   show("monthlyResult");
 
   const avg =
@@ -78,29 +108,29 @@ function showFinalResult() {
   setTimeout(() => {
     document.getElementById("monthlyFill").style.height =
       Math.round((avg / 2) * 100) + "%";
-  }, 300);
+  }, 500);
 
-  let symbol = "🐞";
-  let text = "";
-  let advice = "";
+  setTimeout(() => {
+    let symbol = "🐞", text = "", advice = "";
 
-  if (avg < 0.8) {
-    symbol = "🦇";
-    text = "Tu humanidad apareció de forma intermitente.";
-    advice = "No como falla, sino como señal de cansancio o desconexión.";
-  } else if (avg < 1.5) {
-    symbol = "🐞";
-    text = "Tu humanidad estuvo presente con altibajos.";
-    advice = "La conciencia aparece cuando la recordás.";
-  } else {
-    symbol = "🐦";
-    text = "Tu humanidad se expresó con coherencia.";
-    advice = "Sostenerla requiere cuidado y pausa.";
-  }
+    if (avg < 0.8) {
+      symbol = "🦇";
+      text = "Tu humanidad estuvo retraída en estos días.";
+      advice = "Pausar y observar puede reactivar tu sensibilidad.";
+    } else if (avg < 1.5) {
+      symbol = "🐞";
+      text = "Tu humanidad se mantuvo estable en estos días.";
+      advice = "Pequeños cambios conscientes pueden impulsarte.";
+    } else {
+      symbol = "🐦";
+      text = "Tu humanidad está en expansión.";
+      advice = "Sostener esta coherencia fortalece tu humanidad.";
+    }
 
-  document.getElementById("monthlySymbol").innerText = symbol;
-  document.getElementById("monthlyText").innerText = text;
-  document.getElementById("monthlyAdvice").innerText = advice;
+    document.getElementById("monthlySymbol").innerText = symbol;
+    document.getElementById("monthlyText").innerText = text;
+    document.getElementById("monthlyAdvice").innerText = advice;
+  }, 3500);
 }
 
 function updateThermo() {
@@ -109,12 +139,18 @@ function updateThermo() {
 }
 
 function show(id) {
-  ["start", "test", "monthlyResult"]
+  ["start", "test", "weeklyResult", "monthlyResult", "monthlyFull"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-/* ✅ BOTÓN ESPEJO – SIN 404 */
+function restart() {
+  show("start");
+}
+
+/* ===============================
+   👉 BOTÓN DEFINITIVO: VERTE AL ESPEJO
+   =============================== */
 function goToMirror() {
-  window.location.href = "../volumen_3/index.html";
-    }
+  window.location.href = "./volumen3/index.html";
+      }
