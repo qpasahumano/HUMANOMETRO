@@ -3,9 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const startBtn = document.querySelector(
     '#start button[onclick="startV2()"]'
   );
-  if (startBtn) {
-    startBtn.addEventListener("click", startV2);
-  }
+  if (startBtn) startBtn.addEventListener("click", startV2);
 });
 
 /* ================= CACHE ================= */
@@ -54,14 +52,10 @@ const WEEKS = [
 
 let week=0, q=0, weeklyScores=[], currentScore=0;
 
-/* ================= FLUJO V2 ================= */
+/* ================= FLUJO ================= */
 function startV2(){
-  week=0;
-  q=0;
-  weeklyScores=[];
-  currentScore=0;
-  show("test");
-  loadQuestion();
+  week=0; q=0; weeklyScores=[]; currentScore=0;
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
@@ -73,8 +67,7 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v;
-  q++;
+  currentScore+=v; q++;
   q>=4 ? showWeeklyResult() : loadQuestion();
 }
 
@@ -85,27 +78,25 @@ function showWeeklyResult(){
 
   if(avg<0.8){
     weeklySymbol.innerText="🦇";
-    weeklyText.innerText="La semana evidenció desconexión entre emoción y acción.";
+    weeklyText.innerText="Desconexión entre emoción y acción.";
     weeklyAdvice.innerText="Registrar lo sentido sin juzgar permite iniciar la integración.";
   }else if(avg<1.5){
     weeklySymbol.innerText="🐞";
-    weeklyText.innerText="La presencia apareció de forma intermitente.";
-    weeklyAdvice.innerText="Hubo momentos de conciencia y otros de reacción automática.";
+    weeklyText.innerText="Presencia intermitente.";
+    weeklyAdvice.innerText="Hubo conciencia parcial.";
   }else{
     weeklySymbol.innerText="🐦";
-    weeklyText.innerText="Se sostuvo una coherencia creciente.";
-    weeklyAdvice.innerText="Cuando emoción y acción dialogan, la humanidad se fortalece.";
+    weeklyText.innerText="Coherencia sostenida.";
+    weeklyAdvice.innerText="La humanidad se fortalece cuando hay congruencia.";
   }
 }
 
 function nextWeek(){
-  week++;
-  q=0;
-  currentScore=0;
-  week>=WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
+  week++; q=0; currentScore=0;
+  week>=WEEKS.length ? showMonthly() : (show("test"),loadQuestion());
 }
 
-/* ================= TERMÓMETRO MENSUAL ================= */
+/* ================= MENSUAL ================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -114,23 +105,8 @@ function showMonthly(){
   animateGauge(monthlyFill, Math.round((avg/2)*100), ()=>{
     setTimeout(()=>{
       monthlyTextWrap.classList.remove("hidden");
-
-      if(avg<0.8){
-        monthlySymbol.innerText="🦇";
-        monthlyLongText.innerText =
-          "El recorrido mensual mostró reactividad sostenida y dificultad para integrar emoción y acción.";
-      }else if(avg<1.5){
-        monthlySymbol.innerText="🐞";
-        monthlyLongText.innerText =
-          "El proceso evidenció avances y retrocesos, con momentos de conciencia intermitente.";
-      }else{
-        monthlySymbol.innerText="🐦";
-        monthlyLongText.innerText =
-          "A lo largo del mes se observó una integración progresiva y mayor coherencia sostenida.";
-      }
-
       monthlyText.innerText =
-        "Esta lectura no define quién sos: refleja cómo te estuviste habitando en el tiempo.";
+        "Esta lectura integra tu forma de sentir, decidir y actuar a lo largo del tiempo.";
     },2000);
   });
 }
@@ -157,7 +133,7 @@ function startMirror(){
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorEmoji.className="emoji3d face "+MIRROR_QUESTIONS[mq].e;
   mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
 }
 
@@ -167,7 +143,7 @@ function answerMirror(v){
   mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
 }
 
-/* ================= TERMÓMETRO FINAL ================= */
+/* ================= FINAL ================= */
 function showMirror(){
   show("mirrorResult");
   mirrorTextWrap.classList.add("hidden");
@@ -177,9 +153,11 @@ function showMirror(){
     setTimeout(()=>{
       mirrorTextWrap.classList.remove("hidden");
       mirrorFullText.innerText =
-        "El espejo integra todo tu recorrido: la base inicial, las variaciones del mes y tu forma de habitar las emociones. "+
-        "No juzga, refleja.";
-    },3000);
+        "El espejo no mide aciertos ni errores. Integra todo tu recorrido en Humanómetro: "+
+        "la forma en que habitaste tus emociones, cómo influyeron en tus decisiones y qué grado "+
+        "de coherencia sostuviste en el tiempo. Algunas emociones fueron reconocidas, otras evitadas. "+
+        "Esta devolución no juzga: refleja. La humanidad no se pierde, pero se apaga cuando no se la vive conscientemente.";
+    },2500); // ⬅️ 0.5s menos
   });
 }
 
@@ -199,4 +177,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
     .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
-}
+      }
