@@ -1,44 +1,67 @@
 const QUESTIONS = [
-  "¿Sentís coherencia entre lo que mostrás y lo que sos?",
-  "¿Actuás igual cuando nadie te observa?",
-  "¿Sostenés tus valores incluso cuando incomodan?",
-  "¿Reconocés cuándo traicionás lo que sentís?",
-  "¿Escuchás tus emociones o las evadís?",
-  "¿Te hacés responsable de tu impacto en otros?",
-  "¿Vivís desde elección o desde reacción?",
-  "¿Te sentís en paz con la persona que sos hoy?"
+  "¿Sentís coherencia entre lo que pensás y lo que hacés últimamente?",
+  "¿Tus decisiones reflejan lo que decís valorar?",
+  "¿Pudiste sostener tu humanidad incluso en tensión?",
+  "¿Te reconocés en la forma en que actuaste estos días?",
+  "¿Sentís claridad o confusión interna?",
+  "¿Escuchaste tus límites?",
+  "¿Hubo congruencia emocional?",
+  "¿Sentís evolución respecto al inicio del proceso?"
 ];
 
-let index = 0;
+let i = 0;
+let score = 0;
 
 function startMirror() {
-  index = 0;
-  show("question");
+  i = 0;
+  score = 0;
+  show("mirrorTest");
   loadQuestion();
 }
 
 function loadQuestion() {
-  document.getElementById("questionText").innerText = QUESTIONS[index];
+  document.getElementById("mirrorTitle").innerText =
+    `Pregunta ${i + 1} de ${QUESTIONS.length}`;
+  document.getElementById("mirrorQuestion").innerText = QUESTIONS[i];
 }
 
-function answer() {
-  index++;
-  if (index >= QUESTIONS.length) showResult();
+function answerMirror(v) {
+  score += v;
+  i++;
+
+  if (i >= QUESTIONS.length) showResult();
   else loadQuestion();
 }
 
 function showResult() {
-  show("result");
-  document.getElementById("finalText").innerText =
-    "Este espejo no devuelve respuestas.\nDevuelve conciencia.\n\nLo que viste no es un resultado,\nes un reflejo del momento que estás habitando.\n\nLa congruencia no se mide.\nSe siente.";
-}
+  show("mirrorResult");
 
-function closeMirror() {
-  window.location.href = "../";
+  const avg = score / QUESTIONS.length;
+
+  let text = "";
+  let visual = "";
+
+  if (avg < 0.8) {
+    visual = "⬛";
+    text = "El reflejo muestra desconexión y opacidad interna.";
+  } else if (avg < 1.5) {
+    visual = "⬜";
+    text = "El reflejo es intermedio. Hay conciencia, pero inestable.";
+  } else {
+    visual = "✨";
+    text = "El reflejo es claro. Existe coherencia y alineación.";
+  }
+
+  document.getElementById("mirrorVisual").innerText = visual;
+  document.getElementById("mirrorText").innerText = text;
 }
 
 function show(id) {
-  ["start","question","result"]
+  ["mirrorStart","mirrorTest","mirrorResult"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
+}
+
+function restart() {
+  show("mirrorStart");
 }
