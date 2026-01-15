@@ -1,47 +1,24 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(180deg, #cfefff, #e9f7ff);
-  color: #0b1220;
-  min-height: 100vh;
-}
-
-#app-v3 {
-  max-width: 520px;
-  margin: 60px auto;
-  padding: 32px;
-  text-align: center;
-}
-
-.brand-main {
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.6rem;
-  margin-bottom: 12px;
-}
-
-.subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 24px;
-}
-
-.intro-text {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: 40px;
-}
-
-.btn-start {
-  padding: 16px 36px;
-  border-radius: 40px;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  background: linear-gradient(45deg, #0a3cff, #4fc3ff);
+  margin: 0;
+  font-family: sans-serif;
+  background: url("./assets/fondo-espejo.jpg") center / cover no-repeat;
   color: white;
-  box-shadow: 0 0 20px rgba(79,195,255,0.6);
+}
+
+.hidden { display: none; }
+
+#mirror {
+  min-height: 100vh;
+  backdrop-filter: blur(4px);
+  text-align: center;
+  padding: 40px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  font-size: 16px;
 }
