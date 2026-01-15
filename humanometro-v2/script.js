@@ -1,5 +1,4 @@
-/* ================= CACHE DOM ================= */
-
+/* ===== DOM ===== */
 const weekTitle = document.getElementById("weekTitle");
 const questionText = document.getElementById("questionText");
 const questionMeasure = document.getElementById("questionMeasure");
@@ -9,235 +8,142 @@ const weeklySymbol = document.getElementById("weeklySymbol");
 const weeklyText = document.getElementById("weeklyText");
 const weeklyAdvice = document.getElementById("weeklyAdvice");
 
-const monthGaugeWrap = document.getElementById("monthGaugeWrap");
-const monthTextWrap = document.getElementById("monthTextWrap");
 const monthlyFill = document.getElementById("monthlyFill");
+const monthlySymbol = document.getElementById("monthlySymbol");
 const monthlyLongText = document.getElementById("monthlyLongText");
 const monthlyText = document.getElementById("monthlyText");
 
 const mirrorEmoji = document.getElementById("mirrorEmoji");
 const mirrorQuestion = document.getElementById("mirrorQuestion");
-const mirrorGaugeWrap = document.getElementById("mirrorGaugeWrap");
-const mirrorTextWrap = document.getElementById("mirrorTextWrap");
 const mirrorFill = document.getElementById("mirrorFill");
 const mirrorFullText = document.getElementById("mirrorFullText");
 
-/* ================= VOLUMEN 2 ================= */
-
+/* ===== DATOS ===== */
 const WEEKS = [
-  {
-    title: "Vos ante el mundo",
-    questions: [
-      ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Empatía global"],
-      ["Cuando alguien te habla, ¿dejás el celular?", "Presencia humana"],
-      ["¿Sentís impulso de involucrarte ante injusticias?", "Compromiso humano"],
-      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad emocional"]
-    ]
-  },
-  {
-    title: "Vos y la tecnología",
-    questions: [
-      ["¿Podés soltar el celular al compartir?", "Uso consciente"],
-      ["¿Controlás el tiempo en pantallas?", "Autocontrol digital"],
-      ["¿Recordás que hay personas reales detrás de una pantalla?", "Empatía digital"],
-      ["¿La tecnología acompaña sin absorberte?", "Equilibrio tecnológico"]
-    ]
-  },
-  {
-    title: "Integración humana",
-    questions: [
-      ["¿Hay coherencia entre lo que pensás y hacés?", "Coherencia"],
-      ["¿Podés observarte sin juzgarte?", "Autoconciencia"],
-      ["¿Asumís tu impacto en otros?", "Responsabilidad"],
-      ["¿Sentís evolución humana?", "Integración"]
-    ]
-  }
+  { title:"Vos ante el mundo", questions:[
+    ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
+    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
+    ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso"],
+    ["¿Te afecta el sufrimiento ajeno?","Sensibilidad"]
+  ]},
+  { title:"Vos y la tecnología", questions:[
+    ["¿Podés soltar el celular al compartir?","Uso consciente"],
+    ["¿Controlás el tiempo en pantallas?","Autocontrol"],
+    ["¿Recordás que hay personas reales detrás de una pantalla?","Empatía digital"],
+    ["¿La tecnología acompaña sin absorberte?","Equilibrio"]
+  ]},
+  { title:"Integración humana", questions:[
+    ["¿Hay coherencia entre lo que pensás y hacés?","Coherencia"],
+    ["¿Podés observarte sin juzgarte?","Autoconciencia"],
+    ["¿Asumís tu impacto en otros?","Responsabilidad"],
+    ["¿Sentís evolución humana?","Integración"]
+  ]}
 ];
 
-let week = 0, q = 0;
-let weeklyScores = [];
-let currentScore = 0;
+let week=0,q=0,weeklyScores=[],currentScore=0;
 
-function startV2() {
-  week = 0;
-  q = 0;
-  weeklyScores = [];
-  currentScore = 0;
-  show("test");
-  loadQuestion();
+/* ===== VOLUMEN 2 ===== */
+function startV2(){ week=0;q=0;weeklyScores=[];currentScore=0; show("test"); loadQuestion(); }
+
+function loadQuestion(){
+  const w=WEEKS[week];
+  weekTitle.innerText=w.title;
+  questionText.innerText=w.questions[q][0];
+  questionMeasure.innerText=w.questions[q][1];
+  thermoFill.style.width=(q/4)*100+"%";
 }
 
-function loadQuestion() {
-  const w = WEEKS[week];
-  weekTitle.innerText = w.title;
-  questionText.innerText = w.questions[q][0];
-  questionMeasure.innerText = w.questions[q][1];
-  updateThermo();
+function answer(v){
+  currentScore+=v; q++;
+  q>=4?showWeeklyResult():loadQuestion();
 }
 
-function answer(v) {
-  currentScore += v;
-  q++;
-  updateThermo();
-  if (q >= 4) showWeeklyResult();
-  else loadQuestion();
-}
-
-function showWeeklyResult() {
+function showWeeklyResult(){
   show("weeklyResult");
-  const avg = currentScore / 4;
+  const avg=currentScore/4;
   weeklyScores.push(avg);
 
-  if (avg < 0.8) {
-    weeklySymbol.innerText = "🦇";
-    weeklyText.innerText = "Desconexión entre emoción y acción.";
-    weeklyAdvice.innerText = "Observar sin juicio ayuda a integrar.";
-  } else if (avg < 1.5) {
-    weeklySymbol.innerText = "🐞";
-    weeklyText.innerText = "Presencia intermitente.";
-    weeklyAdvice.innerText = "Sostener pequeños gestos consolida coherencia.";
-  } else {
-    weeklySymbol.innerText = "🐦";
-    weeklyText.innerText = "Crecimiento sostenido.";
-    weeklyAdvice.innerText = "La coherencia fortalece el proceso humano.";
+  if(avg<0.8){
+    weeklySymbol.innerText="🦇";
+    weeklyText.innerText="Predominó una desconexión entre emoción y acción.";
+    weeklyAdvice.innerText="Registrar lo que sentís es el primer paso para integrarlo.";
+  }else if(avg<1.5){
+    weeklySymbol.innerText="🐞";
+    weeklyText.innerText="Hubo presencia, aunque no sostenida.";
+    weeklyAdvice.innerText="La conciencia aparece de forma intermitente.";
+  }else{
+    weeklySymbol.innerText="🐦";
+    weeklyText.innerText="Se expresó una coherencia creciente.";
+    weeklyAdvice.innerText="Cuando sostenés la presencia, la humanidad se expande.";
   }
 }
 
-function nextWeek() {
-  week++;
-  q = 0;
-  currentScore = 0;
-  if (week >= WEEKS.length) showMonthlyResult();
-  else {
-    show("test");
-    loadQuestion();
-  }
+function nextWeek(){
+  week++; q=0; currentScore=0;
+  week>=WEEKS.length?showMonthlyResult(): (show("test"),loadQuestion());
 }
 
-/* ================= TERMÓMETRO MENSUAL ================= */
-
-function showMonthlyResult() {
+function showMonthlyResult(){
   show("monthlyResult");
-  monthTextWrap.classList.add("hidden");
-  monthGaugeWrap.classList.remove("hidden");
+  const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
+  monthlyFill.style.height=Math.round((avg/2)*100)+"%";
 
-  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
+  if(avg<0.8){
+    monthlySymbol.innerText="🦇";
+    monthlyLongText.innerText="El proceso mostró dificultades para sostener coherencia a lo largo del mes.";
+  }else if(avg<1.5){
+    monthlySymbol.innerText="🐞";
+    monthlyLongText.innerText="El recorrido fue irregular, con momentos de conciencia y otros automáticos.";
+  }else{
+    monthlySymbol.innerText="🐦";
+    monthlyLongText.innerText="El mes reflejó una integración progresiva entre emoción, pensamiento y acción.";
+  }
 
-  animateGauge(monthlyFill, Math.round((avg / 2) * 100), () => {
-    setTimeout(() => {
-      monthGaugeWrap.classList.add("hidden");
-      monthTextWrap.classList.remove("hidden");
-
-      monthlyLongText.innerText =
-        "Este recorrido integró tus respuestas como un proceso continuo. " +
-        "No midió hechos aislados, sino cómo habitaste tus emociones, " +
-        "tus decisiones y su impacto en el entorno.";
-
-      monthlyText.innerText =
-        "La humanidad aparece cuando emoción, pensamiento y acción dialogan.";
-    }, 2000);
-  });
+  monthlyText.innerText=
+    "Esta lectura no define quién sos, sino cómo habitaste tu humanidad en este período.";
 }
 
-/* ================= EL ESPEJO ================= */
-
-const MIRROR_QUESTIONS = [
-  { t: "En estos días, ¿sentiste enojo que influyó en tu forma de actuar?", e: "angry" },
-  { t: "¿Sentiste tristeza que condicionó decisiones o energía?", e: "sad" },
-  { t: "¿Sentiste miedo que te frenó?", e: "fear" },
-  { t: "¿Apareció culpa no resuelta?", e: "guilt" },
-  { t: "¿Hubo ansiedad que llevó a automatismo?", e: "anx" },
-  { t: "¿Indiferencia o desconexión emocional?", e: "flat" },
-  { t: "¿Alegría coherente con lo vivido?", e: "joy" },
-  { t: "¿Alguna emoción dominante evitada?", e: "q" }
+/* ===== ESPEJO ===== */
+const MIRROR_QUESTIONS=[
+ {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
+ {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
+ {t:"¿El miedo te frenó?",e:"fear"},
+ {t:"¿Hubo culpa no resuelta?",e:"guilt"},
+ {t:"¿Actuaste desde ansiedad?",e:"anx"},
+ {t:"¿Hubo desconexión emocional?",e:"flat"},
+ {t:"¿La alegría fue genuina?",e:"joy"},
+ {t:"¿Evitaste alguna emoción?",e:"q"}
 ];
 
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
+let mq=0,mirrorScore=0,mirrorCount=0;
 
-function openMirror() {
-  show("mirrorIntro");
+function openMirror(){ show("mirrorIntro"); }
+function startMirror(){ mq=0;mirrorScore=0;mirrorCount=0; show("mirrorTest"); loadMirrorQuestion(); }
+
+function loadMirrorQuestion(){
+  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
 }
 
-function startMirror() {
-  mq = 0;
-  mirrorScore = 0;
-  mirrorCount = 0;
-  show("mirrorTest");
-  loadMirrorQuestion();
+function answerMirror(v){
+  if(v!==null){ mirrorScore+=v; mirrorCount++; }
+  mq>=7?showMirrorResult(): (mq++,loadMirrorQuestion());
 }
 
-function loadMirrorQuestion() {
-  mirrorEmoji.className = "emoji3d float " + MIRROR_QUESTIONS[mq].e;
-  mirrorQuestion.innerText = MIRROR_QUESTIONS[mq].t;
-}
-
-function answerMirror(v) {
-  if (v !== null) {
-    mirrorScore += v;
-    mirrorCount++;
-  }
-  mq++;
-  if (mq >= MIRROR_QUESTIONS.length) showMirrorResult();
-  else loadMirrorQuestion();
-}
-
-/* ================= TERMÓMETRO FINAL ================= */
-
-function showMirrorResult() {
+function showMirrorResult(){
   show("mirrorResult");
-  mirrorTextWrap.classList.add("hidden");
-  mirrorGaugeWrap.classList.remove("hidden");
+  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  mirrorFill.style.height=Math.round((avg/2)*100)+"%";
 
-  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
-
-  animateGauge(mirrorFill, Math.round((avg / 2) * 100), () => {
-    setTimeout(() => {
-      mirrorGaugeWrap.classList.add("hidden");
-      mirrorTextWrap.classList.remove("hidden");
-
-      mirrorFullText.innerText =
-        "Esta lectura integra todo tu recorrido en Humanómetro. " +
-        "Refleja cómo reconociste, sostuviste o evitaste tus emociones " +
-        "y de qué modo influyeron en tus decisiones.\n\n" +
-        "La humanidad no se pierde, pero se apaga cuando no se la habita conscientemente.";
-    }, 3000);
-  });
+  mirrorFullText.innerText=
+    "El espejo integró todo tu recorrido mensual. No señaló errores ni aciertos, "+
+    "sino el grado de coherencia entre lo que sentiste, pensaste y llevaste a la acción. "+
+    "La humanidad no se pierde, pero se apaga cuando no se la habita conscientemente.";
 }
 
-/* ================= UTILIDADES ================= */
-
-function updateThermo() {
-  thermoFill.style.width = (q / 4) * 100 + "%";
-}
-
-function animateGauge(el, target, done) {
-  el.style.height = "0%";
-  const dur = 1400;
-  const start = performance.now();
-
-  function ease(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function step(now) {
-    const t = Math.min(1, (now - start) / dur);
-    el.style.height = Math.round(ease(t) * target) + "%";
-    if (t < 1) requestAnimationFrame(step);
-    else if (done) done();
-  }
-  requestAnimationFrame(step);
-}
-
-function show(id) {
-  [
-    "start",
-    "test",
-    "weeklyResult",
-    "monthlyResult",
-    "mirrorIntro",
-    "mirrorTest",
-    "mirrorResult"
-  ].forEach(s => document.getElementById(s).classList.add("hidden"));
-
+/* ===== UTIL ===== */
+function show(id){
+  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
+    .forEach(s=>document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
