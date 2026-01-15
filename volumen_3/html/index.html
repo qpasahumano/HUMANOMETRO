@@ -1,1 +1,40 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>HUMANÓMETRO – Espejo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<main id="mirror">
+
+  <section id="start">
+    <h1>ESPEJO</h1>
+    <p>No respondas rápido. Observate.</p>
+    <button onclick="startMirror()">Mirarte</button>
+  </section>
+
+  <section id="question" class="hidden">
+    <div id="pulse"></div>
+    <p id="questionText"></p>
+
+    <div class="answers">
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">A veces</button>
+      <button onclick="answer(0)">No</button>
+    </div>
+  </section>
+
+  <section id="result" class="hidden">
+    <p id="finalText"></p>
+    <button onclick="closeMirror()">Cerrar espejo</button>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
