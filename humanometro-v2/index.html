@@ -62,6 +62,9 @@
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title fade">Tu humanidad en movimiento</h2>
 
+  <!-- devolución larga arriba del termómetro -->
+  <p id="monthlyLongText" class="fade"></p>
+
   <div class="vertical-thermo right">
     <div id="monthlyFill"></div>
   </div>
@@ -98,14 +101,15 @@
 </section>
 
 <section id="mirrorResult" class="hidden full-screen">
-  <!-- Termómetro lateral, mismo lenguaje que V2 -->
+  <!-- Termómetro lateral con efecto vivo -->
   <div class="vertical-thermo right">
     <div id="mirrorFill"></div>
   </div>
 
-  <h2 id="mirrorState" class="neon-title fade"></h2>
-  <p id="mirrorShortText" class="fade"></p>
-  <p id="mirrorFullText" class="fade"></p>
+  <!-- contenedor con scroll interno -->
+  <div class="overline">
+    <p id="mirrorFullText" class="legal fade"></p>
+  </div>
 
   <p class="legal fade">
     Este resultado surge de un proceso consecutivo.<br>
