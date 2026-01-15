@@ -5,7 +5,6 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 
-  /* FONDO BOSQUE */
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -17,22 +16,13 @@ body {
 }
 
 /* ===== OVERLAY GLOBAL ===== */
-/* Más bajo que v.1 */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(
-      circle at top,
-      rgba(160,255,235,0.12),
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at bottom,
-      rgba(120,180,255,0.12),
-      transparent 55%
-    ),
+    radial-gradient(circle at top, rgba(160,255,235,0.12), transparent 45%),
+    radial-gradient(circle at bottom, rgba(120,180,255,0.12), transparent 55%),
     rgba(0,0,0,0.20);
   pointer-events: none;
   z-index: -1;
@@ -43,14 +33,11 @@ body::before {
   max-width: 520px;
   margin: 40px auto;
   padding: 26px;
-
   background: rgba(11,18,32,0.38);
-
   border-radius: 22px;
   box-shadow:
     0 0 28px rgba(0,0,0,.45),
     0 0 60px rgba(120,255,230,.12);
-
   text-align: center;
   position: relative;
   z-index: 2;
@@ -64,7 +51,6 @@ body::before {
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #eafff8;
-
   text-shadow:
     0 0 4px rgba(200,255,245,.9),
     0 0 10px rgba(120,255,230,.7),
@@ -86,6 +72,11 @@ body::before {
 .legal {
   font-size: .75rem;
   opacity: .9;
+}
+
+.legal.small {
+  font-size: .72rem;
+  line-height: 1.45;
 }
 
 /* ===== TÍTULOS ===== */
@@ -127,11 +118,13 @@ button {
 }
 
 .answers button {
-  background: rgba(255,255,255,0.95);
+  background: linear-gradient(45deg,#2ecc71,#6affd3);
+  box-shadow: 0 0 14px rgba(46,204,113,.8);
   color: #001c14;
+  font-weight: 600;
 }
 
-/* ===== TERMÓMETRO SEMANAL (VIVO) ===== */
+/* ===== TERMÓMETRO SEMANAL ===== */
 .thermo {
   width: 100%;
   height: 14px;
@@ -144,16 +137,11 @@ button {
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
+  background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETRO MENSUAL (VIVO + EXPECTATIVA) ===== */
+/* ===== TERMÓMETROS VERTICALES ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -165,72 +153,88 @@ button {
   z-index: 3;
 }
 
-#monthlyFill {
+.gradient {
   width: 100%;
   height: 0%;
-  background: linear-gradient(
-    #e74c3c,
-    #f1c40f,
-    #2ecc71
-  );
-  transition: height 3.5s ease-in-out;
+  background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
 }
 
-/* ===== EMOTICONES (VIVOS + GRANDES) ===== */
-.symbol {
-  font-size: 3.6rem;
-  margin: 18px 0;
-  display: block;
+/* ===== POSICIÓN LATERAL ===== */
+.right {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+/* ===== ESCENAS DE TERMÓMETRO ===== */
+.gauge-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 260px;
+}
+
+/* ===== PANEL BASE ===== */
+.panel {
+  padding: 18px;
+  margin: 20px 0;
+  border-radius: 16px;
+}
+
+/* ===== SCROLL INTERNO ===== */
+.scrollable {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* ===== LÁMINA BLANCA ESPEJO ===== */
+.white-sheet {
+  background: rgba(255,255,255,0.88);
+  color: #001c14;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.35),
+    inset 0 0 12px rgba(255,255,255,.6);
+}
+
+/* ===== FLECHA INDICADORA ===== */
+.scroll-hint {
+  text-align: center;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: hintMove 1.6s infinite;
+}
+
+@keyframes hintMove {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ===== EMOTICONES 3D ===== */
+.emoji3d {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 10px auto;
+  box-shadow:
+    inset -6px -6px 12px rgba(0,0,0,.25),
+    0 10px 20px rgba(0,0,0,.35);
+}
+
+.float {
   animation: floatBase 2.8s infinite ease-in-out;
 }
 
 @keyframes floatBase {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-8px); }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
   100% { transform: translateY(0); }
 }
 
-/* ===== FORZADO FINAL (BOSS) ===== */
-#weeklySymbol,
-#monthlySymbol {
-  font-size: 4.2rem !important;
-  margin: 22px 0 !important;
-  animation: floatForce 2.6s infinite ease-in-out !important;
-}
-
-@keyframes floatForce {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-
-/* ===== LECTURA MENSUAL COMPLETA ===== */
-.monthly-scroll {
-  max-height: 60vh;
-  overflow-y: auto;
-  padding: 18px;
-  margin: 20px 0;
-
-  background: rgba(11,18,32,0.45);
-  border-radius: 16px;
-
-  box-shadow:
-    inset 0 0 18px rgba(0,0,0,.6),
-    0 0 25px rgba(120,255,230,.12);
-}
-
-.monthly-scroll p {
-  font-size: .95rem;
-  line-height: 1.6;
-  text-align: left;
-  }
-#monthlyFull {
-  position: relative;
-  z-index: 5;
-}
-.answers button {
-  background: linear-gradient(45deg,#2ecc71,#6affd3);
-  box-shadow: 0 0 14px rgba(46,204,113,.8);
-  color: #001c14;
-  font-weight: 600;
-}
+/* ===== COLORES EMOCIONALES ===== */
+.emoji3d.angry { background: radial-gradient(#ff7676,#c0392b); }
+.emoji3d.sad   { background: radial-gradient(#7fbfff,#2c3e50); }
+.emoji3d.fear  { background: radial-gradient(#dcd6f7,#5f27cd); }
+.emoji3d.guilt { background: radial-gradient(#c8d6e5,#576574); }
+.emoji3d.anx   { background: radial-gradient(#ffeaa7,#e17055); }
+.emoji3d.flat  { background: radial-gradient(#b2bec3,#636e72); }
+.emoji3d.joy   { background: radial-gradient(#fff200,#f39c12); }
+.emoji3d.q     { background: radial-gradient(#ffffff,#bdc3c7); }
