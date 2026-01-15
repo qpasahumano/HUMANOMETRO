@@ -1,32 +1,27 @@
-/* ================= FIX BOTÓN INICIO ================= */
-document.addEventListener("DOMContentLoaded", () => {
-  const startBtn = document.querySelector(
-    '#start button[onclick="startV2()"]'
-  );
-  if (startBtn) startBtn.addEventListener("click", startV2);
-});
-
 /* ================= CACHE ================= */
-const weekTitle = document.getElementById("weekTitle");
-const questionText = document.getElementById("questionText");
-const questionMeasure = document.getElementById("questionMeasure");
-const thermoFill = document.getElementById("thermoFill");
+const ids = id => document.getElementById(id);
 
-const weeklySymbol = document.getElementById("weeklySymbol");
-const weeklyText = document.getElementById("weeklyText");
-const weeklyAdvice = document.getElementById("weeklyAdvice");
+const weekTitle = ids("weekTitle");
+const questionText = ids("questionText");
+const questionMeasure = ids("questionMeasure");
+const thermoFill = ids("thermoFill");
 
-const monthlyFill = document.getElementById("monthlyFill");
-const monthlyTextWrap = document.getElementById("monthlyTextWrap");
-const monthlySymbol = document.getElementById("monthlySymbol");
-const monthlyLongText = document.getElementById("monthlyLongText");
-const monthlyText = document.getElementById("monthlyText");
+const weeklySymbol = ids("weeklySymbol");
+const weeklyText = ids("weeklyText");
+const weeklyAdvice = ids("weeklyAdvice");
 
-const mirrorEmoji = document.getElementById("mirrorEmoji");
-const mirrorQuestion = document.getElementById("mirrorQuestion");
-const mirrorFill = document.getElementById("mirrorFill");
-const mirrorTextWrap = document.getElementById("mirrorTextWrap");
-const mirrorFullText = document.getElementById("mirrorFullText");
+const monthlyFill = ids("monthlyFill");
+const monthlyTextWrap = ids("monthlyTextWrap");
+const monthlySymbol = ids("monthlySymbol");
+const monthlyLongText = ids("monthlyLongText");
+const monthlyText = ids("monthlyText");
+
+const mirrorEmoji = ids("mirrorEmoji");
+const mirrorQuestion = ids("mirrorQuestion");
+const mirrorFill = ids("mirrorFill");
+const mirrorTextWrap = ids("mirrorTextWrap");
+const mirrorFullText = ids("mirrorFullText");
+const mirrorAlert = ids("mirrorAlert");
 
 /* ================= DATOS ================= */
 const WEEKS = [
@@ -50,55 +45,53 @@ const WEEKS = [
   ]}
 ];
 
-let week=0, q=0;
+let week=0,q=0,currentScore=0;
 let weeklyScores=[], weeklyRaw=[];
-let currentScore=0;
 
 /* ================= FLUJO ================= */
 function startV2(){
-  week=0; q=0;
-  weeklyScores=[]; weeklyRaw=[];
-  currentScore=0;
-  show("test"); loadQuestion();
+  week=0;q=0;currentScore=0;
+  weeklyScores=[];weeklyRaw=[];
+  show("test");loadQuestion();
 }
 
 function loadQuestion(){
   const w=WEEKS[week];
-  weekTitle.innerText=w.title;
-  questionText.innerText=w.questions[q][0];
-  questionMeasure.innerText=w.questions[q][1];
+  weekTitle.textContent=w.title;
+  questionText.textContent=w.questions[q][0];
+  questionMeasure.textContent=w.questions[q][1];
   thermoFill.style.width=(q/4)*100+"%";
 }
 
 function answer(v){
-  currentScore+=v; q++;
-  q>=4 ? showWeeklyResult() : loadQuestion();
+  currentScore+=v;q++;
+  q>=4?showWeekly():loadQuestion();
 }
 
-function showWeeklyResult(){
+function showWeekly(){
   show("weeklyResult");
   const avg=currentScore/4;
   weeklyScores.push(avg);
   weeklyRaw.push(currentScore);
 
   if(avg<0.8){
-    weeklySymbol.innerText="🦇";
-    weeklyText.innerText="Predominó la reacción automática.";
-    weeklyAdvice.innerText="Las emociones se activaron sin lograr traducirse en acciones conscientes.";
+    weeklySymbol.textContent="🦇";
+    weeklyText.textContent="Predominó la reacción emocional automática.";
+    weeklyAdvice.textContent="Hubo dificultad para traducir emoción en acción consciente.";
   }else if(avg<1.5){
-    weeklySymbol.innerText="🐞";
-    weeklyText.innerText="Conciencia intermitente.";
-    weeklyAdvice.innerText="Alternaste presencia con respuestas condicionadas.";
+    weeklySymbol.textContent="🐞";
+    weeklyText.textContent="Conciencia intermitente.";
+    weeklyAdvice.textContent="Alternaste registro y automatismo.";
   }else{
-    weeklySymbol.innerText="🐦";
-    weeklyText.innerText="Coherencia activa.";
-    weeklyAdvice.innerText="Emoción, pensamiento y acción dialogaron de forma sostenida.";
+    weeklySymbol.textContent="🐦";
+    weeklyText.textContent="Coherencia sostenida.";
+    weeklyAdvice.textContent="Emoción, pensamiento y acción dialogaron.";
   }
 }
 
 function nextWeek(){
-  week++; q=0; currentScore=0;
-  week>=WEEKS.length ? showMonthly() : (show("test"),loadQuestion());
+  week++;q=0;currentScore=0;
+  week>=WEEKS.length?showMonthly(): (show("test"),loadQuestion());
 }
 
 /* ================= MENSUAL ================= */
@@ -109,23 +102,18 @@ function showMonthly(){
   const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
   const delta=weeklyScores.at(-1)-weeklyScores[0];
 
-  animateGauge(monthlyFill,Math.round((avg/2)*100),()=>{
+  animateGauge(monthlyFill,(avg/2)*100,()=>{
     setTimeout(()=>{
       monthlyTextWrap.classList.remove("hidden");
 
-      monthlyLongText.innerText =
-        avg>1.4
-          ? "El recorrido mostró una integración progresiva y mayor coherencia sostenida."
-          : avg>0.9
-            ? "El proceso fue oscilante, con avances y retrocesos según el contexto."
-            : "Predominó la reactividad emocional y el desgaste acumulado.";
-
-      monthlyText.innerText =
-        delta>0
-          ? "El cierre del mes evidencia crecimiento respecto del inicio."
-          : delta<0
-            ? "El cierre del mes refleja mayor carga reactiva."
-            : "El nivel de conciencia se mantuvo estable.";
+      monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+      monthlyLongText.textContent=
+        "Esta lectura integra cómo te posicionaste semana a semana. "+
+        "No mide hechos aislados, sino tu forma de habitar emociones y decisiones.";
+      monthlyText.textContent=
+        delta>0?"Hubo crecimiento de conciencia."
+        :delta<0?"Se detecta desgaste emocional."
+        :"El nivel de conciencia se mantuvo estable.";
     },2000);
   });
 }
@@ -135,32 +123,31 @@ const MIRROR_QUESTIONS=[
  {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
  {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
  {t:"¿El miedo te frenó?",e:"fear"},
- {t:"¿La ansiedad te llevó a automatismos?",e:"anx"},
+ {t:"¿La ansiedad te llevó a reaccionar?",e:"anx"},
  {t:"¿Apareció culpa no resuelta?",e:"guilt"},
  {t:"¿Hubo desconexión emocional?",e:"flat"},
- {t:"¿La alegría fue genuina y sostenida?",e:"joy"},
- {t:"¿Evitaste alguna emoción dominante?",e:"q"}
+ {t:"¿La alegría fue genuina?",e:"joy"},
+ {t:"¿Evitaste una emoción dominante?",e:"q"}
 ];
 
-let mq=0, mirrorScore=0, mirrorCount=0, mirrorLog=[];
+let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
 
-function openMirror(){ show("mirrorIntro"); }
+function openMirror(){show("mirrorIntro");}
 
 function startMirror(){
-  mq=0; mirrorScore=0; mirrorCount=0; mirrorLog=[];
-  show("mirrorTest"); loadMirror();
+  mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
+  show("mirrorTest");loadMirror();
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d "+MIRROR_QUESTIONS[mq].e;
-  mirrorQuestion.innerText=MIRROR_QUESTIONS[mq].t;
+  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorQuestion.textContent=MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
   mirrorLog.push(v??0);
-  if(v!==null){ mirrorScore+=v; mirrorCount++; }
-  mq++;
-  mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
+  if(v!==null){mirrorScore+=v;mirrorCount++;}
+  mq++;mq>=MIRROR_QUESTIONS.length?showMirror():loadMirror();
 }
 
 /* ================= FINAL ================= */
@@ -171,36 +158,35 @@ function showMirror(){
   const avg=mirrorCount?mirrorScore/mirrorCount:0;
   const evitadas=mirrorLog.filter(v=>v===0).length;
 
-  mirrorTextWrap.className =
-    "result-text "+
-    (avg>1.4?"led-green":avg>0.9?"led-yellow":"led-red");
-
-  animateGauge(mirrorFill,Math.round((avg/2)*100),()=>{
+  animateGauge(mirrorFill,(avg/2)*100,()=>{
     setTimeout(()=>{
       mirrorTextWrap.classList.remove("hidden");
 
-      mirrorFullText.innerText =
-        "Esta lectura integra todo tu recorrido en Humanómetro.\n\n"+
-        (avg>1.4
-          ? "Predominó coherencia emocional y autorregulación consciente."
-          : avg>0.9
-            ? "La conciencia fue intermitente, con avances y retrocesos."
-            : "La reactividad emocional influyó de forma significativa.")+
-        (evitadas>2
-          ? "\n\nSe detectaron emociones evitadas, señalando zonas no integradas."
-          : "\n\nLas emociones fueron mayormente reconocidas y transitadas.")+
-        "\n\nEsto no juzga. Refleja cómo te estuviste habitando.";
-    },2000); // ⬅ medio segundo menos
+      mirrorAlert.textContent=
+        avg>1.4?"🟢 Estado integrado"
+        :avg>0.9?"🟡 Estado inestable"
+        :"🔴 Alerta emocional";
+
+      mirrorFullText.textContent=
+        "La devolución final integra todo tu recorrido mensual. "+
+        "Mostró cómo respondiste ante el mundo, la tecnología y vos mismo. "+
+        (avg>1.4?"Predominó la coherencia."
+        :avg>0.9?"Hubo avances con retrocesos."
+        :"La reactividad tuvo peso.")+
+        (evitadas>2?" Se detectaron emociones evitadas."
+        :" Las emociones fueron mayormente reconocidas.")+
+        " No juzga: refleja.";
+    },2500);
   });
 }
 
 /* ================= UTIL ================= */
 function animateGauge(el,target,done){
   el.style.height="0%";
-  const start=performance.now(), dur=1800;
+  const start=performance.now(),dur=1800;
   function step(t){
     const p=Math.min(1,(t-start)/dur);
-    el.style.height=Math.round(p*target)+"%";
+    el.style.height=p*target+"%";
     p<1?requestAnimationFrame(step):done&&done();
   }
   requestAnimationFrame(step);
@@ -208,6 +194,6 @@ function animateGauge(el,target,done){
 
 function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
-    .forEach(s=>document.getElementById(s).classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+    .forEach(s=>ids(s).classList.add("hidden"));
+  ids(id).classList.remove("hidden");
     }
