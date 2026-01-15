@@ -1,1 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>HUMANÓMETRO · Espejo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./CSS/style.css">
+</head>
+
+<body>
+
+<main id="app">
+
+  <!-- INICIO ESPEJO -->
+  <section id="mirrorStart">
+    <h1>ESPEJO HUMANO</h1>
+
+    <p>
+      Este no es un nuevo test.<br><br>
+      Es una pausa para observarte.<br>
+      Lo que cambió en vos, lo que se sostuvo<br>
+      y lo que tal vez se desalineó.
+    </p>
+
+    <button onclick="startMirror()">Verte al espejo</button>
+  </section>
+
+  <!-- PREGUNTAS ESPEJO -->
+  <section id="mirrorTest" class="hidden">
+    <h2 id="mirrorTitle"></h2>
+
+    <p id="mirrorQuestion"></p>
+
+    <div class="answers">
+      <button onclick="answerMirror(2)">Sí</button>
+      <button onclick="answerMirror(1)">A veces</button>
+      <button onclick="answerMirror(0)">No</button>
+    </div>
+  </section>
+
+  <!-- RESULTADO ESPEJO -->
+  <section id="mirrorResult" class="hidden">
+    <h2>Reflejo actual</h2>
+
+    <div id="mirrorVisual"></div>
+
+    <p id="mirrorText"></p>
+
+    <button onclick="restart()">Finalizar</button>
+  </section>
+
+</main>
+
+<script src="./js/mirror.js"></script>
+</body>
+</html>
 
