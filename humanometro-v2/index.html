@@ -46,25 +46,20 @@
   <button class="primary sky" onclick="nextWeek()">Continuar</button>
 </section>
 
-<!-- ===== RESULTADO MENSUAL (ANTES DEL ESPEJO) ===== -->
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title fade">Tu humanidad en movimiento</h2>
 
-  <div class="result-row">
-    <div class="vertical-thermo right">
-      <div id="monthlyFill" class="gradient"></div>
-    </div>
+  <div id="monthlyGauge" class="vertical-thermo right">
+    <div id="monthlyFill" class="gradient"></div>
+  </div>
 
-    <div class="result-text">
-      <div id="monthlySymbol" class="symbol"></div>
-      <p id="monthlyLongText"></p>
-      <p id="monthlyText"></p>
-      <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
-    </div>
+  <div id="monthlyTextWrap" class="hidden result-text">
+    <div id="monthlySymbol" class="symbol"></div>
+    <p id="monthlyLongText"></p>
+    <p id="monthlyText"></p>
+    <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
   </div>
 </section>
-
-<!-- ===== ESPEJO ===== -->
 
 <section id="mirrorIntro" class="hidden">
   <h2 class="neon-title fade">EL ESPEJO</h2>
@@ -88,23 +83,20 @@
 </section>
 
 <section id="mirrorResult" class="hidden">
-  <div class="result-row">
-    <div class="vertical-thermo right">
-      <div id="mirrorFill" class="gradient"></div>
-    </div>
+  <div id="mirrorGauge" class="vertical-thermo right">
+    <div id="mirrorFill" class="gradient"></div>
+  </div>
 
-    <div class="result-text">
-      <p id="mirrorFullText" class="legal small"></p>
-      <p class="legal small">
-        Cuando quieras volver a medir tu humanidad,<br>
-        Humanómetro está para eso.
-      </p>
-    </div>
+  <div id="mirrorTextWrap" class="hidden result-text">
+    <p id="mirrorFullText" class="legal small"></p>
+    <p class="legal small">
+      Cuando quieras volver a medir tu humanidad,<br>
+      Humanómetro está para eso.
+    </p>
   </div>
 </section>
 
 </main>
-
 <script src="script.js" defer></script>
 </body>
-      </html>
+    </html>
