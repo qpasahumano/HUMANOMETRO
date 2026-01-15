@@ -142,7 +142,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES (LED) ===== */
+/* ===== TERMÓMETROS VERTICALES ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -157,8 +157,8 @@ button {
 }
 
 @keyframes pulseLed {
-  0%   { box-shadow: 0 0 18px rgba(120,255,230,.5); }
-  50%  { box-shadow: 0 0 32px rgba(120,255,230,1); }
+  0% { box-shadow: 0 0 18px rgba(120,255,230,.5); }
+  50% { box-shadow: 0 0 32px rgba(120,255,230,1); }
   100% { box-shadow: 0 0 18px rgba(120,255,230,.5); }
 }
 
@@ -197,7 +197,7 @@ button {
 }
 
 /* =====================================================
-   EMOTICONES 3D – ESPEJO (REALES + ANIMADOS)
+   EMOTICONES 3D REALES – BLOQUE ESPEJO
    ===================================================== */
 
 .emoji3d {
@@ -233,11 +233,11 @@ button {
 /* BOCA */
 .emoji3d span {
   position: absolute;
-  bottom: 16px;
+  bottom: 18px;
   left: 50%;
-  width: 20px;
-  height: 10px;
-  border-radius: 0 0 20px 20px;
+  width: 18px;
+  height: 6px;
+  border-radius: 0 0 12px 12px;
   background: #000;
   transform: translateX(-50%);
 }
@@ -259,4 +259,4 @@ button {
   text-shadow:
     0 0 8px rgba(120,255,230,.65),
     0 0 18px rgba(120,255,230,.45);
-  }
+}
