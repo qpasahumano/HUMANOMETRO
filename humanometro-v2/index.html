@@ -1,58 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>HUMANÓMETRO · Volumen 2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="estilo.css" />
+  <meta charset="UTF-8">
+  <title>HUMANÓMETRO v.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-  <!-- INICIO -->
-  <section id="start">
-    <h1>HUMANÓMETRO · Volumen 2</h1>
-    <button onclick="startV2()">Continuar seguimiento</button>
-  </section>
+<!-- INICIO -->
+<section id="start">
+  <h1 class="brand">
+    <span class="brand-main">HUMANÓMETRO</span><br>
+    <span class="brand-meta">v.2 ®</span>
+  </h1>
 
-  <!-- TEST -->
-  <section id="test" class="hidden">
-    <h2 id="weekTitle"></h2>
+  <p class="intro">
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    Cada bloque se habilita únicamente cuando completaste el anterior
+    y pasó el tiempo necesario para integrarlo.<br><br>
+    La humanidad se construye en movimiento, no en velocidad.
+  </p>
 
-    <div class="thermo">
-      <div id="thermoFill"></div>
-    </div>
+  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
+</section>
 
-    <p id="questionText"></p>
-    <small id="questionMeasure"></small>
+<!-- TEST SEMANAL -->
+<section id="test" class="hidden">
+  <h2 id="weekTitle" class="neon-title"></h2>
 
-    <div class="answers">
-      <button onclick="answer(2)">Sí</button>
-      <button onclick="answer(1)">A veces</button>
-      <button onclick="answer(0)">No</button>
-    </div>
-  </section>
+  <div class="thermo">
+    <div id="thermoFill"></div>
+  </div>
 
-  <!-- RESULTADO FINAL -->
-  <section id="monthlyResult" class="hidden">
+  <p id="questionText" class="question"></p>
+  <small id="questionMeasure" class="legal"></small>
 
-    <!-- ✅ TÍTULO CORREGIDO -->
-    <h2>Tu humanidad en movimiento</h2>
+  <div class="answers">
+    <button onclick="answer(2)">Sí</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
+    <button onclick="answer(0)">No</button>
+  </div>
+</section>
 
-    <div class="vertical-thermo">
-      <div id="monthlyFill"></div>
-    </div>
+<!-- RESULTADO SEMANAL -->
+<section id="weeklyResult" class="hidden">
+  <h2 class="neon-title">Lectura semanal</h2>
 
-    <div id="monthlySymbol"></div>
+  <div id="weeklySymbol" class="symbol"></div>
 
-    <p id="monthlyText"></p>
-    <p id="monthlyAdvice"></p>
+  <p id="weeklyText"></p>
+  <p id="weeklyAdvice" class="legal"></p>
 
-    <!-- ✅ ÚNICO BOTÓN -->
-    <button onclick="goToMirror()">Verte al espejo</button>
+  <button class="primary" onclick="nextWeek()">Continuar</button>
+</section>
 
-  </section>
+<!-- RESULTADO MENSUAL -->
+<section id="monthlyResult" class="hidden">
+  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
+
+  <div class="vertical-thermo">
+    <div id="monthlyFill"></div>
+  </div>
+
+  <div id="monthlySymbol" class="symbol"></div>
+
+  <p id="monthlyText"></p>
+  <p id="monthlyAdvice" class="legal"></p>
+
+  <button class="primary" onclick="openMonthlyFull()">
+    Ver lectura mensual completa
+  </button>
+</section>
+
+<!-- LECTURA MENSUAL COMPLETA -->
+<section id="monthlyFull" class="hidden">
+  <h2 class="neon-title">Lectura mensual completa</h2>
+
+  <div class="monthly-scroll">
+    <p id="monthlyFullText"></p>
+  </div>
+
+  <p class="legal" style="margin-top:16px;">
+    Este proceso es consecutivo.<br>
+    Para medir tu humanidad de forma real,
+    necesitás vivir una semana de experiencias (7 días).
+  </p>
+
+  <!-- 🔒 BOTÓN VOLVER CORRECTO Y DEFINITIVO -->
+  <button class="primary" onclick="restart()">Volver</button>
+</section>
 
 </main>
 
