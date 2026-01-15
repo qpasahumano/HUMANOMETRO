@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -23,56 +23,84 @@
   </h1>
 
   <p class="intro">
-    Este volumen continúa tu proceso humano de forma semanal.<br>
-    La humanidad se mide en el tiempo vivido.
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    Cada bloque se habilita únicamente cuando completaste el anterior
+    y pasó el tiempo necesario para integrarlo.<br><br>
+    La humanidad se construye en movimiento, no en velocidad.
   </p>
 
-  <button class="primary" onclick="startV2()">Continuar seguimiento</button>
+  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
 </section>
 
-<!-- TEST -->
+<!-- TEST SEMANAL -->
 <section id="test" class="hidden">
-  <h2 id="weekTitle"></h2>
+  <h2 id="weekTitle" class="neon-title"></h2>
 
   <div class="thermo">
     <div id="thermoFill"></div>
   </div>
 
-  <p id="questionText"></p>
+  <p id="questionText" class="question"></p>
   <small id="questionMeasure" class="legal"></small>
 
   <div class="answers">
     <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">Tal vez</button>
+    <button onclick="answer(1)">Tal vez / A veces</button>
     <button onclick="answer(0)">No</button>
   </div>
 </section>
 
-<!-- RESULTADO FINAL -->
+<!-- RESULTADO SEMANAL -->
+<section id="weeklyResult" class="hidden">
+  <h2 class="neon-title">Lectura semanal</h2>
+
+  <div id="weeklySymbol" class="symbol"></div>
+
+  <p id="weeklyText"></p>
+  <p id="weeklyAdvice" class="legal"></p>
+
+  <button class="primary" onclick="nextWeek()">Continuar</button>
+</section>
+
+<!-- RESULTADO MENSUAL -->
 <section id="monthlyResult" class="hidden">
-  <h2>Tu humanidad en estos días</h2>
+  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
   <div class="vertical-thermo">
     <div id="monthlyFill"></div>
   </div>
 
-  <p id="monthlyText"></p>
+  <div id="monthlySymbol" class="symbol"></div>
 
-  <!-- ✅ BOTÓN CORRECTO HACIA VOLUMEN 3 -->
-  <button class="primary" onclick="goToMirror()">
-    Verte al espejo
+  <p id="monthlyText"></p>
+  <p id="monthlyAdvice" class="legal"></p>
+
+  <button class="primary" onclick="openMonthlyFull()">
+    Ver lectura mensual completa
   </button>
+</section>
+
+<!-- LECTURA MENSUAL COMPLETA -->
+<section id="monthlyFull" class="hidden">
+  <h2 class="neon-title">Lectura mensual completa</h2>
+
+  <div class="monthly-scroll">
+    <p id="monthlyFullText"></p>
+  </div>
+
+  <p class="legal" style="margin-top:16px;">
+    Este proceso es consecutivo.<br>
+    Para medir tu humanidad de forma real,
+    necesitás vivir una semana de experiencias (7 días).
+  </p>
+
+  <!-- 🔒 BOTÓN VOLVER CORRECTO Y DEFINITIVO -->
+  <button class="primary" onclick="restart()">Volver</button>
 </section>
 
 </main>
 
 <script src="script.js"></script>
-
-<script>
-function goToMirror() {
-  window.location.href = "./volumen_3/index.html";
-}
-</script>
-
 </body>
 </html>
