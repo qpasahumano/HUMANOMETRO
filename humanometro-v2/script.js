@@ -6,17 +6,17 @@ const WEEKS = [
     questions: [
       ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?", "Empatía global"],
       ["Cuando alguien te habla, ¿dejás el celular?", "Presencia humana"],
-      ["¿Sentís impulso de involucrarte ante injusticias?", "Compromiso"],
-      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad"]
+      ["¿Sentís impulso de involucrarte ante injusticias?", "Compromiso humano"],
+      ["¿Te afecta el sufrimiento ajeno?", "Sensibilidad emocional"]
     ]
   },
   {
     title: "Vos y la tecnología",
     questions: [
       ["¿Podés soltar el celular al compartir?", "Uso consciente"],
-      ["¿Controlás el tiempo en pantallas?", "Autocontrol"],
+      ["¿Controlás el tiempo en pantallas?", "Autocontrol digital"],
       ["¿Recordás que hay personas reales detrás de una pantalla?", "Empatía digital"],
-      ["¿La tecnología acompaña sin absorberte?", "Equilibrio"]
+      ["¿La tecnología acompaña sin absorberte?", "Equilibrio tecnológico"]
     ]
   },
   {
@@ -42,9 +42,9 @@ function startV2() {
 
 function loadQuestion() {
   const w = WEEKS[week];
-  document.getElementById("weekTitle").innerText = w.title;
-  document.getElementById("questionText").innerText = w.questions[q][0];
-  document.getElementById("questionMeasure").innerText = w.questions[q][1];
+  weekTitle.innerText = w.title;
+  questionText.innerText = w.questions[q][0];
+  questionMeasure.innerText = w.questions[q][1];
   updateThermo();
 }
 
@@ -52,8 +52,7 @@ function answer(v) {
   currentScore += v;
   q++;
   updateThermo();
-  if (q >= 4) showWeeklyResult();
-  else loadQuestion();
+  q >= 4 ? showWeeklyResult() : loadQuestion();
 }
 
 function showWeeklyResult() {
@@ -61,40 +60,33 @@ function showWeeklyResult() {
   const avg = currentScore / 4;
   weeklyScores.push(avg);
 
-  let symbol = "🐞", text = "", advice = "";
-
   if (avg < 0.8) {
-    symbol = "🦇";
-    text =
-      "La semana mostró una desconexión entre lo que sentís y cómo reaccionás.\n" +
-      "No implica falta de humanidad, sino dificultad para integrarla en el día a día.";
-    advice =
-      "Bajar el ritmo y observar sin juicio puede ayudarte a reordenar la experiencia.";
+    weeklySymbol.innerText = "🦇";
+    weeklyText.innerText =
+      "La semana mostró una desconexión entre emoción y acción.\n" +
+      "Las experiencias ocurrieron, pero no terminaron de integrarse.";
+    weeklyAdvice.innerText =
+      "Detenerte y observar sin juicio puede ayudarte a reordenar lo vivido.";
   } else if (avg < 1.5) {
-    symbol = "🐞";
-    text =
-      "Tu humanidad se expresó de forma intermitente.\n" +
-      "Hubo presencia, pero no siempre sostenida.";
-    advice =
-      "Pequeños gestos conscientes pueden convertir momentos aislados en continuidad.";
+    weeklySymbol.innerText = "🐞";
+    weeklyText.innerText =
+      "La humanidad estuvo presente de forma intermitente.\n" +
+      "Hubo conciencia, pero no siempre sostenida.";
+    weeklyAdvice.innerText =
+      "Pequeños gestos conscientes pueden transformar momentos aislados en continuidad.";
   } else {
-    symbol = "🐦";
-    text =
+    weeklySymbol.innerText = "🐦";
+    weeklyText.innerText =
       "La semana mostró coherencia creciente entre emoción y acción.\n" +
       "La experiencia fue habitada con mayor presencia.";
-    advice =
-      "Sostener esta actitud fortalece la integración humana en el tiempo.";
+    weeklyAdvice.innerText =
+      "Sostener esta actitud fortalece tu proceso humano en el tiempo.";
   }
-
-  document.getElementById("weeklySymbol").innerText = symbol;
-  document.getElementById("weeklyText").innerText = text;
-  document.getElementById("weeklyAdvice").innerText = advice;
 }
 
 function nextWeek() {
   week++; q = 0; currentScore = 0;
-  if (week >= WEEKS.length) showMonthlyResult();
-  else { show("test"); loadQuestion(); }
+  week >= WEEKS.length ? showMonthlyResult() : (show("test"), loadQuestion());
 }
 
 function showMonthlyResult() {
@@ -102,66 +94,36 @@ function showMonthlyResult() {
 
   const avg = weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
 
-  setTimeout(()=>{
-    document.getElementById("monthlyFill").style.height =
-      Math.round((avg/2)*100)+"%";
-  },300);
+  monthlyLongText.innerText =
+    "Este recorrido integra tus respuestas semanales como un proceso continuo. " +
+    "No mide hechos aislados, sino la forma en que fuiste habitando tus emociones, " +
+    "tus decisiones y tu impacto en el entorno.";
+
+  animateFill(monthlyFill, Math.round((avg/2)*100));
 
   setTimeout(()=>{
-    let longText = "";
-    let shortText = "";
-
-    if (avg < 0.8) {
-      longText =
-        "El recorrido completo mostró una desconexión sostenida entre emoción, pensamiento y acción.\n\n" +
-        "Las experiencias estuvieron presentes, pero no siempre fueron integradas de manera consciente.\n" +
-        "Esto no habla de ausencia de humanidad, sino de una dificultad para habitarla en continuidad.\n\n" +
-        "Este resultado invita a detenerse, observar y dar espacio a lo sentido antes de actuar.";
-      shortText =
-        "Este recorrido reflejó una humanidad en tensión, más reactiva que integrada.";
-    } else if (avg < 1.5) {
-      longText =
-        "El recorrido mostró momentos claros de presencia combinados con automatismos.\n\n" +
-        "La conciencia apareció, aunque no siempre se sostuvo en el tiempo.\n" +
-        "La humanidad estuvo disponible, pero aún no terminó de consolidarse como hábito.\n\n" +
-        "La integración crece cuando lo sentido encuentra espacio antes de convertirse en acción.";
-      shortText =
-        "Este recorrido reflejó una humanidad en proceso de integración.";
-    } else {
-      longText =
-        "El recorrido mostró coherencia creciente entre lo que sentís, pensás y hacés.\n\n" +
-        "Las experiencias fueron integradas con mayor conciencia y presencia.\n" +
-        "No desde la perfección, sino desde una actitud atenta y responsable.\n\n" +
-        "Este estado fortalece una humanidad vivida de forma consciente y sostenida.";
-      shortText =
-        "Este recorrido reflejó una humanidad integrada y en expansión.";
-    }
-
-    document.getElementById("monthlyLongText").innerText = longText;
-    document.getElementById("monthlyText").innerText = shortText;
-  },1500);
+    monthlyText.innerText =
+      "El resultado refleja un estado dinámico de tu humanidad: " +
+      "la conciencia aparece cuando emoción, pensamiento y acción comienzan a alinearse.";
+  },1200);
 }
 
 /* ================= EL ESPEJO ================= */
 
 const MIRROR_QUESTIONS = [
-  "En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?",
-  "En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?",
-  "¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?",
-  "¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?",
-  "¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?",
-  "¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?",
-  "¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?",
-  "Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?"
+  { t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?", e:"😠" },
+  { t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?", e:"😢" },
+  { t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?", e:"😨" },
+  { t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?", e:"😔" },
+  { t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?", e:"😵‍💫" },
+  { t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?", e:"😐" },
+  { t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?", e:"😊" },
+  { t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?", e:"❓" }
 ];
 
-let mq = 0;
-let mirrorScore = 0;
-let mirrorCount = 0;
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
-function openMirror() {
-  show("mirrorIntro");
-}
+function openMirror() { show("mirrorIntro"); }
 
 function startMirror() {
   mq = 0; mirrorScore = 0; mirrorCount = 0;
@@ -170,74 +132,51 @@ function startMirror() {
 }
 
 function loadMirrorQuestion() {
-  document.getElementById("mirrorQuestion").innerText =
-    MIRROR_QUESTIONS[mq];
+  mirrorEmoji.innerText = MIRROR_QUESTIONS[mq].e;
+  mirrorQuestion.innerText = MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v) {
-  if (v !== null) {
-    mirrorScore += v;
-    mirrorCount++;
-  }
+  if (v !== null) { mirrorScore += v; mirrorCount++; }
   mq++;
-  if (mq >= MIRROR_QUESTIONS.length) showMirrorResult();
-  else loadMirrorQuestion();
+  mq >= MIRROR_QUESTIONS.length ? showMirrorResult() : loadMirrorQuestion();
 }
 
 function showMirrorResult() {
   show("mirrorResult");
 
-  const avg = mirrorCount === 0 ? 0 : mirrorScore / mirrorCount;
+  const avg = mirrorCount ? mirrorScore/mirrorCount : 0;
 
-  let fullText = "";
+  animateFill(mirrorFill, Math.round((avg/2)*100));
 
-  if (avg < 1.3) {
-    fullText =
-      "El manómetro refleja una humanidad atravesada por emociones que no terminaron de integrarse.\n\n" +
-      "Las reacciones estuvieron presentes, pero la conciencia apareció de forma tardía o fragmentada.\n" +
-      "Esto no implica pérdida de humanidad, sino una desconexión temporal entre sentir, pensar y actuar.\n\n" +
-      "La integración comienza cuando se le da espacio a la emoción antes de que se transforme en respuesta automática.";
-  } else if (avg < 2.3) {
-    fullText =
-      "El manómetro muestra una humanidad en estado intermedio de integración.\n\n" +
-      "Hubo momentos claros de presencia y otros dominados por el automatismo.\n" +
-      "La conciencia estuvo disponible, aunque no siempre se sostuvo en el tiempo.\n\n" +
-      "Fortalecer la observación interna permite que la experiencia se convierta en aprendizaje.";
-  } else {
-    fullText =
-      "El manómetro refleja una humanidad integrada de forma consciente.\n\n" +
-      "Las emociones fueron reconocidas y dialogaron con el pensamiento y la acción.\n" +
-      "La experiencia no fue evitada ni reprimida, sino habitada.\n\n" +
-      "Este estado no es un punto final, sino una práctica que se fortalece con presencia sostenida.";
-  }
-
-  document.getElementById("mirrorFullText").innerText =
-    fullText + "\n\nLa humanidad no se pierde, pero se apaga cuando no se la habita conscientemente.";
-
-  setTimeout(()=>{
-    document.getElementById("mirrorFill").style.height =
-      Math.round((avg/2)*100)+"%";
-  },300);
+  mirrorFullText.innerText =
+    "El resultado de un humanómetro no es un veredicto, sino un reflejo integrador.\n\n" +
+    "A lo largo del recorrido, tus respuestas mostraron cómo las emociones fueron reconocidas, " +
+    "sostenidas o evitadas, y de qué manera influyeron en tus decisiones y acciones.\n\n" +
+    "La humanidad no se pierde, pero se apaga cuando no se la habita conscientemente. " +
+    "Volver a medir tu humanidad cuando quieras: Humanómetro está para eso.";
 }
 
 /* ================= UTILIDADES ================= */
 
 function updateThermo() {
-  document.getElementById("thermoFill").style.width =
-    (q/4)*100+"%";
+  thermoFill.style.width = (q/4)*100+"%";
+}
+
+function animateFill(el, target) {
+  el.style.height = "0%";
+  let h = 0;
+  const i = setInterval(()=>{
+    h++;
+    el.style.height = h+"%";
+    if(h>=target) clearInterval(i);
+  },15);
 }
 
 function show(id) {
-  [
-    "start","test","weeklyResult","monthlyResult",
-    "mirrorIntro","mirrorTest","mirrorResult"
-  ].forEach(s=>{
-    const el=document.getElementById(s);
-    if(el) el.classList.add("hidden");
-  });
+  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-function restart() {
-  show("start");
-}
+function restart() { show("start"); }
