@@ -91,8 +91,9 @@ function nextWeek() {
   q = 0;
   currentScore = 0;
 
-  if (week >= WEEKS.length) showMonthlyResult();
-  else {
+  if (week >= WEEKS.length) {
+    showMonthlyResult();
+  } else {
     show("test");
     loadQuestion();
   }
@@ -102,41 +103,34 @@ function showMonthlyResult() {
   show("monthlyResult");
 
   const avg =
-    weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
+    weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
-  // termómetro en vivo
   setTimeout(() => {
     document.getElementById("monthlyFill").style.height =
       Math.round((avg / 2) * 100) + "%";
-  }, 300);
+  }, 500);
 
-  // devolución + botón espejo
   setTimeout(() => {
-    let text = "";
+    let symbol = "🐞", text = "", advice = "";
 
     if (avg < 0.8) {
-      text = "Este recorrido mostró una desconexión entre intención y acción.";
+      symbol = "🦇";
+      text = "Tu humanidad estuvo retraída en estos días.";
+      advice = "Pausar y observar puede reactivar tu sensibilidad.";
     } else if (avg < 1.5) {
-      text = "Este recorrido reflejó presencia humana intermitente.";
+      symbol = "🐞";
+      text = "Tu humanidad se mantuvo estable en estos días.";
+      advice = "Pequeños cambios conscientes pueden impulsarte.";
     } else {
-      text = "Este recorrido mostró coherencia entre lo que sentís y hacés.";
+      symbol = "🐦";
+      text = "Tu humanidad está en expansión.";
+      advice = "Sostener esta coherencia fortalece tu humanidad.";
     }
 
+    document.getElementById("monthlySymbol").innerText = symbol;
     document.getElementById("monthlyText").innerText = text;
-
-    document.getElementById("monthlyAdvice").innerHTML = `
-      <button class="primary" onclick="goToMirror()">
-        Verte al espejo
-      </button>
-    `;
-
-    // 🔥 eliminar cualquier botón viejo colgado
-    const oldBtn = document.querySelector(
-      'button[onclick="openMonthlyFull()"]'
-    );
-    if (oldBtn) oldBtn.remove();
-
-  }, 2500);
+    document.getElementById("monthlyAdvice").innerText = advice;
+  }, 3500);
 }
 
 function updateThermo() {
@@ -145,7 +139,7 @@ function updateThermo() {
 }
 
 function show(id) {
-  ["start","test","weeklyResult","monthlyResult","monthlyFull"]
+  ["start", "test", "weeklyResult", "monthlyResult", "monthlyFull"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
@@ -154,7 +148,9 @@ function restart() {
   show("start");
 }
 
-// 👉 ENGANCHE A VOLUMEN 3
+/* ===============================
+   👉 BOTÓN DEFINITIVO: VERTE AL ESPEJO
+   =============================== */
 function goToMirror() {
-  window.location.href = "./humanometro-v3/";
-}
+  window.location.href = "./volumen3/index.html";
+             }
