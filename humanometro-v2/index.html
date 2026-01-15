@@ -90,34 +90,32 @@
 </section>
 
 <section id="mirrorTest" class="hidden">
+  <!-- emoticón animado -->
+  <div id="mirrorEmoji" class="emoji pulse"></div>
+
   <p id="mirrorQuestion" class="question fade"></p>
 
   <div class="answers">
-    <button class="sky" onclick="answerMirror(3)">MUCHO</button>
-    <button class="sky" onclick="answerMirror(2)">POCO</button>
-    <button class="sky" onclick="answerMirror(1)">NADA</button>
-    <button class="sky" onclick="answerMirror(null)">NINGUNA</button>
+    <button class="sky deep" onclick="answerMirror(3)">MUCHO</button>
+    <button class="sky deep" onclick="answerMirror(2)">POCO</button>
+    <button class="sky deep" onclick="answerMirror(1)">NADA</button>
+    <button class="sky deep" onclick="answerMirror(null)">NINGUNA</button>
   </div>
 </section>
 
 <section id="mirrorResult" class="hidden full-screen">
-  <!-- Termómetro lateral con efecto vivo -->
+  <!-- termómetro lateral con gradiente vivo -->
   <div class="vertical-thermo right">
-    <div id="mirrorFill"></div>
+    <div id="mirrorFill" class="gradient"></div>
   </div>
 
-  <!-- contenedor con scroll interno -->
-  <div class="overline">
-    <p id="mirrorFullText" class="legal fade"></p>
+  <!-- lámina scrolleable -->
+  <div class="overline scrollable">
+    <p id="mirrorFullText" class="legal small fade"></p>
   </div>
 
-  <p class="legal fade">
-    Este resultado surge de un proceso consecutivo.<br>
-    El espejo no define quién sos.<br>
-    Refleja cómo te estás habitando.<br><br>
-    Volver a medir tu humanidad cuando quieras.<br>
-    Humanómetro está para eso.
-  </p>
+  <!-- indicador de scroll -->
+  <div id="scrollHint" class="scroll-hint">⬇</div>
 
   <button class="primary sky" onclick="restart()">Cerrar el espejo</button>
 </section>
