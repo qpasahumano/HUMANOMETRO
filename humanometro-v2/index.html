@@ -15,7 +15,7 @@
 <body>
 <main id="app">
 
-<!-- ================= INICIO ================= -->
+<!-- INICIO -->
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
@@ -30,10 +30,10 @@
     La humanidad se construye en movimiento, no en velocidad.
   </p>
 
-  <button class="primary" onclick="startV2()">Continuar seguimiento</button>
+  <button class="primary" onclick="startV2()">Continuar seguimiento mensual</button>
 </section>
 
-<!-- ================= TEST SEMANAL ================= -->
+<!-- TEST SEMANAL -->
 <section id="test" class="hidden">
   <h2 id="weekTitle" class="neon-title"></h2>
 
@@ -51,7 +51,7 @@
   </div>
 </section>
 
-<!-- ================= RESULTADO SEMANAL ================= -->
+<!-- RESULTADO SEMANAL -->
 <section id="weeklyResult" class="hidden">
   <h2 class="neon-title">Lectura semanal</h2>
 
@@ -63,9 +63,9 @@
   <button class="primary" onclick="nextWeek()">Continuar</button>
 </section>
 
-<!-- ================= RESULTADO FINAL V2 ================= -->
+<!-- RESULTADO MENSUAL -->
 <section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tu humanidad en movimiento</h2>
+  <h2 class="neon-title">Tu humanidad en movimiento este mes</h2>
 
   <div class="vertical-thermo">
     <div id="monthlyFill"></div>
@@ -76,58 +76,27 @@
   <p id="monthlyText"></p>
   <p id="monthlyAdvice" class="legal"></p>
 
-  <!-- 🔵 BOTÓN DEFINITIVO -->
-  <button class="primary" onclick="openMirror()">Verte al espejo</button>
+  <button class="primary" onclick="openMonthlyFull()">
+    Ver lectura mensual completa
+  </button>
 </section>
 
-<!-- ================= BLOQUE ESPEJO ================= -->
-<section id="mirror" class="hidden mirror-screen">
+<!-- LECTURA MENSUAL COMPLETA -->
+<section id="monthlyFull" class="hidden">
+  <h2 class="neon-title">Lectura mensual completa</h2>
 
-  <h2 class="neon-title">Verte al espejo</h2>
+  <div class="monthly-scroll">
+    <p id="monthlyFullText"></p>
+  </div>
 
-  <p class="legal mirror-intro">
-    Este bloque no evalúa acciones aisladas.<br>
-    Refleja tu congruencia humana sostenida en el tiempo.
+  <p class="legal" style="margin-top:16px;">
+    Este proceso es consecutivo.<br>
+    Para medir tu humanidad de forma real,
+    necesitás vivir una semana de experiencias (7 días).
   </p>
 
-  <!-- ESPEJO -->
-  <div class="mirror-frame">
-    <div id="mirrorReflection" class="mirror-reflection"></div>
-  </div>
-
-  <!-- TERMÓMETRO ESPEJO -->
-  <div class="vertical-thermo mirror-thermo">
-    <div id="mirrorThermoFill"></div>
-  </div>
-
-  <p id="mirrorQuestion" class="question"></p>
-
-  <div class="answers mirror-answers">
-    <button onclick="mirrorAnswer(2)">Sí</button>
-    <button onclick="mirrorAnswer(1)">Poco</button>
-    <button onclick="mirrorAnswer(0)">Nada</button>
-  </div>
-</section>
-
-<!-- ================= DEVOLUCIÓN FINAL ESPEJO ================= -->
-<section id="mirrorResult" class="hidden mirror-result">
-
-  <h2 class="neon-title">Tu reflejo humano</h2>
-
-  <div class="mirror-frame final">
-    <div id="finalMirror" class="mirror-reflection"></div>
-  </div>
-
-  <div class="vertical-thermo">
-    <div id="finalMirrorThermo"></div>
-  </div>
-
-  <p id="mirrorFinalText"></p>
-
-  <small class="legal">
-    Este resultado surge de la coherencia sostenida entre
-    tus respuestas semanales y tu autoobservación final.
-  </small>
+  <!-- 🔒 BOTÓN VOLVER CORRECTO Y DEFINITIVO -->
+  <button class="primary" onclick="restart()">Volver</button>
 </section>
 
 </main>
