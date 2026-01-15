@@ -147,12 +147,18 @@ button {
   border-radius: 20px;
   overflow: hidden;
   position: relative;
+  box-shadow:
+    inset 0 0 10px rgba(0,0,0,.5),
+    0 0 18px rgba(120,255,230,.45);
 }
 
 .gradient {
   width: 100%;
   height: 0%;
   background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,.35),
+    0 0 20px rgba(120,255,230,.75);
 }
 
 /* ===== RESULTADOS LATERALES ===== */
@@ -224,9 +230,10 @@ button {
   margin: 10px auto;
   position: relative;
   box-shadow:
-    inset -6px -6px 12px rgba(0,0,0,.25),
-    inset 6px 6px 12px rgba(255,255,255,.25),
-    0 12px 24px rgba(0,0,0,.35);
+    inset -8px -8px 14px rgba(0,0,0,.28),
+    inset 8px 8px 14px rgba(255,255,255,.28),
+    0 14px 30px rgba(0,0,0,.45),
+    0 0 22px rgba(120,255,230,.25);
   animation: floatBase 2.8s infinite ease-in-out;
 }
 
@@ -253,4 +260,13 @@ button {
 .emoji3d.anx   { background: radial-gradient(circle at top,#ffeaa7,#e17055); }
 .emoji3d.guilt { background: radial-gradient(circle at top,#dfe6e9,#636e72); }
 .emoji3d.flat  { background: radial-gradient(circle at top,#dfe6e9,#7f8c8d); }
-.emoji3d.q     { background: radial-gradient(circle at top,#ffffff,#bdc3c7); }
+.emoji3d.q     { background: radial-gradient(circle at top,#e0f7ff,#74b9ff); }
+
+/* ===== DEVOLUCIÓN FINAL CON LED ===== */
+#mirrorFullText {
+  font-size: .9rem;
+  line-height: 1.55;
+  text-shadow:
+    0 0 6px rgba(120,255,230,.45),
+    0 0 14px rgba(120,255,230,.35);
+}
