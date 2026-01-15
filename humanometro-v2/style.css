@@ -142,7 +142,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES ===== */
+/* ===== TERMÓMETROS VERTICALES (LED) ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -157,8 +157,8 @@ button {
 }
 
 @keyframes pulseLed {
-  0% { box-shadow: 0 0 18px rgba(120,255,230,.5); }
-  50% { box-shadow: 0 0 30px rgba(120,255,230,1); }
+  0%   { box-shadow: 0 0 18px rgba(120,255,230,.5); }
+  50%  { box-shadow: 0 0 32px rgba(120,255,230,1); }
   100% { box-shadow: 0 0 18px rgba(120,255,230,.5); }
 }
 
@@ -197,7 +197,7 @@ button {
 }
 
 /* =====================================================
-   EMOTICONES 3D – ESPEJO (REALES, NO CÍRCULOS PLANOS)
+   EMOTICONES 3D – ESPEJO (REALES + ANIMADOS)
    ===================================================== */
 
 .emoji3d {
@@ -206,6 +206,7 @@ button {
   border-radius: 50%;
   margin: 14px auto;
   position: relative;
+  background: #eee;
   box-shadow:
     inset -10px -10px 16px rgba(0,0,0,.35),
     inset 10px 10px 16px rgba(255,255,255,.35),
@@ -229,6 +230,18 @@ button {
 .emoji3d::before { left: 18px; }
 .emoji3d::after  { right: 18px; }
 
+/* BOCA */
+.emoji3d span {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  width: 20px;
+  height: 10px;
+  border-radius: 0 0 20px 20px;
+  background: #000;
+  transform: translateX(-50%);
+}
+
 /* COLORES EMOCIONALES */
 .emoji3d.joy   { background: radial-gradient(circle at top,#fff7a8,#f1c40f); }
 .emoji3d.sad   { background: radial-gradient(circle at top,#9fc5ff,#2c3e50); }
@@ -239,11 +252,11 @@ button {
 .emoji3d.flat  { background: radial-gradient(circle at top,#dfe6e9,#7f8c8d); }
 .emoji3d.q     { background: radial-gradient(circle at top,#e0f7ff,#74b9ff); }
 
-/* ===== DEVOLUCIÓN FINAL LED ===== */
+/* ===== DEVOLUCIÓN FINAL CON LED ===== */
 #mirrorFullText {
   font-size: .95rem;
   line-height: 1.6;
   text-shadow:
     0 0 8px rgba(120,255,230,.65),
     0 0 18px rgba(120,255,230,.45);
-}
+  }
