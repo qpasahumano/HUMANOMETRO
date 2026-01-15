@@ -154,3 +154,79 @@ function restart() {
 function goToMirror() {
   window.location.href = "./volumen3/index.html";
       }
+/* ===============================
+   BLOQUE ESPEJO – CONTINUIDAD V2
+================================ */
+
+const MIRROR_QUESTIONS = [
+  "¿Fuiste coherente entre lo que sentiste y lo que hiciste?",
+  "¿Reconociste tus emociones sin reprimirlas?",
+  "¿Sostuviste empatía aun cuando fue incómodo?",
+  "¿Evitaste reaccionar de forma automática?",
+  "¿Pudiste observarte sin juzgarte?",
+  "¿Te hiciste cargo de tu impacto emocional?",
+  "¿Sentís continuidad entre tus semanas?",
+  "¿Tu humanidad se sostuvo en el tiempo?"
+];
+
+let mirrorIndex = 0;
+let mirrorScores = [];
+
+/* BOTÓN DESDE VOLUMEN 2 */
+function openMirror() {
+  mirrorIndex = 0;
+  mirrorScores = [];
+  document.getElementById("mirrorThermoFill").style.height = "0%";
+  show("mirror");
+  loadMirrorQuestion();
+}
+
+function loadMirrorQuestion() {
+  document.getElementById("mirrorQuestion").innerText =
+    MIRROR_QUESTIONS[mirrorIndex];
+}
+
+function mirrorAnswer(v) {
+  mirrorScores.push(v);
+  mirrorIndex++;
+
+  document.getElementById("mirrorThermoFill").style.height =
+    Math.round((mirrorScores.length / MIRROR_QUESTIONS.length) * 100) + "%";
+
+  if (mirrorIndex >= MIRROR_QUESTIONS.length) {
+    showMirrorResult();
+  } else {
+    loadMirrorQuestion();
+  }
+}
+
+function showMirrorResult() {
+  show("mirrorResult");
+
+  const avg =
+    mirrorScores.reduce((a, b) => a + b, 0) / mirrorScores.length;
+
+  const thermo = document.getElementById("finalMirrorThermo");
+  thermo.style.height = Math.round((avg / 2) * 100) + "%";
+
+  let text = "";
+
+  if (avg < 0.8) {
+    text =
+      "El espejo refleja una incongruencia sostenida.\n\n" +
+      "No como juicio, sino como señal de desconexión entre lo que sentís y lo que hacés.\n\n" +
+      "La conciencia comienza cuando el reflejo deja de ser cómodo.";
+  } else if (avg < 1.5) {
+    text =
+      "El reflejo muestra una humanidad presente pero inestable.\n\n" +
+      "Hay momentos de conciencia y otros de automatismo.\n\n" +
+      "Sostener la observación puede integrar tu coherencia.";
+  } else {
+    text =
+      "El espejo refleja congruencia humana sostenida.\n\n" +
+      "Tu sensibilidad, acción y conciencia se alinean en el tiempo.\n\n" +
+      "La humanidad se vuelve visible cuando se la habita.";
+  }
+
+  document.getElementById("mirrorFinalText").innerText = text;
+    }
