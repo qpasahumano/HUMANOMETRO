@@ -4,13 +4,11 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
-
   color: #f6fffc;
   position: relative;
 }
@@ -157,86 +155,14 @@ button {
   background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
 }
 
-/* ===== CONTENEDOR RESULTADOS LATERALES ===== */
-.result-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin-top: 20px;
-}
-
+/* ===== RESULTADOS LATERALES ===== */
 .result-text {
-  flex: 1;
   text-align: left;
+  margin-left: 16px;
 }
 
-/* ===== SÍMBOLOS / DIBUJOS 3D ===== */
+/* ===== SÍMBOLOS ===== */
 .symbol {
   font-size: 3.4rem;
   margin-bottom: 10px;
-  animation: floatBase 2.6s infinite ease-in-out;
-}
-
-@keyframes floatBase {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
-}
-
-/* ===== PANEL / LÁMINA ===== */
-.panel {
-  padding: 18px;
-  margin: 12px 0;
-  border-radius: 16px;
-}
-
-.scrollable {
-  max-height: 60vh;
-  overflow-y: auto;
-}
-
-/* ===== LÁMINA BLANCA (ESPEJO FINAL) ===== */
-.white-sheet {
-  background: rgba(255,255,255,0.88);
-  color: #001c14;
-  box-shadow:
-    0 10px 28px rgba(0,0,0,.35),
-    inset 0 0 12px rgba(255,255,255,.6);
-}
-
-/* ===== FLECHA INDICADORA ===== */
-.scroll-hint {
-  text-align: center;
-  font-size: 1.2rem;
-  animation: hintMove 1.6s infinite;
-}
-
-@keyframes hintMove {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
-}
-
-/* ===== EMOTICONES 3D ===== */
-.emoji3d {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  margin: 10px auto;
-  box-shadow:
-    inset -6px -6px 12px rgba(0,0,0,.25),
-    0 10px 20px rgba(0,0,0,.35);
-}
-
-.float {
-  animation: floatBase 2.8s infinite ease-in-out;
-}
-
-/* ===== COLORES EMOCIONALES ===== */
-.emoji3d.angry { background: radial-gradient(#ff7676,#c0392b); }
-.emoji3d.sad   { background: radial-gradient(#7fbfff,#2c3e50); }
-.emoji3d.fear  { background: radial-gradient(#dcd6f7,#5f27cd); }
-.emoji3d.guilt { background: radial-gradient(#c8d6e5,#576574); }
-.emoji3d.anx   { background: radial-gradient(#ffeaa7,#e17055); }
-.emoji3d.flat  { background: radial-gradient(#b2bec3,#636e72); }
-.emoji3d.joy   { background: radial-gradient(#fff200,#f39c12); }
-.emoji3d.q     { background: radial-gradient(#ffffff,#bdc3c7); }
+  animation: floatBase 2.6s infinite ease-in
