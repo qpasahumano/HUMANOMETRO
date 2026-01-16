@@ -49,10 +49,12 @@ const WEEKS = [
 
 let week=0,q=0,currentScore=0;
 let weeklyScores=[];
+let globalScores=[];
 
 /* FLUJO */
 function startV2(){
-  week=0;q=0;currentScore=0;weeklyScores=[];
+  week=0;q=0;currentScore=0;
+  weeklyScores=[]; globalScores=[];
   show("test");loadQuestion();
 }
 
@@ -65,7 +67,9 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v; q++;
+  currentScore+=v;
+  globalScores.push(v);
+  q++;
   q>=4?showWeekly():loadQuestion();
 }
 
@@ -80,13 +84,13 @@ function showWeekly(){
 
   weeklyText.textContent =
     avg<0.8
-    ?"Durante este tramo predominó una reactividad emocional sostenida."
-    :avg<1.5
-    ?"La conciencia apareció con oscilaciones según el contexto."
-    :"Se sostuvo una coherencia emocional activa.";
+    ? "Durante este período, las respuestas muestran una fuerte influencia del contexto externo sobre tu mundo emocional. Hubo registro de lo que sucede, pero con dificultad para sostener presencia interna frente a la demanda."
+    : avg<1.5
+    ? "Este tramo refleja una oscilación entre momentos de conciencia y respuestas automáticas. Se percibe intención de registro, aunque no siempre sostenida."
+    : "Las respuestas indican una integración activa entre lo que sentís, pensás y hacés. Se observa mayor elección consciente frente a los estímulos.";
 
   weeklyAdvice.textContent =
-    "Este registro forma parte de un proceso, no de un juicio.";
+    "Cada registro forma parte del proceso humano, no de una evaluación.";
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -105,9 +109,14 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-    monthlyLongText.textContent=
-      "Este tramo integró tu vínculo con el mundo y los estímulos externos.";
-    monthlyText.textContent="El recorrido fue sostenido en el tiempo.";
+    monthlyLongText.textContent =
+      "Este recorrido integró cómo estuviste habitando el mundo, la tecnología y los vínculos cotidianos. No se trata de hechos aislados, sino de una dinámica sostenida en el tiempo.";
+    monthlyText.textContent =
+      avg<0.8
+      ? "El proceso muestra desgaste emocional acumulado."
+      : avg<1.5
+      ? "Se observa un equilibrio inestable con momentos de presencia."
+      : "El trayecto refleja una evolución hacia mayor coherencia.";
   });
 }
 
@@ -123,12 +132,12 @@ const MIRROR_QUESTIONS=[
  {t:"¿Evitaste una emoción dominante?"}
 ];
 
-let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
+let mq=0,mirrorScore=0,mirrorCount=0;
 
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
+  mq=0;mirrorScore=0;mirrorCount=0;
   show("mirrorTest");loadMirror();
 }
 
@@ -138,8 +147,7 @@ function loadMirror(){
 }
 
 function answerMirror(v){
-  mirrorLog.push(v??0);
-  if(v!==null){mirrorScore+=v;mirrorCount++;}
+  if(v!==null){mirrorScore+=v;mirrorCount++; globalScores.push(v);}
   mq++;
   mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
@@ -148,7 +156,7 @@ function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  const avg = globalScores.reduce((a,b)=>a+b,0)/globalScores.length;
 
   animateGauge(finalFill,(avg/2)*100,()=>{
     finalTextWrap.classList.remove("hidden");
@@ -159,12 +167,13 @@ function showFinal(){
       :"Estado reactivo";
 
     finalHumanText.textContent =
-      "A lo largo de todo el recorrido se observa cómo fuiste habitando "+
-      "tu vínculo con el mundo, la tecnología y tu mundo interno.\n\n"+
-      "Tus respuestas muestran patrones emocionales, momentos de presencia "+
-      "y también zonas de tensión que forman parte de tu proceso humano.\n\n"+
-      "Este resultado no define quién sos, sino cómo estuviste estando.\n\n"+
-      "La sugerencia es simple: registrar sin juzgar y volver cuando lo necesites.";
+      "A lo largo de todo el recorrido se observa cómo fuiste atravesando distintas capas de tu humanidad. Tus respuestas reflejan momentos de presencia, zonas de tensión y también intentos de integración.\n\n"+
+      (avg>1.4
+        ?"El proceso muestra una coherencia creciente entre emoción, pensamiento y acción. Hay señales claras de integración y evolución sostenida."
+        :avg>0.9
+        ?"El recorrido evidencia avances con oscilaciones. La conciencia aparece, aunque no siempre logra sostenerse frente al contexto."
+        :"Las respuestas indican un período de sobrecarga emocional, donde el entorno tuvo más peso que la autorregulación interna.")+
+      "\n\nEste resultado no define quién sos, sino cómo estuviste estando este mes. Registrar esto es parte del camino humano.";
   });
 }
 
