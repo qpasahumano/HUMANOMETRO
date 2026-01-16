@@ -118,7 +118,7 @@ function nextWeek(){
   week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
 }
 
-/* CIERRE BOSQUE – DEVOLUCIÓN INTRAPERSONAL INTEGRADORA */
+/* CIERRE BOSQUE */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -131,25 +131,25 @@ function showMonthly(){
 
     monthlyLongText.textContent =
       "Este tramo integró tu vínculo con el mundo, la tecnología y los estímulos cotidianos. "+
-      "No se observaron respuestas aisladas, sino un modo sostenido de habitar el contexto. "+
-      "Aparecen patrones emocionales, momentos de coherencia y también zonas de fricción.";
+      "No se observaron respuestas aisladas, sino un modo sostenido de habitar el contexto.";
 
     monthlyText.textContent =
-      "El proceso no fue lineal. Hubo avances, pausas y reajustes. "+
-      "Todo eso forma parte de una experiencia humana real, no idealizada.";
+      "El proceso no fue lineal. Hubo avances, pausas y reajustes.";
   });
 }
 
-/* ESPEJO (PREGUNTAS NO TOCADAS) */
-const MIRROR_QUESTIONS=[
- {t:"¿Sentiste enojo que influyó en tu actuar?"},
- {t:"¿La tristeza condicionó tus decisiones?"},
- {t:"¿El miedo te frenó?"},
- {t:"¿La ansiedad te llevó a reaccionar en automático?"},
- {t:"¿Apareció culpa no resuelta?"},
- {t:"¿Hubo desconexión emocional?"},
- {t:"¿La alegría fue genuina y sostenida?"},
- {t:"¿Evitaste una emoción dominante?"}
+/* =================================================
+   ESPEJO – PREGUNTAS ORIGINALES (NO MODIFICADAS)
+   ================================================= */
+const MIRROR_QUESTIONS = [
+  { t: "¿Cuánto enojo sentiste frente a situaciones del mundo que considerás injustas?" },
+  { t: "¿Cuánta tristeza te generó el sufrimiento ajeno que registraste durante este tiempo?" },
+  { t: "¿Cuánto miedo sentiste al pensar en el futuro, propio o colectivo?" },
+  { t: "¿Cuánta ansiedad apareció cuando sentiste que no llegabas a todo o perdías control?" },
+  { t: "¿Cuánta culpa sentiste por no actuar como hubieras querido?" },
+  { t: "¿Cuánta desconexión emocional sentiste frente a lo que pasaba a tu alrededor?" },
+  { t: "¿Cuánta alegría genuina sentiste en tu vida cotidiana durante este período?" },
+  { t: "¿Cuánto evitaste sentir alguna emoción que sabías que estaba presente?" }
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -192,14 +192,11 @@ function showFinal(){
       "Desde el inicio del proceso hasta este cierre, tus respuestas muestran "+
       "cómo fuiste atravesando el mes a nivel humano. "+
       "Aparecen momentos de coherencia, instancias de tensión y espacios de ajuste.\n\n"+
-      "En algunos tramos hubo claridad y presencia; en otros, la exigencia externa "+
-      "generó reacciones automáticas. Nada de esto define quién sos, "+
-      "sino cómo estuviste habitando este período.\n\n"+
       (avg>1.4
-        ?"El estado actual refleja integración y congruencia. La sugerencia es continuar por este camino, sosteniendo la observación consciente."
+        ?"El estado actual refleja integración y congruencia. La sugerencia es continuar por este camino."
         :avg>0.9
-          ?"El estado muestra transición. La sugerencia es bajar el ritmo cuando sea posible y reforzar espacios de registro personal."
-          :"El estado refleja desgaste. La sugerencia es priorizar descanso, límites y cuidado interno.")+
+          ?"El estado muestra transición. La sugerencia es reforzar espacios de registro personal."
+          :"El estado refleja desgaste. La sugerencia es priorizar descanso y cuidado interno.")+
       "\n\nCuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
   });
 }
