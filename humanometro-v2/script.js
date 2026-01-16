@@ -1,29 +1,26 @@
-/* ================= CACHE ================= */
-const ids = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const weekTitle = ids("weekTitle");
-const questionText = ids("questionText");
-const questionMeasure = ids("questionMeasure");
-const thermoFill = ids("thermoFill");
+/* CACHE */
+const weekTitle = $("weekTitle");
+const questionText = $("questionText");
+const questionMeasure = $("questionMeasure");
+const thermoFill = $("thermoFill");
 
-const weeklySymbol = ids("weeklySymbol");
-const weeklyText = ids("weeklyText");
-const weeklyAdvice = ids("weeklyAdvice");
+const weeklySymbol = $("weeklySymbol");
+const weeklyText = $("weeklyText");
+const weeklyAdvice = $("weeklyAdvice");
 
-const monthlyFill = ids("monthlyFill");
-const monthlyTextWrap = ids("monthlyTextWrap");
-const monthlySymbol = ids("monthlySymbol");
-const monthlyLongText = ids("monthlyLongText");
-const monthlyText = ids("monthlyText");
+const monthlyFill = $("monthlyFill");
+const monthlyTextWrap = $("monthlyTextWrap");
+const monthlySymbol = $("monthlySymbol");
+const monthlyLongText = $("monthlyLongText");
+const monthlyText = $("monthlyText");
 
-const mirrorEmoji = ids("mirrorEmoji");
-const mirrorQuestion = ids("mirrorQuestion");
-const mirrorFill = ids("mirrorFill");
-const mirrorTextWrap = ids("mirrorTextWrap");
-const mirrorFullText = ids("mirrorFullText");
-const mirrorAlert = ids("mirrorAlert");
+const mirrorEmoji = $("mirrorEmoji");
+const mirrorQuestion = $("mirrorQuestion");
+const finalHumanText = $("finalHumanText");
 
-/* ================= DATOS ================= */
+/* DATOS */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -46,12 +43,11 @@ const WEEKS = [
 ];
 
 let week=0,q=0,currentScore=0;
-let weeklyScores=[], weeklyRaw=[];
+let weeklyScores=[];
 
-/* ================= FLUJO ================= */
+/* FLUJO */
 function startV2(){
-  week=0;q=0;currentScore=0;
-  weeklyScores=[];weeklyRaw=[];
+  week=0;q=0;currentScore=0;weeklyScores=[];
   show("test");loadQuestion();
 }
 
@@ -64,7 +60,7 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v;q++;
+  currentScore+=v; q++;
   q>=4?showWeekly():loadQuestion();
 }
 
@@ -72,29 +68,40 @@ function showWeekly(){
   show("weeklyResult");
   const avg=currentScore/4;
   weeklyScores.push(avg);
-  weeklyRaw.push(currentScore);
 
   if(avg<0.8){
     weeklySymbol.textContent="🦇";
-    weeklyText.textContent="Predominó la reacción emocional automática.";
-    weeklyAdvice.textContent="Hubo dificultad para traducir emoción en acción consciente.";
+    weeklyText.textContent=
+      "Durante esta semana predominó una respuesta emocional reactiva. "+
+      "Las situaciones externas tuvieron mayor peso que la autorregulación interna. "+
+      "Hubo registro del impacto, pero dificultad para transformarlo en acción consciente.";
+    weeklyAdvice.textContent=
+      "Esto no habla de falla, sino de sobrecarga emocional. "+
+      "Reconocerlo es el primer paso para recuperar presencia.";
   }else if(avg<1.5){
     weeklySymbol.textContent="🐞";
-    weeklyText.textContent="Conciencia intermitente.";
-    weeklyAdvice.textContent="Alternaste registro y automatismo.";
+    weeklyText.textContent=
+      "La conciencia apareció de forma intermitente. "+
+      "Alternaste momentos de presencia con respuestas automáticas según el contexto. "+
+      "Hubo intentos de regulación, aunque no siempre sostenidos.";
+    weeklyAdvice.textContent=
+      "El proceso está activo: observar cuándo te perdés es parte del camino.";
   }else{
     weeklySymbol.textContent="🐦";
-    weeklyText.textContent="Coherencia sostenida.";
-    weeklyAdvice.textContent="Emoción, pensamiento y acción dialogaron.";
+    weeklyText.textContent=
+      "Se sostuvo una coherencia emocional activa. "+
+      "Lograste integrar emoción, pensamiento y acción en la mayoría de las situaciones. "+
+      "La respuesta fue más elegida que reactiva.";
+    weeklyAdvice.textContent=
+      "Este nivel de presencia no es constante, pero sí disponible.";
   }
 }
 
 function nextWeek(){
   week++;q=0;currentScore=0;
-  week>=WEEKS.length?showMonthly(): (show("test"),loadQuestion());
+  week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
 }
 
-/* ================= MENSUAL ================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -103,36 +110,47 @@ function showMonthly(){
   const delta=weeklyScores.at(-1)-weeklyScores[0];
 
   animateGauge(monthlyFill,(avg/2)*100,()=>{
-    setTimeout(()=>{
-      monthlyTextWrap.classList.remove("hidden");
-
-      monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-      monthlyLongText.textContent=
-        "Esta lectura integra cómo te posicionaste semana a semana. "+
-        "No mide hechos aislados, sino tu forma de habitar emociones y decisiones.";
-      monthlyText.textContent=
-        delta>0?"Hubo crecimiento de conciencia."
-        :delta<0?"Se detecta desgaste emocional."
-        :"El nivel de conciencia se mantuvo estable.";
-    },2000);
+    monthlyTextWrap.classList.remove("hidden");
+    monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+    monthlyLongText.textContent=
+      "Este bloque integró tu vínculo con el mundo, el entorno y los estímulos colectivos. "+
+      "No midió hechos aislados, sino la forma en que te posicionaste emocionalmente "+
+      "frente a lo que sucede afuera.";
+    monthlyText.textContent=
+      delta>0
+      ?"Se observa un aumento de conciencia respecto del inicio."
+      :delta<0
+      ?"El cierre muestra desgaste emocional acumulado."
+      :"El nivel de conciencia se mantuvo estable.";
   });
 }
 
-/* ================= ESPEJO ================= */
+function showIntra(){
+  show("intraResult");
+  $("intraText").textContent=
+    "Esta lectura intrapersonal refleja patrones internos sostenidos a lo largo del proceso. "+
+    "Muestra cómo dialogaron emoción, pensamiento y acción en tu vida cotidiana. "+
+    "No juzga: observa coherencias, tensiones y zonas aún no integradas.";
+}
+
+/* ESPEJO */
 const MIRROR_QUESTIONS=[
- {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
- {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
- {t:"¿El miedo te frenó?",e:"fear"},
- {t:"¿La ansiedad te llevó a reaccionar?",e:"anx"},
- {t:"¿Apareció culpa no resuelta?",e:"guilt"},
- {t:"¿Hubo desconexión emocional?",e:"flat"},
- {t:"¿La alegría fue genuina?",e:"joy"},
- {t:"¿Evitaste una emoción dominante?",e:"q"}
+ {t:"¿Sentiste enojo que influyó en tu actuar?"},
+ {t:"¿La tristeza condicionó tus decisiones?"},
+ {t:"¿El miedo te frenó?"},
+ {t:"¿La ansiedad te llevó a reaccionar en automático?"},
+ {t:"¿Apareció culpa no resuelta?"},
+ {t:"¿Hubo desconexión emocional?"},
+ {t:"¿La alegría fue genuina y sostenida?"},
+ {t:"¿Evitaste una emoción dominante?"}
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
 
-function openMirror(){show("mirrorIntro");}
+function openMirror(){
+  document.body.classList.add("mirror-transition");
+  setTimeout(()=>show("mirrorIntro"),200);
+}
 
 function startMirror(){
   mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
@@ -140,47 +158,40 @@ function startMirror(){
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorEmoji.textContent="⬤";
   mirrorQuestion.textContent=MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
   mirrorLog.push(v??0);
   if(v!==null){mirrorScore+=v;mirrorCount++;}
-  mq++;mq>=MIRROR_QUESTIONS.length?showMirror():loadMirror();
+  mq++;
+  mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
 
-/* ================= FINAL ================= */
-function showMirror(){
-  show("mirrorResult");
-  mirrorTextWrap.classList.add("hidden");
+function showFinal(){
+  show("finalResult");
 
   const avg=mirrorCount?mirrorScore/mirrorCount:0;
   const evitadas=mirrorLog.filter(v=>v===0).length;
 
-  animateGauge(mirrorFill,(avg/2)*100,()=>{
-    setTimeout(()=>{
-      mirrorTextWrap.classList.remove("hidden");
-
-      mirrorAlert.textContent=
-        avg>1.4?"🟢 Estado integrado"
-        :avg>0.9?"🟡 Estado inestable"
-        :"🔴 Alerta emocional";
-
-      mirrorFullText.textContent=
-        "La devolución final integra todo tu recorrido mensual. "+
-        "Mostró cómo respondiste ante el mundo, la tecnología y vos mismo. "+
-        (avg>1.4?"Predominó la coherencia."
-        :avg>0.9?"Hubo avances con retrocesos."
-        :"La reactividad tuvo peso.")+
-        (evitadas>2?" Se detectaron emociones evitadas."
-        :" Las emociones fueron mayormente reconocidas.")+
-        " No juzga: refleja.";
-    },2500);
-  });
+  finalHumanText.textContent=
+    "Esta devolución final integra todo tu recorrido en el Humanómetro, "+
+    "desde la base inicial hasta las variaciones que se fueron produciendo con el tiempo.\n\n"+
+    "No mide quién sos, sino cómo te estuviste habitando en relación al mundo, "+
+    "a la tecnología y a vos mismo.\n\n"+
+    (avg>1.4
+      ?"Predominó una coherencia emocional activa, con capacidad de autorregulación."
+      :avg>0.9
+        ?"Se observaron avances con oscilaciones según el contexto."
+        :"La reactividad emocional tuvo un peso significativo en tus decisiones.")+
+    (evitadas>2
+      ?"\n\nSe detectaron emociones evitadas, señalando zonas aún no integradas."
+      :"\n\nLas emociones fueron mayormente reconocidas y transitadas.")+
+    "\n\nEsta lectura no juzga. Refleja.";
 }
 
-/* ================= UTIL ================= */
+/* UTIL */
 function animateGauge(el,target,done){
   el.style.height="0%";
   const start=performance.now(),dur=1800;
@@ -193,7 +204,7 @@ function animateGauge(el,target,done){
 }
 
 function show(id){
-  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
-    .forEach(s=>ids(s).classList.add("hidden"));
-  ids(id).classList.remove("hidden");
-    }
+  ["start","test","weeklyResult","monthlyResult","intraResult","mirrorIntro","mirrorTest","finalResult"]
+    .forEach(s=>$(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+}
