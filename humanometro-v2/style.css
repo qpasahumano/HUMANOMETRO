@@ -142,7 +142,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES ===== */
+/* ===== TERMÓMETROS VERTICALES (MENSUAL + FINAL) ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -197,9 +197,8 @@ button {
 }
 
 /* =====================================================
-   BLOQUE ESPEJO – SÍMBOLO ANIMADO (REEMPLAZO ESTABLE)
+   BLOQUE ESPEJO – SÍMBOLO ANIMADO (ESTABLE)
    ===================================================== */
-
 .mirror-symbol {
   font-size: 48px;
   color: #9fffe0;
@@ -218,9 +217,8 @@ button {
 }
 
 /* =====================================================
-   FONDO ESPEJO (SOLO BLOQUES ESPEJO)
+   FONDO ESPEJO (INTRO + TEST + FINAL)
    ===================================================== */
-
 .mirror-bg {
   background-image: url("activos/v2/espejo.jpg");
   background-size: cover;
@@ -232,9 +230,8 @@ button {
 }
 
 /* =====================================================
-   DEVOLUCIÓN FINAL – LÁMINA CON SCROLL INTERNO
+   DEVOLUCIÓN FINAL – LÁMINA + SUSPENSO
    ===================================================== */
-
 .glass-sheet {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -249,4 +246,16 @@ button {
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 8px;
+}
+
+/* Aparición posterior al termómetro */
+#finalTextWrap {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+
+#finalTextWrap:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
 }
