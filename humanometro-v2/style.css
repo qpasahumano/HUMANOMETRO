@@ -260,3 +260,22 @@ button {
     0 0 8px rgba(120,220,255,.9),
     0 0 18px rgba(120,220,255,.7);
 }
+/* ======== OVERRIDE REAL DEL FONDO EN ESPEJO ======== */
+
+body:has(.mirror-bg:not(.hidden)) {
+  background-image: url("v2_espejo_manos_humanometro.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Lámina azul profunda encima del espejo */
+body:has(.mirror-bg:not(.hidden))::before {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,18,40,0.45),
+      rgba(10,32,70,0.55)
+    );
+}
