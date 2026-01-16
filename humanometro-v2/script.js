@@ -75,7 +75,7 @@ function answer(v){
   q>=4?showWeekly():loadQuestion();
 }
 
-/* DEVOLUCIONES INTRAPERSONALES – SEMANALES */
+/* DEVOLUCIONES SEMANALES */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -86,22 +86,22 @@ function showWeekly(){
 
   if(avg<0.8){
     weeklyText.textContent =
-      "Durante este tramo se observa una carga emocional elevada. "+
-      "Las respuestas indican reactividad frente al entorno y dificultad para sostener presencia.";
+      "Durante este tramo se percibe una carga emocional intensa frente al entorno. "+
+      "Las respuestas indican que los estímulos externos impactaron con fuerza, "+
+      "generando reacciones difíciles de procesar en el momento.";
     weeklyAdvice.textContent =
-      "Registrar este estado no es un error: es una señal de sobreexigencia.";
+      "Registrar este estado es el primer paso para recuperar eje.";
   } else if(avg<1.5){
     weeklyText.textContent =
-      "El proceso mostró oscilaciones entre conciencia y automatismo. "+
-      "Hubo intentos de regulación, aunque no siempre sostenidos.";
+      "El recorrido de esta semana muestra oscilaciones claras entre presencia "+
+      "y respuestas automáticas.";
     weeklyAdvice.textContent =
-      "Observar cuándo aparece la reacción automática es parte del aprendizaje.";
+      "La conciencia aparece cuando se observa sin juicio.";
   } else {
     weeklyText.textContent =
-      "Se sostuvo una coherencia emocional activa. "+
-      "Las respuestas reflejan integración entre sentir, pensar y actuar.";
+      "Se sostuvo una coherencia emocional marcada entre pensar, sentir y actuar.";
     weeklyAdvice.textContent =
-      "Este estado es disponible cuando hay presencia, no permanente.";
+      "Este estado es disponible cuando hay presencia.";
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -112,7 +112,7 @@ function nextWeek(){
   week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
 }
 
-/* CIERRE BOSQUE */
+/* CIERRE BLOQUE BOSQUE */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -122,23 +122,27 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+
     monthlyLongText.textContent =
-      "Este tramo integró tu vínculo con el mundo, la tecnología y el entorno cotidiano.";
+      "Este tramo integró tu vínculo con el mundo, la tecnología y los estímulos cotidianos.";
     monthlyText.textContent =
       "El proceso no fue lineal: hubo avances, pausas y reajustes.";
   });
 }
 
-/* ESPEJO – PREGUNTAS ORIGINALES */
-const MIRROR_QUESTIONS=[
- {t:"¿Sentiste enojo que influyó en tu actuar?"},
- {t:"¿La tristeza condicionó tus decisiones?"},
- {t:"¿El miedo te frenó?"},
- {t:"¿La ansiedad te llevó a reaccionar en automático?"},
- {t:"¿Apareció culpa no resuelta?"},
- {t:"¿Hubo desconexión emocional?"},
- {t:"¿La alegría fue genuina y sostenida?"},
- {t:"¿Evitaste una emoción dominante?"}
+/* ================================
+   ESPEJO – PREGUNTAS DEFINITIVAS
+   ================================ */
+
+const MIRROR_QUESTIONS = [
+  { t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?" },
+  { t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?" },
+  { t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?" },
+  { t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?" },
+  { t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?" },
+  { t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?" },
+  { t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?" },
+  { t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?" }
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -162,12 +166,12 @@ function answerMirror(v){
   mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
 
-/* DEVOLUCIÓN FINAL – INTEGRADORA, CRÍTICA Y NO COMPLACIENTE */
+/* DEVOLUCIÓN FINAL */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
+  const avg=mirrorCount?mirrorScore/mirrorCount:0;
 
   animateGauge(finalFill,(avg/2)*100,()=>{
     finalTextWrap.classList.remove("hidden");
@@ -177,36 +181,12 @@ function showFinal(){
       :avg>0.9?"Estado inestable"
       :"Estado reactivo";
 
-    let texto =
-      "Este resultado integra todo tu recorrido mensual en el Humanómetro. "+
-      "Desde las primeras respuestas hasta el cierre del espejo, se observan patrones "+
-      "en la forma en que sentís, reaccionás y tomás decisiones.\n\n";
-
-    if(avg<=0.9){
-      texto +=
-        "Predominan respuestas automáticas y zonas de desconexión emocional. "+
-        "Aparecen incongruencias entre lo que sentís y cómo actuás, lo que suele indicar "+
-        "funcionamiento en piloto automático. Este estado no habla de incapacidad, "+
-        "sino de conciencia aún no integrada.\n\n"+
-        "El punto clave aquí es registrar dónde reaccionás sin elegir.";
-    } else if(avg<=1.4){
-      texto +=
-        "El proceso muestra claros grises. Hay momentos de presencia y otros de reacción. "+
-        "La conciencia aparece de forma intermitente, lo que indica un proceso activo, "+
-        "aunque todavía inestable.\n\n"+
-        "El desafío es sostener la observación antes de actuar.";
-    } else {
-      texto +=
-        "Se observa congruencia sostenida entre sentir, pensar y actuar. "+
-        "Las respuestas muestran registro emocional y capacidad de elección. "+
-        "Este estado no es definitivo, pero sí un indicador de integración.";
-    }
-
-    texto +=
-      "\n\nEste resultado no define quién sos, sino cómo estuviste habitando este mes.\n\n"+
+    finalHumanText.textContent =
+      "Desde el inicio del proceso hasta este cierre, tus respuestas muestran "+
+      "cómo fuiste atravesando el mes a nivel humano. "+
+      "Aparecen momentos de coherencia, zonas de tensión y espacios de ajuste.\n\n"+
+      "Nada de esto define quién sos, sino cómo estuviste estando.\n\n"+
       "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
-
-    finalHumanText.textContent = texto;
   });
 }
 
