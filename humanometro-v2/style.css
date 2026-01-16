@@ -302,3 +302,38 @@ body:has(.mirror-active)::before {
   pointer-events: none;
   z-index: -1;
 }
+/* =====================================================
+   SOLUCIÓN REAL: PANTALLA ESPEJO SUPERPUESTA
+   ===================================================== */
+
+.mirror-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("v2_espejo_manos_humanometro.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: 9999;
+}
+
+/* Lámina azul profunda */
+.mirror-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,18,40,0.55),
+      rgba(10,32,70,0.65)
+    );
+  z-index: 0;
+}
+
+/* Contenido visible por encima */
+.mirror-bg > * {
+  position: relative;
+  z-index: 1;
+}
