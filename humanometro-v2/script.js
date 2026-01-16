@@ -25,7 +25,9 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
-/* DATOS (NO TOCADOS) */
+/* =======================
+   DATOS – NO SE TOCAN
+   ======================= */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -47,16 +49,20 @@ const WEEKS = [
   ]}
 ];
 
-/* REGISTRO GLOBAL */
-let week=0,q=0,currentScore=0;
+/* =======================
+   REGISTROS GLOBALES
+   ======================= */
+let week=0, q=0, currentScore=0;
 let weeklyScores=[];
-let allAnswers=[];
+let carenciasGlobales=[];
 let mirrorLog=[];
 
-/* FLUJO */
+/* =======================
+   FLUJO PRINCIPAL
+   ======================= */
 function startV2(){
-  week=0;q=0;currentScore=0;
-  weeklyScores=[]; allAnswers=[]; mirrorLog=[];
+  week=0; q=0; currentScore=0;
+  weeklyScores=[]; carenciasGlobales=[]; mirrorLog=[];
   show("test"); loadQuestion();
 }
 
@@ -70,12 +76,47 @@ function loadQuestion(){
 
 function answer(v){
   currentScore+=v;
-  allAnswers.push({ block:WEEKS[week].title, q, v });
+
+  // detección de carencias por pregunta
+  if(v <= 1){
+    registrarCarencia(WEEKS[week].title, q);
+  }
+
   q++;
-  q>=4?showWeekly():loadQuestion();
+  q>=4 ? showWeekly() : loadQuestion();
 }
 
-/* DEVOLUCIONES SEMANALES */
+/* =======================
+   LÓGICA DE CARENCIAS
+   ======================= */
+function registrarCarencia(bloque, index){
+  const mapa = {
+    "Vos ante el mundo": [
+      "empatía frente al dolor colectivo",
+      "presencia real en los vínculos",
+      "compromiso ante la injusticia",
+      "sensibilidad frente al sufrimiento ajeno"
+    ],
+    "Vos y la tecnología": [
+      "presencia existencial al compartir",
+      "gestión del tiempo y ansiedad digital",
+      "registro de la humanidad detrás de la pantalla",
+      "equilibrio entre tecnología y vida real"
+    ],
+    "Integración humana": [
+      "coherencia entre pensar y actuar",
+      "autoobservación sin juicio",
+      "responsabilidad emocional",
+      "sensación de evolución personal"
+    ]
+  };
+
+  carenciasGlobales.push(mapa[bloque][index]);
+}
+
+/* =======================
+   DEVOLUCIÓN SEMANAL
+   ======================= */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -84,24 +125,21 @@ function showWeekly(){
   weeklyScores.push(avg);
   weeklySymbol.textContent = avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
 
-  if(avg<0.8){
+  if(avg < 1.5){
     weeklyText.textContent =
-      "Durante este tramo se percibe una carga emocional intensa frente al entorno. "+
-      "Las respuestas indican que los estímulos externos impactaron con fuerza, "+
-      "generando reacciones difíciles de procesar en el momento.";
+      "Las respuestas de este tramo muestran carencias concretas: "+
+      carenciasGlobales.slice(-4).join(", ") + ". "+
+      "Estas zonas grises indican desconexiones entre lo que sucede afuera "+
+      "y la forma en que lo estás registrando internamente.";
     weeklyAdvice.textContent =
-      "Registrar este estado es el primer paso para recuperar eje.";
-  } else if(avg<1.5){
-    weeklyText.textContent =
-      "El recorrido de esta semana muestra oscilaciones claras entre presencia "+
-      "y respuestas automáticas.";
-    weeklyAdvice.textContent =
-      "La conciencia aparece cuando se observa sin juicio.";
+      "Tomar conciencia de estas carencias es el primer paso para transformarlas.";
   } else {
     weeklyText.textContent =
-      "Se sostuvo una coherencia emocional marcada entre pensar, sentir y actuar.";
+      "En este tramo se sostuvo mayor coherencia entre percepción, emoción y acción. "+
+      "Las respuestas reflejan un nivel de presencia que permite atravesar el contexto "+
+      "con mayor conciencia.";
     weeklyAdvice.textContent =
-      "Este estado es disponible cuando hay presencia.";
+      "Sostener esta observación es clave para no volver al automatismo.";
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -109,10 +147,12 @@ function showWeekly(){
 
 function nextWeek(){
   week++; q=0; currentScore=0;
-  week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
+  week>=WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
 }
 
-/* CIERRE BLOQUE BOSQUE */
+/* =======================
+   CIERRE BLOQUE BOSQUE
+   ======================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -122,35 +162,34 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-
     monthlyLongText.textContent =
-      "Este tramo integró tu vínculo con el mundo, la tecnología y los estímulos cotidianos.";
+      "A lo largo de este recorrido aparecieron patrones claros de conducta, "+
+      "momentos de conciencia y también reiteradas zonas de desconexión.";
     monthlyText.textContent =
-      "El proceso no fue lineal: hubo avances, pausas y reajustes.";
+      "El proceso muestra avances, pero también estancamientos que vale la pena observar.";
   });
 }
 
-/* ================================
-   ESPEJO – PREGUNTAS DEFINITIVAS
-   ================================ */
-
-const MIRROR_QUESTIONS = [
-  { t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?" },
-  { t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?" },
-  { t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?" },
-  { t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?" },
-  { t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?" },
-  { t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?" },
-  { t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?" },
-  { t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?" }
+/* =======================
+   ESPEJO – PREGUNTAS EXACTAS
+   ======================= */
+const MIRROR_QUESTIONS=[
+ {t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?"},
+ {t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?"},
+ {t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?"},
+ {t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?"},
+ {t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?"},
+ {t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?"},
+ {t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?"},
+ {t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?"}
 ];
 
-let mq=0,mirrorScore=0,mirrorCount=0;
+let mq=0, mirrorScore=0, mirrorCount=0;
 
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  mq=0; mirrorScore=0; mirrorCount=0; mirrorLog=[];
+  mq=0; mirrorScore=0; mirrorCount=0;
   show("mirrorTest"); loadMirror();
 }
 
@@ -163,10 +202,12 @@ function answerMirror(v){
   mirrorLog.push(v??0);
   if(v!==null){ mirrorScore+=v; mirrorCount++; }
   mq++;
-  mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
+  mq>=MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
-/* DEVOLUCIÓN FINAL */
+/* =======================
+   DEVOLUCIÓN FINAL TOTAL
+   ======================= */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
@@ -182,15 +223,23 @@ function showFinal(){
       :"Estado reactivo";
 
     finalHumanText.textContent =
-      "Desde el inicio del proceso hasta este cierre, tus respuestas muestran "+
-      "cómo fuiste atravesando el mes a nivel humano. "+
-      "Aparecen momentos de coherencia, zonas de tensión y espacios de ajuste.\n\n"+
-      "Nada de esto define quién sos, sino cómo estuviste estando.\n\n"+
+      "A lo largo de todo el proceso se evidencian incoherencias entre lo que sentís, "+
+      "lo que pensás y cómo actuás. Las respuestas muestran carencias reiteradas en áreas como "+
+      carenciasGlobales.slice(0,6).join(", ") + ".\n\n"+
+      "Estos grises no son fallas, pero sí señales claras de aspectos no integrados. "+
+      (avg>1.4
+        ?"Actualmente hay mayor congruencia interna, señal de un proceso evolutivo activo."
+        :avg>0.9
+          ?"El estado actual es de transición, con avances y retrocesos visibles."
+          :"Predomina el automatismo y la desconexión, indicando estancamiento emocional.")+
+      "\n\nEl foco no está en juzgar, sino en registrar. "+
       "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
   });
 }
 
-/* UTIL */
+/* =======================
+   UTILIDADES
+   ======================= */
 function animateGauge(el,target,done){
   el.style.height="0%";
   const start=performance.now(),dur=1800;
