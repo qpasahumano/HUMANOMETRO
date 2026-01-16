@@ -76,28 +76,17 @@ function showWeekly(){
   const avg=currentScore/4;
   weeklyScores.push(avg);
 
-  if(avg<0.8){
-    weeklySymbol.textContent="🦇";
-    weeklyText.textContent=
-      "En este tramo tu respuesta estuvo marcada por una alta sensibilidad al contexto. "+
-      "Las emociones emergieron con fuerza y no siempre encontraron un canal consciente.";
-    weeklyAdvice.textContent=
-      "Registrar esto no es un límite: es información valiosa para recuperar presencia.";
-  }else if(avg<1.5){
-    weeklySymbol.textContent="🐞";
-    weeklyText.textContent=
-      "Se observaron avances con alternancia. "+
-      "Hubo momentos de conexión clara y otros de reacción automática.";
-    weeklyAdvice.textContent=
-      "La integración se construye justamente en esa oscilación.";
-  }else{
-    weeklySymbol.textContent="🐦";
-    weeklyText.textContent=
-      "Lograste sostener una coherencia emocional activa. "+
-      "Pensamiento, emoción y acción dialogaron de forma consistente.";
-    weeklyAdvice.textContent=
-      "Este estado es una referencia, no una exigencia.";
-  }
+  weeklySymbol.textContent = avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+
+  weeklyText.textContent =
+    avg<0.8
+    ?"Durante este tramo predominó una reactividad emocional sostenida."
+    :avg<1.5
+    ?"La conciencia apareció con oscilaciones según el contexto."
+    :"Se sostuvo una coherencia emocional activa.";
+
+  weeklyAdvice.textContent =
+    "Este registro forma parte de un proceso, no de un juicio.";
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -117,10 +106,8 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
     monthlyLongText.textContent=
-      "Este recorrido refleja cómo te vinculaste con el entorno, "+
-      "los estímulos colectivos y la vida cotidiana.";
-    monthlyText.textContent=
-      "No muestra respuestas aisladas, sino un proceso sostenido.";
+      "Este tramo integró tu vínculo con el mundo y los estímulos externos.";
+    monthlyText.textContent="El recorrido fue sostenido en el tiempo.";
   });
 }
 
@@ -137,6 +124,8 @@ const MIRROR_QUESTIONS=[
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
+
+function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
   mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
@@ -160,31 +149,22 @@ function showFinal(){
   finalTextWrap.classList.add("hidden");
 
   const avg=mirrorCount?mirrorScore/mirrorCount:0;
-  const evitadas=mirrorLog.filter(v=>v===0).length;
 
   animateGauge(finalFill,(avg/2)*100,()=>{
     finalTextWrap.classList.remove("hidden");
 
-    finalState.className = "final-state " + (avg>1.4?"good":avg>0.9?"mid":"low");
     finalState.textContent =
       avg>1.4?"Estado integrado"
       :avg>0.9?"Estado inestable"
       :"Estado reactivo";
 
     finalHumanText.textContent =
-      "A lo largo de todo el recorrido se observa un patrón claro en tu forma de responder. "+
-      "Desde tu vínculo con el mundo, el uso de la tecnología y la coherencia cotidiana, "+
-      "hasta el registro emocional más íntimo del espejo, fuiste mostrando cómo te habitás.\n\n"+
-      (avg>1.4
-        ?"Predominó una integración emocional consciente. Supiste reconocer lo que sentías y actuar en consecuencia."
-        :avg>0.9
-          ?"Mostraste capacidad de registro con fluctuaciones. El contexto influyó, pero hubo conciencia."
-          :"La reactividad tuvo un peso significativo. Las emociones guiaron muchas decisiones.")+
-      (evitadas>2
-        ?"\n\nAlgunas emociones tendieron a evitarse. Integrarlas puede abrir mayor claridad."
-        :"\n\nLas emociones fueron mayormente reconocidas y transitadas.")+
-      "\n\nLa sugerencia es simple: sostener la observación sin juicio. "+
-      "La humanidad no se corrige, se acompaña.";
+      "A lo largo de todo el recorrido se observa cómo fuiste habitando "+
+      "tu vínculo con el mundo, la tecnología y tu mundo interno.\n\n"+
+      "Tus respuestas muestran patrones emocionales, momentos de presencia "+
+      "y también zonas de tensión que forman parte de tu proceso humano.\n\n"+
+      "Este resultado no define quién sos, sino cómo estuviste estando.\n\n"+
+      "La sugerencia es simple: registrar sin juzgar y volver cuando lo necesites.";
   });
 }
 
