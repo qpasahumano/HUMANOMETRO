@@ -47,10 +47,10 @@ const WEEKS = [
   ]}
 ];
 
-/* REGISTRO GLOBAL DE RESPUESTAS */
+/* REGISTRO GLOBAL */
 let week=0,q=0,currentScore=0;
 let weeklyScores=[];
-let allAnswers=[]; // guarda TODAS las respuestas del test
+let allAnswers=[];
 let mirrorLog=[];
 
 /* FLUJO */
@@ -70,7 +70,7 @@ function loadQuestion(){
 
 function answer(v){
   currentScore+=v;
-  allAnswers.push({ block: WEEKS[week].title, q: q, v });
+  allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
   q>=4?showWeekly():loadQuestion();
 }
@@ -86,13 +86,13 @@ function showWeekly(){
 
   weeklyText.textContent =
     avg<0.8
-      ? "En esta semana se observa una mayor carga reactiva. Las respuestas muestran que el entorno tuvo un peso considerable en tu estado interno, generando tensiones que no siempre pudieron ser procesadas en el momento. Aun así, hubo registro emocional."
+      ?"En esta semana se observa una carga emocional elevada y reactiva."
       :avg<1.5
-        ? "La semana mostró oscilaciones claras. Hubo momentos de presencia y otros de automatismo, lo que indica un proceso activo de ajuste entre lo que sentís y lo que hacés."
-        : "Durante esta semana se sostuvo una coherencia emocional marcada. Las respuestas reflejan integración entre pensamiento, emoción y acción en la mayoría de las situaciones.";
+        ?"La semana mostró oscilaciones entre presencia y automatismo."
+        :"Se sostuvo una coherencia emocional activa.";
 
   weeklyAdvice.textContent =
-    "Esta lectura no señala fallas ni aciertos: describe un momento del proceso y deja ver hacia dónde se está moviendo tu humanidad.";
+    "Este registro describe un momento del proceso, no un juicio.";
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -112,22 +112,22 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
     monthlyLongText.textContent =
-      "Este tramo integró tu relación con el mundo, la tecnología y los estímulos cotidianos. Las respuestas muestran cómo fuiste atravesando situaciones externas y qué lugar ocupó tu regulación interna a lo largo del tiempo.";
+      "Este tramo integró tu relación con el mundo y la tecnología.";
     monthlyText.textContent =
-      "El recorrido no fue lineal: aparecen avances, pausas y ajustes que forman parte de un proceso humano real.";
+      "El recorrido mostró ajustes reales y procesos humanos sostenidos.";
   });
 }
 
-/* ESPEJO */
-const MIRROR_QUESTIONS=[
- {t:"¿Sentiste enojo que influyó en tu actuar?"},
- {t:"¿La tristeza condicionó tus decisiones?"},
- {t:"¿El miedo te frenó?"},
- {t:"¿La ansiedad te llevó a reaccionar en automático?"},
- {t:"¿Apareció culpa no resuelta?"},
- {t:"¿Hubo desconexión emocional?"},
- {t:"¿La alegría fue genuina y sostenida?"},
- {t:"¿Evitaste una emoción dominante?"}
+/* ===== ESPEJO – PREGUNTAS CORRECTAS REINCORPORADAS ===== */
+const MIRROR_QUESTIONS = [
+  { t:"¿Cuánto enojo sentiste frente a situaciones del mundo que considerás injustas?" },
+  { t:"¿Cuánta tristeza te generó el sufrimiento ajeno que registraste durante este tiempo?" },
+  { t:"¿Cuánto miedo sentiste al pensar en el futuro, propio o colectivo?" },
+  { t:"¿Cuánta ansiedad apareció cuando sentiste que no llegabas a todo o perdías control?" },
+  { t:"¿Cuánta culpa sentiste por no actuar como hubieras querido?" },
+  { t:"¿Cuánta desconexión emocional sentiste frente a lo que pasaba a tu alrededor?" },
+  { t:"¿Cuánta alegría genuina sentiste en tu vida cotidiana durante este período?" },
+  { t:"¿Cuánto evitaste sentir alguna emoción que sabías que estaba presente?" }
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -165,21 +165,15 @@ function showFinal(){
       :avg>0.9?"Estado inestable"
       :"Estado reactivo";
 
-    // DEVOLUCIÓN FINAL PERSONALIZADA (integradora)
     finalHumanText.textContent =
-      "A lo largo de todo el recorrido, tus respuestas muestran cómo fuiste habitando tu humanidad mes a mes. Se observan patrones de respuesta que hablan tanto de momentos de coherencia como de zonas donde la exigencia externa generó tensión.\n\n"+
+      "A lo largo de todo el recorrido se reflejan patrones emocionales reales, "+
+      "momentos de coherencia y zonas de tensión que forman parte de tu proceso.\n\n"+
       (avg>1.4
-        ? "Predomina una integración emocional clara. Hay señales de congruencia entre lo que sentís, pensás y hacés, incluso cuando el contexto presenta desafíos. Esto sugiere un proceso de maduración sostenido."
+        ?"Predomina una integración emocional sostenida."
         :avg>0.9
-          ? "El proceso muestra avances con oscilaciones. Aparecen momentos de claridad alternados con reacciones automáticas, lo que indica que la conciencia está activa, aunque todavía en ajuste."
-          : "La reactividad emocional tuvo un peso significativo. Se detectan señales de desgaste y sobrecarga que pueden estar pidiendo una pausa consciente.")+
-      "\n\n"+
-      "No hay un resultado correcto o incorrecto. Este estado refleja cómo estuviste atravesando este período. "+
-      (avg>1.4
-        ? "La sugerencia es continuar por este camino, sosteniendo la observación y el cuidado interno."
-        :avg>0.9
-          ? "La sugerencia es bajar el ritmo cuando sea posible y reforzar los espacios de registro personal."
-          : "La sugerencia es priorizar descanso, límites y observación sin juicio.") ;
+          ?"Se observan avances con oscilaciones normales."
+          :"La reactividad tuvo un peso significativo en este período.")+
+      "\n\nLa sugerencia es registrar sin juzgar y volver cuando lo necesites.";
   });
 }
 
