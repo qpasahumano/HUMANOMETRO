@@ -13,7 +13,7 @@ body {
   position: relative;
 }
 
-/* ===== OVERLAY GLOBAL (BOSQUE) ===== */
+/* ===== OVERLAY GLOBAL ===== */
 body::before {
   content: "";
   position: fixed;
@@ -24,41 +24,6 @@ body::before {
     rgba(0,0,0,0.25);
   pointer-events: none;
   z-index: -1;
-}
-
-/* =====================================================
-   ===== FONDO ESPEJO – MISMA LÓGICA QUE BOSQUE =====
-   ===================================================== */
-
-/* Fondo espejo a pantalla completa REAL */
-body.mirror-bg {
-  background-image: url("v2_espejo_manos_humanometro.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-/* Lámina azul profundo transparente (prioriza texto) */
-body.mirror-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(6,18,40,0.68),
-      rgba(10,32,70,0.78)
-    );
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Glow / LED suave estilo Volumen 1 */
-body.mirror-bg {
-  box-shadow:
-    inset 0 0 120px rgba(0,60,140,.55),
-    inset 0 0 220px rgba(0,200,255,.18);
 }
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -156,7 +121,7 @@ button {
   font-weight: 600;
 }
 
-/* ===== TERMÓMETRO SEMANAL ===== */
+/* ===== TERMÓMETROS ===== */
 .thermo {
   width: 100%;
   height: 14px;
@@ -164,26 +129,20 @@ button {
   border-radius: 20px;
   margin: 20px 0;
   overflow: hidden;
-  box-shadow: 0 0 14px rgba(120,255,230,.45);
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
   background: rgba(0,0,0,0.35);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow:
-    inset 0 0 12px rgba(0,0,0,.6),
-    0 0 26px rgba(120,255,230,.75);
 }
 
 .gradient {
@@ -204,10 +163,51 @@ button {
   text-align: left;
 }
 
-/* ===== SÍMBOLOS ===== */
 .symbol {
   font-size: 3.4rem;
   margin-bottom: 10px;
+}
+
+/* =====================================================
+   🔵 BLOQUE ESPEJO – SOLUCIÓN DEFINITIVA (CSS ONLY)
+   ===================================================== */
+
+.mirror-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+
+  background-image: url("v2_espejo_manos_humanometro.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+/* Lámina azul profunda transparente */
+.mirror-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,18,40,0.65),
+      rgba(10,32,70,0.78)
+    );
+  z-index: 1;
+}
+
+/* Contenido del espejo por encima */
+.mirror-bg > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Glow LED suave */
+.mirror-bg {
+  box-shadow:
+    inset 0 0 120px rgba(0,60,140,.55),
+    inset 0 0 200px rgba(0,200,255,.18);
 }
 
 /* ===== ICONO ESPEJO ===== */
@@ -227,21 +227,16 @@ button {
   backdrop-filter: blur(8px);
   border-radius: 22px;
   padding: 24px;
-  box-shadow:
-    0 0 32px rgba(120,220,255,.35),
-    inset 0 0 18px rgba(255,255,255,.12);
 }
 
 .scroll-sheet {
   max-height: 60vh;
   overflow-y: auto;
-  padding-right: 8px;
 }
 
 #finalTextWrap {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity .9s ease, transform .9s ease;
 }
 
 #finalTextWrap:not(.hidden) {
@@ -249,7 +244,6 @@ button {
   transform: translateY(0);
 }
 
-/* ===== ESTADO FINAL LED ===== */
 .state-led {
   text-shadow:
     0 0 8px rgba(120,220,255,.9),
