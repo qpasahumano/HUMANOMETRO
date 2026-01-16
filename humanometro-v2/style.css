@@ -214,8 +214,9 @@ button {
   100% { transform: scale(1); opacity: .7; }
 }
 
+/* ===== FONDO ESPEJO (RUTA CORREGIDA) ===== */
 .mirror-bg {
-  background-image: url("activos/v2/espejo.jpg");
+  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
