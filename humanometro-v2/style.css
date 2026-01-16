@@ -142,7 +142,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES ===== */
+/* ===== TERMÓMETROS VERTICALES (MENSUAL + FINAL) ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -196,7 +196,9 @@ button {
   100% { transform: translateY(0); }
 }
 
-/* ===== BLOQUE ESPEJO – SÍMBOLO ===== */
+/* =====================================================
+   BLOQUE ESPEJO – SÍMBOLO ANIMADO
+   ===================================================== */
 .mirror-symbol {
   font-size: 48px;
   color: #9fffe0;
@@ -209,12 +211,14 @@ button {
 }
 
 @keyframes pulseMirror {
-  0% { transform: scale(1); opacity: .7; }
-  50% { transform: scale(1.15); opacity: 1; }
+  0%   { transform: scale(1); opacity: .7; }
+  50%  { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== FONDO ESPEJO ===== */
+/* =====================================================
+   FONDO ESPEJO (INTRO + TEST + FINAL)
+   ===================================================== */
 .mirror-bg {
   background-image: url("activos/v2/espejo.jpg");
   background-size: cover;
@@ -225,7 +229,9 @@ button {
     0 0 30px rgba(120,255,230,.35);
 }
 
-/* ===== LÁMINA FINAL ===== */
+/* =====================================================
+   DEVOLUCIÓN FINAL – LÁMINA
+   ===================================================== */
 .glass-sheet {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -242,7 +248,7 @@ button {
   padding-right: 8px;
 }
 
-/* ===== APARICIÓN POST TERMÓMETRO ===== */
+/* Aparición posterior al termómetro */
 #finalTextWrap {
   opacity: 0;
   transform: translateY(12px);
@@ -255,4 +261,16 @@ button {
 }
 
 /* =====================================================
-   ✨ ESTADO FINAL – LUMINISCENCIA EMOCIONAL
+   ESTADO FINAL – EFECTO LUMINOSO
+   ===================================================== */
+.state-led {
+  text-shadow:
+    0 0 8px rgba(120,255,230,.9),
+    0 0 18px rgba(120,255,230,.7);
+  animation: glowState 2.2s infinite alternate;
+}
+
+@keyframes glowState {
+  from { opacity: .6; }
+  to { opacity: 1; }
+}
