@@ -54,12 +54,19 @@
       <div id="monthlySymbol" class="symbol"></div>
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
-      <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
+      <button class="primary sky" onclick="showIntra()">Continuar</button>
     </div>
   </div>
 </section>
 
-<section id="mirrorIntro" class="hidden">
+<!-- DEVOLUCIÓN INTRAPERSONAL – SIN LÁMINA -->
+<section id="intraResult" class="hidden">
+  <h2 class="neon-title">Lectura intrapersonal</h2>
+  <p id="intraText" class="legal"></p>
+  <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
+</section>
+
+<section id="mirrorIntro" class="hidden mirror-bg">
   <h2 class="neon-title">EL ESPEJO</h2>
   <p class="intro">
     <strong>No muestra lo que sos.</strong><br>
@@ -69,7 +76,7 @@
   <button class="primary sky" onclick="startMirror()">Comenzar</button>
 </section>
 
-<section id="mirrorTest" class="hidden">
+<section id="mirrorTest" class="hidden mirror-bg">
   <div id="mirrorEmoji" class="emoji3d joy"></div>
   <p id="mirrorQuestion" class="question"></p>
   <div class="answers">
@@ -80,17 +87,12 @@
   </div>
 </section>
 
-<section id="mirrorResult" class="hidden">
-  <div class="result-row">
-    <div class="vertical-thermo right">
-      <div id="mirrorFill" class="gradient"></div>
-    </div>
-    <div id="mirrorTextWrap" class="result-text hidden">
-      <p id="mirrorFullText" class="legal final-led"></p>
-      <p class="legal small">
-        Cuando quieras volver a medir tu humanidad,<br>
-        Humanómetro está para eso.
-      </p>
+<!-- DEVOLUCIÓN FINAL – ÚNICA CON LÁMINA -->
+<section id="finalResult" class="hidden mirror-bg">
+  <div class="glass-sheet">
+    <h2 class="neon-title">Devolución final</h2>
+    <div class="scroll-sheet">
+      <p id="finalHumanText" class="legal"></p>
     </div>
   </div>
 </section>
