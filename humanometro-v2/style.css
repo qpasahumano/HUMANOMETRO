@@ -279,3 +279,26 @@ body:has(.mirror-bg:not(.hidden))::before {
       rgba(10,32,70,0.55)
     );
 }
+/* ===== MODO ESPEJO – FONDO REAL A PANTALLA COMPLETA ===== */
+body:has(.mirror-active) {
+  background-image: url("v2_espejo_manos_humanometro.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* LÁMINA AZUL PROFUNDA PARA LEGIBILIDAD */
+body:has(.mirror-active)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6,18,40,0.55),
+      rgba(10,32,70,0.65)
+    );
+  pointer-events: none;
+  z-index: -1;
+}
