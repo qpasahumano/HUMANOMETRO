@@ -86,13 +86,13 @@ function showWeekly(){
 
   weeklyText.textContent =
     avg<0.8
-      ?"En esta semana se observa una carga emocional elevada y reactiva."
+      ?"En esta semana predominó una reactividad emocional sostenida frente al entorno."
       :avg<1.5
-        ?"La semana mostró oscilaciones entre presencia y automatismo."
-        :"Se sostuvo una coherencia emocional activa.";
+        ?"La conciencia apareció con oscilaciones según las demandas del contexto."
+        :"Se sostuvo una coherencia emocional activa en la mayoría de las situaciones.";
 
   weeklyAdvice.textContent =
-    "Este registro describe un momento del proceso, no un juicio.";
+    "Este registro describe un momento del proceso humano, no un juicio.";
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -112,22 +112,25 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
     monthlyLongText.textContent =
-      "Este tramo integró tu relación con el mundo y la tecnología.";
+      "Este tramo integró tu relación con el mundo, la tecnología y el entorno cotidiano.";
     monthlyText.textContent =
-      "El recorrido mostró ajustes reales y procesos humanos sostenidos.";
+      "El proceso fue dinámico, con ajustes reales en el tiempo.";
   });
 }
 
-/* ===== ESPEJO – PREGUNTAS CORRECTAS REINCORPORADAS ===== */
+/* =========================
+   ESPEJO – PREGUNTAS FINALES
+   ========================= */
+
 const MIRROR_QUESTIONS = [
-  { t:"¿Cuánto enojo sentiste frente a situaciones del mundo que considerás injustas?" },
-  { t:"¿Cuánta tristeza te generó el sufrimiento ajeno que registraste durante este tiempo?" },
-  { t:"¿Cuánto miedo sentiste al pensar en el futuro, propio o colectivo?" },
-  { t:"¿Cuánta ansiedad apareció cuando sentiste que no llegabas a todo o perdías control?" },
-  { t:"¿Cuánta culpa sentiste por no actuar como hubieras querido?" },
-  { t:"¿Cuánta desconexión emocional sentiste frente a lo que pasaba a tu alrededor?" },
-  { t:"¿Cuánta alegría genuina sentiste en tu vida cotidiana durante este período?" },
-  { t:"¿Cuánto evitaste sentir alguna emoción que sabías que estaba presente?" }
+  { t: "¿Cuánto enojo sentiste frente a situaciones del mundo que considerás injustas?" },
+  { t: "¿Cuánta tristeza te generó el sufrimiento ajeno que registraste durante este tiempo?" },
+  { t: "¿Cuánto miedo sentiste al pensar en el futuro, propio o colectivo?" },
+  { t: "¿Cuánta ansiedad apareció cuando sentiste que no llegabas a todo o perdías control?" },
+  { t: "¿Cuánta culpa sentiste por no actuar como hubieras querido?" },
+  { t: "¿Cuánta desconexión emocional sentiste frente a lo que pasaba a tu alrededor?" },
+  { t: "¿Cuánta alegría genuina sentiste en tu vida cotidiana durante este período?" },
+  { t: "¿Cuánto evitaste sentir alguna emoción que sabías que estaba presente?" }
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -166,14 +169,14 @@ function showFinal(){
       :"Estado reactivo";
 
     finalHumanText.textContent =
-      "A lo largo de todo el recorrido se reflejan patrones emocionales reales, "+
-      "momentos de coherencia y zonas de tensión que forman parte de tu proceso.\n\n"+
+      "A lo largo de todo el recorrido se observa cómo fuiste habitando tu humanidad. "+
+      "Las respuestas reflejan momentos de coherencia, zonas de tensión y ajustes reales.\n\n"+
       (avg>1.4
-        ?"Predomina una integración emocional sostenida."
+        ?"Predomina una integración emocional sostenida y consciente."
         :avg>0.9
-          ?"Se observan avances con oscilaciones normales."
-          :"La reactividad tuvo un peso significativo en este período.")+
-      "\n\nLa sugerencia es registrar sin juzgar y volver cuando lo necesites.";
+          ?"El proceso muestra avances con oscilaciones propias del contexto."
+          :"Se detecta desgaste emocional que pide pausa y registro.")+
+      "\n\nLa sugerencia es observar sin juzgar y volver cuando lo necesites.";
   });
 }
 
