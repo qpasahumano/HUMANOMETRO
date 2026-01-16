@@ -47,14 +47,16 @@ const WEEKS = [
   ]}
 ];
 
+/* REGISTRO GLOBAL DE RESPUESTAS */
 let week=0,q=0,currentScore=0;
 let weeklyScores=[];
-let globalScores=[];
+let allAnswers=[]; // guarda TODAS las respuestas del test
+let mirrorLog=[];
 
 /* FLUJO */
 function startV2(){
-  week=0;q=0;currentScore=0;
-  weeklyScores=[]; globalScores=[];
+  week=0;q=0;currentScore=0;weeklyScores=[];
+  allAnswers=[]; mirrorLog=[];
   show("test");loadQuestion();
 }
 
@@ -68,7 +70,7 @@ function loadQuestion(){
 
 function answer(v){
   currentScore+=v;
-  globalScores.push(v);
+  allAnswers.push({ block: WEEKS[week].title, q: q, v });
   q++;
   q>=4?showWeekly():loadQuestion();
 }
@@ -84,13 +86,13 @@ function showWeekly(){
 
   weeklyText.textContent =
     avg<0.8
-    ? "Durante este período, las respuestas muestran una fuerte influencia del contexto externo sobre tu mundo emocional. Hubo registro de lo que sucede, pero con dificultad para sostener presencia interna frente a la demanda."
-    : avg<1.5
-    ? "Este tramo refleja una oscilación entre momentos de conciencia y respuestas automáticas. Se percibe intención de registro, aunque no siempre sostenida."
-    : "Las respuestas indican una integración activa entre lo que sentís, pensás y hacés. Se observa mayor elección consciente frente a los estímulos.";
+      ? "En esta semana se observa una mayor carga reactiva. Las respuestas muestran que el entorno tuvo un peso considerable en tu estado interno, generando tensiones que no siempre pudieron ser procesadas en el momento. Aun así, hubo registro emocional."
+      :avg<1.5
+        ? "La semana mostró oscilaciones claras. Hubo momentos de presencia y otros de automatismo, lo que indica un proceso activo de ajuste entre lo que sentís y lo que hacés."
+        : "Durante esta semana se sostuvo una coherencia emocional marcada. Las respuestas reflejan integración entre pensamiento, emoción y acción en la mayoría de las situaciones.";
 
   weeklyAdvice.textContent =
-    "Cada registro forma parte del proceso humano, no de una evaluación.";
+    "Esta lectura no señala fallas ni aciertos: describe un momento del proceso y deja ver hacia dónde se está moviendo tu humanidad.";
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -110,13 +112,9 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
     monthlyLongText.textContent =
-      "Este recorrido integró cómo estuviste habitando el mundo, la tecnología y los vínculos cotidianos. No se trata de hechos aislados, sino de una dinámica sostenida en el tiempo.";
+      "Este tramo integró tu relación con el mundo, la tecnología y los estímulos cotidianos. Las respuestas muestran cómo fuiste atravesando situaciones externas y qué lugar ocupó tu regulación interna a lo largo del tiempo.";
     monthlyText.textContent =
-      avg<0.8
-      ? "El proceso muestra desgaste emocional acumulado."
-      : avg<1.5
-      ? "Se observa un equilibrio inestable con momentos de presencia."
-      : "El trayecto refleja una evolución hacia mayor coherencia.";
+      "El recorrido no fue lineal: aparecen avances, pausas y ajustes que forman parte de un proceso humano real.";
   });
 }
 
@@ -137,7 +135,7 @@ let mq=0,mirrorScore=0,mirrorCount=0;
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  mq=0;mirrorScore=0;mirrorCount=0;
+  mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
   show("mirrorTest");loadMirror();
 }
 
@@ -147,7 +145,8 @@ function loadMirror(){
 }
 
 function answerMirror(v){
-  if(v!==null){mirrorScore+=v;mirrorCount++; globalScores.push(v);}
+  mirrorLog.push(v??0);
+  if(v!==null){mirrorScore+=v;mirrorCount++;}
   mq++;
   mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
@@ -156,7 +155,7 @@ function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg = globalScores.reduce((a,b)=>a+b,0)/globalScores.length;
+  const avg=mirrorCount?mirrorScore/mirrorCount:0;
 
   animateGauge(finalFill,(avg/2)*100,()=>{
     finalTextWrap.classList.remove("hidden");
@@ -166,14 +165,21 @@ function showFinal(){
       :avg>0.9?"Estado inestable"
       :"Estado reactivo";
 
+    // DEVOLUCIÓN FINAL PERSONALIZADA (integradora)
     finalHumanText.textContent =
-      "A lo largo de todo el recorrido se observa cómo fuiste atravesando distintas capas de tu humanidad. Tus respuestas reflejan momentos de presencia, zonas de tensión y también intentos de integración.\n\n"+
+      "A lo largo de todo el recorrido, tus respuestas muestran cómo fuiste habitando tu humanidad mes a mes. Se observan patrones de respuesta que hablan tanto de momentos de coherencia como de zonas donde la exigencia externa generó tensión.\n\n"+
       (avg>1.4
-        ?"El proceso muestra una coherencia creciente entre emoción, pensamiento y acción. Hay señales claras de integración y evolución sostenida."
+        ? "Predomina una integración emocional clara. Hay señales de congruencia entre lo que sentís, pensás y hacés, incluso cuando el contexto presenta desafíos. Esto sugiere un proceso de maduración sostenido."
         :avg>0.9
-        ?"El recorrido evidencia avances con oscilaciones. La conciencia aparece, aunque no siempre logra sostenerse frente al contexto."
-        :"Las respuestas indican un período de sobrecarga emocional, donde el entorno tuvo más peso que la autorregulación interna.")+
-      "\n\nEste resultado no define quién sos, sino cómo estuviste estando este mes. Registrar esto es parte del camino humano.";
+          ? "El proceso muestra avances con oscilaciones. Aparecen momentos de claridad alternados con reacciones automáticas, lo que indica que la conciencia está activa, aunque todavía en ajuste."
+          : "La reactividad emocional tuvo un peso significativo. Se detectan señales de desgaste y sobrecarga que pueden estar pidiendo una pausa consciente.")+
+      "\n\n"+
+      "No hay un resultado correcto o incorrecto. Este estado refleja cómo estuviste atravesando este período. "+
+      (avg>1.4
+        ? "La sugerencia es continuar por este camino, sosteniendo la observación y el cuidado interno."
+        :avg>0.9
+          ? "La sugerencia es bajar el ritmo cuando sea posible y reforzar los espacios de registro personal."
+          : "La sugerencia es priorizar descanso, límites y observación sin juicio.") ;
   });
 }
 
