@@ -259,4 +259,39 @@ button {
   text-shadow:
     0 0 8px rgba(120,255,230,.65),
     0 0 18px rgba(120,255,230,.45);
-  }
+}
+
+/* =====================================================
+   🔒 AJUSTES INTEGRADOS – DEVOLUCIÓN FINAL EN LÁMINA
+   (ÚNICO SCROLL INTERNO / SIN SCROLL DE PANTALLA)
+   ===================================================== */
+
+.glass-sheet {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 22px;
+  max-width: 480px;
+  margin: auto;
+  box-shadow:
+    0 0 22px rgba(120,255,230,.25),
+    inset 0 0 18px rgba(255,255,255,.12);
+}
+
+.scroll-sheet {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* =====================================================
+   TRANSICIÓN FONDO ESPEJO
+   ===================================================== */
+
+.mirror-bg {
+  transition: background 0.25s ease;
+}
+
+body.mirror-transition {
+  transition: background 0.25s ease;
+    }
