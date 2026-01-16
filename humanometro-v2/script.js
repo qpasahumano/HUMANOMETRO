@@ -75,6 +75,7 @@ function answer(v){
   q>=4?showWeekly():loadQuestion();
 }
 
+/* DEVOLUCIONES SEMANALES (YA TRABAJADAS – NO SE TOCAN) */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -85,21 +86,24 @@ function showWeekly(){
 
   if(avg<0.8){
     weeklyText.textContent =
-      "En lo vivido durante estos días aparece una distancia entre el entorno y tu registro interno. "+
-      "Las respuestas sugieren menor implicancia emocional frente a lo que sucede alrededor.";
+      "A lo largo de estos días, el entorno pareció tener más peso que tu eje interno. "+
+      "Las respuestas muestran reacciones frecuentes frente a estímulos externos, "+
+      "con dificultad para sostener presencia cuando la situación se vuelve demandante.";
     weeklyAdvice.textContent =
-      "Observar esto abre la posibilidad de volver a conectar con lo que sucede más allá de uno mismo.";
+      "Registrar este punto no es un error: es una señal de dónde volver a mirar.";
   } else if(avg<1.5){
     weeklyText.textContent =
-      "El recorrido muestra alternancia entre presencia y automatismo. "+
-      "Hay registro, aunque no siempre sostenido.";
+      "El recorrido de la semana fue irregular. "+
+      "Se alternaron momentos de presencia con respuestas automáticas, "+
+      "lo que indica un proceso activo de ajuste.";
     weeklyAdvice.textContent =
-      "Reconocer estas oscilaciones permite ajustar sin exigencia.";
+      "La conciencia aparece por contraste. Notarlo ya es parte del camino.";
   } else {
     weeklyText.textContent =
-      "Se observa una presencia emocional activa y una relación más consciente con el entorno.";
+      "Se observa una coherencia sostenida entre lo que sentís, pensás y hacés. "+
+      "Incluso ante estímulos externos, hubo margen de elección.";
     weeklyAdvice.textContent =
-      "Este estado es dinámico y se fortalece con continuidad.";
+      "Este estado no es permanente, pero sí accesible cuando hay registro.";
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -110,6 +114,7 @@ function nextWeek(){
   week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
 }
 
+/* CIERRE BLOQUE BOSQUE */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -119,25 +124,45 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+
     monthlyLongText.textContent =
-      "Este tramo refleja cómo te vinculaste con el mundo, la tecnología y el ritmo cotidiano.";
+      "Este tramo reflejó cómo te moviste en el mundo cotidiano, "+
+      "en el vínculo con otros y con la tecnología. "+
+      "Las respuestas muestran patrones sostenidos más que hechos aislados.";
+
     monthlyText.textContent =
-      "El proceso muestra ajustes, avances y pausas propias de un recorrido humano real.";
+      "Aparecen avances, pausas y tensiones propias de un proceso humano real.";
   });
 }
 
-/* =========================
-   ESPEJO – PREGUNTAS FIJAS
-   ========================= */
+/* =================================================
+   ESPEJO – PREGUNTAS CONTEXTUALIZADAS (ÚNICO AJUSTE)
+   ================================================= */
 const MIRROR_QUESTIONS = [
-  { t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?" },
-  { t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?" },
-  { t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?" },
-  { t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?" },
-  { t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?" },
-  { t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?" },
-  { t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?" },
-  { t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?" }
+  {
+    t: "Vas por la calle y una situación externa te impide avanzar o seguir con tu rutina durante varios minutos. ¿Cuánto enojo apareció en vos en ese momento?"
+  },
+  {
+    t: "Al enterarte de una situación difícil que afecta a otras personas, notaste que tu energía o tus decisiones cambiaron. ¿Cuánto impacto emocional tuvo en vos?"
+  },
+  {
+    t: "Ante una decisión importante o una posible pérdida, sentiste una tensión interna que te hizo dudar o frenar. ¿Cuánto influyó ese miedo?"
+  },
+  {
+    t: "Después de decir o hacer algo, quedó una sensación interna sin resolver que volvió varias veces a tu mente. ¿Cuánto peso tuvo eso en vos?"
+  },
+  {
+    t: "Durante el día, sentiste inquietud o urgencia interna que te llevó a reaccionar sin pensar demasiado. ¿Cuánto predominó ese estado?"
+  },
+  {
+    t: "En situaciones donde había personas o momentos importantes, notaste que estabas emocionalmente distante o desconectado. ¿Cuánto te pasó esto?"
+  },
+  {
+    t: "En medio de lo cotidiano, hubo momentos de bienestar que se sintieron coherentes con lo que estabas viviendo. ¿Cuánto los registraste?"
+  },
+  {
+    t: "Mirando el período en conjunto, hubo alguna emoción presente que evitaste mirar o nombrar. ¿Cuánto sentís que eso ocurrió?"
+  }
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -161,6 +186,7 @@ function answerMirror(v){
   mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
 
+/* DEVOLUCIÓN FINAL – NO TOCADA */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
@@ -172,14 +198,20 @@ function showFinal(){
 
     finalState.textContent =
       avg>1.4?"Estado integrado"
-      :avg>0.9?"Estado inestable"
+      :avg>0.9?"Estado en ajuste"
       :"Estado reactivo";
 
     finalHumanText.textContent =
-      "El recorrido completo muestra cómo fuiste habitando este período. "+
-      "Aparecen zonas de coherencia y otras de tensión que dialogan entre sí. "+
-      "Este estado no define quién sos, sino cómo estuviste estando.\n\n"+
-      "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
+      "Este resultado integra todo tu recorrido: cómo actuaste hacia afuera "+
+      "y cómo lo viviste internamente. Aparecen zonas de coherencia y también "+
+      "espacios donde sentir, pensar y actuar no siempre estuvieron alineados.\n\n"+
+      "Nada de esto es un juicio. Es un reflejo del momento que atravesás.\n\n"+
+      (avg>1.4
+        ?"La congruencia fue predominante. El camino es sostener la observación consciente."
+        :avg>0.9
+          ?"El proceso muestra grises. Ahí es donde hay mayor potencial de transformación."
+          :"La reactividad tuvo peso. Escuchar estos signos puede ser el primer gesto de cuidado.")+
+      "\n\nCuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
   });
 }
 
