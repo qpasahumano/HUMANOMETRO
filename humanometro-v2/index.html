@@ -39,9 +39,11 @@
 <section id="weeklyResult" class="hidden">
   <h2 class="neon-title">Lectura semanal</h2>
   <div id="weeklySymbol" class="symbol"></div>
-  <p id="weeklyText"></p>
-  <p id="weeklyAdvice" class="legal"></p>
-  <button class="primary" onclick="nextWeek()">Continuar</button>
+  <div id="weeklyTextWrap" class="result-text hidden">
+    <p id="weeklyText"></p>
+    <p id="weeklyAdvice" class="legal"></p>
+    <button class="primary" onclick="nextWeek()">Continuar</button>
+  </div>
 </section>
 
 <section id="monthlyResult" class="hidden">
@@ -85,7 +87,7 @@
       <div id="finalFill" class="gradient"></div>
     </div>
     <div id="finalTextWrap" class="result-text hidden">
-      <p id="finalState" class="symbol"></p>
+      <p id="finalState" class="legal small"></p>
       <div class="glass-sheet">
         <div class="scroll-sheet">
           <p id="finalHumanText" class="legal"></p>
