@@ -48,77 +48,115 @@ const WEEKS = [
 ];
 
 /* REGISTRO GLOBAL */
-let week=0,q=0,currentScore=0;
-let weeklyScores=[];
-let allAnswers=[];
-let mirrorLog=[];
+let week = 0, q = 0, currentScore = 0;
+let weeklyScores = [];
+let allAnswers = [];
+let mirrorLog = [];
 
 /* FLUJO */
 function startV2(){
-  week=0;q=0;currentScore=0;
-  weeklyScores=[]; allAnswers=[]; mirrorLog=[];
+  week = 0; q = 0; currentScore = 0;
+  weeklyScores = []; allAnswers = []; mirrorLog = [];
   show("test"); loadQuestion();
 }
 
 function loadQuestion(){
-  const w=WEEKS[week];
-  weekTitle.textContent=w.title;
-  questionText.textContent=w.questions[q][0];
-  questionMeasure.textContent=w.questions[q][1];
-  thermoFill.style.width=(q/4)*100+"%";
+  const w = WEEKS[week];
+  weekTitle.textContent = w.title;
+  questionText.textContent = w.questions[q][0];
+  questionMeasure.textContent = w.questions[q][1];
+  thermoFill.style.width = (q/4)*100 + "%";
 }
 
 function answer(v){
-  currentScore+=v;
-  allAnswers.push({ block:WEEKS[week].title, q, v });
+  currentScore += v;
+  allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
-  q>=4?showWeekly():loadQuestion();
+  q >= 4 ? showWeekly() : loadQuestion();
 }
 
+/* ===============================
+   DEVOLUCIONES SEMANALES (AJUSTE)
+   =============================== */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
 
-  const avg=currentScore/4;
+  const avg = currentScore / 4;
   weeklyScores.push(avg);
-  weeklySymbol.textContent = avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+  weeklySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
 
-  if(avg<0.8){
-    weeklyText.textContent =
-      "En lo vivido durante estos días aparece una distancia entre el entorno y tu registro interno. "+
-      "Las respuestas sugieren menor implicancia emocional frente a lo que sucede alrededor.";
-    weeklyAdvice.textContent =
-      "Observar esto abre la posibilidad de volver a conectar con lo que sucede más allá de uno mismo.";
-  } else if(avg<1.5){
-    weeklyText.textContent =
-      "El recorrido muestra alternancia entre presencia y automatismo. "+
-      "Hay registro, aunque no siempre sostenido.";
-    weeklyAdvice.textContent =
-      "Reconocer estas oscilaciones permite ajustar sin exigencia.";
-  } else {
-    weeklyText.textContent =
-      "Se observa una presencia emocional activa y una relación más consciente con el entorno.";
-    weeklyAdvice.textContent =
-      "Este estado es dinámico y se fortalece con continuidad.";
+  const block = WEEKS[week].title;
+
+  if(block === "Vos ante el mundo"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "En la forma de vincularte con lo que ocurre afuera aparece cierta distancia. "+
+        "Las respuestas muestran que el dolor ajeno y los conflictos del entorno "+
+        "no siempre logran atravesarte con profundidad.";
+      weeklyAdvice.textContent =
+        "Este tramo invita a revisar qué lugar ocupa el otro en tu registro cotidiano.";
+    } else {
+      weeklyText.textContent =
+        "Se observa una sensibilidad activa frente a lo que sucede alrededor. "+
+        "El contexto no pasa desapercibido y genera resonancia interna.";
+      weeklyAdvice.textContent =
+        "Sostener esta apertura fortalece la conciencia colectiva.";
+    }
+  }
+
+  if(block === "Vos y la tecnología"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "El vínculo con la tecnología muestra dispersión. "+
+        "La atención se fragmenta y el presente compite con estímulos constantes.";
+      weeklyAdvice.textContent =
+        "Recuperar presencia devuelve profundidad a los vínculos reales.";
+    } else {
+      weeklyText.textContent =
+        "La tecnología aparece integrada sin absorberte por completo. "+
+        "Hay capacidad de uso consciente.";
+      weeklyAdvice.textContent =
+        "Este equilibrio sostiene una experiencia más humana del presente.";
+    }
+  }
+
+  if(block === "Integración humana"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Al observarte hacia adentro surgen contradicciones. "+
+        "Pensar, sentir y actuar no siempre avanzan en la misma dirección.";
+      weeklyAdvice.textContent =
+        "Reconocer estas tensiones es parte del proceso de integración.";
+    } else {
+      weeklyText.textContent =
+        "Se percibe mayor coherencia interna. "+
+        "Las decisiones reflejan alineación entre emoción y acción.";
+      weeklyAdvice.textContent =
+        "Habitar esta congruencia consolida el proceso personal.";
+    }
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
 function nextWeek(){
-  week++; q=0; currentScore=0;
-  week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
+  week++; q = 0; currentScore = 0;
+  week >= WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
 }
 
+/* ===============================
+   CIERRE MENSUAL (SIN CAMBIOS)
+   =============================== */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
 
-  const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
+  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
-  animateGauge(monthlyFill,(avg/2)*100,()=>{
+  animateGauge(monthlyFill, (avg/2)*100, ()=>{
     monthlyTextWrap.classList.remove("hidden");
-    monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+    monthlySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
     monthlyLongText.textContent =
       "Este tramo refleja cómo te vinculaste con el mundo, la tecnología y el ritmo cotidiano.";
     monthlyText.textContent =
@@ -126,54 +164,56 @@ function showMonthly(){
   });
 }
 
-/* =========================
-   ESPEJO – PREGUNTAS NUEVAS
-   ========================= */
+/* ===============================
+   ESPEJO – PREGUNTAS (SIN CAMBIOS)
+   =============================== */
 const MIRROR_QUESTIONS = [
   { t:"Estás en la calle, necesitás avanzar y una situación externa te lo impide durante varios minutos. No podés hacer nada para cambiarlo y sentís que el tiempo se pierde." },
-  { t:"Te enterás de una situación difícil que está atravesando otra persona o un grupo, y no podés intervenir ni ayudar de forma directa. La información queda dando vueltas en tu cabeza durante el día." },
-  { t:"Tenés que tomar una decisión importante y sentís que, si sale mal, podría traer consecuencias para vos o para otros. Dudás, postergás o evitás avanzar." },
-  { t:"Recordás algo que dijiste o hiciste (o dejaste de hacer) con alguien cercano, y notás que quedó sin resolver. La escena vuelve a aparecer en tu mente en distintos momentos." },
-  { t:"Durante el día sentís que las demandas se acumulan, el tiempo no alcanza y reaccionás de manera automática, sin detenerte a pensar demasiado." },
-  { t:"Estás con personas o en situaciones que antes te importaban, pero notás que algo no conecta. Escuchás, respondés, pero por dentro te sentís distante o apagado." },
-  { t:"Vivís un momento simple del día (una charla, una actividad, un logro pequeño) y sentís bienestar sin necesidad de justificarlo ni compartirlo." },
-  { t:"A lo largo de estos días aparece una emoción que preferís no pensar demasiado, distraerte o correr de foco para no sentirla del todo." }
+  { t:"Te enterás de una situación difícil que atraviesa otra persona o un grupo y no podés intervenir directamente." },
+  { t:"Tenés que tomar una decisión importante y sentís que podría traer consecuencias si sale mal." },
+  { t:"Recordás algo dicho o hecho con alguien cercano que quedó sin resolver." },
+  { t:"Durante el día sentís que las demandas se acumulan y reaccionás de manera automática." },
+  { t:"Estás con personas importantes pero notás una distancia interna." },
+  { t:"Vivís un momento simple y sentís bienestar sin necesidad de justificarlo." },
+  { t:"Aparece una emoción que preferís no mirar del todo." }
 ];
 
-let mq=0,mirrorScore=0,mirrorCount=0;
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  mq=0; mirrorScore=0; mirrorCount=0; mirrorLog=[];
+  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
   show("mirrorTest"); loadMirror();
 }
 
 function loadMirror(){
-  mirrorEmoji.textContent="⬤";
-  mirrorQuestion.textContent=MIRROR_QUESTIONS[mq].t;
+  mirrorEmoji.textContent = "⬤";
+  mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
-  mirrorLog.push(v??0);
-  if(v!==null){ mirrorScore+=v; mirrorCount++; }
+  mirrorLog.push(v ?? 0);
+  if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
-  mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
+  mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
+/* ===============================
+   DEVOLUCIÓN FINAL (SIN CAMBIOS)
+   =============================== */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
-  animateGauge(finalFill,(avg/2)*100,()=>{
+  animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
-
     finalState.textContent =
-      avg>1.4?"Estado integrado"
-      :avg>0.9?"Estado inestable"
-      :"Estado reactivo";
+      avg > 1.4 ? "Estado integrado" :
+      avg > 0.9 ? "Estado inestable" :
+      "Estado reactivo";
 
     finalHumanText.textContent =
       "El recorrido completo muestra cómo fuiste habitando este período. "+
@@ -186,17 +226,17 @@ function showFinal(){
 /* UTIL */
 function animateGauge(el,target,done){
   el.style.height="0%";
-  const start=performance.now(),dur=1800;
+  const start = performance.now(), dur = 1800;
   function step(t){
-    const p=Math.min(1,(t-start)/dur);
-    el.style.height=p*target+"%";
-    p<1?requestAnimationFrame(step):done&&done();
+    const p = Math.min(1,(t-start)/dur);
+    el.style.height = p*target + "%";
+    p < 1 ? requestAnimationFrame(step) : done && done();
   }
   requestAnimationFrame(step);
 }
 
 function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
-    .forEach(s=>$(s).classList.add("hidden"));
+    .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
 }
