@@ -16,19 +16,19 @@
     <span class="brand-main">HUMANÓMETRO</span><br>
     <span class="brand-meta">v.2 ®</span>
   </h1>
-  <p class="intro fade">
+  <p class="intro">
     Humanómetro no se recorre de una sola vez.<br><br>
     Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
     La humanidad se construye en movimiento, no en velocidad.
   </p>
-  <button class="primary sky" onclick="startV2()">Continuar seguimiento</button>
+  <button class="primary" onclick="startV2()">Continuar seguimiento</button>
 </section>
 
 <section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title fade"></h2>
+  <h2 id="weekTitle" class="neon-title"></h2>
   <div class="thermo"><div id="thermoFill"></div></div>
-  <p id="questionText" class="question fade"></p>
-  <small id="questionMeasure" class="legal fade"></small>
+  <p id="questionText" class="question"></p>
+  <small id="questionMeasure" class="legal"></small>
   <div class="answers">
     <button onclick="answer(2)">Sí</button>
     <button onclick="answer(1)">A veces</button>
@@ -41,36 +41,41 @@
   <div id="weeklySymbol" class="symbol"></div>
   <p id="weeklyText"></p>
   <p id="weeklyAdvice" class="legal"></p>
-  <button class="primary sky" onclick="nextWeek()">Continuar</button>
+  <button class="primary" onclick="nextWeek()">Continuar</button>
 </section>
 
 <section id="monthlyResult" class="hidden">
   <h2 class="neon-title">Tu humanidad en movimiento</h2>
   <div class="result-row">
-    <div class="vertical-thermo right">
+    <div class="vertical-thermo">
       <div id="monthlyFill" class="gradient"></div>
     </div>
     <div id="monthlyTextWrap" class="result-text hidden">
       <div id="monthlySymbol" class="symbol"></div>
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
-      <button class="primary sky" onclick="openMirror()">Mirar tu reflejo</button>
+      <button class="primary" onclick="showIntra()">Continuar</button>
     </div>
   </div>
 </section>
 
-<section id="mirrorIntro" class="hidden">
-  <h2 class="neon-title">EL ESPEJO</h2>
-  <p class="intro">
-    <strong>No muestra lo que sos.</strong><br>
-    Refleja lo que estás haciendo con lo que sentís.<br><br>
-    El espejo no juzga. Solo refleja.
-  </p>
-  <button class="primary sky" onclick="startMirror()">Comenzar</button>
+<section id="intraResult" class="hidden">
+  <h2 class="neon-title">Lectura intrapersonal</h2>
+  <p id="intraText" class="legal"></p>
+  <button class="primary" onclick="openMirror()">Mirar tu reflejo</button>
 </section>
 
-<section id="mirrorTest" class="hidden">
-  <div id="mirrorEmoji" class="emoji3d joy"></div>
+<section id="mirrorIntro" class="hidden mirror-bg">
+  <h2 class="neon-title">EL ESPEJO</h2>
+  <p class="intro">
+    No muestra lo que sos.<br>
+    Refleja lo que estás haciendo con lo que sentís.
+  </p>
+  <button class="primary" onclick="startMirror()">Comenzar</button>
+</section>
+
+<section id="mirrorTest" class="hidden mirror-bg">
+  <div id="mirrorEmoji" class="mirror-symbol"></div>
   <p id="mirrorQuestion" class="question"></p>
   <div class="answers">
     <button onclick="answerMirror(3)">MUCHO</button>
@@ -80,15 +85,13 @@
   </div>
 </section>
 
-<section id="mirrorResult" class="hidden">
-  <div class="result-row">
-    <div class="vertical-thermo right">
-      <div id="mirrorFill" class="gradient"></div>
-    </div>
-    <div id="mirrorTextWrap" class="result-text hidden">
-      <p id="mirrorFullText" class="legal final-led"></p>
-      <p class="legal small">
-        Cuando quieras volver a medir tu humanidad,<br>
+<section id="finalResult" class="hidden mirror-bg">
+  <div class="glass-sheet">
+    <h2 class="neon-title">Devolución final</h2>
+    <div class="scroll-sheet">
+      <p id="finalHumanText" class="legal"></p>
+      <p class="legal small" style="margin-top:18px;">
+        Cuando necesites volver a medir tu humanidad,<br>
         Humanómetro está para eso.
       </p>
     </div>
@@ -96,6 +99,6 @@
 </section>
 
 </main>
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 </body>
 </html>
