@@ -25,9 +25,7 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
-/* =======================
-   DATOS – NO SE TOCAN
-   ======================= */
+/* DATOS – NO TOCADOS */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -49,20 +47,13 @@ const WEEKS = [
   ]}
 ];
 
-/* =======================
-   REGISTROS GLOBALES
-   ======================= */
-let week=0, q=0, currentScore=0;
+/* REGISTRO */
+let week=0,q=0,currentScore=0;
 let weeklyScores=[];
-let carenciasGlobales=[];
-let mirrorLog=[];
 
-/* =======================
-   FLUJO PRINCIPAL
-   ======================= */
+/* FLUJO */
 function startV2(){
-  week=0; q=0; currentScore=0;
-  weeklyScores=[]; carenciasGlobales=[]; mirrorLog=[];
+  week=0;q=0;currentScore=0;weeklyScores=[];
   show("test"); loadQuestion();
 }
 
@@ -76,47 +67,11 @@ function loadQuestion(){
 
 function answer(v){
   currentScore+=v;
-
-  // detección de carencias por pregunta
-  if(v <= 1){
-    registrarCarencia(WEEKS[week].title, q);
-  }
-
   q++;
-  q>=4 ? showWeekly() : loadQuestion();
+  q>=4?showWeekly():loadQuestion();
 }
 
-/* =======================
-   LÓGICA DE CARENCIAS
-   ======================= */
-function registrarCarencia(bloque, index){
-  const mapa = {
-    "Vos ante el mundo": [
-      "empatía frente al dolor colectivo",
-      "presencia real en los vínculos",
-      "compromiso ante la injusticia",
-      "sensibilidad frente al sufrimiento ajeno"
-    ],
-    "Vos y la tecnología": [
-      "presencia existencial al compartir",
-      "gestión del tiempo y ansiedad digital",
-      "registro de la humanidad detrás de la pantalla",
-      "equilibrio entre tecnología y vida real"
-    ],
-    "Integración humana": [
-      "coherencia entre pensar y actuar",
-      "autoobservación sin juicio",
-      "responsabilidad emocional",
-      "sensación de evolución personal"
-    ]
-  };
-
-  carenciasGlobales.push(mapa[bloque][index]);
-}
-
-/* =======================
-   DEVOLUCIÓN SEMANAL
-   ======================= */
+/* ===== DEVOLUCIONES SEMANALES – TEXTO REFORMULADO ===== */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -125,21 +80,56 @@ function showWeekly(){
   weeklyScores.push(avg);
   weeklySymbol.textContent = avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
 
-  if(avg < 1.5){
-    weeklyText.textContent =
-      "Las respuestas de este tramo muestran carencias concretas: "+
-      carenciasGlobales.slice(-4).join(", ") + ". "+
-      "Estas zonas grises indican desconexiones entre lo que sucede afuera "+
-      "y la forma en que lo estás registrando internamente.";
-    weeklyAdvice.textContent =
-      "Tomar conciencia de estas carencias es el primer paso para transformarlas.";
-  } else {
-    weeklyText.textContent =
-      "En este tramo se sostuvo mayor coherencia entre percepción, emoción y acción. "+
-      "Las respuestas reflejan un nivel de presencia que permite atravesar el contexto "+
-      "con mayor conciencia.";
-    weeklyAdvice.textContent =
-      "Sostener esta observación es clave para no volver al automatismo.";
+  if(week === 0){
+    // Vos ante el mundo
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Al observar lo que sucede a tu alrededor, aparece una sensibilidad que no siempre logra sostenerse. "+
+        "Algunas situaciones externas pasan sin terminar de atravesarte, y la presencia frente a otros se vuelve intermitente. "+
+        "Esto puede marcar una distancia entre lo que ocurre en el mundo y el lugar que eso ocupa en vos.";
+      weeklyAdvice.textContent =
+        "Registrar este punto abre la posibilidad de ampliar la mirada y recuperar sensibilidad frente al entorno humano.";
+    } else {
+      weeklyText.textContent =
+        "La forma en que registrás el mundo muestra una sensibilidad activa. "+
+        "Las situaciones externas logran atravesarte y hay disposición a estar presente frente a otros.";
+      weeklyAdvice.textContent =
+        "Sostener esta apertura fortalece el vínculo con la humanidad que te rodea.";
+    }
+  }
+
+  if(week === 1){
+    // Vos y la tecnología
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "En tu relación con la tecnología se percibe una presencia fragmentada. "+
+        "El tiempo en pantalla y la atención dispersa parecen interferir en el contacto real con los vínculos y el momento presente.";
+      weeklyAdvice.textContent =
+        "Recuperar equilibrio no implica rechazar lo digital, sino volver a habitar el presente con mayor conciencia.";
+    } else {
+      weeklyText.textContent =
+        "La tecnología aparece integrada como una herramienta y no como un centro. "+
+        "Hay señales de presencia real y de atención disponible hacia los vínculos.";
+      weeklyAdvice.textContent =
+        "Este equilibrio sostiene una experiencia más humana y consciente.";
+    }
+  }
+
+  if(week === 2){
+    // Integración humana
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Al unir pensamiento, emoción y acción surgen fricciones. "+
+        "No todo lo que sentís encuentra coherencia en lo que hacés, y eso genera tensiones internas que quedan registradas.";
+      weeklyAdvice.textContent =
+        "Observar estas diferencias sin juicio es el primer paso hacia una integración más consciente.";
+    } else {
+      weeklyText.textContent =
+        "Se percibe alineación entre lo que sentís, pensás y hacés. "+
+        "Las decisiones muestran coherencia interna y una integración emocional estable.";
+      weeklyAdvice.textContent =
+        "Este estado indica un proceso humano que avanza con conciencia.";
+    }
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -147,12 +137,10 @@ function showWeekly(){
 
 function nextWeek(){
   week++; q=0; currentScore=0;
-  week>=WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
+  week>=WEEKS.length?showMonthly():(show("test"),loadQuestion());
 }
 
-/* =======================
-   CIERRE BLOQUE BOSQUE
-   ======================= */
+/* ===== CIERRE BOSQUE ===== */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
@@ -162,29 +150,30 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+
     monthlyLongText.textContent =
-      "A lo largo de este recorrido aparecieron patrones claros de conducta, "+
-      "momentos de conciencia y también reiteradas zonas de desconexión.";
+      "Al mirar el recorrido completo aparecen patrones claros. "+
+      "Hay momentos de coherencia y otros donde el ritmo interno y externo no coinciden. "+
+      "Nada de esto es fijo: muestra un proceso en movimiento.";
+
     monthlyText.textContent =
-      "El proceso muestra avances, pero también estancamientos que vale la pena observar.";
+      "El mes deja ver ajustes, pausas y aprendizajes que forman parte de tu experiencia humana.";
   });
 }
 
-/* =======================
-   ESPEJO – PREGUNTAS EXACTAS
-   ======================= */
+/* ===== ESPEJO – SIN CAMBIOS ===== */
 const MIRROR_QUESTIONS=[
- {t:"En estos días, ¿sentiste enojo en algún momento que haya influido en tu forma de actuar?"},
- {t:"En estos días, ¿sentiste tristeza que haya condicionado tus decisiones o tu energía?"},
- {t:"¿Sentiste miedo (a perder, a equivocarte, a confrontar) que te haya limitado o frenado?"},
- {t:"¿Apareció culpa por algo dicho o hecho, que haya quedado sin resolver internamente?"},
- {t:"¿Sentiste ansiedad o inquietud que te haya llevado a reaccionar de forma automática?"},
- {t:"¿Percibiste momentos de indiferencia o desconexión emocional frente a personas o situaciones importantes?"},
- {t:"¿Experimentaste alegría o bienestar genuino que haya sido coherente con lo que estabas viviendo?"},
- {t:"Mirando estos días en conjunto, ¿hubo alguna emoción dominante que no supiste nombrar o preferiste evitar?"}
+ {t:"¿Sentiste enojo que influyó en tu actuar?"},
+ {t:"¿La tristeza condicionó tus decisiones?"},
+ {t:"¿El miedo te frenó?"},
+ {t:"¿La ansiedad te llevó a reaccionar en automático?"},
+ {t:"¿Apareció culpa no resuelta?"},
+ {t:"¿Hubo desconexión emocional?"},
+ {t:"¿La alegría fue genuina y sostenida?"},
+ {t:"¿Evitaste una emoción dominante?"}
 ];
 
-let mq=0, mirrorScore=0, mirrorCount=0;
+let mq=0,mirrorScore=0,mirrorCount=0;
 
 function openMirror(){ show("mirrorIntro"); }
 
@@ -199,15 +188,12 @@ function loadMirror(){
 }
 
 function answerMirror(v){
-  mirrorLog.push(v??0);
   if(v!==null){ mirrorScore+=v; mirrorCount++; }
   mq++;
-  mq>=MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
+  mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
 
-/* =======================
-   DEVOLUCIÓN FINAL TOTAL
-   ======================= */
+/* ===== DEVOLUCIÓN FINAL – FOCO EN GRISES ===== */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
@@ -219,27 +205,24 @@ function showFinal(){
 
     finalState.textContent =
       avg>1.4?"Estado integrado"
-      :avg>0.9?"Estado inestable"
-      :"Estado reactivo";
+      :avg>0.9?"Estado en transición"
+      :"Estado tensionado";
 
     finalHumanText.textContent =
-      "A lo largo de todo el proceso se evidencian incoherencias entre lo que sentís, "+
-      "lo que pensás y cómo actuás. Las respuestas muestran carencias reiteradas en áreas como "+
-      carenciasGlobales.slice(0,6).join(", ") + ".\n\n"+
-      "Estos grises no son fallas, pero sí señales claras de aspectos no integrados. "+
+      "Al recorrer todas tus respuestas, desde el inicio hasta este cierre, "+
+      "se observa cómo fuiste atravesando el mes a nivel humano.\n\n"+
+      "Aparecen zonas donde la conciencia estuvo presente y otras donde el decir, sentir y hacer no caminaron al mismo ritmo. "+
+      "Estas diferencias no hablan de error, sino de puntos de ajuste que quedaron visibles.\n\n"+
       (avg>1.4
-        ?"Actualmente hay mayor congruencia interna, señal de un proceso evolutivo activo."
+        ?"El proceso muestra coherencia narrativa y conciencia sostenida."
         :avg>0.9
-          ?"El estado actual es de transición, con avances y retrocesos visibles."
-          :"Predomina el automatismo y la desconexión, indicando estancamiento emocional.")+
-      "\n\nEl foco no está en juzgar, sino en registrar. "+
-      "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
+          ?"El proceso revela avances mezclados con automatismos que aún se repiten."
+          :"El proceso evidencia tensiones internas que piden revisión y cuidado.")+
+      "\n\nCuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
   });
 }
 
-/* =======================
-   UTILIDADES
-   ======================= */
+/* UTIL */
 function animateGauge(el,target,done){
   el.style.height="0%";
   const start=performance.now(),dur=1800;
