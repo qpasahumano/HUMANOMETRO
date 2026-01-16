@@ -16,7 +16,7 @@
     <span class="brand-main">HUMANÓMETRO</span><br>
     <span class="brand-meta">v.2 ®</span>
   </h1>
-  <p class="intro">
+  <p class="intro fade">
     Humanómetro no se recorre de una sola vez.<br><br>
     Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
     La humanidad se construye en movimiento, no en velocidad.
@@ -25,10 +25,10 @@
 </section>
 
 <section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title"></h2>
+  <h2 id="weekTitle" class="neon-title fade"></h2>
   <div class="thermo"><div id="thermoFill"></div></div>
-  <p id="questionText" class="question"></p>
-  <small id="questionMeasure" class="legal"></small>
+  <p id="questionText" class="question fade"></p>
+  <small id="questionMeasure" class="legal fade"></small>
   <div class="answers">
     <button onclick="answer(2)">Sí</button>
     <button onclick="answer(1)">A veces</button>
@@ -86,8 +86,7 @@
       <div id="mirrorFill" class="gradient"></div>
     </div>
     <div id="mirrorTextWrap" class="result-text hidden">
-      <p id="mirrorAlert" class="alert-led"></p>
-      <p id="mirrorFullText" class="final-led"></p>
+      <p id="mirrorFullText" class="legal final-led"></p>
       <p class="legal small">
         Cuando quieras volver a medir tu humanidad,<br>
         Humanómetro está para eso.
