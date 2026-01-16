@@ -1,3 +1,8 @@
+/* =====================================================
+   HUMANÓMETRO v2 – CSS BASE COMPLETO UNIFICADO
+   (BASE ANDANDO + AJUSTES ESPEJO + LÁMINA FINAL)
+   ===================================================== */
+
 * { box-sizing: border-box; }
 
 /* ===== BODY + FONDO GENERAL (BOSQUE) ===== */
@@ -142,7 +147,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES (MENSUAL + FINAL) ===== */
+/* ===== TERMÓMETROS VERTICALES ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -197,8 +202,9 @@ button {
 }
 
 /* =====================================================
-   BLOQUE ESPEJO – SÍMBOLO ANIMADO (ESTABLE)
+   BLOQUE ESPEJO – SÍMBOLO ANIMADO (REEMPLAZO ESTABLE)
    ===================================================== */
+
 .mirror-symbol {
   font-size: 48px;
   color: #9fffe0;
@@ -217,8 +223,9 @@ button {
 }
 
 /* =====================================================
-   FONDO ESPEJO (INTRO + TEST + FINAL)
+   FONDO ESPEJO (SOLO BLOQUES ESPEJO)
    ===================================================== */
+
 .mirror-bg {
   background-image: url("activos/v2/espejo.jpg");
   background-size: cover;
@@ -230,8 +237,9 @@ button {
 }
 
 /* =====================================================
-   DEVOLUCIÓN FINAL – LÁMINA + SUSPENSO
+   DEVOLUCIÓN FINAL – LÁMINA CON SCROLL INTERNO
    ===================================================== */
+
 .glass-sheet {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -248,14 +256,9 @@ button {
   padding-right: 8px;
 }
 
-/* Aparición posterior al termómetro */
-#finalTextWrap {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .9s ease, transform .9s ease;
-}
-
-#finalTextWrap:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ===== TEXTO FINAL LED ===== */
+.final-led {
+  text-shadow:
+    0 0 8px rgba(120,255,230,.8),
+    0 0 18px rgba(120,255,230,.6);
+    }
