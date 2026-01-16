@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
 
-/* ===== BODY + FONDO ===== */
+/* ===== BODY + FONDO GENERAL (BOSQUE) ===== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -171,7 +171,7 @@ button {
     0 0 26px rgba(120,255,230,1);
 }
 
-/* ===== RESULTADOS LATERALES ===== */
+/* ===== RESULTADOS ===== */
 .result-row {
   display: flex;
   align-items: flex-start;
@@ -197,66 +197,56 @@ button {
 }
 
 /* =====================================================
-   EMOTICONES 3D REALES – BLOQUE ESPEJO
+   BLOQUE ESPEJO – SÍMBOLO ANIMADO (REEMPLAZO ESTABLE)
    ===================================================== */
 
-.emoji3d {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
-  margin: 14px auto;
-  position: relative;
-  background: #eee;
-  box-shadow:
-    inset -10px -10px 16px rgba(0,0,0,.35),
-    inset 10px 10px 16px rgba(255,255,255,.35),
-    0 16px 32px rgba(0,0,0,.45),
-    0 0 22px rgba(120,255,230,.35);
-  animation: floatBase 2.8s infinite ease-in-out;
-}
-
-/* OJOS */
-.emoji3d::before,
-.emoji3d::after {
-  content: "";
-  position: absolute;
-  top: 22px;
-  width: 6px;
-  height: 6px;
-  background: #000;
-  border-radius: 50%;
-}
-
-.emoji3d::before { left: 18px; }
-.emoji3d::after  { right: 18px; }
-
-/* BOCA */
-.emoji3d span {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  width: 18px;
-  height: 6px;
-  border-radius: 0 0 12px 12px;
-  background: #000;
-  transform: translateX(-50%);
-}
-
-/* COLORES EMOCIONALES */
-.emoji3d.joy   { background: radial-gradient(circle at top,#fff7a8,#f1c40f); }
-.emoji3d.sad   { background: radial-gradient(circle at top,#9fc5ff,#2c3e50); }
-.emoji3d.angry { background: radial-gradient(circle at top,#ff9a9a,#c0392b); }
-.emoji3d.fear  { background: radial-gradient(circle at top,#dcd6f7,#5f27cd); }
-.emoji3d.anx   { background: radial-gradient(circle at top,#ffeaa7,#e17055); }
-.emoji3d.guilt { background: radial-gradient(circle at top,#dfe6e9,#636e72); }
-.emoji3d.flat  { background: radial-gradient(circle at top,#dfe6e9,#7f8c8d); }
-.emoji3d.q     { background: radial-gradient(circle at top,#e0f7ff,#74b9ff); }
-
-/* ===== DEVOLUCIÓN FINAL CON LED ===== */
-#mirrorFullText {
-  font-size: .95rem;
-  line-height: 1.6;
+.mirror-symbol {
+  font-size: 48px;
+  color: #9fffe0;
+  text-align: center;
+  margin: 16px auto;
   text-shadow:
-    0 0 8px rgba(120,255,230,.65),
-    0 0 18px rgba(120,255,230,.45);
-                }
+    0 0 12px rgba(120,255,230,.9),
+    0 0 28px rgba(120,255,230,.7);
+  animation: pulseMirror 2.6s infinite ease-in-out;
+}
+
+@keyframes pulseMirror {
+  0%   { transform: scale(1); opacity: .7; }
+  50%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: .7; }
+}
+
+/* =====================================================
+   FONDO ESPEJO (SOLO BLOQUES ESPEJO)
+   ===================================================== */
+
+.mirror-bg {
+  background-image: url("activos/v2/espejo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.55),
+    0 0 30px rgba(120,255,230,.35);
+}
+
+/* =====================================================
+   DEVOLUCIÓN FINAL – LÁMINA CON SCROLL INTERNO
+   ===================================================== */
+
+.glass-sheet {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow:
+    0 0 28px rgba(120,255,230,.35),
+    inset 0 0 22px rgba(255,255,255,.12);
+}
+
+.scroll-sheet {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
