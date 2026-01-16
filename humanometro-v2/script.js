@@ -75,9 +75,9 @@ function answer(v){
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
-/* ===============================
-   DEVOLUCIONES SEMANALES (AJUSTE)
-   =============================== */
+/* =====================================================
+   DEVOLUCIONES SEMANALES – POÉTICAS Y DIFERENTES
+   ===================================================== */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -88,52 +88,62 @@ function showWeekly(){
 
   const block = WEEKS[week].title;
 
+  /* ---- VOS ANTE EL MUNDO ---- */
   if(block === "Vos ante el mundo"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "En la forma de vincularte con lo que ocurre afuera aparece cierta distancia. "+
-        "Las respuestas muestran que el dolor ajeno y los conflictos del entorno "+
-        "no siempre logran atravesarte con profundidad.";
+        "En el contacto con lo que sucede afuera aparece una distancia sostenida. "+
+        "Las respuestas indican que el dolor ajeno, las injusticias y los conflictos "+
+        "no siempre logran atravesar tu registro emocional. "+
+        "Esto no habla de indiferencia absoluta, sino de un modo selectivo de sentir, "+
+        "donde el mundo puede volverse ruido de fondo.";
       weeklyAdvice.textContent =
-        "Este tramo invita a revisar qué lugar ocupa el otro en tu registro cotidiano.";
+        "Tal vez sea momento de revisar qué lugar ocupa el otro en tu percepción cotidiana.";
     } else {
       weeklyText.textContent =
-        "Se observa una sensibilidad activa frente a lo que sucede alrededor. "+
-        "El contexto no pasa desapercibido y genera resonancia interna.";
+        "El entorno no pasa desapercibido. Las respuestas reflejan una sensibilidad activa "+
+        "frente a lo que sucede más allá de tu experiencia personal. "+
+        "Hay registro del sufrimiento, de la injusticia y del impacto colectivo.";
       weeklyAdvice.textContent =
-        "Sostener esta apertura fortalece la conciencia colectiva.";
+        "Sostener esta apertura fortalece el vínculo con lo humano compartido.";
     }
   }
 
+  /* ---- VOS Y LA TECNOLOGÍA ---- */
   if(block === "Vos y la tecnología"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "El vínculo con la tecnología muestra dispersión. "+
-        "La atención se fragmenta y el presente compite con estímulos constantes.";
+        "El vínculo con la tecnología aparece como un espacio de dispersión. "+
+        "La atención se fragmenta y el presente se ve interrumpido por estímulos constantes. "+
+        "Las respuestas sugieren dificultad para sostener presencia plena en los vínculos.";
       weeklyAdvice.textContent =
-        "Recuperar presencia devuelve profundidad a los vínculos reales.";
+        "Recuperar el aquí y ahora devuelve profundidad a la experiencia cotidiana.";
     } else {
       weeklyText.textContent =
-        "La tecnología aparece integrada sin absorberte por completo. "+
-        "Hay capacidad de uso consciente.";
+        "La tecnología se muestra integrada sin absorber por completo tu atención. "+
+        "Hay uso consciente y capacidad de volver al presente cuando es necesario.";
       weeklyAdvice.textContent =
-        "Este equilibrio sostiene una experiencia más humana del presente.";
+        "Este equilibrio sostiene una forma más humana de habitar lo digital.";
     }
   }
 
+  /* ---- INTEGRACIÓN HUMANA ---- */
   if(block === "Integración humana"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "Al observarte hacia adentro surgen contradicciones. "+
-        "Pensar, sentir y actuar no siempre avanzan en la misma dirección.";
+        "Al mirarte hacia adentro emergen tensiones. "+
+        "Pensar, sentir y actuar no siempre avanzan alineados, "+
+        "y aparecen contradicciones que generan ruido interno. "+
+        "Las respuestas muestran un proceso aún en ajuste.";
       weeklyAdvice.textContent =
-        "Reconocer estas tensiones es parte del proceso de integración.";
+        "Reconocer estas disonancias es parte del camino de integración.";
     } else {
       weeklyText.textContent =
         "Se percibe mayor coherencia interna. "+
-        "Las decisiones reflejan alineación entre emoción y acción.";
+        "Las decisiones reflejan alineación entre emoción, pensamiento y acción. "+
+        "Hay congruencia en la manera de habitarte.";
       weeklyAdvice.textContent =
-        "Habitar esta congruencia consolida el proceso personal.";
+        "Habitar esta coherencia consolida el proceso personal.";
     }
   }
 
@@ -164,18 +174,18 @@ function showMonthly(){
   });
 }
 
-/* ===============================
-   ESPEJO – PREGUNTAS (SIN CAMBIOS)
-   =============================== */
+/* =====================================================
+   ESPEJO – PREGUNTAS COMPLETAS (AJUSTE 2)
+   ===================================================== */
 const MIRROR_QUESTIONS = [
-  { t:"Estás en la calle, necesitás avanzar y una situación externa te lo impide durante varios minutos. No podés hacer nada para cambiarlo y sentís que el tiempo se pierde." },
-  { t:"Te enterás de una situación difícil que atraviesa otra persona o un grupo y no podés intervenir directamente." },
-  { t:"Tenés que tomar una decisión importante y sentís que podría traer consecuencias si sale mal." },
-  { t:"Recordás algo dicho o hecho con alguien cercano que quedó sin resolver." },
-  { t:"Durante el día sentís que las demandas se acumulan y reaccionás de manera automática." },
-  { t:"Estás con personas importantes pero notás una distancia interna." },
-  { t:"Vivís un momento simple y sentís bienestar sin necesidad de justificarlo." },
-  { t:"Aparece una emoción que preferís no mirar del todo." }
+  { t:"Estás en la calle, necesitás avanzar y una situación externa te lo impide durante varios minutos. No podés hacer nada para cambiarlo y sentís que el tiempo se pierde.\n\nEsa situación te generó enojo:" },
+  { t:"Te enterás de una situación difícil que está atravesando otra persona o un grupo, y no podés intervenir ni ayudar de forma directa. La información queda dando vueltas en tu cabeza durante el día.\n\nEsa situación te generó tristeza:" },
+  { t:"Tenés que tomar una decisión importante y sentís que, si sale mal, podría traer consecuencias para vos o para otros. Dudás, postergás o evitás avanzar.\n\nEsa situación te generó miedo:" },
+  { t:"Recordás algo que dijiste o hiciste (o dejaste de hacer) con alguien cercano, y notás que quedó sin resolver. La escena vuelve a aparecer en tu mente.\n\nEsa situación te generó culpa:" },
+  { t:"Durante el día sentís que las demandas se acumulan, el tiempo no alcanza y reaccionás de manera automática, sin detenerte a pensar demasiado.\n\nEsa situación te generó ansiedad:" },
+  { t:"Estás con personas o en situaciones que antes te importaban, pero notás que algo no conecta. Escuchás, respondés, pero por dentro te sentís distante.\n\nEsa situación te generó desconexión emocional:" },
+  { t:"Vivís un momento simple del día —una charla, una actividad, un logro pequeño— y sentís bienestar sin necesidad de justificarlo.\n\nEsa situación te generó alegría genuina:" },
+  { t:"A lo largo de estos días aparece una emoción que preferís no pensar demasiado, distraerte o correr de foco para no sentirla del todo.\n\nEsa situación estuvo presente en vos:" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -239,4 +249,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+  }
