@@ -1,27 +1,26 @@
-/* ================= CACHE ================= */
-const ids = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const weekTitle = ids("weekTitle");
-const questionText = ids("questionText");
-const questionMeasure = ids("questionMeasure");
-const thermoFill = ids("thermoFill");
+/* CACHE */
+const weekTitle = $("weekTitle");
+const questionText = $("questionText");
+const questionMeasure = $("questionMeasure");
+const thermoFill = $("thermoFill");
 
-const weeklySymbol = ids("weeklySymbol");
-const weeklyText = ids("weeklyText");
-const weeklyAdvice = ids("weeklyAdvice");
+const weeklySymbol = $("weeklySymbol");
+const weeklyText = $("weeklyText");
+const weeklyAdvice = $("weeklyAdvice");
 
-const monthlyFill = ids("monthlyFill");
-const monthlyTextWrap = ids("monthlyTextWrap");
-const monthlySymbol = ids("monthlySymbol");
-const monthlyLongText = ids("monthlyLongText");
-const monthlyText = ids("monthlyText");
+const monthlyFill = $("monthlyFill");
+const monthlyTextWrap = $("monthlyTextWrap");
+const monthlySymbol = $("monthlySymbol");
+const monthlyLongText = $("monthlyLongText");
+const monthlyText = $("monthlyText");
 
-const mirrorEmoji = ids("mirrorEmoji");
-const mirrorQuestion = ids("mirrorQuestion");
-const mirrorFill = ids("mirrorFill");
-const mirrorFullText = ids("mirrorFullText");
+const mirrorEmoji = $("mirrorEmoji");
+const mirrorQuestion = $("mirrorQuestion");
+const finalHumanText = $("finalHumanText");
 
-/* ================= DATOS ================= */
+/* DATOS */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -43,15 +42,13 @@ const WEEKS = [
   ]}
 ];
 
-let week=0,q=0,currentScore=0;
+let week=0, q=0, currentScore=0;
 let weeklyScores=[];
 
-/* ================= FLUJO ================= */
+/* FLUJO */
 function startV2(){
-  week=0;q=0;currentScore=0;
-  weeklyScores=[];
-  show("test");
-  loadQuestion();
+  week=0; q=0; currentScore=0; weeklyScores=[];
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
@@ -63,8 +60,7 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v;
-  q++;
+  currentScore+=v; q++;
   q>=4 ? showWeekly() : loadQuestion();
 }
 
@@ -75,16 +71,16 @@ function showWeekly(){
 
   if(avg<0.8){
     weeklySymbol.textContent="🦇";
-    weeklyText.textContent="Predominó la reacción emocional automática.";
-    weeklyAdvice.textContent="Hubo dificultad para traducir emoción en acción consciente.";
+    weeklyText.textContent="Durante esta semana predominó la reacción automática.";
+    weeklyAdvice.textContent="Las emociones se activaron sin lograr transformarse en acción consciente sostenida.";
   }else if(avg<1.5){
     weeklySymbol.textContent="🐞";
-    weeklyText.textContent="Conciencia intermitente.";
-    weeklyAdvice.textContent="Alternaste registro y automatismo.";
+    weeklyText.textContent="La conciencia apareció de forma intermitente.";
+    weeklyAdvice.textContent="Hubo momentos de registro combinados con respuestas condicionadas.";
   }else{
     weeklySymbol.textContent="🐦";
-    weeklyText.textContent="Coherencia sostenida.";
-    weeklyAdvice.textContent="Emoción, pensamiento y acción dialogaron.";
+    weeklyText.textContent="Se sostuvo una coherencia activa.";
+    weeklyAdvice.textContent="Emoción, pensamiento y acción lograron mayor alineación.";
   }
 }
 
@@ -98,45 +94,56 @@ function showMonthly(){
   monthlyTextWrap.classList.add("hidden");
 
   const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
+  const delta=weeklyScores.at(-1)-weeklyScores[0];
 
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-    monthlyLongText.textContent="Esta lectura integra tu recorrido semanal.";
-    monthlyText.textContent="No mide hechos aislados sino proceso.";
+
+    monthlyLongText.textContent =
+      "Este tramo mostró cómo fuiste habitando tu humanidad en movimiento. "+
+      "No se midieron respuestas aisladas, sino la forma en que sostuviste presencia, "+
+      "empatía y coherencia a lo largo del tiempo.";
+
+    monthlyText.textContent =
+      delta>0
+      ? "Se observa un aumento de conciencia respecto del inicio."
+      : delta<0
+      ? "El cierre del proceso muestra desgaste emocional acumulado."
+      : "El nivel de conciencia se mantuvo estable durante todo el recorrido.";
   });
 }
 
 function showIntra(){
   show("intraResult");
-  ids("intraText").textContent=
-    "Esta lectura intrapersonal refleja tu coherencia interna a lo largo del proceso. "+
-    "No juzga respuestas, observa patrones emocionales sostenidos.";
+  $("intraText").textContent =
+    "Esta lectura intrapersonal refleja patrones internos sostenidos a lo largo del proceso. "+
+    "Muestra cómo dialogaron emoción, pensamiento y acción en tu vida cotidiana, "+
+    "y qué nivel de coherencia lograste mantener frente a los estímulos del entorno.";
 }
+
+/* ESPEJO */
+const MIRROR_QUESTIONS=[
+ {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
+ {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
+ {t:"¿El miedo te frenó?",e:"fear"},
+ {t:"¿La ansiedad te llevó a reaccionar en automático?",e:"anx"},
+ {t:"¿Apareció culpa no resuelta?",e:"guilt"},
+ {t:"¿Hubo desconexión emocional?",e:"flat"},
+ {t:"¿La alegría fue genuina y sostenida?",e:"joy"},
+ {t:"¿Evitaste una emoción dominante?",e:"q"}
+];
+
+let mq=0, mirrorScore=0, mirrorCount=0, mirrorLog=[];
 
 function openMirror(){
   document.body.classList.add("mirror-transition");
   setTimeout(()=>show("mirrorIntro"),200);
 }
 
-/* ================= ESPEJO ================= */
-const MIRROR_QUESTIONS=[
- {t:"¿Sentiste enojo que influyó en tu actuar?",e:"angry"},
- {t:"¿La tristeza condicionó tus decisiones?",e:"sad"},
- {t:"¿El miedo te frenó?",e:"fear"},
- {t:"¿La ansiedad te llevó a reaccionar?",e:"anx"},
- {t:"¿Apareció culpa no resuelta?",e:"guilt"},
- {t:"¿Hubo desconexión emocional?",e:"flat"},
- {t:"¿La alegría fue genuina?",e:"joy"},
- {t:"¿Evitaste una emoción dominante?",e:"q"}
-];
-
-let mq=0,mirrorScore=0,mirrorCount=0;
-
 function startMirror(){
-  mq=0; mirrorScore=0; mirrorCount=0;
-  show("mirrorTest");
-  loadMirror();
+  mq=0; mirrorScore=0; mirrorCount=0; mirrorLog=[];
+  show("mirrorTest"); loadMirror();
 }
 
 function loadMirror(){
@@ -145,23 +152,42 @@ function loadMirror(){
 }
 
 function answerMirror(v){
-  if(v!==null){mirrorScore+=v;mirrorCount++;}
+  mirrorLog.push(v??0);
+  if(v!==null){mirrorScore+=v; mirrorCount++;}
   mq++;
-  mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
+  mq>=MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
-function showMirror(){
+function showFinal(){
   show("finalResult");
-  ids("finalHumanText").textContent=
-    "La devolución final integra todo tu recorrido en el Humanómetro. "+
-    "No señala errores ni aciertos. Refleja cómo habitaste tus emociones, "+
-    "tus decisiones y tu vínculo con el mundo.";
+
+  const avg = mirrorCount ? mirrorScore/mirrorCount : 0;
+  const evitadas = mirrorLog.filter(v=>v===0).length;
+
+  finalHumanText.textContent =
+    "Esta devolución integra todo tu recorrido en el Humanómetro. "+
+    "Partiste de una base inicial que fue puesta a prueba por el contexto, "+
+    "el tiempo y tus propias emociones.\n\n"+
+
+    (avg>1.4
+      ? "Predominó una coherencia emocional activa, con capacidad de autorregulación."
+      : avg>0.9
+        ? "Se observaron avances con oscilaciones según el contexto."
+        : "La reactividad emocional tuvo un peso significativo en tus decisiones."
+    )+
+
+    (evitadas>2
+      ? "\n\nSe detectaron emociones evitadas, señalando zonas aún no integradas."
+      : "\n\nLas emociones fueron mayormente reconocidas y transitadas."
+    )+
+
+    "\n\nEsta lectura no juzga. Refleja cómo te estuviste habitando.";
 }
 
-/* ================= UTIL ================= */
+/* UTIL */
 function animateGauge(el,target,done){
   el.style.height="0%";
-  const start=performance.now(),dur=1800;
+  const start=performance.now(), dur=1800;
   function step(t){
     const p=Math.min(1,(t-start)/dur);
     el.style.height=p*target+"%";
@@ -172,6 +198,6 @@ function animateGauge(el,target,done){
 
 function show(id){
   ["start","test","weeklyResult","monthlyResult","intraResult","mirrorIntro","mirrorTest","finalResult"]
-    .forEach(s=>ids(s).classList.add("hidden"));
-  ids(id).classList.remove("hidden");
-      }
+    .forEach(s=>$(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+}
