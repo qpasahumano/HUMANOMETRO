@@ -9,6 +9,7 @@ const thermoFill = $("thermoFill");
 const weeklySymbol = $("weeklySymbol");
 const weeklyText = $("weeklyText");
 const weeklyAdvice = $("weeklyAdvice");
+const weeklyTextWrap = $("weeklyTextWrap");
 
 const monthlyFill = $("monthlyFill");
 const monthlyTextWrap = $("monthlyTextWrap");
@@ -70,22 +71,42 @@ function answer(v){
 
 function showWeekly(){
   show("weeklyResult");
+  weeklyTextWrap.classList.add("hidden");
+
   const avg=currentScore/4;
   weeklyScores.push(avg);
 
   if(avg<0.8){
     weeklySymbol.textContent="🦇";
-    weeklyText.textContent="Durante esta semana predominó una respuesta emocional reactiva.";
-    weeklyAdvice.textContent="Las emociones tuvieron más peso que la autorregulación consciente.";
+    weeklyText.textContent=
+      "Durante este tramo predominó una respuesta emocional reactiva. "+
+      "Los estímulos externos tuvieron mayor peso que la autorregulación interna. "+
+      "Hubo registro del impacto emocional, pero dificultad para transformarlo "+
+      "en acción consciente sostenida a lo largo del tiempo.";
+    weeklyAdvice.textContent=
+      "Esto no habla de error, sino de sobrecarga emocional. "+
+      "Observarlo es parte del proceso de recuperación de presencia.";
   }else if(avg<1.5){
     weeklySymbol.textContent="🐞";
-    weeklyText.textContent="La conciencia apareció de forma intermitente.";
-    weeklyAdvice.textContent="Hubo momentos de registro y otros de automatismo.";
+    weeklyText.textContent=
+      "La conciencia apareció de forma intermitente. "+
+      "Alternaste momentos de presencia con respuestas automáticas "+
+      "según el contexto y el nivel de demanda emocional.";
+    weeklyAdvice.textContent=
+      "El proceso está activo: reconocer cuándo te perdés "+
+      "es parte del camino de integración.";
   }else{
     weeklySymbol.textContent="🐦";
-    weeklyText.textContent="Se sostuvo una coherencia emocional activa.";
-    weeklyAdvice.textContent="Emoción, pensamiento y acción dialogaron.";
+    weeklyText.textContent=
+      "Se sostuvo una coherencia emocional activa. "+
+      "Lograste integrar emoción, pensamiento y acción "+
+      "en la mayoría de las situaciones observadas.";
+    weeklyAdvice.textContent=
+      "Este nivel de presencia no es permanente, "+
+      "pero sí disponible cuando hay conciencia.";
   }
+
+  setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
 function nextWeek(){
@@ -103,8 +124,13 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
     monthlyLongText.textContent=
-      "Este bloque integró tu relación con el mundo y los estímulos externos.";
-    monthlyText.textContent="No mide hechos aislados, sino proceso sostenido.";
+      "Este bloque integró tu vínculo con el mundo, "+
+      "los estímulos colectivos y el entorno cotidiano. "+
+      "No midió hechos aislados, sino la forma en que "+
+      "habitaste emocionalmente el contexto.";
+    monthlyText.textContent=
+      "La lectura refleja un proceso sostenido, "+
+      "no una respuesta puntual.";
   });
 }
 
@@ -122,9 +148,7 @@ const MIRROR_QUESTIONS=[
 
 let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
 
-function openMirror(){
-  show("mirrorIntro");
-}
+function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
   mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
@@ -154,21 +178,24 @@ function showFinal(){
     finalTextWrap.classList.remove("hidden");
 
     finalState.textContent =
-      avg>1.4?"🟢 Estado integrado"
-      :avg>0.9?"🟡 Estado inestable"
-      :"🔴 Estado reactivo";
+      avg>1.4?"Estado integrado"
+      :avg>0.9?"Estado inestable"
+      :"Estado reactivo";
 
     finalHumanText.textContent=
-      "Esta devolución integra todo tu recorrido en el Humanómetro.\n\n"+
-      "Refleja cómo habitaste tu vínculo con el mundo, la tecnología y tu mundo interno.\n\n"+
+      "Esta devolución integra todo tu recorrido en el Humanómetro, "+
+      "desde los primeros registros hasta las variaciones observadas "+
+      "a lo largo del tiempo.\n\n"+
+      "Refleja cómo habitaste tu vínculo con el mundo, "+
+      "la tecnología y tu mundo interno.\n\n"+
       (avg>1.4
-        ?"Predominó una coherencia emocional activa."
+        ?"Predominó una coherencia emocional activa, con capacidad de autorregulación."
         :avg>0.9
-          ?"Hubo avances con oscilaciones según el contexto."
-          :"La reactividad tuvo peso en las decisiones.")+
+          ?"Se observaron avances con oscilaciones según el contexto."
+          :"La reactividad emocional tuvo un peso significativo.")+
       (evitadas>2
-        ?"\n\nSe detectaron emociones evitadas."
-        :"\n\nLas emociones fueron mayormente reconocidas.")+
+        ?"\n\nSe detectaron emociones evitadas, señalando zonas aún no integradas."
+        :"\n\nLas emociones fueron mayormente reconocidas y transitadas.")+
       "\n\nEsta lectura no juzga. Refleja.";
   });
 }
