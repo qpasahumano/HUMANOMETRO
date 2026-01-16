@@ -19,9 +19,7 @@ const monthlyText = ids("monthlyText");
 const mirrorEmoji = ids("mirrorEmoji");
 const mirrorQuestion = ids("mirrorQuestion");
 const mirrorFill = ids("mirrorFill");
-const mirrorTextWrap = ids("mirrorTextWrap");
 const mirrorFullText = ids("mirrorFullText");
-const mirrorAlert = ids("mirrorAlert");
 
 /* ================= DATOS ================= */
 const WEEKS = [
@@ -46,13 +44,14 @@ const WEEKS = [
 ];
 
 let week=0,q=0,currentScore=0;
-let weeklyScores=[], weeklyRaw=[];
+let weeklyScores=[];
 
 /* ================= FLUJO ================= */
 function startV2(){
   week=0;q=0;currentScore=0;
-  weeklyScores=[];weeklyRaw=[];
-  show("test");loadQuestion();
+  weeklyScores=[];
+  show("test");
+  loadQuestion();
 }
 
 function loadQuestion(){
@@ -64,15 +63,15 @@ function loadQuestion(){
 }
 
 function answer(v){
-  currentScore+=v;q++;
-  q>=4?showWeekly():loadQuestion();
+  currentScore+=v;
+  q++;
+  q>=4 ? showWeekly() : loadQuestion();
 }
 
 function showWeekly(){
   show("weeklyResult");
   const avg=currentScore/4;
   weeklyScores.push(avg);
-  weeklyRaw.push(currentScore);
 
   if(avg<0.8){
     weeklySymbol.textContent="🦇";
@@ -90,32 +89,34 @@ function showWeekly(){
 }
 
 function nextWeek(){
-  week++;q=0;currentScore=0;
-  week>=WEEKS.length?showMonthly(): (show("test"),loadQuestion());
+  week++; q=0; currentScore=0;
+  week>=WEEKS.length ? showMonthly() : (show("test"),loadQuestion());
 }
 
-/* ================= MENSUAL ================= */
 function showMonthly(){
   show("monthlyResult");
   monthlyTextWrap.classList.add("hidden");
 
   const avg=weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length;
-  const delta=weeklyScores.at(-1)-weeklyScores[0];
 
   animateGauge(monthlyFill,(avg/2)*100,()=>{
-    setTimeout(()=>{
-      monthlyTextWrap.classList.remove("hidden");
-
-      monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-      monthlyLongText.textContent=
-        "Esta lectura integra cómo te posicionaste semana a semana. "+
-        "No mide hechos aislados, sino tu forma de habitar emociones y decisiones.";
-      monthlyText.textContent=
-        delta>0?"Hubo crecimiento de conciencia."
-        :delta<0?"Se detecta desgaste emocional."
-        :"El nivel de conciencia se mantuvo estable.";
-    },2000);
+    monthlyTextWrap.classList.remove("hidden");
+    monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
+    monthlyLongText.textContent="Esta lectura integra tu recorrido semanal.";
+    monthlyText.textContent="No mide hechos aislados sino proceso.";
   });
+}
+
+function showIntra(){
+  show("intraResult");
+  ids("intraText").textContent=
+    "Esta lectura intrapersonal refleja tu coherencia interna a lo largo del proceso. "+
+    "No juzga respuestas, observa patrones emocionales sostenidos.";
+}
+
+function openMirror(){
+  document.body.classList.add("mirror-transition");
+  setTimeout(()=>show("mirrorIntro"),200);
 }
 
 /* ================= ESPEJO ================= */
@@ -130,54 +131,31 @@ const MIRROR_QUESTIONS=[
  {t:"¿Evitaste una emoción dominante?",e:"q"}
 ];
 
-let mq=0,mirrorScore=0,mirrorCount=0,mirrorLog=[];
-
-function openMirror(){show("mirrorIntro");}
+let mq=0,mirrorScore=0,mirrorCount=0;
 
 function startMirror(){
-  mq=0;mirrorScore=0;mirrorCount=0;mirrorLog=[];
-  show("mirrorTest");loadMirror();
+  mq=0; mirrorScore=0; mirrorCount=0;
+  show("mirrorTest");
+  loadMirror();
 }
 
 function loadMirror(){
-  mirrorEmoji.className="emoji3d float "+MIRROR_QUESTIONS[mq].e;
+  mirrorEmoji.className="emoji3d "+MIRROR_QUESTIONS[mq].e;
   mirrorQuestion.textContent=MIRROR_QUESTIONS[mq].t;
 }
 
 function answerMirror(v){
-  mirrorLog.push(v??0);
   if(v!==null){mirrorScore+=v;mirrorCount++;}
-  mq++;mq>=MIRROR_QUESTIONS.length?showMirror():loadMirror();
+  mq++;
+  mq>=MIRROR_QUESTIONS.length ? showMirror() : loadMirror();
 }
 
-/* ================= FINAL ================= */
 function showMirror(){
-  show("mirrorResult");
-  mirrorTextWrap.classList.add("hidden");
-
-  const avg=mirrorCount?mirrorScore/mirrorCount:0;
-  const evitadas=mirrorLog.filter(v=>v===0).length;
-
-  animateGauge(mirrorFill,(avg/2)*100,()=>{
-    setTimeout(()=>{
-      mirrorTextWrap.classList.remove("hidden");
-
-      mirrorAlert.textContent=
-        avg>1.4?"🟢 Estado integrado"
-        :avg>0.9?"🟡 Estado inestable"
-        :"🔴 Alerta emocional";
-
-      mirrorFullText.textContent=
-        "La devolución final integra todo tu recorrido mensual. "+
-        "Mostró cómo respondiste ante el mundo, la tecnología y vos mismo. "+
-        (avg>1.4?"Predominó la coherencia."
-        :avg>0.9?"Hubo avances con retrocesos."
-        :"La reactividad tuvo peso.")+
-        (evitadas>2?" Se detectaron emociones evitadas."
-        :" Las emociones fueron mayormente reconocidas.")+
-        " No juzga: refleja.";
-    },2500);
-  });
+  show("finalResult");
+  ids("finalHumanText").textContent=
+    "La devolución final integra todo tu recorrido en el Humanómetro. "+
+    "No señala errores ni aciertos. Refleja cómo habitaste tus emociones, "+
+    "tus decisiones y tu vínculo con el mundo.";
 }
 
 /* ================= UTIL ================= */
@@ -193,7 +171,7 @@ function animateGauge(el,target,done){
 }
 
 function show(id){
-  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","mirrorResult"]
+  ["start","test","weeklyResult","monthlyResult","intraResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s=>ids(s).classList.add("hidden"));
   ids(id).classList.remove("hidden");
-    }
+      }
