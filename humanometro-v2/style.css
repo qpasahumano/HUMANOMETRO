@@ -1,20 +1,31 @@
 * { box-sizing: border-box; }
 
-/* ===== BODY + FONDO GENERAL (BOSQUE) ===== */
+/* =====================================================
+   BODY BASE (SIN IMAGEN)
+   ===================================================== */
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
+  background: #050b18;
+  color: #f6fffc;
+}
+
+/* =====================================================
+   FONDO BOSQUE – IGUAL VOLUMEN 1
+   ===================================================== */
+#app::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: url("activos/v2/fondo-bosque.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-attachment: fixed;
-  color: #f6fffc;
-  position: relative;
+  z-index: -2;
 }
 
-/* ===== OVERLAY GLOBAL ===== */
-body::before {
+/* Overlay global bosque */
+#app::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -26,7 +37,9 @@ body::before {
   z-index: -1;
 }
 
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* =====================================================
+   CONTENEDOR PRINCIPAL
+   ===================================================== */
 #app {
   max-width: 520px;
   margin: 40px auto;
@@ -43,7 +56,9 @@ body::before {
 
 .hidden { display: none; }
 
-/* ===== MARCA ===== */
+/* =====================================================
+   MARCA
+   ===================================================== */
 .brand-main {
   font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
@@ -59,7 +74,9 @@ body::before {
   opacity: .9;
 }
 
-/* ===== TEXTOS ===== */
+/* =====================================================
+   TEXTOS
+   ===================================================== */
 .intro {
   font-size: .95rem;
   line-height: 1.5;
@@ -76,7 +93,9 @@ body::before {
   line-height: 1.45;
 }
 
-/* ===== TÍTULOS ===== */
+/* =====================================================
+   TÍTULOS
+   ===================================================== */
 .neon-title {
   color: #9fffe0;
   text-shadow:
@@ -90,13 +109,17 @@ body::before {
   to { opacity: 1; }
 }
 
-/* ===== PREGUNTAS ===== */
+/* =====================================================
+   PREGUNTAS
+   ===================================================== */
 .question {
   font-size: 1.05rem;
   margin-top: 20px;
 }
 
-/* ===== BOTONES ===== */
+/* =====================================================
+   BOTONES
+   ===================================================== */
 button {
   width: 90%;
   max-width: 340px;
@@ -121,7 +144,9 @@ button {
   font-weight: 600;
 }
 
-/* ===== TERMÓMETROS ===== */
+/* =====================================================
+   TERMÓMETRO SEMANAL
+   ===================================================== */
 .thermo {
   width: 100%;
   height: 14px;
@@ -129,20 +154,28 @@ button {
   border-radius: 20px;
   margin: 20px 0;
   overflow: hidden;
+  box-shadow: 0 0 14px rgba(120,255,230,.45);
 }
 
 #thermoFill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  transition: width .6s ease-in-out;
 }
 
+/* =====================================================
+   TERMÓMETROS VERTICALES
+   ===================================================== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
   background: rgba(0,0,0,0.35);
   border-radius: 20px;
   overflow: hidden;
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,.6),
+    0 0 26px rgba(120,255,230,.75);
 }
 
 .gradient {
@@ -151,7 +184,9 @@ button {
   background: linear-gradient(#e74c3c,#f1c40f,#2ecc71);
 }
 
-/* ===== RESULTADOS ===== */
+/* =====================================================
+   RESULTADOS
+   ===================================================== */
 .result-row {
   display: flex;
   align-items: flex-start;
@@ -163,54 +198,60 @@ button {
   text-align: left;
 }
 
+/* =====================================================
+   SÍMBOLOS
+   ===================================================== */
 .symbol {
   font-size: 3.4rem;
   margin-bottom: 10px;
 }
 
 /* =====================================================
-   🔵 BLOQUE ESPEJO – SOLUCIÓN DEFINITIVA (CSS ONLY)
+   ESPEJO – FONDO FULLSCREEN REAL
    ===================================================== */
-
 .mirror-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  width: 100vw;
+  height: 100vh;
 
   background-image: url("v2_espejo_manos_humanometro.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
   background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  z-index: 0;
 }
 
-/* Lámina azul profunda transparente */
+/* Lámina azul profunda */
 .mirror-bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(6,18,40,0.65),
-      rgba(10,32,70,0.78)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(6,18,40,0.75),
+    rgba(10,32,70,0.80)
+  );
   z-index: 1;
 }
 
-/* Contenido del espejo por encima */
+/* LED / Glow */
+.mirror-bg {
+  box-shadow:
+    inset 0 0 100px rgba(0,60,140,.6),
+    inset 0 0 180px rgba(0,200,255,.18);
+}
+
+/* Mantener contenido visible */
 .mirror-bg > * {
   position: relative;
   z-index: 2;
 }
 
-/* Glow LED suave */
-.mirror-bg {
-  box-shadow:
-    inset 0 0 120px rgba(0,60,140,.55),
-    inset 0 0 200px rgba(0,200,255,.18);
-}
-
-/* ===== ICONO ESPEJO ===== */
+/* =====================================================
+   ICONO ESPEJO
+   ===================================================== */
 .mirror-symbol {
   font-size: 48px;
   color: #c9f4ff;
@@ -221,22 +262,32 @@ button {
     0 0 32px rgba(120,220,255,.7);
 }
 
-/* ===== DEVOLUCIÓN FINAL ===== */
+/* =====================================================
+   DEVOLUCIÓN FINAL
+   ===================================================== */
 .glass-sheet {
   background: rgba(10,30,60,0.65);
   backdrop-filter: blur(8px);
   border-radius: 22px;
   padding: 24px;
+  box-shadow:
+    0 0 32px rgba(120,220,255,.35),
+    inset 0 0 18px rgba(255,255,255,.12);
 }
 
 .scroll-sheet {
   max-height: 60vh;
   overflow-y: auto;
+  padding-right: 8px;
 }
 
+/* =====================================================
+   ANIMACIÓN TEXTO FINAL
+   ===================================================== */
 #finalTextWrap {
   opacity: 0;
   transform: translateY(12px);
+  transition: opacity .9s ease, transform .9s ease;
 }
 
 #finalTextWrap:not(.hidden) {
@@ -244,52 +295,11 @@ button {
   transform: translateY(0);
 }
 
+/* =====================================================
+   ESTADO FINAL LED
+   ===================================================== */
 .state-led {
   text-shadow:
     0 0 8px rgba(120,220,255,.9),
     0 0 18px rgba(120,220,255,.7);
 }
-/* ===============================
-   OVERRIDE DE FONDO EN ESPEJO
-   =============================== */
-
-/* Cuando estamos en espejo, apagamos el fondo del body */
-body:has(.mirror-bg:not(.hidden)) {
-  background-image: none;
-  background-color: #000;
-}
-
-/* Fondo espejo FULLSCREEN REAL */
-.mirror-bg {
-  position: fixed;
-  inset: 0;
-  min-height: 100vh;
-  min-width: 100vw;
-
-  background-image: url("v2_espejo_manos_humanometro.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-
-  z-index: 0;
-}
-
-/* Lámina azul profunda para lectura */
-.mirror-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(6,18,40,0.72),
-    rgba(10,32,70,0.78)
-  );
-  z-index: 1;
-}
-
-/* Contenido por encima */
-.mirror-bg > * {
-  position: relative;
-  z-index: 2;
-}
-
