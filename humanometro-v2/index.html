@@ -54,15 +54,9 @@
       <div id="monthlySymbol" class="symbol"></div>
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
-      <button class="primary" onclick="showIntra()">Continuar</button>
+      <button class="primary" onclick="openMirror()">Mirar tu reflejo</button>
     </div>
   </div>
-</section>
-
-<section id="intraResult" class="hidden">
-  <h2 class="neon-title">Lectura intrapersonal</h2>
-  <p id="intraText" class="legal"></p>
-  <button class="primary" onclick="openMirror()">Mirar tu reflejo</button>
 </section>
 
 <section id="mirrorIntro" class="hidden mirror-bg">
@@ -71,11 +65,11 @@
     No muestra lo que sos.<br>
     Refleja lo que estás haciendo con lo que sentís.
   </p>
-  <button class="primary" onclick="startMirror()">Comenzar</button>
+  <button class="primary" onclick="startMirror()">Mirar tu reflejo</button>
 </section>
 
 <section id="mirrorTest" class="hidden mirror-bg">
-  <div id="mirrorEmoji" class="mirror-symbol"></div>
+  <div id="mirrorEmoji" class="mirror-symbol">⬤</div>
   <p id="mirrorQuestion" class="question"></p>
   <div class="answers">
     <button onclick="answerMirror(3)">MUCHO</button>
@@ -86,14 +80,21 @@
 </section>
 
 <section id="finalResult" class="hidden mirror-bg">
-  <div class="glass-sheet">
-    <h2 class="neon-title">Devolución final</h2>
-    <div class="scroll-sheet">
-      <p id="finalHumanText" class="legal"></p>
-      <p class="legal small" style="margin-top:18px;">
-        Cuando necesites volver a medir tu humanidad,<br>
-        Humanómetro está para eso.
-      </p>
+  <div class="result-row">
+    <div class="vertical-thermo">
+      <div id="finalFill" class="gradient"></div>
+    </div>
+    <div id="finalTextWrap" class="result-text hidden">
+      <p id="finalState" class="symbol"></p>
+      <div class="glass-sheet">
+        <div class="scroll-sheet">
+          <p id="finalHumanText" class="legal"></p>
+          <p class="legal small" style="margin-top:18px;">
+            Cuando necesites volver a medir tu humanidad,<br>
+            Humanómetro está para eso.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
