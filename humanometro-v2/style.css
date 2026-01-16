@@ -142,7 +142,7 @@ button {
   transition: width .6s ease-in-out;
 }
 
-/* ===== TERMÓMETROS VERTICALES (MENSUAL + FINAL) ===== */
+/* ===== TERMÓMETROS VERTICALES ===== */
 .vertical-thermo {
   width: 30px;
   height: 220px;
@@ -196,9 +196,7 @@ button {
   100% { transform: translateY(0); }
 }
 
-/* =====================================================
-   BLOQUE ESPEJO – SÍMBOLO ANIMADO (ESTABLE)
-   ===================================================== */
+/* ===== BLOQUE ESPEJO – SÍMBOLO ===== */
 .mirror-symbol {
   font-size: 48px;
   color: #9fffe0;
@@ -211,14 +209,12 @@ button {
 }
 
 @keyframes pulseMirror {
-  0%   { transform: scale(1); opacity: .7; }
-  50%  { transform: scale(1.15); opacity: 1; }
+  0% { transform: scale(1); opacity: .7; }
+  50% { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* =====================================================
-   FONDO ESPEJO (INTRO + TEST + FINAL)
-   ===================================================== */
+/* ===== FONDO ESPEJO ===== */
 .mirror-bg {
   background-image: url("activos/v2/espejo.jpg");
   background-size: cover;
@@ -229,9 +225,7 @@ button {
     0 0 30px rgba(120,255,230,.35);
 }
 
-/* =====================================================
-   DEVOLUCIÓN FINAL – LÁMINA + SUSPENSO
-   ===================================================== */
+/* ===== LÁMINA FINAL ===== */
 .glass-sheet {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
@@ -248,7 +242,7 @@ button {
   padding-right: 8px;
 }
 
-/* Aparición posterior al termómetro */
+/* ===== APARICIÓN POST TERMÓMETRO ===== */
 #finalTextWrap {
   opacity: 0;
   transform: translateY(12px);
@@ -259,3 +253,6 @@ button {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* =====================================================
+   ✨ ESTADO FINAL – LUMINISCENCIA EMOCIONAL
