@@ -76,7 +76,7 @@ function answer(v){
 }
 
 /* =====================================================
-   DEVOLUCIONES SEMANALES – POÉTICAS Y DIFERENTES
+   DEVOLUCIONES SEMANALES – POÉTICAS (SELLADAS)
    ===================================================== */
 function showWeekly(){
   show("weeklyResult");
@@ -88,62 +88,50 @@ function showWeekly(){
 
   const block = WEEKS[week].title;
 
-  /* ---- VOS ANTE EL MUNDO ---- */
   if(block === "Vos ante el mundo"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "En el contacto con lo que sucede afuera aparece una distancia sostenida. "+
-        "Las respuestas indican que el dolor ajeno, las injusticias y los conflictos "+
-        "no siempre logran atravesar tu registro emocional. "+
-        "Esto no habla de indiferencia absoluta, sino de un modo selectivo de sentir, "+
-        "donde el mundo puede volverse ruido de fondo.";
+        "Algo del mundo parece pasar sin dejar huella. El dolor ajeno, las injusticias y los conflictos "+
+        "no siempre logran atravesar tu registro. No es ausencia total de sensibilidad, sino una forma "+
+        "selectiva de sentir, donde lo externo queda amortiguado.";
       weeklyAdvice.textContent =
-        "Tal vez sea momento de revisar qué lugar ocupa el otro en tu percepción cotidiana.";
+        "Tal vez sea momento de preguntarte qué lugar ocupa el otro en tu mirada cotidiana.";
     } else {
       weeklyText.textContent =
-        "El entorno no pasa desapercibido. Las respuestas reflejan una sensibilidad activa "+
-        "frente a lo que sucede más allá de tu experiencia personal. "+
-        "Hay registro del sufrimiento, de la injusticia y del impacto colectivo.";
+        "Lo que sucede afuera resuena. Hay registro del sufrimiento y de la injusticia, "+
+        "y eso genera una respuesta interna que no se apaga.";
       weeklyAdvice.textContent =
-        "Sostener esta apertura fortalece el vínculo con lo humano compartido.";
+        "Sostener esta apertura fortalece el lazo con lo humano compartido.";
     }
   }
 
-  /* ---- VOS Y LA TECNOLOGÍA ---- */
   if(block === "Vos y la tecnología"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "El vínculo con la tecnología aparece como un espacio de dispersión. "+
-        "La atención se fragmenta y el presente se ve interrumpido por estímulos constantes. "+
-        "Las respuestas sugieren dificultad para sostener presencia plena en los vínculos.";
+        "La atención se dispersa y el presente se fragmenta. La tecnología aparece como ruido constante, "+
+        "interrumpiendo la profundidad de los vínculos y del estar.";
       weeklyAdvice.textContent =
-        "Recuperar el aquí y ahora devuelve profundidad a la experiencia cotidiana.";
+        "Volver al ahora puede devolver densidad a la experiencia cotidiana.";
     } else {
       weeklyText.textContent =
-        "La tecnología se muestra integrada sin absorber por completo tu atención. "+
-        "Hay uso consciente y capacidad de volver al presente cuando es necesario.";
+        "Lo digital acompaña sin absorber. Hay capacidad de usar la tecnología sin perder presencia.";
       weeklyAdvice.textContent =
-        "Este equilibrio sostiene una forma más humana de habitar lo digital.";
+        "Este equilibrio sostiene una vivencia más consciente del día a día.";
     }
   }
 
-  /* ---- INTEGRACIÓN HUMANA ---- */
   if(block === "Integración humana"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "Al mirarte hacia adentro emergen tensiones. "+
-        "Pensar, sentir y actuar no siempre avanzan alineados, "+
-        "y aparecen contradicciones que generan ruido interno. "+
-        "Las respuestas muestran un proceso aún en ajuste.";
+        "Aparecen fisuras entre lo que pensás, sentís y hacés. No todo avanza en la misma dirección, "+
+        "y esa desalineación genera tensión interna.";
       weeklyAdvice.textContent =
-        "Reconocer estas disonancias es parte del camino de integración.";
+        "Nombrar estas disonancias es parte del camino de integración.";
     } else {
       weeklyText.textContent =
-        "Se percibe mayor coherencia interna. "+
-        "Las decisiones reflejan alineación entre emoción, pensamiento y acción. "+
-        "Hay congruencia en la manera de habitarte.";
+        "Hay coherencia interna. Pensamiento, emoción y acción se acompañan con mayor claridad.";
       weeklyAdvice.textContent =
-        "Habitar esta coherencia consolida el proceso personal.";
+        "Habitar esta congruencia consolida el proceso personal.";
     }
   }
 
@@ -174,18 +162,18 @@ function showMonthly(){
   });
 }
 
-/* =====================================================
-   ESPEJO – PREGUNTAS COMPLETAS (AJUSTE 2)
-   ===================================================== */
+/* ===============================
+   ESPEJO – PREGUNTAS (NO TOCADAS)
+   =============================== */
 const MIRROR_QUESTIONS = [
   { t:"Estás en la calle, necesitás avanzar y una situación externa te lo impide durante varios minutos. No podés hacer nada para cambiarlo y sentís que el tiempo se pierde.\n\nEsa situación te generó enojo:" },
-  { t:"Te enterás de una situación difícil que está atravesando otra persona o un grupo, y no podés intervenir ni ayudar de forma directa. La información queda dando vueltas en tu cabeza durante el día.\n\nEsa situación te generó tristeza:" },
-  { t:"Tenés que tomar una decisión importante y sentís que, si sale mal, podría traer consecuencias para vos o para otros. Dudás, postergás o evitás avanzar.\n\nEsa situación te generó miedo:" },
-  { t:"Recordás algo que dijiste o hiciste (o dejaste de hacer) con alguien cercano, y notás que quedó sin resolver. La escena vuelve a aparecer en tu mente.\n\nEsa situación te generó culpa:" },
-  { t:"Durante el día sentís que las demandas se acumulan, el tiempo no alcanza y reaccionás de manera automática, sin detenerte a pensar demasiado.\n\nEsa situación te generó ansiedad:" },
-  { t:"Estás con personas o en situaciones que antes te importaban, pero notás que algo no conecta. Escuchás, respondés, pero por dentro te sentís distante.\n\nEsa situación te generó desconexión emocional:" },
-  { t:"Vivís un momento simple del día —una charla, una actividad, un logro pequeño— y sentís bienestar sin necesidad de justificarlo.\n\nEsa situación te generó alegría genuina:" },
-  { t:"A lo largo de estos días aparece una emoción que preferís no pensar demasiado, distraerte o correr de foco para no sentirla del todo.\n\nEsa situación estuvo presente en vos:" }
+  { t:"Te enterás de una situación difícil que está atravesando otra persona o un grupo, y no podés intervenir ni ayudar de forma directa.\n\nEsa situación te generó tristeza:" },
+  { t:"Tenés que tomar una decisión importante y sentís que, si sale mal, podría traer consecuencias.\n\nEsa situación te generó miedo:" },
+  { t:"Recordás algo dicho o hecho con alguien cercano que quedó sin resolver.\n\nEsa situación te generó culpa:" },
+  { t:"Durante el día sentís que las demandas se acumulan y reaccionás de manera automática.\n\nEsa situación te generó ansiedad:" },
+  { t:"Estás con personas importantes pero notás una distancia interna.\n\nEsa situación te generó desconexión emocional:" },
+  { t:"Vivís un momento simple y sentís bienestar sin justificarlo.\n\nEsa situación te generó alegría genuina:" },
+  { t:"Aparece una emoción que preferís no mirar del todo.\n\nEsa situación estuvo presente en vos:" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -209,9 +197,9 @@ function answerMirror(v){
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
-/* ===============================
-   DEVOLUCIÓN FINAL (SIN CAMBIOS)
-   =============================== */
+/* =====================================================
+   DEVOLUCIÓN FINAL – INTEGRATIVA TOTAL (AJUSTE)
+   ===================================================== */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
@@ -220,16 +208,30 @@ function showFinal(){
 
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
-    finalState.textContent =
-      avg > 1.4 ? "Estado integrado" :
-      avg > 0.9 ? "Estado inestable" :
-      "Estado reactivo";
 
-    finalHumanText.textContent =
-      "El recorrido completo muestra cómo fuiste habitando este período. "+
-      "Aparecen zonas de coherencia y otras de tensión que dialogan entre sí. "+
-      "Este estado no define quién sos, sino cómo estuviste estando.\n\n"+
-      "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
+    finalState.textContent =
+      avg > 1.4 ? "Estado estable alto" :
+      avg > 0.9 ? "Estado estable medio" :
+      avg > 0.6 ? "Estado estable inferior" :
+      "Estado inestable";
+
+    finalHumanText.innerHTML =
+      "<strong>Lectura integrativa del mes</strong><br><br>" +
+      "Al inicio del recorrido, tus respuestas mostraron el punto de partida desde el que te estabas "+
+      "relacionando con el mundo y con vos mismo. A lo largo del proceso aparecieron patrones que se "+
+      "repiten: momentos de presencia alternados con zonas donde el sentir se atenúa y la reacción "+
+      "toma el lugar de la elección.<br><br>" +
+      "En el tránsito del mes se observan incongruencias entre lo que pensás, lo que sentís y lo que "+
+      "terminás haciendo. No como fallas aisladas, sino como grises sostenidos que indican una humanidad "+
+      "en tensión: empatía selectiva, presencia intermitente y dificultad para sostener coherencia "+
+      "cuando el contexto exige más conciencia.<br><br>" +
+      "El segmento de espejo expone con claridad este contraste. Las emociones aparecen, pero no siempre "+
+      "son habitadas del todo. A veces se evitan, a veces se racionalizan, y otras se expresan de manera "+
+      "automática. Esto define una tendencia que puede crecer o profundizarse, según cómo se la observe.<br><br>" +
+      "<em>Sugerencia:</em> registrar sin juicio esos puntos donde el sentir se apaga o se posterga. "+
+      "La integración comienza cuando se deja de esquivar lo incómodo y se lo mira con presencia.<br><br>" +
+      "<small>Cuando quieras volver a medir tu humanidad, el Humanómetro está para eso.</small><br>" +
+      "<button onclick=\"show('mirrorIntro')\" style=\"margin-top:8px;font-size:12px;\">Cómo se obtuvo tu reflejo</button>";
   });
 }
 
@@ -249,4 +251,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-  }
+}
