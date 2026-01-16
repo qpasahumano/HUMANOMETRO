@@ -75,7 +75,7 @@ function answer(v){
   q>=4?showWeekly():loadQuestion();
 }
 
-/* DEVOLUCIONES INTRAPERSONALES – SEMANALES (LARGAS) */
+/* DEVOLUCIONES INTRAPERSONALES – SEMANALES */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -86,28 +86,22 @@ function showWeekly(){
 
   if(avg<0.8){
     weeklyText.textContent =
-      "Durante este tramo se percibe una carga emocional intensa frente al entorno. "+
-      "Las respuestas indican que los estímulos externos impactaron con fuerza, "+
-      "generando reacciones difíciles de procesar en el momento. "+
-      "Aun así, hubo registro del malestar, lo que muestra sensibilidad y conciencia incipiente.";
+      "Durante este tramo se observa una carga emocional elevada. "+
+      "Las respuestas indican reactividad frente al entorno y dificultad para sostener presencia.";
     weeklyAdvice.textContent =
-      "No es un retroceso: es una señal de sobreexigencia. "+
-      "Registrar este estado es el primer paso para recuperar eje.";
+      "Registrar este estado no es un error: es una señal de sobreexigencia.";
   } else if(avg<1.5){
     weeklyText.textContent =
-      "El recorrido de esta semana muestra oscilaciones claras. "+
-      "Hubo momentos de presencia y otros de respuesta automática. "+
-      "Esto indica un proceso activo de ajuste entre lo que sentís, pensás y hacés.";
+      "El proceso mostró oscilaciones entre conciencia y automatismo. "+
+      "Hubo intentos de regulación, aunque no siempre sostenidos.";
     weeklyAdvice.textContent =
-      "La conciencia no es lineal. Observar cuándo aparece y cuándo se pierde "+
-      "forma parte del aprendizaje humano.";
+      "Observar cuándo aparece la reacción automática es parte del aprendizaje.";
   } else {
     weeklyText.textContent =
-      "Se sostuvo una coherencia emocional marcada. "+
-      "Las respuestas reflejan integración entre emoción, pensamiento y acción. "+
-      "Incluso frente a estímulos demandantes, hubo capacidad de elección.";
+      "Se sostuvo una coherencia emocional activa. "+
+      "Las respuestas reflejan integración entre sentir, pensar y actuar.";
     weeklyAdvice.textContent =
-      "Este estado no es permanente, pero sí disponible cuando hay presencia.";
+      "Este estado es disponible cuando hay presencia, no permanente.";
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -128,28 +122,23 @@ function showMonthly(){
   animateGauge(monthlyFill,(avg/2)*100,()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent=avg<0.8?"🦇":avg<1.5?"🐞":"🐦";
-
     monthlyLongText.textContent =
-      "Este tramo integró tu vínculo con el mundo, la tecnología y los estímulos cotidianos. "+
-      "No se observaron respuestas aisladas, sino un modo sostenido de habitar el contexto.";
-
+      "Este tramo integró tu vínculo con el mundo, la tecnología y el entorno cotidiano.";
     monthlyText.textContent =
-      "El proceso no fue lineal. Hubo avances, pausas y reajustes.";
+      "El proceso no fue lineal: hubo avances, pausas y reajustes.";
   });
 }
 
-/* =================================================
-   ESPEJO – PREGUNTAS ORIGINALES (NO MODIFICADAS)
-   ================================================= */
-const MIRROR_QUESTIONS = [
-  { t: "¿Cuánto enojo sentiste frente a situaciones del mundo que considerás injustas?" },
-  { t: "¿Cuánta tristeza te generó el sufrimiento ajeno que registraste durante este tiempo?" },
-  { t: "¿Cuánto miedo sentiste al pensar en el futuro, propio o colectivo?" },
-  { t: "¿Cuánta ansiedad apareció cuando sentiste que no llegabas a todo o perdías control?" },
-  { t: "¿Cuánta culpa sentiste por no actuar como hubieras querido?" },
-  { t: "¿Cuánta desconexión emocional sentiste frente a lo que pasaba a tu alrededor?" },
-  { t: "¿Cuánta alegría genuina sentiste en tu vida cotidiana durante este período?" },
-  { t: "¿Cuánto evitaste sentir alguna emoción que sabías que estaba presente?" }
+/* ESPEJO – PREGUNTAS ORIGINALES */
+const MIRROR_QUESTIONS=[
+ {t:"¿Sentiste enojo que influyó en tu actuar?"},
+ {t:"¿La tristeza condicionó tus decisiones?"},
+ {t:"¿El miedo te frenó?"},
+ {t:"¿La ansiedad te llevó a reaccionar en automático?"},
+ {t:"¿Apareció culpa no resuelta?"},
+ {t:"¿Hubo desconexión emocional?"},
+ {t:"¿La alegría fue genuina y sostenida?"},
+ {t:"¿Evitaste una emoción dominante?"}
 ];
 
 let mq=0,mirrorScore=0,mirrorCount=0;
@@ -173,12 +162,12 @@ function answerMirror(v){
   mq>=MIRROR_QUESTIONS.length?showFinal():loadMirror();
 }
 
-/* DEVOLUCIÓN FINAL – INTEGRADORA TOTAL */
+/* DEVOLUCIÓN FINAL – INTEGRADORA, CRÍTICA Y NO COMPLACIENTE */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg=mirrorCount?mirrorScore/mirrorCount:0;
+  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
   animateGauge(finalFill,(avg/2)*100,()=>{
     finalTextWrap.classList.remove("hidden");
@@ -188,16 +177,36 @@ function showFinal(){
       :avg>0.9?"Estado inestable"
       :"Estado reactivo";
 
-    finalHumanText.textContent =
-      "Desde el inicio del proceso hasta este cierre, tus respuestas muestran "+
-      "cómo fuiste atravesando el mes a nivel humano. "+
-      "Aparecen momentos de coherencia, instancias de tensión y espacios de ajuste.\n\n"+
-      (avg>1.4
-        ?"El estado actual refleja integración y congruencia. La sugerencia es continuar por este camino."
-        :avg>0.9
-          ?"El estado muestra transición. La sugerencia es reforzar espacios de registro personal."
-          :"El estado refleja desgaste. La sugerencia es priorizar descanso y cuidado interno.")+
-      "\n\nCuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
+    let texto =
+      "Este resultado integra todo tu recorrido mensual en el Humanómetro. "+
+      "Desde las primeras respuestas hasta el cierre del espejo, se observan patrones "+
+      "en la forma en que sentís, reaccionás y tomás decisiones.\n\n";
+
+    if(avg<=0.9){
+      texto +=
+        "Predominan respuestas automáticas y zonas de desconexión emocional. "+
+        "Aparecen incongruencias entre lo que sentís y cómo actuás, lo que suele indicar "+
+        "funcionamiento en piloto automático. Este estado no habla de incapacidad, "+
+        "sino de conciencia aún no integrada.\n\n"+
+        "El punto clave aquí es registrar dónde reaccionás sin elegir.";
+    } else if(avg<=1.4){
+      texto +=
+        "El proceso muestra claros grises. Hay momentos de presencia y otros de reacción. "+
+        "La conciencia aparece de forma intermitente, lo que indica un proceso activo, "+
+        "aunque todavía inestable.\n\n"+
+        "El desafío es sostener la observación antes de actuar.";
+    } else {
+      texto +=
+        "Se observa congruencia sostenida entre sentir, pensar y actuar. "+
+        "Las respuestas muestran registro emocional y capacidad de elección. "+
+        "Este estado no es definitivo, pero sí un indicador de integración.";
+    }
+
+    texto +=
+      "\n\nEste resultado no define quién sos, sino cómo estuviste habitando este mes.\n\n"+
+      "Cuando necesites volver a medir tu humanidad, el Humanómetro está para eso.";
+
+    finalHumanText.textContent = texto;
   });
 }
 
