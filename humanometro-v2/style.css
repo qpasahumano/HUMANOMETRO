@@ -13,6 +13,15 @@ body {
   position: relative;
 }
 
+/* ===== BODY EN MODO ESPEJO (DESDE "VER TU REFLEJO" HASTA EL FINAL) ===== */
+body.mirror-bg {
+  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 /* ===== OVERLAY GLOBAL ===== */
 body::before {
   content: "";
@@ -214,17 +223,6 @@ button {
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== FONDO ESPEJO (RUTA CORREGIDA) ===== */
-.mirror-bg {
-  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow:
-    inset 0 0 80px rgba(0,0,0,.55),
-    0 0 30px rgba(120,255,230,.35);
-}
-
 /* ===== DEVOLUCIÓN FINAL ===== */
 .glass-sheet {
   background: rgba(255,255,255,0.08);
@@ -264,4 +262,4 @@ button {
 @keyframes glowState {
   from { opacity: .6; }
   to { opacity: 1; }
-   }
+    }
