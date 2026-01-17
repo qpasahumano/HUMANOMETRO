@@ -95,7 +95,7 @@ button:active {
 }
 
 /* =================================================
-   BOTONES INICIO (SE MANTIENE, SIN BORDE DE TEXTO)
+   BOTONES INICIO (SE MANTIENE)
    ================================================= */
 #start button,
 #start .glow-btn {
@@ -106,7 +106,7 @@ button:active {
     inset 0 0 14px rgba(255,255,255,0.18);
 }
 
-/* ===== BOTÓN PREMIUM (SE RESPETA) ===== */
+/* ===== BOTÓN PREMIUM (DEFINICIÓN ORIGINAL) ===== */
 button.premium {
   background: linear-gradient(45deg, #ffd700, #ff9f1a);
   color: #fff;
@@ -203,4 +203,18 @@ button.premium {
   box-shadow:
     0 0 28px rgba(255, 200, 80, 1),
     inset 0 0 12px rgba(255,255,255,0.6);
+}
+
+/* =================================================
+   AJUSTE FINAL SOLICITADO
+   PREMIUM FUERA DEL INICIO → HEREDA UVA
+   (familia / social / laboral / coherencia /
+    seguir conteo / guardar conteo)
+   ================================================= */
+body:not(#start) button.premium {
+  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  color: #ffffff;
+  box-shadow:
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
 }
