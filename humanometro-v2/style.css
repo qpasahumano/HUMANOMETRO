@@ -20,7 +20,7 @@ body.forest {
   background-attachment: fixed;
 }
 
-/* ESPEJO */
+/* ESPEJO (ÚNICO LUGAR DONDE VA) */
 body.mirror {
   background-image: url("v2_espejo_manos_humanometro.jpg");
   background-repeat: no-repeat;
@@ -29,7 +29,10 @@ body.mirror {
   background-attachment: fixed;
 }
 
-/* LÁMINA AZUL PROFUNDA */
+/* ===============================
+   LÁMINA AZUL PROFUNDA
+   =============================== */
+
 body::before {
   content: "";
   position: fixed;
@@ -205,57 +208,4 @@ button {
   text-shadow:
     0 0 8px rgba(120,220,255,.9),
     0 0 18px rgba(120,220,255,.7);
-  }
-/* ===============================
-   MODO ESPEJO – FONDO REAL
-   =============================== */
-
-/* El body deja de tener fondo visible */
-body {
-  background-image: url("activos/v2/fondo-bosque.jpg");
-}
-
-/* Cuando estamos en espejo */
-#mirrorIntro,
-#mirrorTest,
-#finalResult {
-  background-image: url("v2_espejo_manos_humanometro.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  margin: -40px auto;
-  padding: 40px 26px;
-  position: relative;
-}
-
-/* Lámina azul profunda */
-#mirrorIntro::before,
-#mirrorTest::before,
-#finalResult::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(6,18,40,0.55),
-    rgba(10,32,70,0.65)
-  );
-  z-index: 0;
-}
-
-/* El contenido va arriba */
-#mirrorIntro > *,
-#mirrorTest > *,
-#finalResult > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* Quitamos el fondo del contenedor */
-#mirrorIntro,
-#mirrorTest,
-#finalResult {
-  border-radius: 0;
-  box-shadow: none;
-}
+   }
