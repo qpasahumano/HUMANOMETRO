@@ -41,7 +41,7 @@ body::before {
   z-index: 2;
 }
 
-/* ===== AJUSTE ESPEJO (VISIBLE REAL, NO ROMPE NADA) ===== */
+/* ===== AJUSTE ESPEJO (ÁREA SOLICITADA) ===== */
 #app.mirror-bg {
   background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
   background-repeat: no-repeat;
@@ -62,27 +62,12 @@ body::before {
     0 0 18px rgba(120,255,230,.6);
 }
 
-.brand-meta {
-  font-size: .7rem;
-  opacity: .9;
-}
+.brand-meta { font-size: .7rem; opacity: .9; }
 
 /* ===== TEXTOS ===== */
-.intro {
-  font-size: .95rem;
-  line-height: 1.5;
-  margin: 20px 0;
-}
-
-.legal {
-  font-size: .75rem;
-  opacity: .9;
-}
-
-.legal.small {
-  font-size: .72rem;
-  line-height: 1.45;
-}
+.intro { font-size: .95rem; line-height: 1.5; margin: 20px 0; }
+.legal { font-size: .75rem; opacity: .9; }
+.legal.small { font-size: .72rem; line-height: 1.45; }
 
 /* ===== TÍTULOS ===== */
 .neon-title {
@@ -93,16 +78,10 @@ body::before {
   animation: glow 2.5s infinite alternate;
 }
 
-@keyframes glow {
-  from { opacity: .85; }
-  to { opacity: 1; }
-}
+@keyframes glow { from { opacity: .85; } to { opacity: 1; } }
 
 /* ===== PREGUNTAS ===== */
-.question {
-  font-size: 1.05rem;
-  margin-top: 20px;
-}
+.question { font-size: 1.05rem; margin-top: 20px; }
 
 /* ===== BOTONES ===== */
 button {
@@ -180,16 +159,8 @@ button {
 }
 
 /* ===== RESULTADOS ===== */
-.result-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin-top: 20px;
-}
-
-.result-text {
-  text-align: left;
-}
+.result-row { display: flex; align-items: flex-start; gap: 18px; margin-top: 20px; }
+.result-text { text-align: left; }
 
 /* ===== SÍMBOLOS ===== */
 .symbol {
@@ -217,8 +188,8 @@ button {
 }
 
 @keyframes pulseMirror {
-  0%   { transform: scale(1); opacity: .7; }
-  50%  { transform: scale(1.15); opacity: 1; }
+  0% { transform: scale(1); opacity: .7; }
+  50% { transform: scale(1.15); opacity: 1; }
   100% { transform: scale(1); opacity: .7; }
 }
 
@@ -233,11 +204,7 @@ button {
     inset 0 0 22px rgba(255,255,255,.12);
 }
 
-.scroll-sheet {
-  max-height: 60vh;
-  overflow-y: auto;
-  padding-right: 8px;
-}
+.scroll-sheet { max-height: 60vh; overflow-y: auto; padding-right: 8px; }
 
 #finalTextWrap {
   opacity: 0;
@@ -245,10 +212,7 @@ button {
   transition: opacity .9s ease, transform .9s ease;
 }
 
-#finalTextWrap:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-}
+#finalTextWrap:not(.hidden) { opacity: 1; transform: translateY(0); }
 
 /* ===== ESTADO FINAL LED ===== */
 .state-led {
@@ -258,7 +222,4 @@ button {
   animation: glowState 2.2s infinite alternate;
 }
 
-@keyframes glowState {
-  from { opacity: .6; }
-  to { opacity: 1; }
-}
+@keyframes glowState { from { opacity: .6; } to { opacity: 1; } }
