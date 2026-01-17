@@ -241,4 +241,28 @@ button.premium,
     0 0 22px rgba(180,120,255,0.85),
     inset 0 0 14px rgba(255,255,255,0.18);
   }
+/* =================================================
+   AJUSTE VISUAL FINAL
+   LED ROSA – TÍTULOS Y RESULTADOS INICIALES
+   (NO MODIFICA ESTRUCTURA)
+   ================================================= */
+
+/* TÍTULOS DEL PRIMER BLOQUE (familia, trabajo, social, coherencia, etc.) */
+h2,
+h3,
+.neon-title {
+  color: #ffe6f2;
+  text-shadow:
+    0 0 6px rgba(255,120,200,0.55),
+    0 0 14px rgba(255,120,200,0.45),
+    0 0 28px rgba(255,120,200,0.35);
+}
+
+/* RESULTADOS / VALORES QUE ERAN AMARILLOS (LECTURAS, PORCENTAJES, ESTADOS) */
+.circle.mid,
+.state-led,
+.legal strong {
+  color: #ffd6ea;
+  text
+
 
