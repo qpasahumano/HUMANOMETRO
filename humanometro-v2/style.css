@@ -13,15 +13,6 @@ body {
   position: relative;
 }
 
-/* ===== BODY EN MODO ESPEJO (DESDE "VER TU REFLEJO" HASTA EL FINAL) ===== */
-body.mirror-bg {
-  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
 /* ===== OVERLAY GLOBAL ===== */
 body::before {
   content: "";
@@ -48,6 +39,14 @@ body::before {
   text-align: center;
   position: relative;
   z-index: 2;
+}
+
+/* ===== AJUSTE ESPEJO (VISIBLE REAL, NO ROMPE NADA) ===== */
+#app.mirror-bg {
+  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 .hidden { display: none; }
@@ -262,4 +261,4 @@ button {
 @keyframes glowState {
   from { opacity: .6; }
   to { opacity: 1; }
-    }
+}
