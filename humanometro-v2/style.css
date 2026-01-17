@@ -336,33 +336,4 @@ body:has(.mirror-active)::before {
 .mirror-bg > * {
   position: relative;
   z-index: 1;
-}
-/* =====================================================
-   SOLUCIÓN DEFINITIVA – CAMBIO REAL DE FONDO
-   (sin JS, sin parches, sin overlays falsos)
-   ===================================================== */
-
-/* Cuando aparece el bloque espejo, el body CAMBIA */
-body:has(.mirror-bg) {
-  background-image: url("v2_espejo_manos_humanometro.jpg") !important;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-/* Lámina azul profunda como Volumen 1 */
-body:has(.mirror-bg)::before {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(6,18,40,0.55),
-      rgba(10,32,70,0.65)
-    ),
-    radial-gradient(circle at top, rgba(120,220,255,0.18), transparent 45%);
-}
-
-/* Asegura altura real de pantalla */
-.mirror-bg {
-  min-height: 100vh;
   }
