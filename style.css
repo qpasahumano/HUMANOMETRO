@@ -61,7 +61,9 @@ body::before {
   opacity: 0.75;
 }
 
-/* ===== BOTONES – LETRAS CLARAS ===== */
+/* =================================================
+   BOTONES – DEFAULT (NO BOSQUE)
+   ================================================= */
 button {
   width: 90%;
   max-width: 340px;
@@ -76,7 +78,45 @@ button {
   box-shadow: 0 0 18px rgba(46,204,113,.8);
 }
 
-/* Botón premium */
+/* =================================================
+   BOTONES INICIO VOLUMEN 1 – UVA LED
+   SOLO AFECTA INICIO
+   ================================================= */
+#start button,
+#start .glow-btn {
+  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  box-shadow:
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
+  color: #ffffff;
+
+  /* Borde negro fino + brillo */
+  text-shadow:
+    -1px -1px 0 rgba(0,0,0,0.75),
+     1px -1px 0 rgba(0,0,0,0.75),
+    -1px  1px 0 rgba(0,0,0,0.75),
+     1px  1px 0 rgba(0,0,0,0.75),
+     0 0 6px rgba(255,255,255,0.9),
+     0 0 14px rgba(200,150,255,0.8);
+}
+
+/* Hover / Touch inicio */
+#start button:hover,
+#start .glow-btn:hover {
+  box-shadow:
+    0 0 28px rgba(200,150,255,1),
+    inset 0 0 18px rgba(255,255,255,0.25);
+}
+
+#start button:active,
+#start .glow-btn:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 32px rgba(200,150,255,1),
+    inset 0 0 22px rgba(255,255,255,0.3);
+}
+
+/* ===== BOTÓN PREMIUM (NO TOCADO EN BOSQUE) ===== */
 button.premium {
   background: linear-gradient(45deg, #ffd700, #ff9f1a);
   color: #fff;
@@ -85,11 +125,12 @@ button.premium {
     inset 0 0 6px rgba(255,255,255,0.4);
 }
 
-/* Respuestas */
+/* ===== RESPUESTAS – TEST BOSQUE (SE MANTIENE VERDE) ===== */
 .answers button {
   background: linear-gradient(45deg,#1e6fa8,#4fb3e8);
   color: #f2fbff;
   box-shadow: 0 0 16px rgba(120,220,255,.75);
+  text-shadow: none;
 }
 
 /* ===== TERMÓMETROS ===== */
@@ -147,10 +188,7 @@ button.premium {
   margin-bottom: 12px;
 }
 
-/* ===============================
-   CONTINUIDAD V1 → V2
-=============================== */
-
+/* ===== CONTINUIDAD V1 → V2 (SIN CAMBIOS) ===== */
 .v2-continue {
   margin-top: 28px;
   padding-top: 18px;
@@ -175,32 +213,4 @@ button.premium {
   box-shadow:
     0 0 28px rgba(255, 200, 80, 1),
     inset 0 0 12px rgba(255,255,255,0.6);
-}
-
-/* ===== BOTÓN PRINCIPAL HUMANÓMETRO ===== */
-.glow-btn {
-  background: linear-gradient(45deg, #2ecc71, #6affd3);
-  box-shadow: 0 0 18px rgba(46,204,113,.9);
-  transition: all .3s ease;
-  position: relative;
-  overflow: hidden;
-  color: #eaf7ff;
-}
-
-.glow-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(255,255,255,.45), transparent 60%);
-  opacity: 0;
-  transition: opacity .3s ease;
-}
-
-.glow-btn:hover::after {
-  opacity: 1;
-}
-
-.glow-btn:active {
-  transform: scale(0.96);
-  box-shadow: 0 0 28px rgba(120,255,230,1);
-}
+  }
