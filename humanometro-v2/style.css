@@ -208,4 +208,34 @@ button {
   text-shadow:
     0 0 8px rgba(120,220,255,.9),
     0 0 18px rgba(120,220,255,.7);
-   }
+}
+
+/* ===============================
+   ANIMACIONES — SOLO DIBUJOS
+   =============================== */
+
+/* Flotación viva */
+@keyframes float-soft {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+/* Aleteo / vibración suave */
+@keyframes wing-soft {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(1.5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Aplicación EXCLUSIVA a imágenes simbólicas */
+.symbol img,
+.mirror-symbol img,
+img[src*="murcielago"],
+img[src*="vaquita"],
+img[src*="paloma"] {
+  animation:
+    float-soft 4.5s ease-in-out infinite,
+    wing-soft 6s ease-in-out infinite;
+  will-change: transform;
+}
