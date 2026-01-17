@@ -26,6 +26,21 @@ body::before {
   z-index: -1;
 }
 
+/* ===== FONDO ESPEJO – PANTALLA COMPLETA (CORREGIDO) ===== */
+body.mirror-bg {
+  background-image: url("v2_espejo_manos.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body.mirror-bg::before {
+  background:
+    radial-gradient(circle at center, rgba(180,255,240,0.18), transparent 60%),
+    rgba(0,0,0,0.25);
+}
+
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
@@ -39,14 +54,6 @@ body::before {
   text-align: center;
   position: relative;
   z-index: 2;
-}
-
-/* ===== AJUSTE ESPEJO (ÁREA SOLICITADA) ===== */
-#app.mirror-bg {
-  background-image: url("activos/versión 2/HUMANOMETRO_ESPEJO-1.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
 
 .hidden { display: none; }
