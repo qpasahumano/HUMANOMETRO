@@ -55,6 +55,8 @@ let mirrorLog = [];
 
 /* FLUJO */
 function startV2(){
+  document.body.classList.remove("mirror-bg"); // ← AJUSTE ÚNICO
+
   week = 0; q = 0; currentScore = 0;
   weeklyScores = []; allAnswers = []; mirrorLog = [];
   show("test"); loadQuestion();
@@ -181,8 +183,7 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  /* ÚNICO AJUSTE */
-  document.getElementById("app").classList.add("mirror-bg");
+  document.body.classList.add("mirror-bg"); // ← AJUSTE ÚNICO
 
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
   show("mirrorTest"); loadMirror();
