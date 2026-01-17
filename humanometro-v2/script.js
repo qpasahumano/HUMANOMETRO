@@ -215,7 +215,7 @@ function answerMirror(v){
 }
 
 /* ===============================
-   DEVOLUCIÓN FINAL COMPLEMENTARIA
+   DEVOLUCIÓN FINAL INTEGRATIVA
    =============================== */
 function showFinal(){
   show("finalResult");
@@ -226,20 +226,66 @@ function showFinal(){
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
-    finalState.textContent =
-      avg > 1.4 ? "Estado estable alto" :
-      avg > 0.9 ? "Estado estable medio" :
-      avg > 0.6 ? "Estado estable inferior" :
-      "Estado inestable";
-
-    finalHumanText.textContent =
-      "Esta devolución no surge de una emoción aislada.\n\n"+
-      "Integra cómo respondiste a lo largo de todo el recorrido: "+
-      "tu relación con el mundo, con la tecnología y con tu propio estado emocional.\n\n"+
-      "El espejo no juzga. Refleja patrones, coherencias e incongruencias "+
-      "para que puedan ser observadas con mayor claridad.\n\n"+
-      "La estabilidad no es ausencia de emociones, "+
-      "sino la capacidad de habitarlas sin perderte en ellas.";
+    if(avg <= 0.6){
+      finalState.textContent = "Predominio de NO";
+      finalHumanText.textContent =
+        "A lo largo del recorrido apareció una constante:\n"+
+        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
+        "en vos pasaron sin dejar huella clara.\n\n"+
+        "No como falta, ni como error,\n"+
+        "sino como una forma de protección.\n\n"+
+        "El “no” repetido no habla de ausencia de humanidad,\n"+
+        "sino de una humanidad que aprendió a cerrarse\n"+
+        "para poder seguir funcionando.\n\n"+
+        "Este resultado no señala frialdad,\n"+
+        "señala distancia.\n\n"+
+        "Y toda distancia, si se observa con honestidad,\n"+
+        "puede empezar a acortarse.";
+    } else if(avg <= 0.9){
+      finalState.textContent = "Ambivalencia emocional";
+      finalHumanText.textContent =
+        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, sensibilidad y presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
+        "con lo que aparece a medias.";
+    } else if(avg <= 1.4){
+      finalState.textContent = "Incongruencia marcada";
+      finalHumanText.textContent =
+        "Al observar el recorrido completo,\n"+
+        "aparece una diferencia clara\n"+
+        "entre lo que expresaste al inicio\n"+
+        "y lo que fue emergiendo después.\n\n"+
+        "No es incoherencia intelectual,\n"+
+        "es incongruencia emocional.\n\n"+
+        "Distintas partes tuyas responden\n"+
+        "desde lugares distintos:\n"+
+        "una se adapta,\n"+
+        "otra se protege,\n"+
+        "otra observa.\n\n"+
+        "La integración comienza cuando dejás de elegir\n"+
+        "qué parte mostrar\n"+
+        "y empezás a escuchar a todas.";
+    } else {
+      finalState.textContent = "Congruencia humana";
+      finalHumanText.textContent =
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "No hay fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano.";
+    }
   });
 }
 
@@ -259,4 +305,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+    }
