@@ -181,7 +181,7 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  /* ===== AJUSTE ÚNICO CORRECTO ===== */
+  /* ÚNICO AJUSTE */
   document.getElementById("app").classList.add("mirror-bg");
 
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
@@ -201,7 +201,7 @@ function answerMirror(v){
 }
 
 /* =====================================================
-   DEVOLUCIÓN FINAL – INTEGRATIVA TOTAL (AJUSTE)
+   DEVOLUCIÓN FINAL – INTEGRATIVA TOTAL
    ===================================================== */
 function showFinal(){
   show("finalResult");
