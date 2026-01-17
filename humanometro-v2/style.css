@@ -365,39 +365,4 @@ body:has(.mirror-bg)::before {
 /* Asegura altura real de pantalla */
 .mirror-bg {
   min-height: 100vh;
-}
-/* =====================================================
-   FONDO ESPEJO REAL – PANTALLA COMPLETA (SOLUCIÓN FINAL)
-   ===================================================== */
-
-/* Imagen espejo a pantalla completa */
-.mirror-bg::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("v2_espejo_manos_humanometro.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  z-index: -2;
-}
-
-/* Lámina azul profunda transparente */
-.mirror-bg::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(6,18,40,0.55),
-    rgba(10,32,70,0.65)
-  );
-  z-index: -1;
-}
-
-/* Evita que el contenedor tape el fondo */
-#mirrorIntro.mirror-bg,
-#mirrorTest.mirror-bg,
-#finalResult.mirror-bg {
-  background: transparent !important;
-}
+  }
