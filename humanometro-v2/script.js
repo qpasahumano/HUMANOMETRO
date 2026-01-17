@@ -179,17 +179,17 @@ function showMonthly(){
 }
 
 /* ===============================
-   ESPEJO
+   ESPEJO — PREGUNTAS COMPLETAS
    =============================== */
 const MIRROR_QUESTIONS = [
-  { t:"Estás en la calle... Esa situación te generó enojo:" },
-  { t:"Te enterás de una situación difícil... Esa situación te generó tristeza:" },
-  { t:"Tenés que tomar una decisión importante... Esa situación te generó miedo:" },
-  { t:"Recordás algo sin resolver... Esa situación te generó culpa:" },
-  { t:"Las demandas se acumulan... Esa situación te generó ansiedad:" },
-  { t:"Estás con personas importantes pero sentís distancia...:" },
-  { t:"Vivís un momento simple... Esa situación te generó alegría genuina:" },
-  { t:"Aparece una emoción que preferís no mirar del todo:" }
+  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
