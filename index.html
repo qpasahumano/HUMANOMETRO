@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,8 +31,7 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <button onclick="startTest(false)">Versión Común</button>
-    <button class="premium" onclick="startTest(true)">Versión Premium</button>
+    <button class="premium" onclick="startTest(true)">Humanómetro ON</button>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -68,13 +65,11 @@
     <ul id="tips"></ul>
 
     <div id="weeklyAccess"></div>
-
-    <button onclick="restart()">Reiniciar</button>
   </section>
 
-  <!-- CONTEO SEMANAL – PREGUNTAS -->
+  <!-- PRIMERA SEMANA – PREGUNTAS -->
   <section id="weekly" class="hidden">
-    <h2 id="weeklyTitle">Conteo semanal – Conciencia humana</h2>
+    <h2 id="weeklyTitle">Primera semana</h2>
 
     <p class="weekly-intro">
       ¿Cómo fue tu semana?<br>
@@ -94,25 +89,21 @@
     </div>
   </section>
 
-  <!-- CONTEO SEMANAL – RESULTADO FINAL -->
+  <!-- PRIMERA SEMANA – RESULTADO -->
   <section id="weeklyResultScreen" class="hidden">
     <p id="weeklyText"></p>
     <p id="weeklyAdvice" class="legal"></p>
 
-    <button class="premium" onclick="saveWeekly()">Guardar conteo semanal</button>
-
-    <button class="premium" onclick="goToV2()">Continuar testeo</button>
+    <button class="premium" onclick="goToV2()">Siguiente semana</button>
 
     <p class="legal">
-      Al guardar tu conteo semanal, este registro se suma a los de las próximas semanas
+      Este registro se suma automáticamente a los de las próximas semanas
       para observar tu evolución humana.
     </p>
 
     <p id="weeklySaved" class="legal hidden">
       ✔ Conteo semanal guardado correctamente.
     </p>
-
-    <button onclick="restart()">Volver</button>
   </section>
 
   <!-- PRIVACIDAD -->
@@ -124,7 +115,6 @@
       No es diagnóstico médico ni psicológico.<br>
       Es una herramienta reflexiva.
     </p>
-    <button onclick="restart()">Volver</button>
   </section>
 
 </main>
