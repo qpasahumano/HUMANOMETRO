@@ -160,6 +160,8 @@ function nextWeek(){
 
 /* ===============================
    CIERRE VOLUMEN 2
+   TU HUMANIDAD EN MOVIMIENTO
+   (DEVOLUCIONES INTEGRATIVAS)
    =============================== */
 function showMonthly(){
   show("monthlyResult");
@@ -170,11 +172,98 @@ function showMonthly(){
   animateGauge(monthlyFill, (avg/2)*100, ()=>{
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
-    monthlyLongText.textContent =
-      "Este tramo refleja cómo te vinculaste con el mundo, "+
-      "la tecnología y con vos mismo en estos días.";
-    monthlyText.textContent =
-      "No es una medición aislada, sino la lectura de un proceso.";
+
+    if(avg <= 0.6){
+      monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — predominio de NO\n\n"+
+        "A lo largo del recorrido apareció una constante:\n"+
+        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
+        "en vos pasaron sin dejar huella clara.\n\n"+
+        "No como falta, ni como error,\n"+
+        "sino como una forma de protección.\n\n"+
+        "El “no” repetido no habla de ausencia de humanidad,\n"+
+        "sino de una humanidad que aprendió a cerrarse\n"+
+        "para poder seguir funcionando.\n\n"+
+        "Cuando el mundo duele,\n"+
+        "a veces la forma de sostenerse es no sentir del todo.\n\n"+
+        "Este resultado no señala frialdad,\n"+
+        "señala distancia.\n\n"+
+        "Y toda distancia, si se observa con honestidad,\n"+
+        "puede empezar a acortarse.";
+      monthlyText.textContent = "";
+    } else if(avg <= 0.9){
+      monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — predominio de TAL VEZ / A VECES\n\n"+
+        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, de sensibilidad y de presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "Parte de vos percibe,\n"+
+        "parte de vos se protege.\n\n"+
+        "Esta oscilación genera incongruencia,\n"+
+        "no porque mientas,\n"+
+        "sino porque todavía no todo lo que pasa adentro\n"+
+        "tiene permiso para ser reconocido.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
+        "con lo que aparece a medias.";
+      monthlyText.textContent = "";
+    } else if(avg <= 1.4){
+      monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — INCONGRUENCIA MARCADA\n\n"+
+        "Al observar el recorrido completo,\n"+
+        "aparece una diferencia clara\n"+
+        "entre lo que expresaste al inicio\n"+
+        "y lo que fue emergiendo después.\n\n"+
+        "Algunas respuestas muestran sensibilidad, compromiso o registro humano,\n"+
+        "mientras que otras señalan distancia, evitación o desconexión.\n\n"+
+        "Esta incompatibilidad no es incoherencia intelectual,\n"+
+        "es incongruencia emocional.\n\n"+
+        "No porque engañes,\n"+
+        "sino porque distintas partes tuyas\n"+
+        "responden desde lugares distintos.\n\n"+
+        "Una parte se adapta,\n"+
+        "otra se protege,\n"+
+        "otra observa.\n\n"+
+        "El espejo no busca unificarte a la fuerza,\n"+
+        "sino mostrarte dónde no estás siendo el mismo\n"+
+        "en todos los planos.\n\n"+
+        "La integración comienza cuando dejás de elegir\n"+
+        "qué parte mostrar\n"+
+        "y empezás a escuchar a todas.";
+      monthlyText.textContent = "";
+    } else {
+      monthlyLongText.textContent =
+        "CONGRUENCIA, EMPATÍA Y HUMANIDAD EN CRECIMIENTO\n\n"+
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "Las respuestas no muestran fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "El dolor ajeno no pasa inadvertido,\n"+
+        "la tecnología no absorbe el vínculo,\n"+
+        "y las emociones, aun cuando incomodan,\n"+
+        "no son evitadas.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
+        "Hay empatía sin desborde,\n"+
+        "sensibilidad sin pérdida de eje\n"+
+        "y una capacidad real de observarte\n"+
+        "sin necesidad de negarte.\n\n"+
+        "La humanidad que se expresa acá\n"+
+        "no es impulsiva ni automática:\n"+
+        "es una humanidad en crecimiento,\n"+
+        "sostenida por elección.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano\n"+
+        "incluso cuando sería más fácil cerrarse.";
+      monthlyText.textContent = "";
+    }
   });
 }
 
@@ -216,6 +305,7 @@ function answerMirror(v){
 
 /* ===============================
    DEVOLUCIÓN FINAL INTEGRATIVA
+   (INAMOVIBLE)
    =============================== */
 function showFinal(){
   show("finalResult");
@@ -305,4 +395,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-    }
+}
