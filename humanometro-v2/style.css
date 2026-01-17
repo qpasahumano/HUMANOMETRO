@@ -13,20 +13,20 @@ body {
   position: relative;
 }
 
-/* ===== OVERLAY GLOBAL ===== */
+/* ===== OVERLAY GLOBAL – AZUL NOCHE (SIN NEGRO) ===== */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(160,255,235,0.12), transparent 45%),
-    radial-gradient(circle at bottom, rgba(120,180,255,0.12), transparent 55%),
-    rgba(0,0,0,0.20);
+    radial-gradient(circle at top, rgba(120,220,255,0.14), transparent 45%),
+    radial-gradient(circle at bottom, rgba(90,160,255,0.14), transparent 55%),
+    rgba(6,18,40,0.55);
   pointer-events: none;
   z-index: -1;
 }
 
-/* ===== FONDO ESPEJO – PANTALLA COMPLETA (CORREGIDO) ===== */
+/* ===== FONDO ESPEJO – AZUL NOCHE PROFUNDO ===== */
 body.mirror-bg {
   background-image: url("v2_espejo_manos.jpg");
   background-repeat: no-repeat;
@@ -37,8 +37,8 @@ body.mirror-bg {
 
 body.mirror-bg::before {
   background:
-    radial-gradient(circle at center, rgba(180,255,240,0.18), transparent 60%),
-    rgba(0,0,0,0.25);
+    radial-gradient(circle at center, rgba(140,235,255,0.22), transparent 60%),
+    rgba(6,18,40,0.62);
 }
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -49,7 +49,7 @@ body.mirror-bg::before {
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
   box-shadow:
-    0 0 28px rgba(0,0,0,.45),
+    0 0 28px rgba(0,0,0,.35),
     0 0 60px rgba(120,255,230,.12);
   text-align: center;
   position: relative;
@@ -63,25 +63,25 @@ body.mirror-bg::before {
   font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
   letter-spacing: .08em;
-  color: #eafff8;
+  color: #e8f9ff;
   text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 18px rgba(120,255,230,.6);
+    0 0 8px rgba(120,220,255,.9),
+    0 0 22px rgba(120,220,255,.7);
 }
 
 .brand-meta { font-size: .7rem; opacity: .9; }
 
 /* ===== TEXTOS ===== */
 .intro { font-size: .95rem; line-height: 1.5; margin: 20px 0; }
-.legal { font-size: .75rem; opacity: .9; }
+.legal { font-size: .75rem; opacity: .92; }
 .legal.small { font-size: .72rem; line-height: 1.45; }
 
 /* ===== TÍTULOS ===== */
 .neon-title {
-  color: #9fffe0;
+  color: #cffff4;
   text-shadow:
-    0 0 8px rgba(120,255,230,.9),
-    0 0 18px rgba(120,255,230,.7);
+    0 0 10px rgba(140,255,240,1),
+    0 0 26px rgba(140,255,240,.85);
   animation: glow 2.5s infinite alternate;
 }
 
@@ -90,7 +90,7 @@ body.mirror-bg::before {
 /* ===== PREGUNTAS ===== */
 .question { font-size: 1.05rem; margin-top: 20px; }
 
-/* ===== BOTONES ===== */
+/* ===== BOTONES (LETRAS BLANCAS) ===== */
 button {
   width: 90%;
   max-width: 340px;
@@ -100,26 +100,36 @@ button {
   border: none;
   font-size: 1em;
   cursor: pointer;
+  color: #eaf7ff;
 }
 
+/* Botones generales */
 .primary {
   background: linear-gradient(45deg,#2ecc71,#6affd3);
   box-shadow: 0 0 22px rgba(46,204,113,.9);
-  color: #001c14;
 }
 
+/* Respuestas generales */
 .answers button {
   background: linear-gradient(45deg,#2ecc71,#6affd3);
   box-shadow: 0 0 18px rgba(46,204,113,.8);
-  color: #001c14;
   font-weight: 600;
+}
+
+/* ===== BOTONES ESPEJO – AZUL CIAN PROFUNDO ===== */
+#mirrorTest .answers button {
+  background: linear-gradient(45deg,#0b3c66,#1aa6c9);
+  box-shadow:
+    0 0 18px rgba(120,220,255,.75),
+    inset 0 0 12px rgba(255,255,255,.12);
+  color: #f2fbff;
 }
 
 /* ===== TERMÓMETRO SEMANAL ===== */
 .thermo {
   width: 100%;
   height: 14px;
-  background: rgba(0,0,0,0.35);
+  background: rgba(255,255,255,0.12);
   border-radius: 20px;
   margin: 20px 0;
   overflow: hidden;
@@ -140,12 +150,12 @@ button {
 .vertical-thermo {
   width: 30px;
   height: 220px;
-  background: rgba(0,0,0,0.35);
+  background: rgba(255,255,255,0.12);
   border-radius: 20px;
   overflow: hidden;
   position: relative;
   box-shadow:
-    inset 0 0 12px rgba(0,0,0,.6),
+    inset 0 0 12px rgba(0,0,0,.4),
     0 0 26px rgba(120,255,230,.75);
   animation: pulseLed 2.4s infinite ease-in-out;
 }
@@ -185,12 +195,12 @@ button {
 /* ===== BLOQUE ESPEJO ===== */
 .mirror-symbol {
   font-size: 48px;
-  color: #9fffe0;
+  color: #cffff4;
   text-align: center;
   margin: 16px auto;
   text-shadow:
-    0 0 12px rgba(120,255,230,.9),
-    0 0 28px rgba(120,255,230,.7);
+    0 0 14px rgba(140,255,240,1),
+    0 0 32px rgba(140,255,240,.8);
   animation: pulseMirror 2.6s infinite ease-in-out;
 }
 
@@ -224,9 +234,9 @@ button {
 /* ===== ESTADO FINAL LED ===== */
 .state-led {
   text-shadow:
-    0 0 8px rgba(120,255,230,.9),
-    0 0 18px rgba(120,255,230,.7);
+    0 0 10px rgba(140,255,240,1),
+    0 0 26px rgba(140,255,240,.85);
   animation: glowState 2.2s infinite alternate;
 }
 
-@keyframes glowState { from { opacity: .6; } to { opacity: 1; } }
+@keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
