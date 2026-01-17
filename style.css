@@ -62,9 +62,7 @@ body::before {
 }
 
 /* =================================================
-   BOTONES – AJUSTE SOLICITADO
-   (UVA LED + TEXTO BLANCO, SIN BORDE)
-   APLICA A TODO V1 EXCEPTO BOSQUE
+   BOTONES – UVA ACLARADO (MISMA REGLA)
    ================================================= */
 button {
   width: 90%;
@@ -76,7 +74,8 @@ button {
   font-size: 1em;
   cursor: pointer;
 
-  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  /* 🔹 ÚNICO CAMBIO: VALORES DE COLOR */
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #ffffff;
 
   box-shadow:
@@ -99,7 +98,7 @@ button:active {
    ================================================= */
 #start button,
 #start .glow-btn {
-  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #ffffff;
   box-shadow:
     0 0 22px rgba(180,120,255,0.85),
@@ -108,7 +107,7 @@ button:active {
 
 /* ===== BOTÓN PREMIUM (DEFINICIÓN ORIGINAL) ===== */
 button.premium {
-  background: linear-gradient(45deg, #ffd700, #ff9f1a);
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #fff;
   box-shadow:
     0 0 18px rgba(255,180,0,.85),
@@ -117,7 +116,7 @@ button.premium {
 
 /* ===== RESPUESTAS – TEST BOSQUE (SE MANTIENE VERDE) ===== */
 .answers button {
-  background: linear-gradient(45deg,#1e6fa8,#4fb3e8);
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #f2fbff;
   box-shadow: 0 0 16px rgba(120,220,255,.75);
   text-shadow: none;
@@ -162,9 +161,20 @@ button.premium {
   color: #f6fffc;
 }
 
-.circle.low  { background:#c0392b; }
-.circle.mid  { background:#f1c40f; color:#1b1b1b; }
-.circle.high { background:#27ae60; }
+/* 🔴 < 50% — ROJO LED BOREAL */
+.circle.low {
+  background: rgba(255, 90, 120, 0.55);
+}
+
+/* 🟣 ≥ 50% — BOREALES TRANSLÚCIDOS */
+.circle.mid {
+  background: rgba(210, 140, 255, 0.55);
+  color: #ffffff;
+}
+
+.circle.high {
+  background: rgba(170, 200, 255, 0.55);
+}
 
 /* ===== TEXTOS ===== */
 .legal {
@@ -191,7 +201,7 @@ button.premium {
 }
 
 .v2-continue button.premium {
-  background: linear-gradient(45deg, #ffd700, #ff9f1a);
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
   box-shadow:
     0 0 22px rgba(255, 200, 80, 0.95),
     inset 0 0 8px rgba(255,255,255,0.5);
@@ -203,19 +213,4 @@ button.premium {
   box-shadow:
     0 0 28px rgba(255, 200, 80, 1),
     inset 0 0 12px rgba(255,255,255,0.6);
-}
-
-/* =================================================
-   AJUSTE FINO FINAL – ACLARADO DE UVA
-   (NO PISA LUCES NI ESTADOS)
-   ================================================= */
-button,
-button.premium,
-.answers button,
-.v2-continue button.premium {
-  background: linear-gradient(
-    45deg,
-    #6f3a86,
-    #a45fc2
-  );
-}
+  }
