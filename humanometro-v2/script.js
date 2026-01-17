@@ -78,7 +78,7 @@ function answer(v){
 }
 
 /* ===============================
-   DEVOLUCIONES SEMANALES
+   DEVOLUCIONES SEMANALES — EXTENDIDAS
    =============================== */
 function showWeekly(){
   show("weeklyResult");
@@ -91,36 +91,63 @@ function showWeekly(){
   const block = WEEKS[week].title;
 
   if(block === "Vos ante el mundo"){
-    weeklyText.textContent =
-      avg < 1.5
-        ? "Lo que ocurre en el mundo no siempre logra atravesarte.\n\nEl dolor ajeno puede aparecer como información lejana."
-        : "El mundo no pasa desapercibido.\n\nHay registro del dolor y de la injusticia.";
-    weeklyAdvice.textContent =
-      avg < 1.5
-        ? "Observar cuándo te cerrás y cuándo te abrís es el primer gesto humano."
-        : "Sostener esta sensibilidad sin desbordarte es parte del equilibrio.";
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
+        "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
+        "como información lejana, sin generar un impacto emocional sostenido.\n\n"+
+        "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
+        "de defensa, cansancio o saturación emocional.";
+      weeklyAdvice.textContent =
+        "Observar cuándo te cerrás y cuándo te abrís al otro "+
+        "puede ser el primer gesto de reconexión humana.";
+    } else {
+      weeklyText.textContent =
+        "El mundo no pasa desapercibido.\n\n"+
+        "Hay registro del dolor, de la injusticia y de lo que afecta "+
+        "a otros seres humanos.";
+      weeklyAdvice.textContent =
+        "Sostener esta sensibilidad sin que te abrume "+
+        "es parte de un equilibrio humano maduro.";
+    }
   }
 
   if(block === "Vos y la tecnología"){
-    weeklyText.textContent =
-      avg < 1.5
-        ? "La atención aparece fragmentada.\n\nLa tecnología absorbe presencia."
-        : "La tecnología acompaña sin dominar.";
-    weeklyAdvice.textContent =
-      avg < 1.5
-        ? "Pequeños cortes conscientes devuelven densidad."
-        : "Este equilibrio fortalece vínculos reales.";
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "La atención aparece fragmentada.\n\n"+
+        "La tecnología tiende a absorber momentos que podrían "+
+        "ser habitados con mayor presencia.\n\n"+
+        "No como error, sino como hábito automatizado.";
+      weeklyAdvice.textContent =
+        "Pequeños cortes conscientes pueden devolver densidad "+
+        "a la experiencia cotidiana.";
+    } else {
+      weeklyText.textContent =
+        "Lo digital acompaña sin dominar.\n\n"+
+        "Hay uso consciente y registro del presente.";
+      weeklyAdvice.textContent =
+        "Este equilibrio sostiene vínculos más reales "+
+        "y una experiencia más encarnada.";
+    }
   }
 
   if(block === "Integración humana"){
-    weeklyText.textContent =
-      avg < 1.5
-        ? "Se perciben fisuras entre pensamiento, emoción y acción."
-        : "Hay coherencia entre lo que pensás, sentís y hacés.";
-    weeklyAdvice.textContent =
-      avg < 1.5
-        ? "Nombrar incongruencias inicia la integración."
-        : "Habitar esta congruencia consolida tu proceso humano.";
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
+        "No siempre lo que sentís logra expresarse "+
+        "ni lo que pensás logra sostenerse en el hacer.";
+      weeklyAdvice.textContent =
+        "Nombrar estas incongruencias no es debilidad: "+
+        "es el inicio del proceso de integración.";
+    } else {
+      weeklyText.textContent =
+        "Hay coherencia interna.\n\n"+
+        "Lo que pensás, sentís y hacés tiende a alinearse.";
+      weeklyAdvice.textContent =
+        "Habitar esta congruencia consolida tu proceso humano.";
+    }
   }
 
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
@@ -132,61 +159,109 @@ function nextWeek(){
 }
 
 /* ===============================
+   CIERRE VOLUMEN 2
    TU HUMANIDAD EN MOVIMIENTO
    (DEVOLUCIONES INTEGRATIVAS)
    =============================== */
 function showMonthly(){
   show("monthlyResult");
+
+  /* laminado escroleable SOLO para este segmento */
+  monthlyTextWrap.classList.add("glass-sheet","scroll-sheet");
   monthlyTextWrap.classList.add("hidden");
 
   const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
   animateGauge(monthlyFill, (avg/2)*100, ()=>{
     monthlyTextWrap.classList.remove("hidden");
-
-    /* Laminado con scroll SOLO aquí */
-    monthlyTextWrap.classList.add("glass-sheet","scroll-sheet");
-
     monthlySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
 
     if(avg <= 0.6){
       monthlyLongText.textContent =
         "A lo largo del recorrido apareció una constante:\n"+
-        "muchas situaciones que suelen generar impacto emocional\n"+
+        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
         "en vos pasaron sin dejar huella clara.\n\n"+
-        "No como error,\n"+
+        "No como falta, ni como error,\n"+
         "sino como una forma de protección.\n\n"+
+        "El “no” repetido no habla de ausencia de humanidad,\n"+
+        "sino de una humanidad que aprendió a cerrarse\n"+
+        "para poder seguir funcionando.\n\n"+
         "Cuando el mundo duele,\n"+
-        "a veces la forma de sostenerse\n"+
-        "es no sentir del todo.\n\n"+
-        "Esto no señala frialdad,\n"+
-        "señala distancia.";
+        "a veces la forma de sostenerse es no sentir del todo.\n\n"+
+        "Este resultado no señala frialdad,\n"+
+        "señala distancia.\n\n"+
+        "Y toda distancia, si se observa con honestidad,\n"+
+        "puede empezar a acortarse.";
+      monthlyText.textContent = "";
     } else if(avg <= 0.9){
       monthlyLongText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
-        "Hay registro y repliegue,\n"+
-        "sensibilidad y protección.\n\n"+
-        "No es indecisión:\n"+
-        "es tensión interna entre sentir y permitir sentir.\n\n"+
-        "La integración no llega forzando,\n"+
-        "llega aceptando lo que aparece a medias.";
+        "Hay momentos de registro, de sensibilidad y de presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "Parte de vos percibe,\n"+
+        "parte de vos se protege.\n\n"+
+        "Esta oscilación genera incongruencia,\n"+
+        "no porque mientas,\n"+
+        "sino porque todavía no todo lo que pasa adentro\n"+
+        "tiene permiso para ser reconocido.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
+        "con lo que aparece a medias.";
+      monthlyText.textContent = "";
     } else if(avg <= 1.4){
       monthlyLongText.textContent =
-        "Aparecen diferencias claras entre lo que expresaste al inicio\n"+
-        "y lo que emergió después.\n\n"+
-        "No es incoherencia,\n"+
+        "Al observar el recorrido completo,\n"+
+        "aparece una diferencia clara\n"+
+        "entre lo que expresaste al inicio\n"+
+        "y lo que fue emergiendo después.\n\n"+
+        "Algunas respuestas muestran sensibilidad, compromiso o registro humano,\n"+
+        "mientras que otras señalan distancia, evitación o desconexión.\n\n"+
+        "Esta incompatibilidad no es incoherencia intelectual,\n"+
         "es incongruencia emocional.\n\n"+
-        "Distintas partes responden desde lugares distintos.\n\n"+
-        "La integración empieza cuando las escuchás a todas.";
+        "No porque engañes,\n"+
+        "sino porque distintas partes tuyas\n"+
+        "responden desde lugares distintos.\n\n"+
+        "Una parte se adapta,\n"+
+        "otra se protege,\n"+
+        "otra observa.\n\n"+
+        "El espejo no busca unificarte a la fuerza,\n"+
+        "sino mostrarte dónde no estás siendo el mismo\n"+
+        "en todos los planos.\n\n"+
+        "La integración comienza cuando dejás de elegir\n"+
+        "qué parte mostrar\n"+
+        "y empezás a escuchar a todas.";
+      monthlyText.textContent = "";
     } else {
       monthlyLongText.textContent =
-        "A lo largo del recorrido aparece una misma línea:\n"+
-        "coherencia entre lo que sentís, pensás y hacés.\n\n"+
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "Las respuestas no muestran fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "El dolor ajeno no pasa inadvertido,\n"+
+        "la tecnología no absorbe el vínculo,\n"+
+        "y las emociones, aun cuando incomodan,\n"+
+        "no son evitadas.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
         "Hay empatía sin desborde,\n"+
-        "sensibilidad con eje\n"+
-        "y presencia sostenida.\n\n"+
-        "No es perfección,\n"+
-        "es conciencia en crecimiento.";
+        "sensibilidad sin pérdida de eje\n"+
+        "y una capacidad real de observarte\n"+
+        "sin necesidad de negarte.\n\n"+
+        "La humanidad que se expresa acá\n"+
+        "no es impulsiva ni automática:\n"+
+        "es una humanidad en crecimiento,\n"+
+        "sostenida por elección.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano\n"+
+        "incluso cuando sería más fácil cerrarse.";
+      monthlyText.textContent = "";
     }
   });
 }
@@ -244,29 +319,61 @@ function showFinal(){
       finalState.textContent = "Predominio de NO";
       finalHumanText.textContent =
         "A lo largo del recorrido apareció una constante:\n"+
-        "muchas situaciones que suelen generar impacto emocional,\n"+
+        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
         "en vos pasaron sin dejar huella clara.\n\n"+
-        "No como falta,\n"+
+        "No como falta, ni como error,\n"+
         "sino como una forma de protección.\n\n"+
+        "El “no” repetido no habla de ausencia de humanidad,\n"+
+        "sino de una humanidad que aprendió a cerrarse\n"+
+        "para poder seguir funcionando.\n\n"+
         "Este resultado no señala frialdad,\n"+
-        "señala distancia.";
+        "señala distancia.\n\n"+
+        "Y toda distancia, si se observa con honestidad,\n"+
+        "puede empezar a acortarse.";
     } else if(avg <= 0.9){
       finalState.textContent = "Ambivalencia emocional";
       finalHumanText.textContent =
-        "Tu humanidad aparece y se repliega.\n\n"+
-        "La integración llega cuando dejás de pelearte\n"+
+        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, sensibilidad y presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
     } else if(avg <= 1.4){
       finalState.textContent = "Incongruencia marcada";
       finalHumanText.textContent =
-        "Distintas partes responden desde lugares distintos.\n\n"+
-        "La integración empieza cuando las escuchás a todas.";
+        "Al observar el recorrido completo,\n"+
+        "aparece una diferencia clara\n"+
+        "entre lo que expresaste al inicio\n"+
+        "y lo que fue emergiendo después.\n\n"+
+        "No es incoherencia intelectual,\n"+
+        "es incongruencia emocional.\n\n"+
+        "Distintas partes tuyas responden\n"+
+        "desde lugares distintos:\n"+
+        "una se adapta,\n"+
+        "otra se protege,\n"+
+        "otra observa.\n\n"+
+        "La integración comienza cuando dejás de elegir\n"+
+        "qué parte mostrar\n"+
+        "y empezás a escuchar a todas.";
     } else {
       finalState.textContent = "Congruencia humana";
       finalHumanText.textContent =
-        "Hay coherencia entre sentir, pensar y hacer.\n\n"+
-        "No es perfección:\n"+
-        "es conciencia.";
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "No hay fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano.";
     }
   });
 }
@@ -287,4 +394,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-                                                 }
+    }
