@@ -218,3 +218,27 @@ body:not(#start) button.premium {
     0 0 22px rgba(180,120,255,0.85),
     inset 0 0 14px rgba(255,255,255,0.18);
 }
+/* =================================================
+   AJUSTE FINAL – UNIFICACIÓN A UVA
+   Celestes + Amarillos → Uva
+   ================================================= */
+
+/* Botones de respuestas (antes celeste) */
+.answers button {
+  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  color: #ffffff;
+  box-shadow:
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
+}
+
+/* Botones premium y continuidad (antes amarillo) */
+button.premium,
+.v2-continue button.premium {
+  background: linear-gradient(45deg, #4b1d5a, #7a2c8a);
+  color: #ffffff;
+  box-shadow:
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
+  }
+
