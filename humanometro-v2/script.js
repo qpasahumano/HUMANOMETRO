@@ -25,22 +25,10 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
-/* ===============================
-   NUEVO – EMOJIS DEL ESPEJO
-   (NO ALTERA LÓGICA)
-   =============================== */
-const MIRROR_EMOJIS = [
-  "😡", // enojo
-  "😢", // tristeza
-  "😨", // miedo
-  "😔", // culpa
-  "😰", // ansiedad
-  "😶‍🌫️", // desconexión emocional
-  "😊", // alegría genuina
-  "🫥"  // emoción evitada / difusa
-];
+/* EMOJIS ESPEJO */
+const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
 
-/* DATOS – NO TOCADOS */
+/* DATOS BASE */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -62,11 +50,9 @@ const WEEKS = [
   ]}
 ];
 
-/* REGISTRO GLOBAL */
+/* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
-let weeklyScores = [];
-let allAnswers = [];
-let mirrorLog = [];
+let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
 /* FLUJO */
 function startV2(){
@@ -91,9 +77,9 @@ function answer(v){
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
-/* =====================================================
-   DEVOLUCIONES SEMANALES – POÉTICAS (SELLADAS)
-   ===================================================== */
+/* ===============================
+   DEVOLUCIONES SEMANALES — EXTENDIDAS
+   =============================== */
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
@@ -107,43 +93,60 @@ function showWeekly(){
   if(block === "Vos ante el mundo"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "Algo del mundo parece pasar sin dejar huella. El dolor ajeno, las injusticias y los conflictos "+
-        "no siempre logran atravesar tu registro.";
+        "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
+        "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
+        "como información lejana, sin generar un impacto emocional sostenido.\n\n"+
+        "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
+        "de defensa, cansancio o saturación emocional.";
       weeklyAdvice.textContent =
-        "Tal vez sea momento de preguntarte qué lugar ocupa el otro en tu mirada cotidiana.";
+        "Observar cuándo te cerrás y cuándo te abrís al otro "+
+        "puede ser el primer gesto de reconexión humana.";
     } else {
       weeklyText.textContent =
-        "Lo que sucede afuera resuena. Hay registro del sufrimiento y de la injusticia.";
+        "El mundo no pasa desapercibido.\n\n"+
+        "Hay registro del dolor, de la injusticia y de lo que afecta "+
+        "a otros seres humanos.";
       weeklyAdvice.textContent =
-        "Sostener esta apertura fortalece el lazo con lo humano compartido.";
+        "Sostener esta sensibilidad sin que te abrume "+
+        "es parte de un equilibrio humano maduro.";
     }
   }
 
   if(block === "Vos y la tecnología"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "La atención se dispersa y el presente se fragmenta.";
+        "La atención aparece fragmentada.\n\n"+
+        "La tecnología tiende a absorber momentos que podrían "+
+        "ser habitados con mayor presencia.\n\n"+
+        "No como error, sino como hábito automatizado.";
       weeklyAdvice.textContent =
-        "Volver al ahora puede devolver densidad a la experiencia cotidiana.";
+        "Pequeños cortes conscientes pueden devolver densidad "+
+        "a la experiencia cotidiana.";
     } else {
       weeklyText.textContent =
-        "Lo digital acompaña sin absorber.";
+        "Lo digital acompaña sin dominar.\n\n"+
+        "Hay uso consciente y registro del presente.";
       weeklyAdvice.textContent =
-        "Este equilibrio sostiene una vivencia más consciente del día a día.";
+        "Este equilibrio sostiene vínculos más reales "+
+        "y una experiencia más encarnada.";
     }
   }
 
   if(block === "Integración humana"){
     if(avg < 1.5){
       weeklyText.textContent =
-        "Aparecen fisuras entre lo que pensás, sentís y hacés.";
+        "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
+        "No siempre lo que sentís logra expresarse "+
+        "ni lo que pensás logra sostenerse en el hacer.";
       weeklyAdvice.textContent =
-        "Nombrar estas disonancias es parte del camino de integración.";
+        "Nombrar estas incongruencias no es debilidad: "+
+        "es el inicio del proceso de integración.";
     } else {
       weeklyText.textContent =
-        "Hay coherencia interna entre pensamiento, emoción y acción.";
+        "Hay coherencia interna.\n\n"+
+        "Lo que pensás, sentís y hacés tiende a alinearse.";
       weeklyAdvice.textContent =
-        "Habitar esta congruencia consolida el proceso personal.";
+        "Habitar esta congruencia consolida tu proceso humano.";
     }
   }
 
@@ -156,7 +159,7 @@ function nextWeek(){
 }
 
 /* ===============================
-   CIERRE MENSUAL
+   CIERRE VOLUMEN 2
    =============================== */
 function showMonthly(){
   show("monthlyResult");
@@ -168,14 +171,15 @@ function showMonthly(){
     monthlyTextWrap.classList.remove("hidden");
     monthlySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
     monthlyLongText.textContent =
-      "Este tramo refleja cómo te vinculaste con el mundo y la tecnología.";
+      "Este tramo refleja cómo te vinculaste con el mundo, "+
+      "la tecnología y con vos mismo en estos días.";
     monthlyText.textContent =
-      "El proceso muestra ajustes propios de un recorrido humano real.";
+      "No es una medición aislada, sino la lectura de un proceso.";
   });
 }
 
 /* ===============================
-   ESPEJO – PREGUNTAS
+   ESPEJO
    =============================== */
 const MIRROR_QUESTIONS = [
   { t:"Estás en la calle... Esa situación te generó enojo:" },
@@ -198,7 +202,6 @@ function startMirror(){
   show("mirrorTest"); loadMirror();
 }
 
-/* ===== AJUSTE REAL AQUÍ ===== */
 function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
@@ -212,7 +215,7 @@ function answerMirror(v){
 }
 
 /* ===============================
-   DEVOLUCIÓN FINAL
+   DEVOLUCIÓN FINAL COMPLEMENTARIA
    =============================== */
 function showFinal(){
   show("finalResult");
@@ -222,11 +225,21 @@ function showFinal(){
 
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
+
     finalState.textContent =
       avg > 1.4 ? "Estado estable alto" :
       avg > 0.9 ? "Estado estable medio" :
       avg > 0.6 ? "Estado estable inferior" :
       "Estado inestable";
+
+    finalHumanText.textContent =
+      "Esta devolución no surge de una emoción aislada.\n\n"+
+      "Integra cómo respondiste a lo largo de todo el recorrido: "+
+      "tu relación con el mundo, con la tecnología y con tu propio estado emocional.\n\n"+
+      "El espejo no juzga. Refleja patrones, coherencias e incongruencias "+
+      "para que puedan ser observadas con mayor claridad.\n\n"+
+      "La estabilidad no es ausencia de emociones, "+
+      "sino la capacidad de habitarlas sin perderte en ellas.";
   });
 }
 
