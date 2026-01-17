@@ -181,8 +181,8 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
 function openMirror(){ show("mirrorIntro"); }
 
 function startMirror(){
-  /* ===== AJUSTE ÚNICO Y CONTROLADO ===== */
-  document.body.classList.add("mirror-bg");
+  /* ===== AJUSTE ÚNICO CORRECTO ===== */
+  document.getElementById("app").classList.add("mirror-bg");
 
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
   show("mirrorTest"); loadMirror();
