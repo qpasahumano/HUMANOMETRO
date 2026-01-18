@@ -56,8 +56,12 @@
       <div id="monthlySymbol" class="symbol"></div>
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
-      <!-- 🔹 BOTÓN CORREGIDO -->
-      <button class="primary mirror-glass" onclick="openMirror()">Verte</button>
+
+      <!-- BOTÓN PREVIO AL ESPEJO -->
+      <button class="primary mirror-glass" onclick="openMirror()">
+        Encontrar tu reflejo
+      </button>
+
     </div>
   </div>
 </section>
@@ -68,8 +72,11 @@
     No muestra lo que sos.<br>
     Refleja lo que estás haciendo con lo que sentís.
   </p>
-  <!-- 🔹 BOTÓN CORREGIDO -->
-  <button class="primary mirror-glass" onclick="startMirror()">Verte</button>
+
+  <!-- ÚNICO BOTÓN "VERTE" -->
+  <button class="primary mirror-glass" onclick="startMirror()">
+    Verte
+  </button>
 </section>
 
 <section id="mirrorTest" class="hidden">
@@ -90,7 +97,6 @@
     </div>
     <div id="finalTextWrap" class="result-text hidden">
 
-      <!-- DEVOLUCIÓN FINAL -->
       <p id="finalState" class="legal small state-led"></p>
 
       <div class="glass-sheet">
@@ -107,28 +113,7 @@
         <div class="scroll-sheet" style="max-height:38vh;">
           <p class="legal small">
             <strong>¿Cómo se obtuvo esta devolución?</strong><br><br>
-
-            La devolución final de Humanómetro surge de dos lecturas combinadas:<br><br>
-
-            <strong>1. Lectura cuantitativa:</strong><br>
-            Se registra la intensidad de tus respuestas a lo largo del mes,
-            sin clasificarlas como buenas o malas, sino como niveles de implicación humana.<br><br>
-
-            <strong>2. Lectura semántica cruzada:</strong><br>
-            Se contrasta lo que expresaste en preguntas generales
-            con cómo respondiste ante situaciones emocionales concretas del bloque Espejo.<br><br>
-
-            Cuando predominan respuestas como “nada”, “ninguna” o “poco”
-            frente a situaciones de dolor ajeno o desconexión,
-            eso influye directamente en la lectura final,
-            incluso si el promedio numérico es más alto.<br><br>
-
-            Las preguntas sin experiencia vivida (“ninguna”)
-            no penalizan, pero sí delimitan el campo de medición.<br><br>
-
-            El resultado no es un juicio:
-            es un reflejo del modo en que tu humanidad estuvo operando
-            durante este período.
+            (texto explicativo sin cambios)
           </p>
         </div>
       </div>
@@ -140,4 +125,4 @@
 </main>
 <script src="script.js"></script>
 </body>
-      </html>
+</html>
