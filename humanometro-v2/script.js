@@ -152,10 +152,19 @@ function showWeekly(){
         "es el inicio del proceso de integración.";
     } else {
       weeklyText.textContent =
-        "Hay coherencia interna.\n\n"+
-        "Lo que pensás, sentís y hacés tiende a alinearse.";
+        "Hay una percepción de coherencia interna.\n\n"+
+        "Las respuestas indican una idea clara de cómo te ves, "+
+        "de cómo pensás tus acciones y de cómo entendés tu impacto.\n\n"+
+        "Sin embargo, esta lectura no se interpreta de forma aislada.\n\n"+
+        "La integración real no se define solo por lo que declarás "+
+        "sobre vos mismo, sino por cómo eso se expresa en tu vínculo "+
+        "con el mundo y con la tecnología.\n\n"+
+        "Cuando aparecen tensiones entre lo que decís ser "+
+        "y lo que efectivamente hacés en lo cotidiano, "+
+        "la coherencia deja de ser un estado y pasa a ser una pregunta.";
       weeklyAdvice.textContent =
-        "Habitar esta congruencia consolida tu proceso humano.";
+        "Observar si tus actos sostienen lo que afirmás "+
+        "es parte esencial del proceso de integración humana.";
     }
   }
 
@@ -441,4 +450,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+        }
