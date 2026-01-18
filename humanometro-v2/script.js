@@ -86,7 +86,16 @@ function showWeekly(){
 
   const avg = currentScore / 4;
   weeklyScores.push(avg);
-  weeklySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
+
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
+
+  weeklySymbol.textContent =
+    range === "low" ? "🦇" :
+    range === "midLow" ? "🦇" :
+    range === "mid" ? "🐞" : "🐦";
 
   const block = WEEKS[week].title;
 
@@ -161,20 +170,26 @@ function nextWeek(){
 /* ===============================
    CIERRE VOLUMEN 2
    TU HUMANIDAD EN MOVIMIENTO
-   (DEVOLUCIONES INTEGRATIVAS)
    =============================== */
 function showMonthly(){
   show("monthlyResult");
 
-  /* laminado escroleable SOLO para este segmento */
   monthlyTextWrap.classList.add("glass-sheet","scroll-sheet");
   monthlyTextWrap.classList.add("hidden");
 
   const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
 
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
+
   animateGauge(monthlyFill, (avg/2)*100, ()=>{
     monthlyTextWrap.classList.remove("hidden");
-    monthlySymbol.textContent = avg < 0.8 ? "🦇" : avg < 1.5 ? "🐞" : "🐦";
+    monthlySymbol.textContent =
+      range === "low" ? "🦇" :
+      range === "midLow" ? "🦇" :
+      range === "mid" ? "🐞" : "🐦";
 
     if(avg <= 0.6){
       monthlyLongText.textContent =
@@ -186,8 +201,6 @@ function showMonthly(){
         "El “no” repetido no habla de ausencia de humanidad,\n"+
         "sino de una humanidad que aprendió a cerrarse\n"+
         "para poder seguir funcionando.\n\n"+
-        "Cuando el mundo duele,\n"+
-        "a veces la forma de sostenerse es no sentir del todo.\n\n"+
         "Este resultado no señala frialdad,\n"+
         "señala distancia.\n\n"+
         "Y toda distancia, si se observa con honestidad,\n"+
@@ -304,13 +317,17 @@ function answerMirror(v){
 
 /* ===============================
    DEVOLUCIÓN FINAL INTEGRATIVA
-   (INAMOVIBLE)
    =============================== */
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
+
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
 
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
@@ -394,4 +411,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-                                          }
+}
