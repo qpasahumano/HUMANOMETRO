@@ -91,19 +91,23 @@
 
   <!-- PRIMERA SEMANA – RESULTADO -->
   <section id="weeklyResultScreen" class="hidden">
-    <p id="weeklyText"></p>
-    <p id="weeklyAdvice" class="legal"></p>
 
-    <button class="premium" onclick="goToV2()">Siguiente semana</button>
+    <!-- BALANZA ANIMADA -->
+    <div class="balance-wrapper">
+      <div class="balance-anim"></div>
+    </div>
 
-    <p class="legal">
-      Este registro se suma automáticamente a los de las próximas semanas
-      para observar tu evolución humana.
-    </p>
+    <!-- DEVOLUCIÓN -->
+    <div class="weekly-result-core">
+      <p id="weeklyText"></p>
+      <p id="weeklyAdvice" class="legal"></p>
+    </div>
 
-    <p id="weeklySaved" class="legal hidden">
-      ✔ Conteo semanal guardado correctamente.
-    </p>
+    <!-- BOTÓN TRANSICIÓN -->
+    <button class="premium remember" onclick="goToV2()">
+      Recordar volver
+    </button>
+
   </section>
 
   <!-- PRIVACIDAD -->
@@ -116,7 +120,6 @@
       Es una herramienta reflexiva.
     </p>
 
-    <!-- BOTÓN VOLVER REINCORPORADO -->
     <button onclick="restart()">Volver</button>
   </section>
 
@@ -124,4 +127,4 @@
 
 <script src="script.js"></script>
 </body>
-      </html>
+</html>
