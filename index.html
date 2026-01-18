@@ -58,13 +58,16 @@
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
 
-    <div id="circles"></div>
-    <h3 id="globalResult"></h3>
+    <div class="results-scroll">
+      <div id="circles" class="circles-grid"></div>
 
-    <h3>Lectura humana</h3>
-    <ul id="tips"></ul>
+      <h3 id="globalResult"></h3>
 
-    <div id="weeklyAccess"></div>
+      <h3>Lectura humana</h3>
+      <ul id="tips"></ul>
+
+      <div id="weeklyAccess"></div>
+    </div>
   </section>
 
   <!-- PRIMERA SEMANA – PREGUNTAS -->
@@ -91,9 +94,7 @@
 
   <!-- PRIMERA SEMANA – RESULTADO -->
   <section id="weeklyResultScreen" class="hidden">
-    <div class="balance-wrap">
-      ⚖️
-    </div>
+    <div class="balance-wrap">⚖️</div>
 
     <p id="weeklyText" class="weekly-result-text"></p>
     <p id="weeklyAdvice" class="legal weekly-result-text"></p>
