@@ -152,19 +152,11 @@ function showWeekly(){
         "es el inicio del proceso de integración.";
     } else {
       weeklyText.textContent =
-        "Hay una percepción de coherencia interna.\n\n"+
-        "Las respuestas indican una idea clara de cómo te ves, "+
-        "de cómo pensás tus acciones y de cómo entendés tu impacto.\n\n"+
-        "Sin embargo, esta lectura no se interpreta de forma aislada.\n\n"+
-        "La integración real no se define solo por lo que declarás "+
-        "sobre vos mismo, sino por cómo eso se expresa en tu vínculo "+
-        "con el mundo y con la tecnología.\n\n"+
-        "Cuando aparecen tensiones entre lo que decís ser "+
-        "y lo que efectivamente hacés en lo cotidiano, "+
-        "la coherencia deja de ser un estado y pasa a ser una pregunta.";
-      weeklyAdvice.textContent =
-        "Observar si tus actos sostienen lo que afirmás "+
-        "es parte esencial del proceso de integración humana.";
+        "Las respuestas muestran una percepción de coherencia interna.\n\n"+
+        "Esta lectura se limita a cómo te pensás y te observás a vos mismo.\n\n"+
+        "Cómo esta coherencia se expresa en el vínculo con el mundo y la tecnología\n"+
+        "se observa en el siguiente tramo.";
+      weeklyAdvice.textContent = "";
     }
   }
 
@@ -239,43 +231,19 @@ function showMonthly(){
     } 
     else if(avg <= 1.4){
       monthlyLongText.textContent =
-        "Al observar el recorrido por éstos días\n"+
-        "aparece una diferencia clara\n"+
-        "entre lo que expresaste al inicio\n"+
-        "y lo que fue emergiendo después.\n\n"+
-        "Algunas respuestas muestran sensibilidad y compromiso,\n"+
-        "mientras que otras señalan distancia, evitación o desconexión.\n\n"+
-        "Esto no es incoherencia intelectual,\n"+
-        "es incongruencia emocional.\n\n"+
-        "Distintas partes tuyas responden desde lugares distintos:\n"+
-        "una se adapta,\n"+
-        "otra se protege,\n"+
-        "otra observa.\n\n"+
-        "El espejo no busca unificarte a la fuerza,\n"+
-        "sino mostrarte dónde no estás siendo el mismo\n"+
-        "en todos los planos.\n\n"+
-        "La integración comienza\n"+
-        "cuando dejás de elegir qué parte mostrar\n"+
-        "y empezás a escuchar a todas.";
+        "Al observar el recorrido completo aparecen diferencias entre lo que expresás\n"+
+        "sobre vos mismo y cómo respondés frente al mundo y la tecnología.\n\n"+
+        "No es incoherencia intelectual.\n"+
+        "Es incongruencia emocional.\n\n"+
+        "El movimiento comienza cuando dejás de sostener una sola versión\n"+
+        "y empezás a integrar todas.";
       monthlyText.textContent = "";
     } 
     else {
       monthlyLongText.textContent =
-        "A lo largo de todo el recorrido aparece una continuidad clara entre tus respuestas.\n\n"+
-        "No solo en lo que decís sobre vos mismo, sino en cómo te vinculás con el mundo y con la tecnología.\n\n"+
-        "No se observan quiebres marcados entre lo que pensás, lo que sentís y lo que hacés.\n\n"+
-        "Las decisiones, las emociones y las acciones tienden a sostener una misma dirección.\n\n"+
-        "Esto no habla de perfección ni de ausencia de conflicto,\n"+
-        "habla de coherencia en movimiento.\n\n"+
-        "La humanidad que aparece acá no es rígida ni idealizada:\n"+
-        "es una humanidad que registra, se ve, se ajusta y sigue.\n\n"+
-        "Cuando hay dificultad, no desaparecés.\n"+
-        "Cuando hay vínculo, estás presente.\n"+
-        "Cuando hay tecnología, no sustituye al humano.\n\n"+
-        "Este resultado señala un estado de integración real:\n"+
-        "lo interno y lo externo no compiten, dialogan.\n\n"+
-        "La evolución humana, en este punto, no es un objetivo futuro:\n"+
-        "es una práctica que ya está ocurriendo.";
+        "Las respuestas muestran continuidad entre lo que pensás, sentís y hacés.\n\n"+
+        "No se observan quiebres marcados entre tus distintos planos.\n\n"+
+        "La coherencia aparece como una integración viva y en movimiento.";
       monthlyText.textContent = "";
     }
   });
