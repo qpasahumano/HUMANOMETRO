@@ -193,23 +193,26 @@ function showMonthly(){
 
     if(avg <= 0.6){
       monthlyLongText.textContent =
-        "A lo largo del recorrido apareció una constante:\n"+
+        "En éstos días apareció una constante:\n"+
         "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
         "en vos pasaron sin dejar huella clara.\n\n"+
-        "No como falta, ni como error,\n"+
+        "No como falta ni como error,\n"+
         "sino como una forma de protección.\n\n"+
-        "El “no” repetido no habla de ausencia de humanidad,\n"+
+        "El “no” reiterado no habla de ausencia de humanidad,\n"+
         "sino de una humanidad que aprendió a cerrarse\n"+
         "para poder seguir funcionando.\n\n"+
-        "Este resultado no señala frialdad,\n"+
+        "Cuando el mundo duele,\n"+
+        "a veces la forma de sostenerse\n"+
+        "es no sentir del todo.\n\n"+
+        "Este resultado no señala frialdad:\n"+
         "señala distancia.\n\n"+
         "Y toda distancia, si se observa con honestidad,\n"+
         "puede empezar a acortarse.";
       monthlyText.textContent = "";
     } else if(avg <= 0.9){
       monthlyLongText.textContent =
-        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
-        "Hay momentos de registro, de sensibilidad y de presencia,\n"+
+        "Tus respuestas estos días muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, sensibilidad y presencia,\n"+
         "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
         "El “tal vez” no es indecisión superficial:\n"+
         "es señal de una tensión interna\n"+
@@ -217,35 +220,31 @@ function showMonthly(){
         "y lo que te permitís sentir.\n\n"+
         "Parte de vos percibe,\n"+
         "parte de vos se protege.\n\n"+
-        "Esta oscilación genera incongruencia,\n"+
-        "no porque mientas,\n"+
-        "sino porque todavía no todo lo que pasa adentro\n"+
-        "tiene permiso para ser reconocido.\n\n"+
+        "Esta oscilación no es contradicción moral,\n"+
+        "es un proceso en tránsito.\n\n"+
         "La integración no llega forzando respuestas,\n"+
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
       monthlyText.textContent = "";
     } else if(avg <= 1.4){
       monthlyLongText.textContent =
-        "Al observar el recorrido completo,\n"+
+        "Al observar el recorrido por éstos días\n"+
         "aparece una diferencia clara\n"+
         "entre lo que expresaste al inicio\n"+
         "y lo que fue emergiendo después.\n\n"+
-        "Algunas respuestas muestran sensibilidad, compromiso o registro humano,\n"+
+        "Algunas respuestas muestran sensibilidad y compromiso,\n"+
         "mientras que otras señalan distancia, evitación o desconexión.\n\n"+
-        "Esta incompatibilidad no es incoherencia intelectual,\n"+
+        "Esto no es incoherencia intelectual,\n"+
         "es incongruencia emocional.\n\n"+
-        "No porque engañes,\n"+
-        "sino porque distintas partes tuyas\n"+
-        "responden desde lugares distintos.\n\n"+
-        "Una parte se adapta,\n"+
+        "Distintas partes tuyas responden desde lugares distintos:\n"+
+        "una se adapta,\n"+
         "otra se protege,\n"+
         "otra observa.\n\n"+
         "El espejo no busca unificarte a la fuerza,\n"+
         "sino mostrarte dónde no estás siendo el mismo\n"+
         "en todos los planos.\n\n"+
-        "La integración comienza cuando dejás de elegir\n"+
-        "qué parte mostrar\n"+
+        "La integración comienza\n"+
+        "cuando dejás de elegir qué parte mostrar\n"+
         "y empezás a escuchar a todas.";
       monthlyText.textContent = "";
     } else {
