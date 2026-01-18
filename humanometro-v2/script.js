@@ -165,9 +165,6 @@ function nextWeek(){
    =============================== */
 function showMonthly(){
   show("monthlyResult");
-
-  /* laminado escroleable SOLO para este segmento */
-  monthlyTextWrap.classList.add("glass-sheet","scroll-sheet");
   monthlyTextWrap.classList.add("hidden");
 
   const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
@@ -178,6 +175,7 @@ function showMonthly(){
 
     if(avg <= 0.6){
       monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — predominio de NO\n\n"+
         "A lo largo del recorrido apareció una constante:\n"+
         "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
         "en vos pasaron sin dejar huella clara.\n\n"+
@@ -195,6 +193,7 @@ function showMonthly(){
       monthlyText.textContent = "";
     } else if(avg <= 0.9){
       monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — predominio de TAL VEZ / A VECES\n\n"+
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
         "Hay momentos de registro, de sensibilidad y de presencia,\n"+
         "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
@@ -214,6 +213,7 @@ function showMonthly(){
       monthlyText.textContent = "";
     } else if(avg <= 1.4){
       monthlyLongText.textContent =
+        "DEVOLUCIÓN INTEGRATIVA — INCONGRUENCIA MARCADA\n\n"+
         "Al observar el recorrido completo,\n"+
         "aparece una diferencia clara\n"+
         "entre lo que expresaste al inicio\n"+
@@ -237,6 +237,7 @@ function showMonthly(){
       monthlyText.textContent = "";
     } else {
       monthlyLongText.textContent =
+        "CONGRUENCIA, EMPATÍA Y HUMANIDAD EN CRECIMIENTO\n\n"+
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
         "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
         "Las respuestas no muestran fisuras marcadas\n"+
@@ -394,4 +395,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-    }
+        }
