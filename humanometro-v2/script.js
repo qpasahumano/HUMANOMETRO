@@ -261,18 +261,21 @@ function showMonthly(){
     } 
     else {
       monthlyLongText.textContent =
-        "A lo largo de todo el recorrido aparece una misma línea:\n"+
-        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
-        "Las respuestas no muestran fisuras marcadas\n"+
-        "ni contradicciones defensivas,\n"+
-        "sino una humanidad que registra, procesa\n"+
-        "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n\n"+
-        "Integrar no es llegar a un punto final,\n"+
-        "es mantener abierta la posibilidad\n"+
-        "de seguir siendo humano\n"+
-        "incluso cuando sería más fácil cerrarse.";
+        "A lo largo de todo el recorrido aparece una continuidad clara entre tus respuestas.\n\n"+
+        "No solo en lo que decís sobre vos mismo, sino en cómo te vinculás con el mundo y con la tecnología.\n\n"+
+        "No se observan quiebres marcados entre lo que pensás, lo que sentís y lo que hacés.\n\n"+
+        "Las decisiones, las emociones y las acciones tienden a sostener una misma dirección.\n\n"+
+        "Esto no habla de perfección ni de ausencia de conflicto,\n"+
+        "habla de coherencia en movimiento.\n\n"+
+        "La humanidad que aparece acá no es rígida ni idealizada:\n"+
+        "es una humanidad que registra, se ve, se ajusta y sigue.\n\n"+
+        "Cuando hay dificultad, no desaparecés.\n"+
+        "Cuando hay vínculo, estás presente.\n"+
+        "Cuando hay tecnología, no sustituye al humano.\n\n"+
+        "Este resultado señala un estado de integración real:\n"+
+        "lo interno y lo externo no compiten, dialogan.\n\n"+
+        "La evolución humana, en este punto, no es un objetivo futuro:\n"+
+        "es una práctica que ya está ocurriendo.";
       monthlyText.textContent = "";
     }
   });
@@ -450,4 +453,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-        }
+}
