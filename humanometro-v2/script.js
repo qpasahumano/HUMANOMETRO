@@ -394,4 +394,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+    }
