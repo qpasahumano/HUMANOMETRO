@@ -27,6 +27,17 @@ let modules = [];
 let scores = {};
 
 /* ===============================
+   REGISTRO PASIVO DE RESPUESTAS
+   (NO / TAL VEZ / SÍ)
+   =============================== */
+let responseProfile = {
+  no: 0,        // v === 0
+  maybe: 0,     // v === 1
+  yes: 0,       // v === 2
+  total: 0
+};
+
+/* ===============================
    CONTEO SEMANAL
 ================================ */
 let weeklyIndex = 0;
@@ -148,6 +159,9 @@ function startTest(isPremium) {
   currentModule = 0;
   currentQuestion = 0;
 
+  // reset registro pasivo
+  responseProfile = { no:0, maybe:0, yes:0, total:0 };
+
   showSection("test");
   showQuestion();
   updateThermometer();
@@ -162,6 +176,13 @@ function showQuestion() {
 
 function answer(v) {
   scores[modules[currentModule].name] += v;
+
+  // REGISTRO PASIVO (NO INTRUSIVO)
+  if (v === 0) responseProfile.no++;
+  else if (v === 1) responseProfile.maybe++;
+  else if (v === 2) responseProfile.yes++;
+  responseProfile.total++;
+
   currentQuestion++;
 
   if (currentQuestion >= modules[currentModule].questions.length) {
@@ -174,7 +195,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS (DONACIÓN + PAGO RESTAURADOS)
+   RESULTADOS
 ================================ */
 function showResults() {
   showSection("results");
@@ -250,7 +271,7 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN (LINK MERCADO PAGO)
+   DONACIÓN
 ================================ */
 function weeklyWithDonation() {
   window.open("https://mpago.la/1eCGrKX", "_blank");
@@ -271,9 +292,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-   }
-
-
-
-
-     
+}
