@@ -209,7 +209,8 @@ function showMonthly(){
         "Y toda distancia, si se observa con honestidad,\n"+
         "puede empezar a acortarse.";
       monthlyText.textContent = "";
-    } else if(avg <= 0.9){
+    } 
+    else if(avg <= 0.9){
       monthlyLongText.textContent =
         "Tus respuestas estos días muestran una humanidad que aparece y se retira.\n\n"+
         "Hay momentos de registro, sensibilidad y presencia,\n"+
@@ -226,7 +227,8 @@ function showMonthly(){
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
       monthlyText.textContent = "";
-    } else if(avg <= 1.4){
+    } 
+    else if(avg <= 1.4){
       monthlyLongText.textContent =
         "Al observar el recorrido por éstos días\n"+
         "aparece una diferencia clara\n"+
@@ -247,7 +249,8 @@ function showMonthly(){
         "cuando dejás de elegir qué parte mostrar\n"+
         "y empezás a escuchar a todas.";
       monthlyText.textContent = "";
-    } else {
+    } 
+    else {
       monthlyLongText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
         "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
@@ -255,20 +258,8 @@ function showMonthly(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "El dolor ajeno no pasa inadvertido,\n"+
-        "la tecnología no absorbe el vínculo,\n"+
-        "y las emociones, aun cuando incomodan,\n"+
-        "no son evitadas.\n\n"+
         "Esto no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
-        "Hay empatía sin desborde,\n"+
-        "sensibilidad sin pérdida de eje\n"+
-        "y una capacidad real de observarte\n"+
-        "sin necesidad de negarte.\n\n"+
-        "La humanidad que se expresa acá\n"+
-        "no es impulsiva ni automática:\n"+
-        "es una humanidad en crecimiento,\n"+
-        "sostenida por elección.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
         "de seguir siendo humano\n"+
@@ -323,30 +314,31 @@ function showFinal(){
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
-  const range =
-    avg <= 0.6 ? "low" :
-    avg <= 0.9 ? "midLow" :
-    avg <= 1.4 ? "mid" : "high";
-
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
     if(avg <= 0.6){
       finalState.textContent = "Predominio de NO";
       finalHumanText.textContent =
-        "A lo largo del recorrido apareció una constante:\n"+
-        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
-        "en vos pasaron sin dejar huella clara.\n\n"+
-        "No como falta, ni como error,\n"+
-        "sino como una forma de protección.\n\n"+
-        "El “no” repetido no habla de ausencia de humanidad,\n"+
-        "sino de una humanidad que aprendió a cerrarse\n"+
-        "para poder seguir funcionando.\n\n"+
-        "Este resultado no señala frialdad,\n"+
-        "señala distancia.\n\n"+
-        "Y toda distancia, si se observa con honestidad,\n"+
-        "puede empezar a acortarse.";
-    } else if(avg <= 0.9){
+        "Analizando el mes completo, aparece un patrón claro:\n"+
+        "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
+        "no generan en vos una respuesta emocional significativa.\n\n"+
+        "No como falta moral,\n"+
+        "sino como señal de distancia.\n\n"+
+        "Esta distancia no habla de frialdad consciente,\n"+
+        "habla de un mecanismo de protección:\n"+
+        "una forma de no involucrarte para no sentir.\n\n"+
+        "El problema no es no sentir,\n"+
+        "sino normalizar ese apagamiento como estado estable.\n\n"+
+        "Cuando el dolor del otro no resuena,\n"+
+        "la humanidad se vuelve funcional,\n"+
+        "pero pierde profundidad.\n\n"+
+        "Este resultado no acusa,\n"+
+        "señala un punto ciego:\n"+
+        "allí donde la empatía podría desarrollarse\n"+
+        "y hoy no está ocurriendo.";
+    }
+    else if(avg <= 0.9){
       finalState.textContent = "Ambivalencia emocional";
       finalHumanText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
@@ -359,24 +351,30 @@ function showFinal(){
         "La integración no llega forzando respuestas,\n"+
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
-    } else if(avg <= 1.4){
+    }
+    else if(avg <= 1.4){
       finalState.textContent = "Incongruencia marcada";
       finalHumanText.textContent =
-        "Al observar el recorrido completo,\n"+
-        "aparece una diferencia clara\n"+
-        "entre lo que expresaste al inicio\n"+
-        "y lo que fue emergiendo después.\n\n"+
-        "No es incoherencia intelectual,\n"+
-        "es incongruencia emocional.\n\n"+
-        "Distintas partes tuyas responden\n"+
-        "desde lugares distintos:\n"+
-        "una se adapta,\n"+
-        "otra se protege,\n"+
-        "otra observa.\n\n"+
-        "La integración comienza cuando dejás de elegir\n"+
-        "qué parte mostrar\n"+
-        "y empezás a escuchar a todas.";
-    } else {
+        "Al medir el recorrido completo,\n"+
+        "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
+        "Hay registros de conciencia en ciertos planos,\n"+
+        "pero neutralidad o ausencia emocional\n"+
+        "frente a situaciones donde la empatía humana es clave.\n\n"+
+        "Esto no es incoherencia intelectual.\n"+
+        "Es incongruencia emocional.\n\n"+
+        "Distintas partes tuyas responden desde lugares opuestos:\n"+
+        "una se muestra consciente,\n"+
+        "otra evita implicarse,\n"+
+        "otra racionaliza.\n\n"+
+        "El resultado es una humanidad fragmentada:\n"+
+        "funcional, adaptada,\n"+
+        "pero no integrada.\n\n"+
+        "La evolución no comienza corrigiendo respuestas,\n"+
+        "comienza reconociendo\n"+
+        "dónde no estás siendo el mismo\n"+
+        "en todos los planos.";
+    }
+    else {
       finalState.textContent = "Congruencia humana";
       finalHumanText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
@@ -410,4 +408,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+   }
