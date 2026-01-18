@@ -159,7 +159,6 @@ function startTest(isPremium) {
   currentModule = 0;
   currentQuestion = 0;
 
-  // reset registro pasivo
   responseProfile = { no:0, maybe:0, yes:0, total:0 };
 
   showSection("test");
@@ -177,7 +176,6 @@ function showQuestion() {
 function answer(v) {
   scores[modules[currentModule].name] += v;
 
-  // REGISTRO PASIVO (NO INTRUSIVO)
   if (v === 0) responseProfile.no++;
   else if (v === 1) responseProfile.maybe++;
   else if (v === 2) responseProfile.yes++;
@@ -230,7 +228,7 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML = `
-      <button class="premium" onclick="weeklyWithDonation()">Conteo semanal</button>
+      <button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>
       <p class="legal">
         Conteo semanal – versión Premium.<br>
         Aporte voluntario y consciente.<br>
@@ -274,7 +272,6 @@ function updateThermometer() {
    DONACIÓN
 ================================ */
 function weeklyWithDonation() {
-  window.open("https://mpago.la/1eCGrKX", "_blank");
   startWeekly();
 }
 
