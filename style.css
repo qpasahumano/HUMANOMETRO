@@ -84,7 +84,6 @@ button {
   transition: transform .15s ease, box-shadow .15s ease;
 }
 
-/* Feedback táctil */
 button:active {
   transform: scale(0.96);
   box-shadow:
@@ -92,19 +91,7 @@ button:active {
     inset 0 0 22px rgba(255,255,255,0.25);
 }
 
-/* =================================================
-   BOTONES INICIO (SE MANTIENE)
-   ================================================= */
-#start button,
-#start .glow-btn {
-  background: linear-gradient(45deg, #6f3a86, #a45fc2);
-  color: #ffffff;
-  box-shadow:
-    0 0 22px rgba(180,120,255,0.85),
-    inset 0 0 14px rgba(255,255,255,0.18);
-}
-
-/* ===== BOTÓN PREMIUM (DEFINICIÓN ORIGINAL) ===== */
+/* ===== BOTÓN PREMIUM ===== */
 button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #fff;
@@ -113,12 +100,11 @@ button.premium {
     inset 0 0 6px rgba(255,255,255,0.4);
 }
 
-/* ===== RESPUESTAS – TEST BOSQUE (SE MANTIENE VERDE) ===== */
+/* ===== RESPUESTAS ===== */
 .answers button {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #f2fbff;
   box-shadow: 0 0 16px rgba(120,220,255,.75);
-  text-shadow: none;
 }
 
 /* ===== TERMÓMETROS ===== */
@@ -160,20 +146,10 @@ button.premium {
   color: #f6fffc;
 }
 
-.circle.low {
-  background: rgba(255, 90, 120, 0.55);
-}
+.circle.low { background: rgba(255, 90, 120, 0.55); }
+.circle.mid { background: rgba(210, 140, 255, 0.55); }
+.circle.high { background: rgba(170, 200, 255, 0.55); }
 
-.circle.mid {
-  background: rgba(210, 140, 255, 0.55);
-  color: #ffffff;
-}
-
-.circle.high {
-  background: rgba(170, 200, 255, 0.55);
-}
-
-/* ===== TEXTOS ===== */
 .legal {
   font-size: .75em;
   opacity: .75;
@@ -185,48 +161,36 @@ button.premium {
   margin-bottom: 12px;
 }
 
-/* ===== CONTINUIDAD V1 → V2 (SIN CAMBIOS) ===== */
-.v2-continue {
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255,255,255,0.14);
-  text-align: center;
-}
-
-.v2-continue .legal {
-  margin-bottom: 12px;
-}
-
-.v2-continue button.premium {
-  background: linear-gradient(45deg, #6f3a86, #a45fc2);
-  box-shadow:
-    0 0 22px rgba(255, 200, 80, 0.95),
-    inset 0 0 8px rgba(255,255,255,0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.v2-continue button.premium:active {
-  transform: scale(0.96);
-  box-shadow:
-    0 0 28px rgba(255, 200, 80, 1),
-    inset 0 0 12px rgba(255,255,255,0.6);
-}
-
 /* =================================================
    ===== EXTENSIONES VISUALES HUMANÓMETRO =====
-   (AGREGADO – NO MODIFICA LO ANTERIOR)
+   (AGREGADAS – NO TOCAN LO ANTERIOR)
    ================================================= */
 
-/* 🔌 INDICADOR ON VERDE LED */
-.power-on::after {
-  content: " ON";
-  margin-left: 10px;
-  font-weight: 600;
-  color: #6aff9f;
+/* 🔵 TÍTULOS CON LUMINOSIDAD BOREAL */
+.led-title {
+  color: #e9fcff;
   text-shadow:
-    0 0 6px rgba(106,255,159,0.9),
-    0 0 14px rgba(106,255,159,0.7);
-  animation: ledPulse 2.4s ease-in-out infinite;
+    0 0 6px rgba(180,255,255,.8),
+    0 0 14px rgba(140,200,255,.6),
+    0 0 26px rgba(160,180,255,.4);
+  animation: borealGlow 4s ease-in-out infinite;
+}
+
+@keyframes borealGlow {
+  0%,100% { text-shadow: 0 0 6px rgba(180,255,255,.7); }
+  50% { text-shadow: 0 0 18px rgba(200,240,255,1); }
+}
+
+/* 🟢 INDICADOR ON VERDE LED (SIN CAMBIAR BOTÓN) */
+.power-on::after {
+  content: " ● ON";
+  color: #4cff7a;
+  font-weight: bold;
+  margin-left: 10px;
+  text-shadow:
+    0 0 6px rgba(76,255,122,.9),
+    0 0 14px rgba(76,255,122,.7);
+  animation: ledPulse 2s ease-in-out infinite;
 }
 
 @keyframes ledPulse {
@@ -234,35 +198,24 @@ button.premium {
   50% { opacity: 1; }
 }
 
-/* 🌌 TÍTULOS CON LUMINOSIDAD BOREAL */
-.led-title {
-  text-shadow:
-    0 0 6px rgba(180,240,255,0.7),
-    0 0 18px rgba(160,220,255,0.6),
-    0 0 32px rgba(140,200,255,0.4);
-}
-
-/* ⚖️ BALANZA ANIMADA */
+/* ⚖️ BALANZA GRANDE + ANIMADA */
 .balance-wrap {
   font-size: 3.2rem;
-  margin: 10px 0 18px;
-  animation: balanceSwing 3.6s ease-in-out infinite;
+  margin: 18px 0 12px;
+  animation: balanceSwing 3s ease-in-out infinite;
 }
 
 @keyframes balanceSwing {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(-4deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(4deg); }
-  100% { transform: rotate(0deg); }
+  0% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
 }
 
-/* 🧭 RESULTADO SEMANAL – MÁS CENTRADO */
+/* 📖 TEXTO SEMANAL MÁS PROTAGONISTA */
 .weekly-result-text {
   font-size: 1.05em;
-  line-height: 1.55;
-  margin: 12px auto;
-  max-width: 92%;
+  line-height: 1.6;
+  margin: 10px auto;
 }
 
 /* ⬇️ BOTÓN MÁS ABAJO */
