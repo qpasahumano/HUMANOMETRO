@@ -302,6 +302,18 @@ function answerMirror(v){
   mirrorLog.push(v ?? 0);
   if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
+
+  /* === AJUSTE SEMÁNTICO (ÚNICA ADICIÓN) === */
+  if(mq === MIRROR_QUESTIONS.length){
+    let semanticDelta = 0;
+    const evitacion = mirrorLog[7] ?? 0;
+    const desconexion = mirrorLog[5] ?? 0;
+    const alegria = mirrorLog[6] ?? 0;
+    semanticDelta -= (evitacion + desconexion) * 0.1;
+    semanticDelta += alegria * 0.1;
+    mirrorScore += semanticDelta;
+  }
+
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
@@ -408,4 +420,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-   }
+}
