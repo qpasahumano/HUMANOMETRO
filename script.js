@@ -174,7 +174,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS + PERSISTENCIA GLOBAL
+   RESULTADOS (DONACIÓN + PAGO RESTAURADOS)
 ================================ */
 function showResults() {
   showSection("results");
@@ -183,30 +183,25 @@ function showResults() {
   weeklyAccess.innerHTML = "";
 
   let total = 0;
-  const moduleResults = {};
 
   modules.forEach(m => {
     const max = m.questions.length * 2;
     const p = Math.round(scores[m.name] / max * 100);
     total += p;
-    moduleResults[m.name] = p;
 
     circles.innerHTML += `
       <div class="circle ${p < 40 ? "low" : p < 70 ? "mid" : "high"}">
         <strong>${p}%</strong>
         <small>${m.name}</small>
       </div>`;
+
+    if (mode === "premium") {
+      tips.innerHTML += `<li>${premiumFeedback(m.name, p)}</li>`;
+    }
   });
 
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
-
-  localStorage.setItem("humanometro_v1_resultado", JSON.stringify({
-    date: new Date().toISOString(),
-    global: avg,
-    modules: moduleResults,
-    mode
-  }));
 
   if (mode === "common") {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
@@ -255,7 +250,7 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN
+   DONACIÓN (LINK MERCADO PAGO)
 ================================ */
 function weeklyWithDonation() {
   window.open("https://mpago.la/1eCGrKX", "_blank");
@@ -266,4 +261,19 @@ function weeklyWithDonation() {
    NAVEGACIÓN
 ================================ */
 function restart() { showSection("start"); }
-function
+function showPrivacy() { showSection("privacy"); }
+
+function showSection(id) {
+  ["start","test","results","weekly","weeklyResultScreen","privacy"]
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function goToV2() {
+  window.location.href = "./humanometro-v2/";
+   }
+
+
+
+
+     
