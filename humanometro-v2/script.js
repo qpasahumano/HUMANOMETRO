@@ -168,108 +168,6 @@ function nextWeek(){
 }
 
 /* ===============================
-   CIERRE VOLUMEN 2
-   TU HUMANIDAD EN MOVIMIENTO
-   =============================== */
-function showMonthly(){
-  show("monthlyResult");
-
-  monthlyTextWrap.classList.add("glass-sheet","scroll-sheet");
-  monthlyTextWrap.classList.add("hidden");
-
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length;
-
-  const range =
-    avg <= 0.6 ? "low" :
-    avg <= 0.9 ? "midLow" :
-    avg <= 1.4 ? "mid" : "high";
-
-  animateGauge(monthlyFill, (avg/2)*100, ()=>{
-    monthlyTextWrap.classList.remove("hidden");
-    monthlySymbol.textContent =
-      range === "low" ? "🦇" :
-      range === "midLow" ? "🦇" :
-      range === "mid" ? "🐞" : "🐦";
-
-    if(avg <= 0.6){
-      monthlyLongText.textContent =
-        "En éstos días apareció una constante:\n"+
-        "muchas situaciones que, en otros contextos, suelen generar impacto emocional,\n"+
-        "en vos pasaron sin dejar huella clara.\n\n"+
-        "No como falta ni como error,\n"+
-        "sino como una forma de protección.\n\n"+
-        "El “no” reiterado no habla de ausencia de humanidad,\n"+
-        "sino de una humanidad que aprendió a cerrarse\n"+
-        "para poder seguir funcionando.\n\n"+
-        "Cuando el mundo duele,\n"+
-        "a veces la forma de sostenerse\n"+
-        "es no sentir del todo.\n\n"+
-        "Este resultado no señala frialdad:\n"+
-        "señala distancia.\n\n"+
-        "Y toda distancia, si se observa con honestidad,\n"+
-        "puede empezar a acortarse.";
-      monthlyText.textContent = "";
-    } 
-    else if(avg <= 0.9){
-      monthlyLongText.textContent =
-        "Tus respuestas estos días muestran una humanidad que aparece y se retira.\n\n"+
-        "Hay momentos de registro, sensibilidad y presencia,\n"+
-        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
-        "El “tal vez” no es indecisión superficial:\n"+
-        "es señal de una tensión interna\n"+
-        "entre lo que sentís\n"+
-        "y lo que te permitís sentir.\n\n"+
-        "Parte de vos percibe,\n"+
-        "parte de vos se protege.\n\n"+
-        "Esta oscilación no es contradicción moral,\n"+
-        "es un proceso en tránsito.\n\n"+
-        "La integración no llega forzando respuestas,\n"+
-        "llega cuando dejás de pelearte\n"+
-        "con lo que aparece a medias.";
-      monthlyText.textContent = "";
-    } 
-    else if(avg <= 1.4){
-      monthlyLongText.textContent =
-        "Al observar el recorrido por éstos días\n"+
-        "aparece una diferencia clara\n"+
-        "entre lo que expresaste al inicio\n"+
-        "y lo que fue emergiendo después.\n\n"+
-        "Algunas respuestas muestran sensibilidad y compromiso,\n"+
-        "mientras que otras señalan distancia, evitación o desconexión.\n\n"+
-        "Esto no es incoherencia intelectual,\n"+
-        "es incongruencia emocional.\n\n"+
-        "Distintas partes tuyas responden desde lugares distintos:\n"+
-        "una se adapta,\n"+
-        "otra se protege,\n"+
-        "otra observa.\n\n"+
-        "El espejo no busca unificarte a la fuerza,\n"+
-        "sino mostrarte dónde no estás siendo el mismo\n"+
-        "en todos los planos.\n\n"+
-        "La integración comienza\n"+
-        "cuando dejás de elegir qué parte mostrar\n"+
-        "y empezás a escuchar a todas.";
-      monthlyText.textContent = "";
-    } 
-    else {
-      monthlyLongText.textContent =
-        "A lo largo de todo el recorrido aparece una misma línea:\n"+
-        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
-        "Las respuestas no muestran fisuras marcadas\n"+
-        "ni contradicciones defensivas,\n"+
-        "sino una humanidad que registra, procesa\n"+
-        "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n\n"+
-        "Integrar no es llegar a un punto final,\n"+
-        "es mantener abierta la posibilidad\n"+
-        "de seguir siendo humano\n"+
-        "incluso cuando sería más fácil cerrarse.";
-      monthlyText.textContent = "";
-    }
-  });
-}
-
-/* ===============================
    ESPEJO — PREGUNTAS COMPLETAS
    =============================== */
 const MIRROR_QUESTIONS = [
@@ -302,18 +200,6 @@ function answerMirror(v){
   mirrorLog.push(v ?? 0);
   if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
-
-  /* === AJUSTE SEMÁNTICO (ÚNICA ADICIÓN) === */
-  if(mq === MIRROR_QUESTIONS.length){
-    let semanticDelta = 0;
-    const evitacion = mirrorLog[7] ?? 0;
-    const desconexion = mirrorLog[5] ?? 0;
-    const alegria = mirrorLog[6] ?? 0;
-    semanticDelta -= (evitacion + desconexion) * 0.1;
-    semanticDelta += alegria * 0.1;
-    mirrorScore += semanticDelta;
-  }
-
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
@@ -324,7 +210,16 @@ function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
 
-  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
+  /* === AJUSTE SEMÁNTICO (INTEGRADO AQUÍ) === */
+  let semanticDelta = 0;
+  const evitacion = mirrorLog[7] ?? 0;
+  const desconexion = mirrorLog[5] ?? 0;
+  const alegria = mirrorLog[6] ?? 0;
+  semanticDelta -= (evitacion + desconexion) * 0.1;
+  semanticDelta += alegria * 0.1;
+
+  const adjustedScore = mirrorScore + semanticDelta;
+  const avg = mirrorCount ? adjustedScore / mirrorCount : 0;
 
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
