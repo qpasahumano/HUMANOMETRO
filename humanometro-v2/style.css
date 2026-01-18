@@ -240,3 +240,48 @@ button {
 }
 
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
+/* =========================================
+   BOTÓN ESPEJO – EFECTO REFLEJO DE VIDRIO
+   ========================================= */
+
+.mirror-glass {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 26px rgba(140,255,240,.9),
+    inset 0 0 12px rgba(255,255,255,.25);
+}
+
+.mirror-glass::before {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -120%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255,255,255,.45) 50%,
+    transparent 60%
+  );
+  transform: rotate(0deg);
+  animation: mirrorSweep 3.8s ease-in-out infinite;
+}
+
+@keyframes mirrorSweep {
+  0% {
+    transform: translate(-60%, -60%) rotate(0deg);
+    opacity: 0;
+  }
+  40% {
+    opacity: .35;
+  }
+  70% {
+    opacity: .6;
+  }
+  100% {
+    transform: translate(60%, 60%) rotate(0deg);
+    opacity: 0;
+  }
+}
