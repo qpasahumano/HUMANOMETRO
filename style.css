@@ -15,8 +15,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(120,220,255,0.18), transparent 50%),
-    radial-gradient(circle at bottom, rgba(100,180,255,0.16), transparent 55%),
+    radial-gradient(circle at top, rgba(140,240,255,0.22), transparent 50%),
+    radial-gradient(circle at bottom, rgba(120,200,255,0.20), transparent 55%),
     rgba(6,18,40,0.32);
   pointer-events: none;
   z-index: -1;
@@ -31,8 +31,8 @@ body::before {
   background: rgba(11,18,32,0.58);
   border-radius: 16px;
   box-shadow:
-    0 0 26px rgba(0,0,0,0.28),
-    0 0 50px rgba(120,255,230,0.10);
+    0 0 30px rgba(0,0,0,0.30),
+    0 0 60px rgba(140,255,230,0.14);
 }
 
 .hidden { display: none; }
@@ -48,10 +48,10 @@ body::before {
   font-size: clamp(1.6rem, 6.5vw, 2.3rem);
   letter-spacing: 0.08em;
   line-height: 1.15;
-  color: #dffaff;
+  color: #e8fcff;
   text-shadow:
-    0 0 6px rgba(120,255,230,.8),
-    0 0 16px rgba(120,255,230,.6);
+    0 0 8px rgba(160,255,240,.9),
+    0 0 22px rgba(140,255,230,.75);
   white-space: nowrap;
 }
 
@@ -74,13 +74,12 @@ button {
   font-size: 1em;
   cursor: pointer;
 
-  /* 🔹 ÚNICO CAMBIO: VALORES DE COLOR */
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #ffffff;
 
   box-shadow:
-    0 0 22px rgba(180,120,255,0.85),
-    inset 0 0 14px rgba(255,255,255,0.18);
+    0 0 26px rgba(200,140,255,0.95),
+    inset 0 0 18px rgba(255,255,255,0.22);
 
   transition: transform .15s ease, box-shadow .15s ease;
 }
@@ -89,8 +88,8 @@ button {
 button:active {
   transform: scale(0.96);
   box-shadow:
-    0 0 30px rgba(200,150,255,1),
-    inset 0 0 22px rgba(255,255,255,0.25);
+    0 0 36px rgba(220,170,255,1),
+    inset 0 0 26px rgba(255,255,255,0.28);
 }
 
 /* =================================================
@@ -101,8 +100,8 @@ button:active {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #ffffff;
   box-shadow:
-    0 0 22px rgba(180,120,255,0.85),
-    inset 0 0 14px rgba(255,255,255,0.18);
+    0 0 28px rgba(180,255,200,0.95),
+    inset 0 0 18px rgba(255,255,255,0.22);
 }
 
 /* ===== BOTÓN PREMIUM (DEFINICIÓN ORIGINAL) ===== */
@@ -110,15 +109,15 @@ button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #fff;
   box-shadow:
-    0 0 18px rgba(255,180,0,.85),
-    inset 0 0 6px rgba(255,255,255,0.4);
+    0 0 22px rgba(255,220,120,.95),
+    inset 0 0 8px rgba(255,255,255,0.45);
 }
 
 /* ===== RESPUESTAS – TEST BOSQUE (SE MANTIENE VERDE) ===== */
 .answers button {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #f2fbff;
-  box-shadow: 0 0 16px rgba(120,220,255,.75);
+  box-shadow: 0 0 22px rgba(150,240,255,.9);
   text-shadow: none;
 }
 
@@ -130,7 +129,7 @@ button.premium {
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
-  box-shadow: 0 0 12px rgba(120,255,230,.35);
+  box-shadow: 0 0 14px rgba(120,255,230,.45);
 }
 
 #thermoFill,
@@ -138,7 +137,7 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 10px rgba(255,255,255,.6);
+  box-shadow: 0 0 12px rgba(255,255,255,.75);
   transition: width .4s ease;
 }
 
@@ -203,14 +202,5 @@ button.premium {
 .v2-continue button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   box-shadow:
-    0 0 22px rgba(255, 200, 80, 0.95),
-    inset 0 0 8px rgba(255,255,255,0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.v2-continue button.premium:active {
-  transform: scale(0.96);
-  box-shadow:
-    0 0 28px rgba(255, 200, 80, 1),
-    inset 0 0 12px rgba(255,255,255,0.6);
-  }
+    0 0 26px rgba(255, 220, 120, 1),
+    inset 0 0 10px rgba(255,255,255
