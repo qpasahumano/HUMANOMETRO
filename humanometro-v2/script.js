@@ -303,7 +303,6 @@ function answerMirror(v){
   if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
 
-  /* === AJUSTE SEMÁNTICO (ÚNICA ADICIÓN) === */
   if(mq === MIRROR_QUESTIONS.length){
     let semanticDelta = 0;
     const evitacion = mirrorLog[7] ?? 0;
@@ -326,10 +325,32 @@ function showFinal(){
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
+  const tristezaAjena = mirrorLog[1] ?? 0;
+  const desconexion = mirrorLog[5] ?? 0;
+  const evitacion = mirrorLog[7] ?? 0;
+
+  const bajaEmpatia = tristezaAjena <= 0.5;
+  const desconexionActiva = desconexion >= 1;
+  const evitacionActiva = evitacion >= 1;
+
+  let semanticPenalty = 0;
+  if(bajaEmpatia) semanticPenalty++;
+  if(desconexionActiva) semanticPenalty++;
+  if(evitacionActiva) semanticPenalty++;
+
+  let range =
+    avg <= 0.6 ? 0 :
+    avg <= 0.9 ? 1 :
+    avg <= 1.4 ? 2 : 3;
+
+  if(range >= 2 && semanticPenalty >= 2){
+    range -= 1;
+  }
+
   animateGauge(finalFill, (avg/2)*100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
-    if(avg <= 0.6){
+    if(range === 0){
       finalState.textContent = "Predominio de NO";
       finalHumanText.textContent =
         "Analizando el mes completo, aparece un patrón claro:\n"+
@@ -350,7 +371,7 @@ function showFinal(){
         "allí donde la empatía podría desarrollarse\n"+
         "y hoy no está ocurriendo.";
     }
-    else if(avg <= 0.9){
+    else if(range === 1){
       finalState.textContent = "Ambivalencia emocional";
       finalHumanText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
@@ -364,7 +385,7 @@ function showFinal(){
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
     }
-    else if(avg <= 1.4){
+    else if(range === 2){
       finalState.textContent = "Incongruencia marcada";
       finalHumanText.textContent =
         "Al medir el recorrido completo,\n"+
@@ -386,7 +407,7 @@ function showFinal(){
         "dónde no estás siendo el mismo\n"+
         "en todos los planos.";
     }
-    else {
+    else{
       finalState.textContent = "Congruencia humana";
       finalHumanText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
