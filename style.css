@@ -1,3 +1,4 @@
+
 * { box-sizing: border-box; }
 
 /* ===== BODY + FONDO GENERAL ===== */
@@ -91,9 +92,9 @@ button.premium {
     inset 0 0 6px rgba(255,255,255,0.4);
 }
 
-/* ===== ON LED VERDE ===== */
+/* ===== ON LED VERDE (CORREGIDO, SIN DUPLICAR) ===== */
 .power-on::after {
-  content: " ON";
+  content: "";
   margin-left: 10px;
   font-weight: 600;
   color: #6aff9f;
@@ -101,6 +102,11 @@ button.premium {
     0 0 6px rgba(106,255,159,0.9),
     0 0 16px rgba(106,255,159,0.8);
   animation: ledPulse 2.2s ease-in-out infinite;
+}
+
+.power-on::before {
+  content: "ON";
+  margin-left: 10px;
 }
 
 @keyframes ledPulse {
@@ -207,11 +213,9 @@ button.spaced {
   background: transparent !important;
   image-rendering: auto;
 
-  /* AJUSTE ÚNICO PERMITIDO */
-  mix-blend-mode: screen;
-
-  /* glow boreal */
+  /* glow sutil */
   filter:
     drop-shadow(0 0 6px rgba(120,255,230,.6))
     drop-shadow(0 0 14px rgba(120,200,255,.6));
-    }
+}
+
