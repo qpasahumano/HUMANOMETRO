@@ -15,6 +15,14 @@
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
+
+    <!-- LOGO / SELLO (único agregado) -->
+    <img
+      src="activos/v2/sello-humanometro.png"
+      alt="Sello Humanómetro"
+      class="brand-seal"
+    >
+
     <span class="brand-meta">v.2 ®</span>
   </h1>
 
@@ -25,18 +33,6 @@
   </p>
 
   <button class="primary" onclick="startV2()">Continuar seguimiento</button>
-
-  <!-- LOGO / GLOBO -->
-  <img
-    src="/activos/v2/sello-humanometro.png"
-    alt="Sello Humanómetro"
-    class="brand-seal"
-  >
-
-  <!-- PRIVACIDAD Y USO -->
-  <p class="legal privacy-link" onclick="showPrivacy()">
-    Privacidad y uso
-  </p>
 </section>
 
 <!-- TEST SEMANAL -->
@@ -75,6 +71,7 @@
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
 
+      <!-- BOTÓN PREVIO AL ESPEJO -->
       <button class="primary mirror-glass" onclick="openMirror()">
         Encontrar tu reflejo
       </button>
@@ -90,6 +87,7 @@
     Refleja lo que estás haciendo con lo que sentís.
   </p>
 
+  <!-- ÚNICO BOTÓN VERTE -->
   <button class="primary mirror-glass" onclick="startMirror()">
     Verte
   </button>
@@ -116,8 +114,10 @@
 
     <div id="finalTextWrap" class="result-text hidden">
 
+      <!-- ESTADO FINAL -->
       <p id="finalState" class="legal small state-led"></p>
 
+      <!-- DEVOLUCIÓN HUMANA -->
       <div class="glass-sheet">
         <div class="scroll-sheet">
           <p id="finalHumanText" class="legal"></p>
@@ -128,6 +128,7 @@
         </div>
       </div>
 
+      <!-- CÓMO SE OBTUVO LA DEVOLUCIÓN -->
       <div class="glass-sheet" style="margin-top:22px; opacity:.88;">
         <div class="scroll-sheet" style="max-height:38vh;">
           <p class="legal small">
@@ -158,6 +159,7 @@
         </div>
       </div>
 
+      <!-- APORTE VOLUNTARIO -->
       <div style="margin-top:28px; text-align:center;">
         <button class="primary mirror-glass" onclick="openDonation()">
           Aportar para sostener este proyecto
@@ -175,4 +177,4 @@
 
 <script src="script.js"></script>
 </body>
-</html>
+        </html>
