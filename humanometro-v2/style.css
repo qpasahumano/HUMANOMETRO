@@ -240,6 +240,7 @@ button {
 }
 
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
+
 /* =========================================
    BOTÓN ESPEJO – EFECTO REFLEJO DE VIDRIO
    ========================================= */
@@ -274,87 +275,33 @@ button {
     transform: translate(-60%, -60%) rotate(0deg);
     opacity: 0;
   }
-  40% {
-    opacity: .35;
-  }
-  70% {
-    opacity: .6;
-  }
+  40% { opacity: .35; }
+  70% { opacity: .6; }
   100% {
     transform: translate(60%, 60%) rotate(0deg);
     opacity: 0;
   }
 }
-/* ===== GLOBO / SELLO INICIO ===== */
-.brand-seal {
+
+/* ===== SELLO DE INICIO ===== */
+.start-seal {
   display: block;
-  margin: 18px auto 6px;
-  width: 88px;
-  opacity: 0.8;
+  margin: 12px auto 6px;
+  width: 52px;
+  height: auto;
+  opacity: 0.9;
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
   filter:
-    drop-shadow(0 0 6px rgba(120,255,200,0.22))
-    drop-shadow(0 0 14px rgba(120,255,200,0.12));
+    drop-shadow(0 0 6px rgba(0,0,0,.6))
+    drop-shadow(0 0 14px rgba(120,255,230,.45));
 }
 
-/* ===== PRIVACIDAD Y USO ===== */
+/* ===== PRIVACIDAD ===== */
 .privacy-link {
   text-align: center;
   margin-top: 4px;
   opacity: 0.7;
   cursor: pointer;
-    }
-/* ===== SELLO / LOGO INICIO – FORZADO DEFINITIVO ===== */
-.brand-seal {
-  display: block !important;
-  width: 96px !important;
-  height: auto !important;
-
-  margin: 18px auto 10px !important;
-
-  opacity: 1 !important;
-  visibility: visible !important;
-
-  position: relative !important;
-  z-index: 999 !important;
-
-  filter:
-    drop-shadow(0 0 8px rgba(120,255,200,0.45))
-    drop-shadow(0 0 22px rgba(120,255,200,0.25));
-  }
-/* ===========================
-   TEST TEMPORAL VISUAL SELLO
-   (ELIMINAR LUEGO)
-   =========================== */
-
-.brand-seal {
-  background: rgba(255, 0, 0, 0.25) !important;
-                }
-/* ===========================
-   SELLO AL FRENTE DEL LOGO
-   =========================== */
-
-.brand {
-  position: relative;
-}
-
-.brand-main,
-.brand-meta {
-  position: relative;
-  z-index: 1;
-}
-
-.brand-seal {
-  position: relative;
-  z-index: 3;
-
-  display: block;
-  margin: 12px auto 6px;
-  width: 88px;
-  height: auto;
-
-  opacity: 0.9;
-
-  filter:
-    drop-shadow(0 0 10px rgba(0,0,0,.6))
-    drop-shadow(0 0 22px rgba(120,255,230,.45));
 }
