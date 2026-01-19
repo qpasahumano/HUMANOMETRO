@@ -329,3 +329,32 @@ button {
 .brand-seal {
   background: rgba(255, 0, 0, 0.25) !important;
                 }
+/* ===========================
+   SELLO AL FRENTE DEL LOGO
+   =========================== */
+
+.brand {
+  position: relative;
+}
+
+.brand-main,
+.brand-meta {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-seal {
+  position: relative;
+  z-index: 3;
+
+  display: block;
+  margin: 12px auto 6px;
+  width: 88px;
+  height: auto;
+
+  opacity: 0.9;
+
+  filter:
+    drop-shadow(0 0 10px rgba(0,0,0,.6))
+    drop-shadow(0 0 22px rgba(120,255,230,.45));
+}
