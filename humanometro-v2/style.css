@@ -321,3 +321,11 @@ button {
     drop-shadow(0 0 8px rgba(120,255,200,0.45))
     drop-shadow(0 0 22px rgba(120,255,200,0.25));
   }
+/* ===========================
+   TEST TEMPORAL VISUAL SELLO
+   (ELIMINAR LUEGO)
+   =========================== */
+
+.brand-seal {
+  background: rgba(255, 0, 0, 0.25) !important;
+                }
