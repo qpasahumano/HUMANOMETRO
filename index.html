@@ -37,12 +37,59 @@
       Humanómetro <span style="color:#4cff7a; margin-left:8px;">● ON</span>
     </button>
 
-    <!-- SELLO HUMANÓMETRO -->
-    <img
-      src="humanometro-v2/activos/v2/version-2/sello-hm.png"
-      alt="Sello Humanómetro"
-      class="humanometro-seal"
-    >
+    <!-- SELLO HUMANÓMETRO – SVG INLINE (FONDO REALMENTE TRANSPARENTE) -->
+    <div class="humanometro-seal">
+      <svg
+        viewBox="0 0 200 200"
+        width="110"
+        height="110"
+        aria-label="Sello Humanómetro"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="hmGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7fffd4"/>
+            <stop offset="50%" stop-color="#9ad9ff"/>
+            <stop offset="100%" stop-color="#cfa8ff"/>
+          </linearGradient>
+
+          <filter id="borealGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- símbolo infinito -->
+        <path
+          d="M40,100
+             C40,60 100,60 100,100
+             C100,140 160,140 160,100
+             C160,60 100,60 100,100
+             C100,140 40,140 40,100Z"
+          fill="none"
+          stroke="url(#hmGradient)"
+          stroke-width="10"
+          filter="url(#borealGlow)"
+        />
+
+        <!-- letra H -->
+        <text
+          x="100"
+          y="118"
+          text-anchor="middle"
+          font-size="64"
+          font-family="Poppins, sans-serif"
+          font-weight="600"
+          fill="url(#hmGradient)"
+          filter="url(#borealGlow)"
+        >
+          H
+        </text>
+      </svg>
+    </div>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
@@ -134,4 +181,4 @@
 
 <script src="script.js"></script>
 </body>
-</html>
+  </html>
