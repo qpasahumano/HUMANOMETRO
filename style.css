@@ -223,3 +223,24 @@ button.spaced {
     drop-shadow(0 0 18px rgba(120,255,230,.55))
     drop-shadow(0 0 32px rgba(120,200,255,.35));
 }
+/* ===== ON LED VERDE ===== */
+.on-led {
+  color: #4cff7a;
+  margin-left: 8px;
+  text-shadow: 0 0 6px rgba(76,255,122,.9);
+}
+
+/* ===== SELLO SVG – BOREAL REAL ===== */
+.humanometro-seal {
+  width: 130px;
+  margin: 18px auto 12px;
+}
+
+.humanometro-seal svg {
+  width: 100%;
+  height: auto;
+  filter:
+    drop-shadow(0 0 8px rgba(120,255,230,.8))
+    drop-shadow(0 0 18px rgba(120,200,255,.6))
+    drop-shadow(0 0 32px rgba(160,180,255,.4));
+}
