@@ -17,7 +17,7 @@ body::before {
   background:
     radial-gradient(circle at top, rgba(120,220,255,0.18), transparent 50%),
     radial-gradient(circle at bottom, rgba(100,180,255,0.16), transparent 55%),
-    rgba(6,18,40,0.28);
+    rgba(6,18,40,0.32);
   pointer-events: none;
   z-index: -1;
 }
@@ -28,7 +28,7 @@ body::before {
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(18,28,46,0.62);
+  background: rgba(11,18,32,0.58);
   border-radius: 16px;
   box-shadow:
     0 0 26px rgba(0,0,0,0.28),
@@ -37,7 +37,7 @@ body::before {
 
 .hidden { display: none; }
 
-/* ===== LOGO TEXTO ===== */
+/* ===== LOGO ===== */
 .brand {
   margin: 10px 0 14px;
   text-align: center;
@@ -62,7 +62,7 @@ body::before {
 }
 
 /* =================================================
-   BOTONES – UVA
+   BOTONES – UVA ACLARADO (MISMA REGLA)
    ================================================= */
 button {
   width: 90%;
@@ -94,6 +94,7 @@ button:active {
 /* ===== BOTÓN PREMIUM ===== */
 button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
+  color: #fff;
   box-shadow:
     0 0 18px rgba(255,180,0,.85),
     inset 0 0 6px rgba(255,255,255,0.4);
@@ -101,7 +102,9 @@ button.premium {
 
 /* ===== RESPUESTAS ===== */
 .answers button {
-  box-shadow: 0 0 18px rgba(160,220,255,.85);
+  background: linear-gradient(45deg, #6f3a86, #a45fc2);
+  color: #f2fbff;
+  box-shadow: 0 0 16px rgba(120,220,255,.75);
 }
 
 /* ===== TERMÓMETROS ===== */
@@ -112,6 +115,7 @@ button.premium {
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
+  box-shadow: 0 0 12px rgba(120,255,230,.35);
 }
 
 #thermoFill,
@@ -119,38 +123,33 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
+  box-shadow: 0 0 10px rgba(255,255,255,.6);
   transition: width .4s ease;
 }
 
 /* ===== CÍRCULOS ===== */
 #circles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .circle {
-  width: 88px;
-  height: 88px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  font-weight: bold;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  animation: circleIn .5s ease forwards;
+  font-weight: bold;
+  color: #f6fffc;
 }
 
-@keyframes circleIn {
-  from { transform: scale(.7); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-.circle.low  { background: rgba(255, 90, 120, 0.55); }
-.circle.mid  { background: rgba(210, 140, 255, 0.55); }
+.circle.low { background: rgba(255, 90, 120, 0.55); }
+.circle.mid { background: rgba(210, 140, 255, 0.55); }
 .circle.high { background: rgba(170, 200, 255, 0.55); }
 
-/* ===== TEXTO ===== */
 .legal {
   font-size: .75em;
   opacity: .75;
@@ -158,36 +157,51 @@ button.premium {
 
 .weekly-intro {
   font-size: .9em;
+  opacity: .9;
   margin-bottom: 12px;
 }
 
-/* ===== SCROLL DEVOLUCIONES ===== */
-#tips {
-  max-height: 160px;
-  overflow-y: auto;
-  padding: 10px 12px;
-  margin-top: 10px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-}
+/* =================================================
+   ===== EXTENSIONES VISUALES HUMANÓMETRO =====
+   (AGREGADAS – NO TOCAN LO ANTERIOR)
+   ================================================= */
 
-/* ===== TÍTULOS BOREALES ===== */
+/* 🔵 TÍTULOS CON LUMINOSIDAD BOREAL */
 .led-title {
   color: #e9fcff;
   text-shadow:
     0 0 6px rgba(180,255,255,.8),
-    0 0 18px rgba(160,220,255,.9);
+    0 0 14px rgba(140,200,255,.6),
+    0 0 26px rgba(160,180,255,.4);
   animation: borealGlow 4s ease-in-out infinite;
 }
 
 @keyframes borealGlow {
-  0%,100% { opacity: .85; }
+  0%,100% { text-shadow: 0 0 6px rgba(180,255,255,.7); }
+  50% { text-shadow: 0 0 18px rgba(200,240,255,1); }
+}
+
+/* 🟢 INDICADOR ON VERDE LED (SIN CAMBIAR BOTÓN) */
+.power-on::after {
+  content: " ● ON";
+  color: #4cff7a;
+  font-weight: bold;
+  margin-left: 10px;
+  text-shadow:
+    0 0 6px rgba(76,255,122,.9),
+    0 0 14px rgba(76,255,122,.7);
+  animation: ledPulse 2s ease-in-out infinite;
+}
+
+@keyframes ledPulse {
+  0%,100% { opacity: .6; }
   50% { opacity: 1; }
 }
 
-/* ⚖️ BALANZA */
+/* ⚖️ BALANZA GRANDE + ANIMADA */
 .balance-wrap {
   font-size: 3.2rem;
+  margin: 18px 0 12px;
   animation: balanceSwing 3s ease-in-out infinite;
 }
 
@@ -197,35 +211,14 @@ button.premium {
   100% { transform: rotate(-6deg); }
 }
 
-/* 📖 TEXTO SEMANAL */
+/* 📖 TEXTO SEMANAL MÁS PROTAGONISTA */
 .weekly-result-text {
   font-size: 1.05em;
   line-height: 1.6;
+  margin: 10px auto;
 }
 
-/* ⬇️ BOTÓN ABAJO */
+/* ⬇️ BOTÓN MÁS ABAJO */
 button.spaced {
   margin-top: 26px;
 }
-
-/* =================================================
-   SELLO HUMANÓMETRO – PNG TRANSPARENTE (CORRECTO)
-   ================================================= */
-.humanometro-seal {
-  display: block;
-  width: 130px;
-  height: auto;
-  margin: 18px auto 12px;
-
-  background: transparent !important;
-  box-shadow: none !important;
-  outline: none;
-  border: none;
-
-  pointer-events: none;
-
-  filter:
-    drop-shadow(0 0 6px rgba(120,255,230,.65))
-    drop-shadow(0 0 16px rgba(120,200,255,.45))
-    drop-shadow(0 0 28px rgba(160,180,255,.35));
-  }
