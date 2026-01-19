@@ -126,7 +126,7 @@ button.premium {
   transition: width .4s ease;
 }
 
-/* ===== CÍRCULOS + ANIMACIÓN RECUPERADA ===== */
+/* ===== CÍRCULOS + ANIMACIÓN ===== */
 #circles {
   display: flex;
   flex-wrap: wrap;
@@ -160,7 +160,7 @@ button.premium {
 .circle.mid  { background: rgba(210, 140, 255, 0.55); }
 .circle.high { background: rgba(170, 200, 255, 0.55); }
 
-/* ===== SCROLL DEVOLUCIONES RECUPERADO ===== */
+/* ===== SCROLL DEVOLUCIONES ===== */
 #tips {
   max-height: 160px;
   overflow-y: auto;
@@ -193,6 +193,7 @@ button.premium {
 button.spaced {
   margin-top: 26px;
 }
+
 /* ===== SELLO HUMANÓMETRO ===== */
 .sello-wrap {
   display: flex;
@@ -206,8 +207,11 @@ button.spaced {
   background: transparent !important;
   image-rendering: auto;
 
+  /* AJUSTE ÚNICO PERMITIDO */
+  mix-blend-mode: screen;
+
   /* glow boreal */
   filter:
     drop-shadow(0 0 6px rgba(120,255,230,.6))
-    drop-shadow(0 0 14px rgba(120,200,255,.
-
+    drop-shadow(0 0 14px rgba(120,200,255,.6));
+    }
