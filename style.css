@@ -222,3 +222,24 @@ button.premium {
 button.spaced {
   margin-top: 26px;
 }
+/* ===== LOGO HUMANÓMETRO – BORRADO REAL DE FONDO CLARO ===== */
+.humanometro-logo {
+  display: block;
+  width: 130px;
+  margin: 18px auto 12px;
+
+  /* ELIMINA FONDOS CLAROS / BLANCOS */
+  -webkit-mask-image: linear-gradient(#000, #000);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(#000, #000);
+
+  /* refuerza contraste */
+  mix-blend-mode: multiply;
+
+  /* HALO BOREAL */
+  filter:
+    drop-shadow(0 0 6px rgba(120,255,230,.6))
+    drop-shadow(0 0 14px rgba(120,200,255,.45))
+    drop-shadow(0 0 26px rgba(160,180,255,.35));
+}
+
