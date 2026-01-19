@@ -15,8 +15,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(140,240,255,0.22), transparent 50%),
-    radial-gradient(circle at bottom, rgba(120,200,255,0.20), transparent 55%),
+    radial-gradient(circle at top, rgba(120,220,255,0.18), transparent 50%),
+    radial-gradient(circle at bottom, rgba(100,180,255,0.16), transparent 55%),
     rgba(6,18,40,0.32);
   pointer-events: none;
   z-index: -1;
@@ -31,8 +31,8 @@ body::before {
   background: rgba(11,18,32,0.58);
   border-radius: 16px;
   box-shadow:
-    0 0 30px rgba(0,0,0,0.30),
-    0 0 60px rgba(140,255,230,0.14);
+    0 0 26px rgba(0,0,0,0.28),
+    0 0 50px rgba(120,255,230,0.10);
 }
 
 .hidden { display: none; }
@@ -48,10 +48,10 @@ body::before {
   font-size: clamp(1.6rem, 6.5vw, 2.3rem);
   letter-spacing: 0.08em;
   line-height: 1.15;
-  color: #e8fcff;
+  color: #dffaff;
   text-shadow:
-    0 0 8px rgba(160,255,240,.9),
-    0 0 22px rgba(140,255,230,.75);
+    0 0 6px rgba(120,255,230,.8),
+    0 0 16px rgba(120,255,230,.6);
   white-space: nowrap;
 }
 
@@ -78,8 +78,8 @@ button {
   color: #ffffff;
 
   box-shadow:
-    0 0 26px rgba(200,140,255,0.95),
-    inset 0 0 18px rgba(255,255,255,0.22);
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
 
   transition: transform .15s ease, box-shadow .15s ease;
 }
@@ -88,8 +88,8 @@ button {
 button:active {
   transform: scale(0.96);
   box-shadow:
-    0 0 36px rgba(220,170,255,1),
-    inset 0 0 26px rgba(255,255,255,0.28);
+    0 0 30px rgba(200,150,255,1),
+    inset 0 0 22px rgba(255,255,255,0.25);
 }
 
 /* =================================================
@@ -100,8 +100,8 @@ button:active {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #ffffff;
   box-shadow:
-    0 0 28px rgba(180,255,200,0.95),
-    inset 0 0 18px rgba(255,255,255,0.22);
+    0 0 22px rgba(180,120,255,0.85),
+    inset 0 0 14px rgba(255,255,255,0.18);
 }
 
 /* ===== BOTÓN PREMIUM (DEFINICIÓN ORIGINAL) ===== */
@@ -109,15 +109,15 @@ button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #fff;
   box-shadow:
-    0 0 22px rgba(255,220,120,.95),
-    inset 0 0 8px rgba(255,255,255,0.45);
+    0 0 18px rgba(255,180,0,.85),
+    inset 0 0 6px rgba(255,255,255,0.4);
 }
 
 /* ===== RESPUESTAS – TEST BOSQUE (SE MANTIENE VERDE) ===== */
 .answers button {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   color: #f2fbff;
-  box-shadow: 0 0 22px rgba(150,240,255,.9);
+  box-shadow: 0 0 16px rgba(120,220,255,.75);
   text-shadow: none;
 }
 
@@ -129,7 +129,7 @@ button.premium {
   border-radius: 20px;
   margin: 15px 0 25px;
   overflow: hidden;
-  box-shadow: 0 0 14px rgba(120,255,230,.45);
+  box-shadow: 0 0 12px rgba(120,255,230,.35);
 }
 
 #thermoFill,
@@ -137,7 +137,7 @@ button.premium {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg,#e74c3c,#f1c40f,#2ecc71);
-  box-shadow: 0 0 12px rgba(255,255,255,.75);
+  box-shadow: 0 0 10px rgba(255,255,255,.6);
   transition: width .4s ease;
 }
 
@@ -160,12 +160,10 @@ button.premium {
   color: #f6fffc;
 }
 
-/* 🔴 < 50% — ROJO LED BOREAL */
 .circle.low {
   background: rgba(255, 90, 120, 0.55);
 }
 
-/* 🟣 ≥ 50% — BOREALES TRANSLÚCIDOS */
 .circle.mid {
   background: rgba(210, 140, 255, 0.55);
   color: #ffffff;
@@ -202,5 +200,72 @@ button.premium {
 .v2-continue button.premium {
   background: linear-gradient(45deg, #6f3a86, #a45fc2);
   box-shadow:
-    0 0 26px rgba(255, 220, 120, 1),
-    inset 0 0 10px rgba(255,255,255
+    0 0 22px rgba(255, 200, 80, 0.95),
+    inset 0 0 8px rgba(255,255,255,0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.v2-continue button.premium:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 28px rgba(255, 200, 80, 1),
+    inset 0 0 12px rgba(255,255,255,0.6);
+}
+
+/* =================================================
+   ===== EXTENSIONES VISUALES HUMANÓMETRO =====
+   (AGREGADO – NO MODIFICA LO ANTERIOR)
+   ================================================= */
+
+/* 🔌 INDICADOR ON VERDE LED */
+.power-on::after {
+  content: " ON";
+  margin-left: 10px;
+  font-weight: 600;
+  color: #6aff9f;
+  text-shadow:
+    0 0 6px rgba(106,255,159,0.9),
+    0 0 14px rgba(106,255,159,0.7);
+  animation: ledPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes ledPulse {
+  0%,100% { opacity: .6; }
+  50% { opacity: 1; }
+}
+
+/* 🌌 TÍTULOS CON LUMINOSIDAD BOREAL */
+.led-title {
+  text-shadow:
+    0 0 6px rgba(180,240,255,0.7),
+    0 0 18px rgba(160,220,255,0.6),
+    0 0 32px rgba(140,200,255,0.4);
+}
+
+/* ⚖️ BALANZA ANIMADA */
+.balance-wrap {
+  font-size: 3.2rem;
+  margin: 10px 0 18px;
+  animation: balanceSwing 3.6s ease-in-out infinite;
+}
+
+@keyframes balanceSwing {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 🧭 RESULTADO SEMANAL – MÁS CENTRADO */
+.weekly-result-text {
+  font-size: 1.05em;
+  line-height: 1.55;
+  margin: 12px auto;
+  max-width: 92%;
+}
+
+/* ⬇️ BOTÓN MÁS ABAJO */
+button.spaced {
+  margin-top: 26px;
+  }
