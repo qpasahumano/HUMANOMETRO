@@ -91,10 +91,9 @@ button.premium {
     inset 0 0 6px rgba(255,255,255,0.4);
 }
 
-/* ===== ON LED VERDE ===== */
-.power-on::after {
-  content: " ON";
-  margin-left: 10px;
+/* ===== ON LED VERDE (ÚNICO) ===== */
+.on-led {
+  margin-left: 8px;
   font-weight: 600;
   color: #6aff9f;
   text-shadow:
@@ -194,23 +193,18 @@ button.spaced {
   margin-top: 26px;
 }
 
-/* ===== SELLO HUMANÓMETRO ===== */
+/* ===== SELLO HUMANÓMETRO (VISIBLE) ===== */
 .sello-wrap {
   display: flex;
   justify-content: center;
   margin: 18px auto 6px;
 }
 
-.sello-wrap img {
+.sello-humanometro {
   width: 140px;
   height: auto;
-  background: transparent !important;
-  image-rendering: auto;
-
-  /* AJUSTE ÚNICO PERMITIDO */
-  mix-blend-mode: screen;
-
-  /* glow boreal */
+  display: block;
+  background: transparent;
   filter:
     drop-shadow(0 0 6px rgba(120,255,230,.6))
     drop-shadow(0 0 14px rgba(120,200,255,.6));
