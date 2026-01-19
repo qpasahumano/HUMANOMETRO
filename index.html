@@ -31,14 +31,15 @@
       Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
     </p>
 
-    <button class="premium power-on" onclick="startTest(true)">Humanómetro ON</button>
+    <!-- BOTÓN INICIO (UN SOLO ON: EL VERDE) -->
+    <button class="premium power-on" onclick="startTest(true)">
+      Humanómetro
+    </button>
 
-    <!-- SELLO (ÚNICA APARICIÓN) -->
-    <img
-      src="activos/v2/sello-hm.png"
-      alt="Sello Humanómetro"
-      class="humanometro-seal"
-    >
+    <!-- SELLO -->
+    <div class="sello-wrap">
+      <img src="sello-hm.png" alt="Sello Humanómetro" class="sello-hm">
+    </div>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
   </section>
