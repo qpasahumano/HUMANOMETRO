@@ -231,7 +231,7 @@ button.spaced {
   height: 110px;
   margin: 18px auto 10px;
 
-  background-image: url("sello-lobo.png");
+  background-image: url("activos/v2/sello-hm.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -262,4 +262,4 @@ button.spaced {
       0 0 38px rgba(160,255,240,0.65),
       inset 0 0 14px rgba(255,255,255,0.25);
   }
-  }
+}
