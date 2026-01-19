@@ -17,7 +17,7 @@ body::before {
   background:
     radial-gradient(circle at top, rgba(120,220,255,0.18), transparent 50%),
     radial-gradient(circle at bottom, rgba(100,180,255,0.16), transparent 55%),
-    rgba(6,18,40,0.28);
+    rgba(6,18,40,0.28); /* 🔹 apenas más clara */
   pointer-events: none;
   z-index: -1;
 }
@@ -28,7 +28,7 @@ body::before {
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: rgba(18,28,46,0.62);
+  background: rgba(18,28,46,0.62); /* 🔹 lámina uva aclarada */
   border-radius: 16px;
   box-shadow:
     0 0 26px rgba(0,0,0,0.28),
@@ -122,7 +122,7 @@ button.premium {
   transition: width .4s ease;
 }
 
-/* ===== CÍRCULOS ===== */
+/* ===== CÍRCULOS (3 + 3) ===== */
 #circles {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -161,7 +161,10 @@ button.premium {
   margin-bottom: 12px;
 }
 
-/* ===== BLOQUE SCROLL ===== */
+/* =================================================
+   ===== BLOQUE SCROLL DEVOLUCIONES =====
+   SOLO textos debajo de los círculos
+   ================================================= */
 #tips {
   max-height: 160px;
   overflow-y: auto;
@@ -171,7 +174,11 @@ button.premium {
   border-radius: 12px;
 }
 
-/* ===== TÍTULOS LED ===== */
+/* =================================================
+   ===== EXTENSIONES VISUALES =====
+   ================================================= */
+
+/* 🔵 TÍTULOS BOREALES */
 .led-title {
   color: #e9fcff;
   text-shadow:
@@ -185,7 +192,7 @@ button.premium {
   50% { opacity: 1; }
 }
 
-/* ===== INDICADOR ON ===== */
+/* 🟢 INDICADOR ON */
 .power-on::after {
   content: " ● ON";
   color: #4cff7a;
@@ -198,7 +205,7 @@ button.premium {
   50% { opacity: 1; }
 }
 
-/* ===== BALANZA ===== */
+/* ⚖️ BALANZA */
 .balance-wrap {
   font-size: 3.2rem;
   animation: balanceSwing 3s ease-in-out infinite;
@@ -210,31 +217,31 @@ button.premium {
   100% { transform: rotate(-6deg); }
 }
 
-/* ===== TEXTO SEMANAL ===== */
+/* 📖 TEXTO SEMANAL */
 .weekly-result-text {
   font-size: 1.05em;
   line-height: 1.6;
 }
 
-/* ===== BOTÓN ABAJO ===== */
+/* ⬇️ BOTÓN ABAJO */
 button.spaced {
   margin-top: 26px;
 }
 
 /* =================================================
-   SELLO FUNDACIONAL – SOLO INICIO VOLUMEN 1
+   ===== SELLO HUMANÓMETRO – INICIO V1 (AGREGADO)
    ================================================= */
 
-.foundational-seal {
+.humanometro-seal {
   display: block;
-  width: 110px;
+  width: 96px;               /* tamaño intermedio */
   height: auto;
-  margin: 16px auto 10px;
-
-  filter:
-    drop-shadow(0 0 8px rgba(140,255,230,0.65))
-    drop-shadow(0 0 22px rgba(140,255,230,0.45));
-
-  opacity: 0.95;
+  margin: 14px auto 10px;
+  opacity: 1;
   pointer-events: none;
-}
+
+  /* halo LED real, sin fondo, sin círculo */
+  filter:
+    drop-shadow(0 0 6px rgba(120,255,230,.55))
+    drop-shadow(0 0 14px rgba(120,255,230,.35));
+  }
