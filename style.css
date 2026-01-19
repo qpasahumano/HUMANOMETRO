@@ -193,3 +193,21 @@ button.premium {
 button.spaced {
   margin-top: 26px;
 }
+/* ===== SELLO HUMANÓMETRO ===== */
+.sello-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 18px auto 6px;
+}
+
+.sello-wrap img {
+  width: 140px;
+  height: auto;
+  background: transparent !important;
+  image-rendering: auto;
+
+  /* glow boreal */
+  filter:
+    drop-shadow(0 0 6px rgba(120,255,230,.6))
+    drop-shadow(0 0 14px rgba(120,200,255,.
+
