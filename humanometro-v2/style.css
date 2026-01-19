@@ -305,3 +305,28 @@ button {
   opacity: 0.7;
   cursor: pointer;
 }
+/* =========================================
+   SELLO DEFINITIVO (BACKGROUND, NO <img>)
+   ========================================= */
+
+.start-seal {
+  width: 52px;
+  height: 52px;
+  margin: 14px auto 6px;
+
+  background-image: url("activos/v2/sello-hm.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  opacity: 0.9;
+
+  position: relative;
+  z-index: 5;
+
+  pointer-events: none;
+
+  filter:
+    drop-shadow(0 0 6px rgba(0,0,0,.6))
+    drop-shadow(0 0 14px rgba(120,255,230,.45));
+}
