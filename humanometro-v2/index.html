@@ -15,6 +15,14 @@
 <section id="start">
   <h1 class="brand">
     <span class="brand-main">HUMANÓMETRO</span><br>
+
+    <!-- LOGO / SELLO (único agregado) -->
+    <img
+      src="activos/v2/sello-humanometro.png"
+      alt="Sello Humanómetro"
+      class="brand-seal"
+    >
+
     <span class="brand-meta">v.2 ®</span>
   </h1>
 
@@ -25,14 +33,6 @@
   </p>
 
   <button class="primary" onclick="startV2()">Continuar seguimiento</button>
-
-  <!-- SELLO (DEFINITIVO COMO BACKGROUND) -->
-  <div class="start-seal"></div>
-
-  <!-- PRIVACIDAD Y USO -->
-  <p class="legal small privacy-link">
-    Política de privacidad y uso
-  </p>
 </section>
 
 <!-- TEST SEMANAL -->
@@ -71,6 +71,7 @@
       <p id="monthlyLongText"></p>
       <p id="monthlyText"></p>
 
+      <!-- BOTÓN PREVIO AL ESPEJO -->
       <button class="primary mirror-glass" onclick="openMirror()">
         Encontrar tu reflejo
       </button>
@@ -86,6 +87,7 @@
     Refleja lo que estás haciendo con lo que sentís.
   </p>
 
+  <!-- ÚNICO BOTÓN VERTE -->
   <button class="primary mirror-glass" onclick="startMirror()">
     Verte
   </button>
@@ -112,8 +114,10 @@
 
     <div id="finalTextWrap" class="result-text hidden">
 
+      <!-- ESTADO FINAL -->
       <p id="finalState" class="legal small state-led"></p>
 
+      <!-- DEVOLUCIÓN HUMANA -->
       <div class="glass-sheet">
         <div class="scroll-sheet">
           <p id="finalHumanText" class="legal"></p>
@@ -124,15 +128,38 @@
         </div>
       </div>
 
+      <!-- CÓMO SE OBTUVO LA DEVOLUCIÓN -->
       <div class="glass-sheet" style="margin-top:22px; opacity:.88;">
         <div class="scroll-sheet" style="max-height:38vh;">
           <p class="legal small">
             <strong>¿Cómo se obtuvo esta devolución?</strong><br><br>
-            La devolución final de Humanómetro surge de dos lecturas combinadas:
+
+            La devolución final de Humanómetro surge de dos lecturas combinadas:<br><br>
+
+            <strong>1. Lectura cuantitativa:</strong><br>
+            Se registra la intensidad de tus respuestas a lo largo del proceso,
+            sin clasificarlas como buenas o malas, sino como niveles de implicación humana.<br><br>
+
+            <strong>2. Lectura semántica cruzada:</strong><br>
+            Se contrasta lo que expresaste en preguntas generales
+            con cómo respondiste ante situaciones emocionales concretas del bloque Espejo.<br><br>
+
+            Cuando predominan respuestas como “nada”, “ninguna” o “poco”
+            frente a situaciones de dolor ajeno o desconexión,
+            eso influye directamente en la lectura final,
+            incluso si el promedio numérico es más alto.<br><br>
+
+            Las preguntas sin experiencia vivida (“ninguna”)
+            no penalizan, pero sí delimitan el campo de medición.<br><br>
+
+            El resultado no es un juicio:<br>
+            es un reflejo del modo en que tu humanidad estuvo operando
+            durante este período.
           </p>
         </div>
       </div>
 
+      <!-- APORTE VOLUNTARIO -->
       <div style="margin-top:28px; text-align:center;">
         <button class="primary mirror-glass" onclick="openDonation()">
           Aportar para sostener este proyecto
@@ -150,4 +177,4 @@
 
 <script src="script.js"></script>
 </body>
-</html>
+  </html>
