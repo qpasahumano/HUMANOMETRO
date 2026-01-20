@@ -221,7 +221,19 @@ button {
     inset 0 0 22px rgba(255,255,255,.12);
 }
 
-.scroll-sheet { max-height: 60vh; overflow-y: auto; padding-right: 8px; }
+/* ===== LÁMINA SCROLLEABLE – LED FINO ===== */
+.scroll-sheet {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  border: 1px solid rgba(140,255,240,.45);
+  border-radius: 14px;
+
+  box-shadow:
+    0 0 8px rgba(140,255,240,.35),
+    inset 0 0 8px rgba(140,255,240,.18);
+}
 
 #finalTextWrap {
   opacity: 0;
@@ -240,6 +252,7 @@ button {
 }
 
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
+
 /* =========================================
    BOTÓN ESPEJO – EFECTO REFLEJO DE VIDRIO
    ========================================= */
@@ -274,14 +287,10 @@ button {
     transform: translate(-60%, -60%) rotate(0deg);
     opacity: 0;
   }
-  40% {
-    opacity: .35;
-  }
-  70% {
-    opacity: .6;
-  }
+  40% { opacity: .35; }
+  70% { opacity: .6; }
   100% {
     transform: translate(60%, 60%) rotate(0deg);
     opacity: 0;
   }
-             }
+                  }
