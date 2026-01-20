@@ -18,6 +18,42 @@ const weeklyAdvice = document.getElementById("weeklyAdvice");
 const weeklySaved = document.getElementById("weeklySaved");
 
 /* ===============================
+   ESTADO PERSISTENTE
+================================ */
+const HM_STATE_KEY = "hm_v1_state";
+
+function saveState(extra = {}) {
+  const state = {
+    mode,
+    currentModule,
+    currentQuestion,
+    modules,
+    scores,
+    responseProfile,
+    weeklyIndex,
+    weeklyScores,
+    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
+    timestamp: Date.now(),
+    ...extra
+  };
+  localStorage.setItem(HM_STATE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  const raw = localStorage.getItem(HM_STATE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function clearState() {
+  localStorage.removeItem(HM_STATE_KEY);
+}
+
+/* ===============================
    VARIABLES PRINCIPALES
 ================================ */
 let mode = "common";
@@ -51,7 +87,7 @@ const WEEKLY_QUESTIONS = [
 /* ===============================
    BLOQUEO + REANUDACIÓN — CONFIG
 ================================ */
-const DEV_MODE = true; // ← vos SIEMPRE entrás
+const DEV_MODE = true;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const BLOCK_KEY = "hm_v1_weekly_last";
 const WAITING_KEY = "hm_v1_waiting";
@@ -73,11 +109,29 @@ function showWeeklyBlockFlash() {
 (function resumeIfWaiting() {
   if (DEV_MODE) return;
 
-  const waiting = localStorage.getItem(WAITING_KEY);
-  const last = localStorage.getItem(BLOCK_KEY);
+  const saved = loadState();
+  if (!saved) return;
 
-  if (waiting && last && Date.now() - Number(last) < WEEK_MS) {
-    showSection("results");
+  mode = saved.mode;
+  currentModule = saved.currentModule;
+  currentQuestion = saved.currentQuestion;
+  modules = saved.modules;
+  scores = saved.scores;
+  responseProfile = saved.responseProfile;
+  weeklyIndex = saved.weeklyIndex;
+  weeklyScores = saved.weeklyScores || [];
+
+  showSection(saved.lastSection || "start");
+
+  if (saved.lastSection === "test") {
+    showQuestion();
+    updateThermometer();
+  }
+
+  if (saved.lastSection === "weekly") {
+    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+    weeklyThermoFill.style.width =
+      Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
   }
 })();
 
@@ -85,7 +139,6 @@ function showWeeklyBlockFlash() {
    ACCESO RECORRIDO MENSUAL
 ================================ */
 function weeklyWithDonation() {
-
   if (!DEV_MODE) {
     const last = localStorage.getItem(BLOCK_KEY);
 
@@ -110,6 +163,7 @@ function startWeekly() {
   weeklySaved.classList.add("hidden");
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+  saveState({ lastSection: "weekly" });
 }
 
 function weeklyAnswer(value) {
@@ -118,6 +172,8 @@ function weeklyAnswer(value) {
 
   weeklyThermoFill.style.width =
     Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
+
+  saveState({ weeklyIndex, weeklyScores });
 
   if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
     showWeeklyResultScreen();
@@ -148,6 +204,7 @@ function showWeeklyResultScreen() {
 
   saveWeekly();
   showSection("weeklyResultScreen");
+  saveState({ lastSection: "weeklyResultScreen" });
 }
 
 function saveWeekly() {
@@ -203,6 +260,20 @@ const PREMIUM_MODULES = [
 ];
 
 function startTest(isPremium) {
+  const saved = loadState();
+  if (saved) {
+    mode = saved.mode;
+    currentModule = saved.currentModule;
+    currentQuestion = saved.currentQuestion;
+    modules = saved.modules;
+    scores = saved.scores;
+    responseProfile = saved.responseProfile;
+    showSection(saved.lastSection || "test");
+    showQuestion();
+    updateThermometer();
+    return;
+  }
+
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
   if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
@@ -218,6 +289,7 @@ function startTest(isPremium) {
   showSection("test");
   showQuestion();
   updateThermometer();
+  saveState({ lastSection: "test" });
 }
 
 function showQuestion() {
@@ -241,6 +313,8 @@ function answer(v) {
     currentQuestion = 0;
     currentModule++;
   }
+
+  saveState({ currentModule, currentQuestion, scores, responseProfile });
 
   currentModule >= modules.length ? showResults() : showQuestion();
   updateThermometer();
@@ -285,6 +359,8 @@ function showResults() {
       <button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>
     `;
   }
+
+  saveState({ lastSection: "results", finalAvg: avg });
 }
 
 /* ===============================
@@ -321,7 +397,11 @@ function updateThermometer() {
 /* ===============================
    NAVEGACIÓN
 ================================ */
-function restart() { showSection("start"); }
+function restart() {
+  clearState();
+  showSection("start");
+}
+
 function showPrivacy() { showSection("privacy"); }
 
 function showSection(id) {
