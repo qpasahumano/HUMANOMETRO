@@ -44,7 +44,7 @@ body.mirror-bg::before {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
-  margin: 40px auto;
+  margin: 18px auto 40px;
   padding: 26px;
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
@@ -176,7 +176,7 @@ button {
 }
 
 /* ===== RESULTADOS ===== */
-.result-row { display: flex; align-items: flex-start; gap: 18px; margin-top: 20px; }
+.result-row { display: flex; align-items: flex-start; gap: 18px; margin-top: 8px; }
 .result-text { text-align: left; }
 
 /* ===== SÍMBOLOS ===== */
@@ -316,4 +316,4 @@ button {
   60%  { transform: scale(1.22); }
   80%  { transform: scale(1); }
   100% { transform: scale(1); }
-  }
+}
