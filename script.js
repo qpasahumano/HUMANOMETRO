@@ -99,6 +99,7 @@ const LAST_SECTION_KEY = "hm_v1_last_section";
 function showWeeklyBlockFlash() {
   const el = document.getElementById("weeklyBlockFlash");
   if (!el) return;
+  el.textContent = "No seas ansioso. Tiene que pasar una semana.";
   el.classList.remove("hidden");
   setTimeout(() => el.classList.add("hidden"), 1000);
 }
