@@ -57,13 +57,6 @@ function startWeekly() {
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
-/* ===============================
-   👉 FUNCIÓN RESTAURADA (CLAVE)
-================================ */
-function weeklyWithDonation() {
-  startWeekly();
-}
-
 function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
@@ -275,7 +268,15 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN — INCORPORACIÓN ÚNICA
+   ACCESO RECORRIDO MENSUAL
+   (ÚNICA FUNCIÓN AGREGADA)
+================================ */
+function weeklyWithDonation() {
+  startWeekly();
+}
+
+/* ===============================
+   DONACIÓN
 ================================ */
 function openDonation() {
   window.open("https://mpago.la/2EFaaLx", "_blank");
