@@ -44,7 +44,7 @@ body.mirror-bg::before {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
-  margin: 10px auto 40px;
+  margin: 6px auto 40px;
   padding: 26px;
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
@@ -292,17 +292,18 @@ button {
    ========================================= */
 
 .donation-wrap {
-  margin-bottom: 22px;
+  margin-top: -22px;
+  margin-bottom: 26px;
 }
 
 .donation-wrap .legal.small {
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 .donation-heart {
   background: transparent;
   border: none;
-  font-size: 2.4rem;
+  font-size: 1.9rem;
   cursor: pointer;
   padding: 6px;
   position: relative;
@@ -314,11 +315,20 @@ button {
     0 0 26px rgba(190,150,255,.95);
 }
 
+.donation-heart::after {
+  content: "💰";
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  font-size: .7rem;
+  opacity: .85;
+}
+
 @keyframes heartBeat {
   0%   { transform: scale(1); }
-  20%  { transform: scale(1.18); }
+  20%  { transform: scale(1.15); }
   40%  { transform: scale(1); }
-  60%  { transform: scale(1.22); }
+  60%  { transform: scale(1.18); }
   80%  { transform: scale(1); }
   100% { transform: scale(1); }
 }
