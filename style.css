@@ -167,6 +167,35 @@ button.premium {
   margin-top: 10px;
   background: rgba(255,255,255,0.06);
   border-radius: 12px;
+  position: relative;
+}
+
+/* Línea LED borde lámina devoluciones */
+#tips::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(120,255,230,0.2),
+      rgba(160,200,255,0.6),
+      rgba(120,255,230,0.2)
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: ledBorderPulse 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ledBorderPulse {
+  0%,100% { opacity: 0.35; }
+  50% { opacity: 0.75; }
 }
 
 /* ===== BALANZA 3D ===== */
@@ -207,12 +236,13 @@ button.spaced {
   display: block;
   background: transparent;
   animation: freqFloat 6s ease-in-out infinite;
+  opacity: 0.75; /* TRANSPARENCIA SOLO AL LOGO */
   filter:
     drop-shadow(0 0 6px rgba(120,255,230,.6))
     drop-shadow(0 0 14px rgba(120,200,255,.6));
 }
 
-/* Aura LED multicolor */
+/* Aura LED multicolor (SE MANTIENE) */
 .sello-wrap::before {
   content: "";
   position: absolute;
@@ -232,18 +262,6 @@ button.spaced {
   z-index: -1;
 }
 
-/* Lucecita en flujo infinito (simulado) */
-.sello-wrap::after {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 10px rgba(150,220,255,0.9);
-  animation: infinityFlow 4.8s linear infinite;
-}
-
 /* ===== ANIMACIONES SELLO ===== */
 @keyframes freqFloat {
   0%,100% { transform: scale(1) rotate(0deg); }
@@ -254,11 +272,3 @@ button.spaced {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-@keyframes infinityFlow {
-  0%   { transform: translate(-30px, 0); opacity: 0; }
-  25%  { transform: translate(0, -16px); opacity: 1; }
-  50%  { transform: translate(30px, 0); opacity: 1; }
-  75%  { transform: translate(0, 16px); opacity: 1; }
-  100% { transform: translate(-30px, 0); opacity: 0; }
-  }
