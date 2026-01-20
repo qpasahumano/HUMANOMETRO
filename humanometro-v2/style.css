@@ -44,7 +44,7 @@ body.mirror-bg::before {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
-  margin: 6px auto 40px;
+  margin: 10px auto 40px;
   padding: 26px;
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
@@ -176,7 +176,13 @@ button {
 }
 
 /* ===== RESULTADOS ===== */
-.result-row { display: flex; align-items: flex-start; gap: 18px; margin-top: 8px; }
+.result-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: -18px;
+}
+
 .result-text { text-align: left; }
 
 /* ===== SÍMBOLOS ===== */
@@ -239,7 +245,10 @@ button {
   transition: opacity .9s ease, transform .9s ease;
 }
 
-#finalTextWrap:not(.hidden) { opacity: 1; transform: translateY(0); }
+#finalTextWrap:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ===== ESTADO FINAL LED ===== */
 .state-led {
@@ -252,58 +261,22 @@ button {
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
 
 /* =========================================
-   BOTÓN ESPEJO – EFECTO REFLEJO DE VIDRIO
-   ========================================= */
-
-.mirror-glass {
-  position: relative;
-  overflow: hidden;
-  box-shadow:
-    0 0 26px rgba(140,255,240,.9),
-    inset 0 0 12px rgba(255,255,255,.25);
-}
-
-.mirror-glass::before {
-  content: "";
-  position: absolute;
-  top: -120%;
-  left: -120%;
-  width: 220%;
-  height: 220%;
-  background: linear-gradient(
-    120deg,
-    transparent 40%,
-    rgba(255,255,255,.45) 50%,
-    transparent 60%
-  );
-  transform: rotate(0deg);
-  animation: mirrorSweep 3.8s ease-in-out infinite;
-}
-
-@keyframes mirrorSweep {
-  0% { transform: translate(-60%, -60%) rotate(0deg); opacity: 0; }
-  40% { opacity: .35; }
-  70% { opacity: .6; }
-  100% { transform: translate(60%, 60%) rotate(0deg); opacity: 0; }
-}
-
-/* =========================================
-   ❤️ BOTÓN CORAZÓN – APORTE VOLUNTARIO
+   ❤️ DONACIÓN – CORAZÓN + TEXTO
    ========================================= */
 
 .donation-wrap {
-  margin-top: -22px;
-  margin-bottom: 26px;
+  margin-top: -38px;
+  margin-bottom: 28px;
 }
 
 .donation-wrap .legal.small {
-  margin-top: 0;
+  margin-top: 2px;
 }
 
 .donation-heart {
   background: transparent;
   border: none;
-  font-size: 1.9rem;
+  font-size: 2rem;
   cursor: pointer;
   padding: 6px;
   position: relative;
@@ -315,13 +288,16 @@ button {
     0 0 26px rgba(190,150,255,.95);
 }
 
+/* ÍCONO DINERO DENTRO DEL CORAZÓN */
 .donation-heart::after {
   content: "💰";
   position: absolute;
-  bottom: -4px;
-  right: -6px;
-  font-size: .7rem;
-  opacity: .85;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: .75rem;
+  text-shadow: none;
+  animation: none;
 }
 
 @keyframes heartBeat {
