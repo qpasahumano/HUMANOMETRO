@@ -57,6 +57,13 @@ function startWeekly() {
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
+/* ===============================
+   👉 FUNCIÓN RESTAURADA (CLAVE)
+================================ */
+function weeklyWithDonation() {
+  startWeekly();
+}
+
 function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
@@ -268,15 +275,7 @@ function updateThermometer() {
 }
 
 /* ===============================
-   ACCESO RECORRIDO MENSUAL
-   (ÚNICA FUNCIÓN AGREGADA)
-================================ */
-function weeklyWithDonation() {
-  startWeekly();
-}
-
-/* ===============================
-   DONACIÓN
+   DONACIÓN — INCORPORACIÓN ÚNICA
 ================================ */
 function openDonation() {
   window.open("https://mpago.la/2EFaaLx", "_blank");
@@ -296,4 +295,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+     }
