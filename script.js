@@ -57,6 +57,13 @@ function startWeekly() {
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
+/* ===============================
+   👉 FUNCIÓN RESTAURADA (CLAVE)
+================================ */
+function weeklyWithDonation() {
+  startWeekly();
+}
+
 function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
@@ -288,4 +295,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-  }
+}
