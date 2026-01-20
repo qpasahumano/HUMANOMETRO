@@ -49,11 +49,13 @@ const WEEKLY_QUESTIONS = [
 ];
 
 /* ===============================
-   BLOQUEO MENSUAL – CONFIG
+   BLOQUEO + REANUDACIÓN — CONFIG
 ================================ */
 const DEV_MODE = true; // ← vos SIEMPRE entrás
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const BLOCK_KEY = "hm_v1_weekly_last";
+const WAITING_KEY = "hm_v1_waiting";
+const LAST_SECTION_KEY = "hm_v1_last_section";
 
 /* ===============================
    DESTELLO BLOQUEO
@@ -66,17 +68,36 @@ function showWeeklyBlockFlash() {
 }
 
 /* ===============================
+   REANUDACIÓN AUTOMÁTICA
+================================ */
+(function resumeIfWaiting() {
+  if (DEV_MODE) return;
+
+  const waiting = localStorage.getItem(WAITING_KEY);
+  const last = localStorage.getItem(BLOCK_KEY);
+
+  if (waiting && last && Date.now() - Number(last) < WEEK_MS) {
+    showSection("results");
+  }
+})();
+
+/* ===============================
    ACCESO RECORRIDO MENSUAL
 ================================ */
 function weeklyWithDonation() {
 
   if (!DEV_MODE) {
     const last = localStorage.getItem(BLOCK_KEY);
+
     if (last && Date.now() - Number(last) < WEEK_MS) {
+      localStorage.setItem(WAITING_KEY, "1");
+      localStorage.setItem(LAST_SECTION_KEY, "results");
       showWeeklyBlockFlash();
       return;
     }
+
     localStorage.setItem(BLOCK_KEY, Date.now());
+    localStorage.removeItem(WAITING_KEY);
   }
 
   startWeekly();
@@ -311,4 +332,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-       }
+}
