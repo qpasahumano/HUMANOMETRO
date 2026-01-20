@@ -268,10 +268,10 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN — INCORPORACIÓN ÚNICA
+   RECORRIDO MENSUAL (RESTABLECIDO)
 ================================ */
-function openDonation() {
-  window.open("https://mpago.la/2EFaaLx", "_blank");
+function weeklyWithDonation() {
+  startWeekly();
 }
 
 /* ===============================
@@ -288,4 +288,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-     }
+}
