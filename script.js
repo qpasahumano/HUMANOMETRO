@@ -269,10 +269,10 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN
+   DONACIÓN (AGREGADO)
 ================================ */
-function weeklyWithDonation() {
-  startWeekly();
+function openDonation() {
+  window.open("https://mpago.la/2EFaaLx", "_blank");
 }
 
 /* ===============================
