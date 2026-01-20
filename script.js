@@ -57,13 +57,6 @@ function startWeekly() {
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
 }
 
-/* ===============================
-   👉 FUNCIÓN RESTAURADA (CLAVE)
-================================ */
-function weeklyWithDonation() {
-  startWeekly();
-}
-
 function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
