@@ -58,7 +58,7 @@ function startWeekly() {
 }
 
 /* ===============================
-   👉 FUNCIÓN RESTAURADA (CLAVE)
+   ACCESO RECORRIDO MENSUAL
 ================================ */
 function weeklyWithDonation() {
   startWeekly();
@@ -235,11 +235,7 @@ function showResults() {
   if (mode === "premium") {
     weeklyAccess.innerHTML = `
       <button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>
-      <p class="legal">
-        Conteo semanal – versión Premium.<br>
-        Aporte voluntario y consciente.<br>
-        No es un pago, es una donación para sostener el proyecto.
-      </p>`;
+    `;
   }
 }
 
@@ -275,13 +271,6 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN — INCORPORACIÓN ÚNICA
-================================ */
-function openDonation() {
-  window.open("https://mpago.la/2EFaaLx", "_blank");
-}
-
-/* ===============================
    NAVEGACIÓN
 ================================ */
 function restart() { showSection("start"); }
@@ -295,4 +284,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+     }
