@@ -193,11 +193,12 @@ button.spaced {
   margin-top: 26px;
 }
 
-/* ===== SELLO HUMANÓMETRO (VISIBLE) ===== */
+/* ===== SELLO HUMANÓMETRO (ENERGÉTICO) ===== */
 .sello-wrap {
   display: flex;
   justify-content: center;
   margin: 18px auto 6px;
+  position: relative;
 }
 
 .sello-humanometro {
@@ -205,7 +206,59 @@ button.spaced {
   height: auto;
   display: block;
   background: transparent;
+  animation: freqFloat 6s ease-in-out infinite;
   filter:
     drop-shadow(0 0 6px rgba(120,255,230,.6))
     drop-shadow(0 0 14px rgba(120,200,255,.6));
 }
+
+/* Aura LED multicolor */
+.sello-wrap::before {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      #6aff9f,
+      #6ad0ff,
+      #c77dff,
+      #6aff9f
+    );
+  filter: blur(12px);
+  opacity: 0.45;
+  animation: auraSpin 10s linear infinite;
+  z-index: -1;
+}
+
+/* Lucecita en flujo infinito (simulado) */
+.sello-wrap::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(150,220,255,0.9);
+  animation: infinityFlow 4.8s linear infinite;
+}
+
+/* ===== ANIMACIONES SELLO ===== */
+@keyframes freqFloat {
+  0%,100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.03) rotate(0.4deg); }
+}
+
+@keyframes auraSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes infinityFlow {
+  0%   { transform: translate(-30px, 0); opacity: 0; }
+  25%  { transform: translate(0, -16px); opacity: 1; }
+  50%  { transform: translate(30px, 0); opacity: 1; }
+  75%  { transform: translate(0, 16px); opacity: 1; }
+  100% { transform: translate(-30px, 0); opacity: 0; }
+                 }
