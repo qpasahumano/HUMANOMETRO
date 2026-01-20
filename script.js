@@ -28,12 +28,11 @@ let scores = {};
 
 /* ===============================
    REGISTRO PASIVO DE RESPUESTAS
-   (NO / TAL VEZ / SÍ)
-   =============================== */
+================================ */
 let responseProfile = {
-  no: 0,        // v === 0
-  maybe: 0,     // v === 1
-  yes: 0,       // v === 2
+  no: 0,
+  maybe: 0,
+  yes: 0,
   total: 0
 };
 
@@ -56,6 +55,13 @@ function startWeekly() {
   weeklySaved.classList.add("hidden");
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
+}
+
+/* ===============================
+   👉 FUNCIÓN RESTAURADA (CLAVE)
+================================ */
+function weeklyWithDonation() {
+  startWeekly();
 }
 
 function weeklyAnswer(value) {
@@ -269,7 +275,7 @@ function updateThermometer() {
 }
 
 /* ===============================
-   DONACIÓN (AGREGADO)
+   DONACIÓN — INCORPORACIÓN ÚNICA
 ================================ */
 function openDonation() {
   window.open("https://mpago.la/2EFaaLx", "_blank");
@@ -289,4 +295,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-     }
+}
