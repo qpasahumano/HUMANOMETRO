@@ -35,13 +35,8 @@
       Humanómetro <span class="on-led">ON</span>
     </button>
 
-    <!-- SELLO HUMANÓMETRO -->
     <div class="sello-wrap">
-      <img
-        src="./activos/logo-hm.png"
-        alt="Sello Humanómetro"
-        class="sello-humanometro"
-      >
+      <img src="./activos/logo-hm.png" alt="Sello Humanómetro" class="sello-humanometro">
     </div>
 
     <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
@@ -68,38 +63,10 @@
   <!-- RESULTADOS -->
   <section id="results" class="hidden">
     <h2>Resultado Humanómetro</h2>
-
     <div id="circles"></div>
     <h3 id="globalResult"></h3>
-
     <h3>Lectura humana</h3>
     <ul id="tips"></ul>
-
-    <!-- APORTE VOLUNTARIO (VISIBLE, NO INVASIVO) -->
-    <div style="margin: 16px 0; display: flex; align-items: center; gap: 12px; justify-content: center;">
-      <button
-        onclick="openDonation()"
-        title="Aporte voluntario"
-        style="
-          width: 52px;
-          height: 52px;
-          border-radius: 50%;
-          border: none;
-          cursor: pointer;
-          font-size: 1.2rem;
-          background: linear-gradient(45deg, #6f3a86, #a45fc2);
-          color: #fff;
-          box-shadow: 0 0 14px rgba(180,120,255,0.8);
-        "
-      >
-        💜
-      </button>
-
-      <span class="legal">
-        Aporte voluntario para sostener el proyecto
-      </span>
-    </div>
-
     <div id="weeklyAccess"></div>
   </section>
 
@@ -125,14 +92,36 @@
     </div>
   </section>
 
-  <!-- PRIMERA SEMANA – RESULTADO -->
+  <!-- DEVOLUCIÓN FINAL -->
   <section id="weeklyResultScreen" class="hidden">
-    <div class="balance-wrap">
-      ⚖️
-    </div>
+    <div class="balance-wrap">⚖️</div>
 
     <p id="weeklyText" class="weekly-result-text"></p>
     <p id="weeklyAdvice" class="legal weekly-result-text"></p>
+
+    <!-- APORTE VOLUNTARIO -->
+    <div style="margin:18px 0; display:flex; align-items:center; justify-content:center; gap:12px;">
+      <button
+        onclick="openDonation()"
+        title="Aporte voluntario"
+        style="
+          width:54px;
+          height:54px;
+          border-radius:50%;
+          border:none;
+          cursor:pointer;
+          font-size:1.3rem;
+          color:#fff;
+          background:linear-gradient(45deg,#6f3a86,#a45fc2);
+          box-shadow:
+            0 0 8px rgba(180,120,255,.9),
+            0 0 18px rgba(180,120,255,.6);
+          animation: ledPulseDonation 2.2s ease-in-out infinite;
+        "
+      >💜</button>
+
+      <span class="legal">Aporte voluntario para sostener el proyecto</span>
+    </div>
 
     <button class="premium spaced" onclick="goToV2()">Volvé pronto</button>
 
@@ -150,12 +139,19 @@
       No es diagnóstico médico ni psicológico.<br>
       Es una herramienta reflexiva.
     </p>
-
     <button onclick="restart()">Volver</button>
   </section>
 
 </main>
 
 <script src="script.js"></script>
+
+<style>
+@keyframes ledPulseDonation {
+  0%,100% { box-shadow:0 0 6px rgba(180,120,255,.6); }
+  50% { box-shadow:0 0 20px rgba(200,150,255,1); }
+}
+</style>
+
 </body>
-  </html>
+</html>
