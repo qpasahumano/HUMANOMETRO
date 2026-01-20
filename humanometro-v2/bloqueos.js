@@ -1,7 +1,7 @@
 /* ===============================
    CONFIGURACIÓN
    =============================== */
-const DEV_MODE = true; // ← en producción poner false
+const DEV_MODE = false; // ← en producción FALSE
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 /* ===============================
@@ -23,11 +23,20 @@ function marcarPaso(key){
 }
 
 /* ===============================
-   DESTELLO + TEXTO
+   DESTELLO + TEXTO (ÚNICO)
    =============================== */
 function destello(){
   const d = document.createElement("div");
-  d.textContent = "No seas ansioso. Tiene que pasar una semana.";
+  d.innerHTML = `
+    <div style="
+      text-align:center;
+      font-size:1.2rem;
+      line-height:1.6;
+    ">
+      No seas ansioso.<br>
+      Tiene que pasar una semana.
+    </div>
+  `;
   d.style.cssText = `
     position:fixed;
     inset:0;
@@ -35,17 +44,21 @@ function destello(){
     align-items:center;
     justify-content:center;
     pointer-events:none;
-    font-size:1.2rem;
     color:white;
-    background:radial-gradient(circle,rgba(255,255,255,.18),transparent);
+    background:
+      radial-gradient(circle,
+        rgba(255,255,255,.18),
+        rgba(0,0,0,.85)
+      );
     z-index:9999;
+    animation: fadeInOut 1.2s ease-in-out;
   `;
   document.body.appendChild(d);
-  setTimeout(()=>d.remove(),1000);
+  setTimeout(()=>d.remove(),1200);
 }
 
 /* ===============================
-   CANDADO
+   CANDADO VISUAL
    =============================== */
 function candadoAbrir(cb){
   const c = document.createElement("div");
@@ -59,6 +72,7 @@ function candadoAbrir(cb){
     font-size:4rem;
     pointer-events:none;
     z-index:9999;
+    animation: fadeInOut 1s ease-in-out;
   `;
   document.body.appendChild(c);
   setTimeout(()=>{
@@ -68,7 +82,48 @@ function candadoAbrir(cb){
 }
 
 /* ===============================
-   GATES (PUERTAS)
+   GATES — PUERTAS REALES
    =============================== */
 
-/
+/* PRIMER BLOQUEO — después de la semana 1 */
+function gateMonthly(){
+  const KEY = "hm_v1_week1";
+
+  if(!pasoUnaSemana(KEY)){
+    destello();
+    return;
+  }
+
+  marcarPaso(KEY);
+  candadoAbrir(() => {
+    startWeekly();
+  });
+}
+
+/* EJEMPLO FUTURO — semana 2 */
+function gateWeek2(next){
+  const KEY = "hm_v1_week2";
+
+  if(!pasoUnaSemana(KEY)){
+    destello();
+    return;
+  }
+
+  marcarPaso(KEY);
+  candadoAbrir(() => {
+    next && next();
+  });
+}
+
+/* ===============================
+   ANIMACIÓN BASE
+   =============================== */
+const style = document.createElement("style");
+style.textContent = `
+@keyframes fadeInOut {
+  0% { opacity:0 }
+  20% { opacity:1 }
+  80% { opacity:1 }
+  100% { opacity:0 }
+}`;
+document.head.appendChild(style);
