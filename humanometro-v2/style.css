@@ -180,7 +180,7 @@ button {
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  margin-top: -18px;
+  margin-top: -36px; /* SUBE MÁS TODO EL BLOQUE FINAL */
 }
 
 .result-text { text-align: left; }
@@ -239,17 +239,6 @@ button {
     inset 0 0 8px rgba(140,255,240,.18);
 }
 
-#finalTextWrap {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .9s ease, transform .9s ease;
-}
-
-#finalTextWrap:not(.hidden) {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ===== ESTADO FINAL LED ===== */
 .state-led {
   text-shadow:
@@ -261,24 +250,24 @@ button {
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
 
 /* =========================================
-   ❤️ DONACIÓN – CORAZÓN + TEXTO
+   ❤️ DONACIÓN – CORAZÓN + TEXTO (SUBE MÁS)
    ========================================= */
 
 .donation-wrap {
-  margin-top: -38px;
-  margin-bottom: 28px;
+  margin-top: -58px;   /* SUBE MÁS EL CORAZÓN */
+  margin-bottom: 34px; /* EMPUJA TODO LO DEMÁS HACIA ARRIBA */
 }
 
 .donation-wrap .legal.small {
-  margin-top: 2px;
+  margin-top: 0px;     /* TEXTO PEGADO AL CORAZÓN */
 }
 
 .donation-heart {
   background: transparent;
   border: none;
-  font-size: 2rem;
+  font-size: 1.9rem;   /* CORAZÓN UN POCO MÁS CHICO */
   cursor: pointer;
-  padding: 6px;
+  padding: 4px;
   position: relative;
   animation: heartBeat 4.2s infinite ease-in-out;
   color: #cfa9ff;
@@ -288,23 +277,22 @@ button {
     0 0 26px rgba(190,150,255,.95);
 }
 
-/* ÍCONO DINERO DENTRO DEL CORAZÓN */
+/* ÍCONO DINERO DENTRO DEL CORAZÓN (SIN ANIMACIÓN) */
 .donation-heart::after {
   content: "💰";
   position: absolute;
   top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: .75rem;
+  font-size: .7rem;
   text-shadow: none;
-  animation: none;
 }
 
 @keyframes heartBeat {
   0%   { transform: scale(1); }
-  20%  { transform: scale(1.15); }
+  20%  { transform: scale(1.14); }
   40%  { transform: scale(1); }
-  60%  { transform: scale(1.18); }
+  60%  { transform: scale(1.17); }
   80%  { transform: scale(1); }
   100% { transform: scale(1); }
-}
+  }
