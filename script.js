@@ -28,11 +28,12 @@ let scores = {};
 
 /* ===============================
    REGISTRO PASIVO DE RESPUESTAS
-================================ */
+   (NO / TAL VEZ / SÍ)
+   =============================== */
 let responseProfile = {
-  no: 0,
-  maybe: 0,
-  yes: 0,
+  no: 0,        // v === 0
+  maybe: 0,     // v === 1
+  yes: 0,       // v === 2
   total: 0
 };
 
@@ -268,10 +269,10 @@ function updateThermometer() {
 }
 
 /* ===============================
-   RECORRIDO MENSUAL (RESTABLECIDO)
+   DONACIÓN (AGREGADO)
 ================================ */
-function weeklyWithDonation() {
-  startWeekly();
+function openDonation() {
+  window.open("https://mpago.la/2EFaaLx", "_blank");
 }
 
 /* ===============================
@@ -288,4 +289,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+     }
