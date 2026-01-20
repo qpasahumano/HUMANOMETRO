@@ -226,10 +226,8 @@ button {
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 8px;
-
   border: 1px solid rgba(140,255,240,.45);
   border-radius: 14px;
-
   box-shadow:
     0 0 8px rgba(140,255,240,.35),
     inset 0 0 8px rgba(140,255,240,.18);
@@ -283,21 +281,15 @@ button {
 }
 
 @keyframes mirrorSweep {
-  0% {
-    transform: translate(-60%, -60%) rotate(0deg);
-    opacity: 0;
-  }
+  0% { transform: translate(-60%, -60%) rotate(0deg); opacity: 0; }
   40% { opacity: .35; }
   70% { opacity: .6; }
-  100% {
-    transform: translate(60%, 60%) rotate(0deg);
-    opacity: 0;
-  }
+  100% { transform: translate(60%, 60%) rotate(0deg); opacity: 0; }
 }
 
 /* =========================================
    ❤️ BOTÓN CORAZÓN – APORTE VOLUNTARIO
-   SOLO ÍCONO · LATIDO LENTO · LED INTENSO
+   SOLO ÍCONO · LATIDO LENTO · LED EN ÍCONO
    ========================================= */
 
 .donation-heart {
@@ -307,37 +299,21 @@ button {
   cursor: pointer;
   padding: 6px;
   position: relative;
-  animation: heartBeat 2.8s infinite ease-in-out;
+
+  animation: heartBeat 4.2s infinite ease-in-out;
+
+  color: #cfa9ff;
   text-shadow:
-    0 0 10px rgba(255,120,200,.9),
-    0 0 24px rgba(255,120,200,.95),
-    0 0 42px rgba(255,120,200,1);
+    0 0 6px rgba(190,150,255,.65),
+    0 0 14px rgba(190,150,255,.85),
+    0 0 26px rgba(190,150,255,.95);
 }
 
 @keyframes heartBeat {
   0%   { transform: scale(1); }
-  30%  { transform: scale(1.18); }
-  55%  { transform: scale(1); }
-  75%  { transform: scale(1.22); }
+  20%  { transform: scale(1.18); }
+  40%  { transform: scale(1); }
+  60%  { transform: scale(1.22); }
+  80%  { transform: scale(1); }
   100% { transform: scale(1); }
-}
-
-.donation-heart::after {
-  content: "";
-  position: absolute;
-  inset: -16px;
-  border-radius: 50%;
-  box-shadow:
-    0 0 18px rgba(255,120,200,.85),
-    0 0 42px rgba(255,120,200,1),
-    0 0 72px rgba(255,120,200,.9);
-  opacity: .7;
-  animation: ledPulse 2.8s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes ledPulse {
-  0%   { opacity: .5; }
-  50%  { opacity: 1; }
-  100% { opacity: .5; }
-                  }
+  }
