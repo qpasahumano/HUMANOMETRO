@@ -44,7 +44,7 @@ body.mirror-bg::before {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
-  margin: 18px auto 40px;
+  margin: 10px auto 40px;
   padding: 26px;
   background: rgba(11,18,32,0.38);
   border-radius: 22px;
@@ -289,8 +289,15 @@ button {
 
 /* =========================================
    ❤️ BOTÓN CORAZÓN – APORTE VOLUNTARIO
-   SOLO ÍCONO · LATIDO LENTO · LED EN ÍCONO
    ========================================= */
+
+.donation-wrap {
+  margin-bottom: 22px;
+}
+
+.donation-wrap .legal.small {
+  margin-top: 2px;
+}
 
 .donation-heart {
   background: transparent;
@@ -299,9 +306,7 @@ button {
   cursor: pointer;
   padding: 6px;
   position: relative;
-
   animation: heartBeat 4.2s infinite ease-in-out;
-
   color: #cfa9ff;
   text-shadow:
     0 0 6px rgba(190,150,255,.65),
