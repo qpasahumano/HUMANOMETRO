@@ -48,6 +48,40 @@ const WEEKLY_QUESTIONS = [
   "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
 ];
 
+/* ===============================
+   BLOQUEO MENSUAL – CONFIG
+================================ */
+const DEV_MODE = true; // ← vos SIEMPRE entrás
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const BLOCK_KEY = "hm_v1_weekly_last";
+
+/* ===============================
+   DESTELLO BLOQUEO
+================================ */
+function showWeeklyBlockFlash() {
+  const el = document.getElementById("weeklyBlockFlash");
+  if (!el) return;
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 1000);
+}
+
+/* ===============================
+   ACCESO RECORRIDO MENSUAL
+================================ */
+function weeklyWithDonation() {
+
+  if (!DEV_MODE) {
+    const last = localStorage.getItem(BLOCK_KEY);
+    if (last && Date.now() - Number(last) < WEEK_MS) {
+      showWeeklyBlockFlash();
+      return;
+    }
+    localStorage.setItem(BLOCK_KEY, Date.now());
+  }
+
+  startWeekly();
+}
+
 function startWeekly() {
   weeklyIndex = 0;
   weeklyScores = [];
@@ -55,13 +89,6 @@ function startWeekly() {
   weeklySaved.classList.add("hidden");
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-}
-
-/* ===============================
-   ACCESO RECORRIDO MENSUAL
-================================ */
-function weeklyWithDonation() {
-  startWeekly();
 }
 
 function weeklyAnswer(value) {
@@ -284,4 +311,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-     }
+       }
