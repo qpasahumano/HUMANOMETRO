@@ -87,7 +87,7 @@ const WEEKLY_QUESTIONS = [
 /* ===============================
    BLOQUEO + REANUDACIÓN — CONFIG
 ================================ */
-const DEV_MODE = false; // ⬅️ PRODUCCIÓN
+const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const BLOCK_KEY = "hm_v1_weekly_last";
 const WAITING_KEY = "hm_v1_waiting";
@@ -109,6 +109,13 @@ function showWeeklyBlockFlash() {
 ================================ */
 (function resumeIfWaiting() {
   if (DEV_MODE) return;
+
+  const last = localStorage.getItem(BLOCK_KEY);
+  const waiting = localStorage.getItem(WAITING_KEY);
+
+  if (last && waiting && Date.now() - Number(last) < WEEK_MS) {
+    showWeeklyBlockFlash();
+  }
 
   const saved = loadState();
   if (!saved) return;
@@ -284,7 +291,6 @@ function startTest(isPremium) {
 
   currentModule = 0;
   currentQuestion = 0;
-
   responseProfile = { no:0, maybe:0, yes:0, total:0 };
 
   showSection("test");
@@ -377,7 +383,7 @@ function commonFeedback(avg) {
 
 function premiumFeedback(area, p) {
   if (p < 40)
-    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tus reacciones puede generar un cambio profundo.`;
+    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tu reacción puede generar un cambio profundo.`;
   if (p < 70)
     return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
   return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
