@@ -87,7 +87,7 @@ const WEEKLY_QUESTIONS = [
 /* ===============================
    BLOQUEO + REANUDACIÓN — CONFIG
 ================================ */
-const DEV_MODE = true;
+const DEV_MODE = false; // ⬅️ PRODUCCIÓN
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const BLOCK_KEY = "hm_v1_weekly_last";
 const WAITING_KEY = "hm_v1_waiting";
@@ -99,9 +99,9 @@ const LAST_SECTION_KEY = "hm_v1_last_section";
 function showWeeklyBlockFlash() {
   const el = document.getElementById("weeklyBlockFlash");
   if (!el) return;
-  el.textContent = "No seas ansioso. Tiene que pasar una semana.";
+  el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
   el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 1000);
+  setTimeout(() => el.classList.add("hidden"), 1400);
 }
 
 /* ===============================
