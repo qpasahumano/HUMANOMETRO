@@ -4,7 +4,7 @@
 ========================================= */
 
 /* CONFIG */
-const DEV_MODE_V2 = true; // en producción → false
+const DEV_MODE_V2 = false; // ⬅️ PRODUCCIÓN
 const WEEK_MS_V2 = 7 * 24 * 60 * 60 * 1000;
 
 /* KEYS */
@@ -108,7 +108,6 @@ window.addEventListener("load", () => {
 
 /* =========================================
    HOOKS DE GUARDADO AUTOMÁTICO
-   (sin tocar funciones originales)
 ========================================= */
 const _startV2 = startV2;
 startV2 = function () {
