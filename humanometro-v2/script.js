@@ -52,6 +52,16 @@ function showWeeklyBlockFlash(){
   setTimeout(()=>d.remove(),1300);
 }
 
+/* ===============================
+   ⬇️ CORRECCIÓN CRÍTICA
+   MOSTRAR BLOQUEO AL REINGRESAR
+================================ */
+window.addEventListener("load", () => {
+  if (!pasoUnaSemana()) {
+    showWeeklyBlockFlash();
+  }
+});
+
 /* CACHE */
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
@@ -419,4 +429,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-                      }
+}
