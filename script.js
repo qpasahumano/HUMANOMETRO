@@ -105,15 +105,17 @@ function showWeeklyBlockFlash() {
 }
 
 /* ===============================
-   REANUDACIÓN AUTOMÁTICA
+   REANUDACIÓN AUTOMÁTICA (CORREGIDA)
 ================================ */
 (function resumeIfWaiting() {
   if (DEV_MODE) return;
 
   const last = localStorage.getItem(BLOCK_KEY);
-  const waiting = localStorage.getItem(WAITING_KEY);
 
-  if (last && waiting && Date.now() - Number(last) < WEEK_MS) {
+  // 🔴 AJUSTE CLAVE:
+  // Si hay bloqueo activo y NO pasó la semana,
+  // el mensaje se muestra SIEMPRE al entrar.
+  if (last && Date.now() - Number(last) < WEEK_MS) {
     showWeeklyBlockFlash();
   }
 
