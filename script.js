@@ -112,9 +112,6 @@ function showWeeklyBlockFlash() {
 
   const last = localStorage.getItem(BLOCK_KEY);
 
-  // 🔴 AJUSTE CLAVE:
-  // Si hay bloqueo activo y NO pasó la semana,
-  // el mensaje se muestra SIEMPRE al entrar.
   if (last && Date.now() - Number(last) < WEEK_MS) {
     showWeeklyBlockFlash();
   }
@@ -131,7 +128,12 @@ function showWeeklyBlockFlash() {
   weeklyIndex = saved.weeklyIndex;
   weeklyScores = saved.weeklyScores || [];
 
-  showSection(saved.lastSection || "start");
+  // 🔒 FIX 1: nunca reanudar weekly si el bloqueo sigue activo
+  if (last && Date.now() - Number(last) < WEEK_MS && saved.lastSection === "weekly") {
+    showSection("results");
+  } else {
+    showSection(saved.lastSection || "start");
+  }
 
   if (saved.lastSection === "test") {
     showQuestion();
@@ -158,9 +160,6 @@ function weeklyWithDonation() {
       showWeeklyBlockFlash();
       return;
     }
-
-    localStorage.setItem(BLOCK_KEY, Date.now());
-    localStorage.removeItem(WAITING_KEY);
   }
 
   startWeekly();
@@ -228,6 +227,12 @@ function saveWeekly() {
 
   localStorage.setItem("humanometro_semanal", JSON.stringify(history));
   weeklySaved.classList.remove("hidden");
+
+  // 🔒 FIX 2: consolidar bloqueo al finalizar el recorrido semanal
+  if (!DEV_MODE) {
+    localStorage.setItem(BLOCK_KEY, Date.now());
+    localStorage.removeItem(WAITING_KEY);
+  }
 }
 
 /* ===============================
