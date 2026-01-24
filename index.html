@@ -5,6 +5,15 @@
   <title>HUMANÓMETRO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWPMQM4ZZ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QWPMQM4ZZ7');
+  </script>
+
   <!-- Open Graph / Compartir -->
   <meta property="og:title" content="Humanómetro®">
   <meta property="og:description" content="Una herramienta reflexiva donde te observás a vos en coherencia, emoción y humanidad en el tiempo. No juzga, solo te muestra.">
@@ -123,7 +132,6 @@
     <p id="weeklyText" class="weekly-result-text"></p>
     <p id="weeklyAdvice" class="legal weekly-result-text"></p>
 
-    <!-- 🔒 PRIMER BLOQUEO (CORREGIDO) -->
     <button class="premium spaced" onclick="weeklyWithDonation()">Volvé pronto</button>
 
     <p id="weeklySaved" class="legal hidden">
@@ -156,4 +164,4 @@
 <script src="bloqueos.js"></script>
 
 </body>
-</html>
+    </html>
