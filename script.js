@@ -105,19 +105,16 @@ function showWeeklyBlockFlash() {
 }
 
 /* ===============================
-   REANUDACIÓN AUTOMÁTICA (CORREGIDA)
+   REANUDACIÓN AUTOMÁTICA
 ================================ */
 (function resumeIfWaiting() {
   if (DEV_MODE) return;
 
-  const last = localStorage.getItem(BLOCK_KEY);
-
-  if (last && Date.now() - Number(last) < WEEK_MS) {
-    showWeeklyBlockFlash();
-  }
-
   const saved = loadState();
   if (!saved) return;
+
+  const last = localStorage.getItem(BLOCK_KEY);
+  const locked = last && Date.now() - Number(last) < WEEK_MS;
 
   mode = saved.mode;
   currentModule = saved.currentModule;
@@ -128,12 +125,13 @@ function showWeeklyBlockFlash() {
   weeklyIndex = saved.weeklyIndex;
   weeklyScores = saved.weeklyScores || [];
 
-  // 🔒 FIX 1: nunca reanudar weekly si el bloqueo sigue activo
-  if (last && Date.now() - Number(last) < WEEK_MS && saved.lastSection === "weekly") {
+  if (locked && saved.lastSection === "weekly") {
+    showWeeklyBlockFlash();
     showSection("results");
-  } else {
-    showSection(saved.lastSection || "start");
+    return;
   }
+
+  showSection(saved.lastSection || "start");
 
   if (saved.lastSection === "test") {
     showQuestion();
@@ -153,7 +151,6 @@ function showWeeklyBlockFlash() {
 function weeklyWithDonation() {
   if (!DEV_MODE) {
     const last = localStorage.getItem(BLOCK_KEY);
-
     if (last && Date.now() - Number(last) < WEEK_MS) {
       localStorage.setItem(WAITING_KEY, "1");
       localStorage.setItem(LAST_SECTION_KEY, "results");
@@ -161,7 +158,6 @@ function weeklyWithDonation() {
       return;
     }
   }
-
   startWeekly();
 }
 
@@ -228,7 +224,6 @@ function saveWeekly() {
   localStorage.setItem("humanometro_semanal", JSON.stringify(history));
   weeklySaved.classList.remove("hidden");
 
-  // 🔒 FIX 2: consolidar bloqueo al finalizar el recorrido semanal
   if (!DEV_MODE) {
     localStorage.setItem(BLOCK_KEY, Date.now());
     localStorage.removeItem(WAITING_KEY);
@@ -426,4 +421,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+   }
