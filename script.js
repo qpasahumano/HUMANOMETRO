@@ -93,6 +93,9 @@ const BLOCK_KEY = "hm_v1_weekly_last";
 const WAITING_KEY = "hm_v1_waiting";
 const LAST_SECTION_KEY = "hm_v1_last_section";
 
+const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
+const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
+
 /* ===============================
    DESTELLO BLOQUEO
 ================================ */
@@ -125,7 +128,6 @@ function showWeeklyBlockFlash() {
   weeklyIndex = saved.weeklyIndex || 0;
   weeklyScores = saved.weeklyScores || [];
 
-  /* 🔒 CORRECCIÓN 1: si el test ya terminó, ir directo a resultados */
   if (modules.length && currentModule >= modules.length) {
     showResults();
     return;
@@ -156,8 +158,8 @@ function showWeeklyBlockFlash() {
 ================================ */
 function weeklyWithDonation() {
   if (!DEV_MODE) {
-    const last = localStorage.getItem(BLOCK_KEY);
-    if (last && Date.now() - Number(last) < WEEK_MS) {
+    const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
+    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
       localStorage.setItem(WAITING_KEY, "1");
       localStorage.setItem(LAST_SECTION_KEY, "results");
       showWeeklyBlockFlash();
@@ -243,6 +245,7 @@ function saveWeekly() {
 
   if (!DEV_MODE) {
     localStorage.setItem(BLOCK_KEY, Date.now());
+    localStorage.setItem(BLOCK_KEY_RECORRIDO_V1, Date.now());
     localStorage.removeItem(WAITING_KEY);
   }
 }
@@ -430,6 +433,14 @@ function updateThermometer() {
    NAVEGACIÓN
 ================================ */
 function restart() {
+  if (!DEV_MODE) {
+    const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
+    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
+      showWeeklyBlockFlash();
+      return;
+    }
+    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
+  }
   clearState();
   showSection("start");
 }
