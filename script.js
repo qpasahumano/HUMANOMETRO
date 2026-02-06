@@ -119,11 +119,17 @@ function showWeeklyBlockFlash() {
   mode = saved.mode;
   currentModule = saved.currentModule;
   currentQuestion = saved.currentQuestion;
-  modules = saved.modules;
-  scores = saved.scores;
-  responseProfile = saved.responseProfile;
-  weeklyIndex = saved.weeklyIndex;
+  modules = saved.modules || [];
+  scores = saved.scores || {};
+  responseProfile = saved.responseProfile || responseProfile;
+  weeklyIndex = saved.weeklyIndex || 0;
   weeklyScores = saved.weeklyScores || [];
+
+  /* 🔒 CORRECCIÓN 1: si el test ya terminó, ir directo a resultados */
+  if (modules.length && currentModule >= modules.length) {
+    showResults();
+    return;
+  }
 
   if (locked && saved.lastSection === "weekly") {
     showWeeklyBlockFlash();
@@ -161,10 +167,21 @@ function weeklyWithDonation() {
   startWeekly();
 }
 
+/* 🔒 CORRECCIÓN 2: continuidad semanal real (no reinicia) */
 function startWeekly() {
-  weeklyIndex = 0;
-  weeklyScores = [];
-  weeklyThermoFill.style.width = "0%";
+  const saved = loadState();
+
+  if (saved && Array.isArray(saved.weeklyScores)) {
+    weeklyScores = saved.weeklyScores;
+    weeklyIndex = saved.weeklyIndex;
+  } else {
+    weeklyScores = [];
+    weeklyIndex = 0;
+  }
+
+  weeklyThermoFill.style.width =
+    Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
+
   weeklySaved.classList.add("hidden");
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
@@ -278,6 +295,12 @@ function startTest(isPremium) {
     modules = saved.modules;
     scores = saved.scores;
     responseProfile = saved.responseProfile;
+
+    if (currentModule >= modules.length) {
+      showResults();
+      return;
+    }
+
     showSection(saved.lastSection || "test");
     showQuestion();
     updateThermometer();
@@ -421,4 +444,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-   }
+}
