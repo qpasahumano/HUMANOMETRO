@@ -11,19 +11,24 @@
 
 <section id="start">
 <h1>HUMANÓMETRO<br>v.2 ®</h1>
+
 <p>
 Humanómetro no se recorre de una sola vez.<br>
-Este volumen continúa tu proceso humano de forma semanal y consecutiva.
+Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+La humanidad se construye en movimiento, no en velocidad.
 </p>
+
 <button onclick="startV2()">Continuar seguimiento</button>
-<p id="block2Counter" class="legal"></p>
 </section>
 
 <section id="test" class="hidden">
 <h2 id="weekTitle"></h2>
+
 <p id="questionText"></p>
 <small id="questionMeasure"></small>
+
 <div id="thermometer"><div id="thermoFill"></div></div>
+
 <div class="answers">
 <button onclick="answer(2)">Sí</button>
 <button onclick="answer(1)">A veces</button>
@@ -44,7 +49,7 @@ Este volumen continúa tu proceso humano de forma semanal y consecutiva.
 <section id="monthlyResult" class="hidden">
 <h2>Tu humanidad en movimiento</h2>
 <button onclick="activateBlock3()">Mirar tu reflejo</button>
-<p id="block3Counter" class="legal"></p>
+<p id="counterBlock3" class="legal"></p>
 </section>
 
 <section id="mirrorIntro" class="hidden">
@@ -59,6 +64,7 @@ Refleja lo que estás haciendo con lo que sentís.
 <section id="mirrorTest" class="hidden">
 <div id="mirrorEmoji">⬤</div>
 <p id="mirrorQuestion"></p>
+
 <div class="answers">
 <button onclick="answerMirror(2)">MUCHO</button>
 <button onclick="answerMirror(1)">POCO</button>
