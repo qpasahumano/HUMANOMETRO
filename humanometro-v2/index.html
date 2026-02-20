@@ -1,86 +1,155 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>HUMANÓMETRO v.2</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>HUMANÓMETRO v.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<main id="app">
 
 <section id="start">
-<h1>HUMANÓMETRO<br>v.2 ®</h1>
-
-<p>
-Humanómetro no se recorre de una sola vez.<br>
-Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-La humanidad se construye en movimiento, no en velocidad.
-</p>
-
-<button onclick="startV2()">Continuar seguimiento</button>
+  <h1 class="brand">
+    <span class="brand-main">HUMANÓMETRO</span><br>
+    <span class="brand-meta">v.2 ®</span>
+  </h1>
+  <p class="intro">
+    Humanómetro no se recorre de una sola vez.<br><br>
+    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+    La humanidad se construye en movimiento, no en velocidad.
+  </p>
+  <button class="primary" onclick="startV2()">Continuar seguimiento</button>
 </section>
 
 <section id="test" class="hidden">
-<h2 id="weekTitle"></h2>
-
-<p id="questionText"></p>
-<small id="questionMeasure"></small>
-
-<div id="thermometer"><div id="thermoFill"></div></div>
-
-<div class="answers">
-<button onclick="answer(2)">Sí</button>
-<button onclick="answer(1)">A veces</button>
-<button onclick="answer(0)">No</button>
-</div>
+  <h2 id="weekTitle" class="neon-title"></h2>
+  <div class="thermo"><div id="thermoFill"></div></div>
+  <p id="questionText" class="question"></p>
+  <small id="questionMeasure" class="legal"></small>
+  <div class="answers">
+    <button onclick="answer(2)">Sí</button>
+    <button onclick="answer(1)">A veces</button>
+    <button onclick="answer(0)">No</button>
+  </div>
 </section>
 
 <section id="weeklyResult" class="hidden">
-<h2>Lectura semanal</h2>
-<div id="weeklySymbol"></div>
-<div id="weeklyTextWrap" class="hidden">
-<p id="weeklyText"></p>
-<p id="weeklyAdvice"></p>
-</div>
-<button onclick="nextWeek()">Continuar</button>
+  <h2 class="neon-title">Lectura semanal</h2>
+  <div id="weeklySymbol" class="symbol"></div>
+  <div id="weeklyTextWrap" class="result-text hidden">
+    <p id="weeklyText"></p>
+    <p id="weeklyAdvice" class="legal"></p>
+    <button class="primary" onclick="nextWeek()">Continuar</button>
+  </div>
 </section>
 
 <section id="monthlyResult" class="hidden">
-<h2>Tu humanidad en movimiento</h2>
-<button onclick="activateBlock3()">Mirar tu reflejo</button>
-<p id="counterBlock3" class="legal"></p>
+  <h2 class="neon-title">Tu humanidad en movimiento</h2>
+  <div class="result-row">
+    <div class="vertical-thermo">
+      <div id="monthlyFill" class="gradient"></div>
+    </div>
+    <div id="monthlyTextWrap" class="result-text hidden">
+      <div id="monthlySymbol" class="symbol"></div>
+      <p id="monthlyLongText"></p>
+      <p id="monthlyText"></p>
+      <button class="primary" onclick="gateMirrorIntro()">Mirar tu reflejo</button>
+    </div>
+  </div>
 </section>
 
 <section id="mirrorIntro" class="hidden">
-<h2>EL ESPEJO</h2>
-<p>
-No muestra lo que sos.<br>
-Refleja lo que estás haciendo con lo que sentís.
-</p>
-<button onclick="startMirror()">Mirar tu reflejo</button>
+  <h2 class="neon-title">EL ESPEJO</h2>
+  <p class="intro">
+    No muestra lo que sos.<br>
+    Refleja lo que estás haciendo con lo que sentís.
+  </p>
+  <button class="primary" onclick="startMirror()">Mirar tu reflejo</button>
 </section>
 
 <section id="mirrorTest" class="hidden">
-<div id="mirrorEmoji">⬤</div>
-<p id="mirrorQuestion"></p>
-
-<div class="answers">
-<button onclick="answerMirror(2)">MUCHO</button>
-<button onclick="answerMirror(1)">POCO</button>
-<button onclick="answerMirror(0)">NADA</button>
-<button onclick="answerMirror(null)">NINGUNA</button>
-</div>
+  <div id="mirrorEmoji" class="mirror-symbol">⬤</div>
+  <p id="mirrorQuestion" class="question"></p>
+  <div class="answers">
+    <button onclick="answerMirror(3)">MUCHO</button>
+    <button onclick="answerMirror(2)">POCO</button>
+    <button onclick="answerMirror(1)">NADA</button>
+    <button onclick="answerMirror(null)">NINGUNA</button>
+  </div>
 </section>
 
 <section id="finalResult" class="hidden">
-<div id="finalFill"></div>
-<div id="finalTextWrap" class="hidden">
-<h3 id="finalState"></h3>
-<p id="finalHumanText"></p>
-</div>
+  <div class="result-row">
+    <div class="vertical-thermo">
+      <div id="finalFill" class="gradient"></div>
+    </div>
+    <div id="finalTextWrap" class="result-text hidden">
+
+      <div class="donation-wrap" style="margin:14px 0 18px; text-align:center;">
+        <button
+          class="donation-heart"
+          onclick="window.open('https://mpago.la/2EFaaLx','_blank')"
+          title="Aporte voluntario"
+        >💜</button>
+        <div class="legal small" style="margin-top:6px;">
+          Aporte voluntario para sostener el proyecto
+        </div>
+      </div>
+
+      <p id="finalState" class="legal small state-led"></p>
+
+      <div class="glass-sheet">
+        <div class="scroll-sheet">
+          <p id="finalHumanText" class="legal"></p>
+          <p class="legal small" style="margin-top:18px;">
+            Cuando necesites volver a medir tu humanidad,<br>
+            Humanómetro está para eso.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass-sheet" style="margin-top:22px; opacity:.88;">
+        <div class="scroll-sheet" style="max-height:38vh;">
+          <p class="legal small">
+            <strong>¿Cómo se obtuvo esta devolución?</strong><br><br>
+
+            La devolución final de Humanómetro surge de dos lecturas combinadas:<br><br>
+
+            <strong>1. Lectura cuantitativa:</strong><br>
+            Se registra la intensidad de tus respuestas a lo largo del mes,
+            sin clasificarlas como buenas o malas, sino como niveles de implicación humana.<br><br>
+
+            <strong>2. Lectura semántica cruzada:</strong><br>
+            Se contrasta lo que expresaste en preguntas generales
+            con cómo respondiste ante situaciones emocionales concretas del bloque Espejo.<br><br>
+
+            Cuando predominan respuestas como “nada”, “ninguna” o “poco”
+            frente a situaciones de dolor ajeno o desconexión,
+            eso influye directamente en la lectura final,
+            incluso si el promedio numérico es más alto.<br><br>
+
+            Las preguntas sin experiencia vivida (“ninguna”)
+            no penalizan, pero sí delimitan el campo de medición.<br><br>
+
+            El resultado no es un juicio:
+            es un reflejo del modo en que tu humanidad estuvo operando
+            durante este período.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<script src="script-v2.js"></script>
+</main>
+
+<script src="script.js"></script>
+<script src="bloqueos.js"></script>
+<script src="estado-v2.js"></script>
+
 </body>
 </html>
