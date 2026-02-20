@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>HUMANÓMETRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -33,10 +33,11 @@ Humanómetro ON
 </section>
 
 <section id="test" class="hidden">
-<h2 id="areaTitle"></h2>
+<h2 id="areaTitle" class="led-title"></h2>
 <div id="thermometer"><div id="thermoFill"></div></div>
 <p id="questionText"></p>
-<small id="questionNote"></small>
+<small id="questionNote" class="legal"></small>
+
 <div class="answers">
 <button onclick="answer(2)">Sí</button>
 <button onclick="answer(1)">Tal vez / A veces</button>
@@ -48,16 +49,29 @@ Humanómetro ON
 <h2>Resultado Humanómetro</h2>
 <div id="circles"></div>
 <h3 id="globalResult"></h3>
+
 <h3>Lectura humana</h3>
 <ul id="tips"></ul>
-<div id="weeklyAccess"></div>
+
+<div id="weeklyAccess">
+<button onclick="startWeekly()">Recorrido mensual</button>
+</div>
 </section>
 
 <section id="weekly" class="hidden">
 <h2>Primera semana</h2>
-<p>¿Cómo fue tu semana?</p>
-<div id="weeklyThermometer"><div id="weeklyThermoFill"></div></div>
+
+<p class="weekly-intro">
+¿Cómo fue tu semana?<br>
+Respondé con sinceridad para reconocer tu tendencia humana actual.
+</p>
+
+<div id="weeklyThermometer" class="weekly-thermo">
+<div id="weeklyThermoFill"></div>
+</div>
+
 <p id="weeklyQuestion"></p>
+
 <div class="answers">
 <button onclick="weeklyAnswer(2)">Sí</button>
 <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
@@ -66,10 +80,15 @@ Humanómetro ON
 </section>
 
 <section id="weeklyResultScreen" class="hidden">
-<div>⚖️</div>
-<p id="weeklyText"></p>
-<p id="weeklyAdvice"></p>
+<div class="balance-wrap">⚖️</div>
+<p id="weeklyText" class="weekly-result-text"></p>
+<p id="weeklyAdvice" class="legal weekly-result-text"></p>
+
 <button onclick="goToV2()">Volvé pronto</button>
+
+<p id="weeklySaved" class="legal hidden">
+✔ Conteo semanal guardado correctamente.
+</p>
 </section>
 
 <section id="privacy" class="hidden">
@@ -84,7 +103,6 @@ Es una herramienta reflexiva.
 </section>
 
 </main>
-
 <script src="script.js"></script>
 </body>
 </html>
