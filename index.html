@@ -1,110 +1,167 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<title>HUMANÓMETRO</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>HUMANÓMETRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWPMQM4ZZ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QWPMQM4ZZ7');
+  </script>
+
+  <!-- Open Graph / Compartir -->
+  <meta property="og:title" content="Humanómetro®">
+  <meta property="og:description" content="Una herramienta reflexiva donde te observás a vos en coherencia, emoción y humanidad en el tiempo. No juzga, solo te muestra.">
+  <meta property="og:image" content="https://qpasahumano.github.io/HUMANOMETRO/activos/humanometro_og_1200x630.png">
+  <meta property="og:image:secure_url" content="https://qpasahumano.github.io/HUMANOMETRO/activos/humanometro_og_1200x630.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://qpasahumano.github.io/HUMANOMETRO/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
+
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 <main id="app">
 
-<section id="start">
-<h1 class="brand">
-<span class="brand-main">HUMANÓMETRO</span><br>
-<span class="brand-meta">v.1 ®</span>
-</h1>
+  <!-- INICIO -->
+  <section id="start">
+    <h1 class="brand">
+      <span class="brand-main">HUMANÓMETRO</span><br>
+      <span class="brand-meta">v.1 ®</span>
+    </h1>
 
-<p class="intro">
-Esta herramienta no mide perfección ni juicio.<br>
-Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
-</p>
+    <p class="intro">
+      Esta herramienta no mide perfección ni juicio.<br>
+      Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
+    </p>
 
-<button class="power-on" onclick="startTest()">
-Humanómetro ON
-</button>
+    <button class="premium power-on" onclick="startTest(true)">
+      Humanómetro <span class="on-led">ON</span>
+    </button>
 
-<div class="sello-wrap">
-<img src="./activos/logo-hm.png" alt="Sello Humanómetro">
-</div>
+    <!-- SELLO HUMANÓMETRO -->
+    <div class="sello-wrap">
+      <img
+        src="./activos/logo-hm.png"
+        alt="Sello Humanómetro"
+        class="sello-humanometro"
+      >
+    </div>
 
-<p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-</section>
+    <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
+  </section>
 
-<section id="test" class="hidden">
-<h2 id="areaTitle" class="led-title"></h2>
-<div id="thermometer"><div id="thermoFill"></div></div>
-<p id="questionText"></p>
-<small id="questionNote" class="legal"></small>
+  <!-- TEST -->
+  <section id="test" class="hidden">
+    <h2 id="areaTitle" class="led-title"></h2>
 
-<div class="answers">
-<button onclick="answer(2)">Sí</button>
-<button onclick="answer(1)">Tal vez / A veces</button>
-<button onclick="answer(0)">No</button>
-</div>
-</section>
+    <div id="thermometer">
+      <div id="thermoFill"></div>
+    </div>
 
-<section id="results" class="hidden">
-<h2>Resultado Humanómetro</h2>
-<div id="circles"></div>
-<h3 id="globalResult"></h3>
+    <p id="questionText"></p>
+    <small id="questionNote" class="legal"></small>
 
-<h3>Lectura humana</h3>
-<ul id="tips"></ul>
+    <div class="answers">
+      <button onclick="answer(2)">Sí</button>
+      <button onclick="answer(1)">Tal vez / A veces</button>
+      <button onclick="answer(0)">No</button>
+    </div>
+  </section>
 
-<div id="weeklyAccess">
-<button onclick="activateBlock1()">Recorrido mensual</button>
-<p id="counterBlock1" class="legal"></p>
-</div>
-</section>
+  <!-- RESULTADOS -->
+  <section id="results" class="hidden">
+    <h2>Resultado Humanómetro</h2>
 
-<section id="weekly" class="hidden">
-<h2>Primera semana</h2>
+    <div id="circles"></div>
+    <h3 id="globalResult"></h3>
 
-<p class="weekly-intro">
-¿Cómo fue tu semana?<br>
-Respondé con sinceridad para reconocer tu tendencia humana actual.
-</p>
+    <h3>Lectura humana</h3>
+    <ul id="tips"></ul>
 
-<div id="weeklyThermometer" class="weekly-thermo">
-<div id="weeklyThermoFill"></div>
-</div>
+    <div id="weeklyAccess"></div>
+  </section>
 
-<p id="weeklyQuestion"></p>
+  <!-- PRIMERA SEMANA – PREGUNTAS -->
+  <section id="weekly" class="hidden">
+    <h2 id="weeklyTitle" class="led-title">Primera semana</h2>
 
-<div class="answers">
-<button onclick="weeklyAnswer(2)">Sí</button>
-<button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-<button onclick="weeklyAnswer(0)">No</button>
-</div>
-</section>
+    <p class="weekly-intro">
+      ¿Cómo fue tu semana?<br>
+      Respondé con sinceridad para reconocer tu tendencia humana actual.
+    </p>
 
-<section id="weeklyResultScreen" class="hidden">
-<div class="balance-wrap">⚖️</div>
-<p id="weeklyText" class="weekly-result-text"></p>
-<p id="weeklyAdvice" class="legal weekly-result-text"></p>
+    <div id="weeklyThermometer" class="weekly-thermo">
+      <div id="weeklyThermoFill"></div>
+    </div>
 
-<button onclick="activateBlock2()">Volvé pronto</button>
-<p id="counterBlock2" class="legal"></p>
+    <p id="weeklyQuestion"></p>
 
-<p id="weeklySaved" class="legal hidden">
-✔ Conteo semanal guardado correctamente.
-</p>
-</section>
+    <div class="answers">
+      <button onclick="weeklyAnswer(2)">Sí</button>
+      <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
+      <button onclick="weeklyAnswer(0)">No</button>
+    </div>
+  </section>
 
-<section id="privacy" class="hidden">
-<h2>Privacidad y uso</h2>
-<p>
-Humanómetro no recopila datos personales.<br>
-Todo ocurre localmente.<br>
-No es diagnóstico médico ni psicológico.<br>
-Es una herramienta reflexiva.
-</p>
-<button onclick="restart()">Volver</button>
-</section>
+  <!-- PRIMERA SEMANA – RESULTADO -->
+  <section id="weeklyResultScreen" class="hidden">
+    <div class="balance-wrap">
+      ⚖️
+    </div>
+
+    <p id="weeklyText" class="weekly-result-text"></p>
+    <p id="weeklyAdvice" class="legal weekly-result-text"></p>
+
+    <button class="premium spaced" onclick="weeklyWithDonation()">Volvé pronto</button>
+
+    <p id="weeklySaved" class="legal hidden">
+      ✔ Conteo semanal guardado correctamente.
+    </p>
+  </section>
+
+  <!-- PRIVACIDAD -->
+  <section id="privacy" class="hidden">
+    <h2>Privacidad y uso</h2>
+    <p>
+      Humanómetro no recopila datos personales.<br>
+      Todo ocurre localmente.<br>
+      No es diagnóstico médico ni psicológico.<br>
+      Es una herramienta reflexiva.
+    </p>
+
+    <button onclick="restart()">Volver</button>
+  </section>
+
+  <!-- 🔒 TEXTO PRIMER BLOQUEO -->
+  <div id="weeklyBlockFlash" class="hidden weekly-block-flash">
+    No seas ansioso.<br>
+    Tiene que pasar una semana.
+  </div>
 
 </main>
+
 <script src="script.js"></script>
+<script src="bloqueos.js"></script>
+
 </body>
 </html>
