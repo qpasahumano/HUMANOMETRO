@@ -18,11 +18,35 @@ const weeklyAdvice = document.getElementById("weeklyAdvice");
 const weeklySaved = document.getElementById("weeklySaved");
 
 /* ===============================
-   BLOQUEO CONFIG
+   ESTADO PERSISTENTE
 ================================ */
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const BLOCK_RECorrido = "hm_block_recorrido";
-const BLOCK_VOLVE = "hm_block_volve";
+const HM_STATE_KEY = "hm_v1_state";
+
+function saveState(extra = {}) {
+  const state = {
+    currentModule,
+    currentQuestion,
+    modules,
+    scores,
+    responseProfile,
+    weeklyIndex,
+    weeklyScores,
+    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
+    timestamp: Date.now(),
+    ...extra
+  };
+  localStorage.setItem(HM_STATE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  const raw = localStorage.getItem(HM_STATE_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+function clearState() {
+  localStorage.removeItem(HM_STATE_KEY);
+}
 
 /* ===============================
    VARIABLES PRINCIPALES
@@ -33,14 +57,9 @@ let modules = [];
 let scores = {};
 
 /* ===============================
-   PERFIL RESPUESTAS
+   REGISTRO PASIVO DE RESPUESTAS
 ================================ */
-let responseProfile = {
-  no: 0,
-  maybe: 0,
-  yes: 0,
-  total: 0
-};
+let responseProfile = { no: 0, maybe: 0, yes: 0, total: 0 };
 
 /* ===============================
    CONTEO SEMANAL
@@ -53,6 +72,12 @@ const WEEKLY_QUESTIONS = [
   "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
   "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
 ];
+
+/* ===============================
+   BLOQUEO SEMANAL
+================================ */
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const BLOCK_KEY = "hm_v1_weekly_last";
 
 /* ===============================
    TEST PRINCIPAL
@@ -82,6 +107,11 @@ const BASE_MODULES = [
     { q: "¿Reconociste a los animales como seres sensibles?", n: "Empatía." },
     { q: "¿Cuidaste el entorno donde vivís?", n: "Conciencia cotidiana." },
     { q: "¿Reduciste tu impacto cuando estuvo a tu alcance?", n: "Intención posible." }
+  ]},
+  { name: "Conciencia Profunda", questions: [
+    { q: "¿Tomaste decisiones desde la conciencia?", n: "Atención interna." },
+    { q: "¿Fuiste coherente entre pensamiento y acción?", n: "Alineación." },
+    { q: "¿Asumiste responsabilidad por tu impacto?", n: "Madurez emocional." }
   ]}
 ];
 
@@ -89,11 +119,9 @@ function startTest() {
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
   scores = {};
   modules.forEach(m => scores[m.name] = 0);
-
   currentModule = 0;
   currentQuestion = 0;
   responseProfile = { no:0, maybe:0, yes:0, total:0 };
-
   showSection("test");
   showQuestion();
   updateThermometer();
@@ -132,6 +160,7 @@ function showResults() {
   showSection("results");
   circles.innerHTML = "";
   tips.innerHTML = "";
+  weeklyAccess.innerHTML = `<button onclick="startWeekly()">Recorrido mensual</button>`;
 
   let total = 0;
 
@@ -153,7 +182,7 @@ function showResults() {
 }
 
 /* ===============================
-   DEVOLUCIÓN
+   DEVOLUCIONES
 ================================ */
 function commonFeedback(avg) {
   if (avg < 40)
@@ -164,21 +193,14 @@ function commonFeedback(avg) {
 }
 
 /* ===============================
-   RECORRIDO MENSUAL (BLOQUEO 7 DÍAS)
+   SEMANA
 ================================ */
-function weeklyWithDonation() {
-  const last = localStorage.getItem(BLOCK_RECorrido);
-  if (last && Date.now() - Number(last) < WEEK_MS) {
-    alert("No seas ansioso. Todavía no pasó la semana.");
-    return;
-  }
-  localStorage.setItem(BLOCK_RECorrido, Date.now());
-  startWeekly();
-}
-
 function startWeekly() {
-  weeklyIndex = 0;
+  const last = localStorage.getItem(BLOCK_KEY);
+  if (last && Date.now() - Number(last) < WEEK_MS) return;
+
   weeklyScores = [];
+  weeklyIndex = 0;
   weeklyThermoFill.style.width = "0%";
   showSection("weekly");
   weeklyQuestion.innerText = WEEKLY_QUESTIONS[0];
@@ -199,7 +221,7 @@ function weeklyAnswer(value) {
 }
 
 function showWeeklyResultScreen() {
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / WEEKLY_QUESTIONS.length;
+  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
   if (avg < 0.8) {
     weeklyText.innerText =
@@ -218,51 +240,38 @@ function showWeeklyResultScreen() {
       "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
   }
 
-  saveWeekly();
+  localStorage.setItem(BLOCK_KEY, Date.now());
   showSection("weeklyResultScreen");
 }
 
-function saveWeekly() {
-  const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
-  const avg = weeklyScores.reduce((a,b)=>a+b,0) / WEEKLY_QUESTIONS.length;
+/* ===============================
+   TERMÓMETRO
+================================ */
+function updateThermometer() {
+  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+  const answered =
+    modules.slice(0, currentModule).reduce((s, m) => s + m.questions.length, 0) +
+    currentQuestion;
 
-  history.push({
-    date: new Date().toISOString().slice(0,10),
-    score: avg
-  });
-
-  localStorage.setItem("humanometro_semanal", JSON.stringify(history));
-  weeklySaved.classList.remove("hidden");
+  thermoFill.style.width = Math.round((answered / totalQ) * 100) + "%";
 }
 
 /* ===============================
-   UTIL
+   NAVEGACIÓN
 ================================ */
-function updateThermometer() {
-  const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-  const answered =
-    modules.slice(0,currentModule).reduce((s,m)=>s+m.questions.length,0)
-    + currentQuestion;
-
-  thermoFill.style.width =
-    Math.round((answered/totalQ)*100)+"%";
+function restart() {
+  clearState();
+  showSection("start");
 }
 
-function restart(){ showSection("start"); }
-function showPrivacy(){ showSection("privacy"); }
+function showPrivacy() { showSection("privacy"); }
 
-function showSection(id){
+function showSection(id) {
   ["start","test","results","weekly","weeklyResultScreen","privacy"]
-  .forEach(s=>document.getElementById(s).classList.add("hidden"));
+    .forEach(s => document.getElementById(s).classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-function goToV2(){
-  const last = localStorage.getItem(BLOCK_VOLVE);
-  if (last && Date.now() - Number(last) < WEEK_MS) {
-    alert("Todavía no pasó la semana.");
-    return;
-  }
-  localStorage.setItem(BLOCK_VOLVE, Date.now());
-  window.location.href="./humanometro-v2/";
+function goToV2() {
+  window.location.href = "./humanometro-v2/";
 }
