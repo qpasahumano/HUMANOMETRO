@@ -8,22 +8,27 @@
 </head>
 
 <body>
-<main id="app">
 
 <section id="start">
-<h1>HUMANÓMETRO v.2 ®</h1>
+<h1>HUMANÓMETRO<br>v.2 ®</h1>
+
 <p>
-Este volumen continúa tu proceso humano.<br>
-La humanidad se construye en movimiento.
+Humanómetro no se recorre de una sola vez.<br>
+Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
+La humanidad se construye en movimiento, no en velocidad.
 </p>
+
 <button onclick="startV2()">Continuar seguimiento</button>
 </section>
 
 <section id="test" class="hidden">
 <h2 id="weekTitle"></h2>
-<div class="thermo"><div id="thermoFill"></div></div>
+
 <p id="questionText"></p>
 <small id="questionMeasure"></small>
+
+<div id="thermometer"><div id="thermoFill"></div></div>
+
 <div class="answers">
 <button onclick="answer(2)">Sí</button>
 <button onclick="answer(1)">A veces</button>
@@ -32,18 +37,17 @@ La humanidad se construye en movimiento.
 </section>
 
 <section id="weeklyResult" class="hidden">
+<h2>Lectura semanal</h2>
 <div id="weeklySymbol"></div>
+<div id="weeklyTextWrap" class="hidden">
 <p id="weeklyText"></p>
 <p id="weeklyAdvice"></p>
+</div>
 <button onclick="nextWeek()">Continuar</button>
 </section>
 
 <section id="monthlyResult" class="hidden">
 <h2>Tu humanidad en movimiento</h2>
-<div class="vertical-thermo">
-<div id="monthlyFill"></div>
-</div>
-<p id="monthlyText"></p>
 <button onclick="openMirror()">Mirar tu reflejo</button>
 </section>
 
@@ -59,23 +63,22 @@ Refleja lo que estás haciendo con lo que sentís.
 <section id="mirrorTest" class="hidden">
 <div id="mirrorEmoji">⬤</div>
 <p id="mirrorQuestion"></p>
+
 <div class="answers">
-<button onclick="answerMirror(3)">MUCHO</button>
-<button onclick="answerMirror(2)">POCO</button>
-<button onclick="answerMirror(1)">NADA</button>
+<button onclick="answerMirror(2)">MUCHO</button>
+<button onclick="answerMirror(1)">POCO</button>
+<button onclick="answerMirror(0)">NADA</button>
 <button onclick="answerMirror(null)">NINGUNA</button>
 </div>
 </section>
 
 <section id="finalResult" class="hidden">
-<div class="vertical-thermo">
 <div id="finalFill"></div>
-</div>
-<p id="finalState"></p>
+<div id="finalTextWrap" class="hidden">
+<h3 id="finalState"></h3>
 <p id="finalHumanText"></p>
+</div>
 </section>
-
-</main>
 
 <script src="script-v2.js"></script>
 </body>
