@@ -1,231 +1,126 @@
 /* ===============================
-REFERENCIAS DOM
+SISTEMA DEFINITIVO BLINDADO V1
 ================================ */
 
-const areaTitle = document.getElementById("areaTitle");
-const questionText = document.getElementById("questionText");
-const questionNote = document.getElementById("questionNote");
-const thermoFill = document.getElementById("thermoFill");
-const circles = document.getElementById("circles");
-const tips = document.getElementById("tips");
-const globalResult = document.getElementById("globalResult");
-const weeklyQuestion = document.getElementById("weeklyQuestion");
-const weeklyThermoFill = document.getElementById("weeklyThermoFill");
-const weeklyText = document.getElementById("weeklyText");
-const weeklyAdvice = document.getElementById("weeklyAdvice");
-const weeklySaved = document.getElementById("weeklySaved");
+const BLOCK_DURATION = 7 * 24 * 60 * 60 * 1000;
+const SECRET = "HM_SIG_V1_2026";
 
-/* ===============================
-VARIABLES
-================================ */
+function now(){ return Date.now(); }
 
-let currentModule = 0;
-let currentQuestion = 0;
-let modules = [];
-let scores = {};
-
-let weeklyIndex = 0;
-let weeklyScores = [];
-
-/* ===============================
-PREGUNTAS SEMANALES
-================================ */
-
-const WEEKLY_QUESTIONS = [
-"Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
-"Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
-"Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
-];
-
-/* ===============================
-MÓDULOS BASE (SIN PREMIUM)
-================================ */
-
-const BASE_MODULES = [
-{ name: "Familia", questions: [
-{ q: "¿Estuviste emocionalmente presente con tu familia?", n: "Aquí se mide presencia, no perfección." },
-{ q: "¿Escuchaste sin juzgar?", n: "Se mide apertura." },
-{ q: "¿Expresaste afecto sin que te lo pidan?", n: "Se mide intención." }
-]},
-{ name: "Social", questions: [
-{ q: "¿Trataste a las personas con respeto?", n: "Se mide trato humano." },
-{ q: "¿Escuchaste opiniones distintas a la tuya?", n: "Se mide tolerancia." },
-{ q: "¿Actuaste con empatía en espacios públicos?", n: "Conciencia social." }
-]},
-{ name: "Amistad", questions: [
-{ q: "¿Estuviste presente para tus amistades?", n: "Presencia real." },
-{ q: "¿Cuidaste el vínculo aun sin coincidir?", n: "Cuidado del lazo." },
-{ q: "¿Escuchaste sin imponer tu visión?", n: "Respeto mutuo." }
-]},
-{ name: "Laboral", questions: [
-{ q: "¿Generaste buen clima laboral aun sin estar cómodo?", n: "Responsabilidad humana." },
-{ q: "¿Respetaste a tus compañeros?", n: "Trato consciente." },
-{ q: "¿Evitaste sobrecargar a otros?", n: "Conciencia colectiva." }
-]},
-{ name: "Planeta", questions: [
-{ q: "¿Reconociste a los animales como seres sensibles?", n: "Empatía." },
-{ q: "¿Cuidaste el entorno donde vivís?", n: "Conciencia cotidiana." },
-{ q: "¿Reduciste tu impacto cuando estuvo a tu alcance?", n: "Intención posible." }
-]}
-];
-
-/* ===============================
-TEST PRINCIPAL
-================================ */
-
-function startTest(){
-modules = JSON.parse(JSON.stringify(BASE_MODULES));
-scores = {};
-modules.forEach(m => scores[m.name] = 0);
-currentModule = 0;
-currentQuestion = 0;
-showSection("test");
-showQuestion();
-updateThermometer();
+function sign(data){
+return btoa(JSON.stringify(data)+SECRET);
 }
 
-function showQuestion(){
-const m = modules[currentModule];
-areaTitle.innerText = m.name;
-questionText.innerText = m.questions[currentQuestion].q;
-questionNote.innerText = m.questions[currentQuestion].n;
-}
-
-function answer(v){
-scores[modules[currentModule].name] += v;
-currentQuestion++;
-if(currentQuestion >= modules[currentModule].questions.length){
-currentQuestion = 0;
-currentModule++;
-}
-currentModule >= modules.length ? showResults() : showQuestion();
-updateThermometer();
-}
-
-/* ===============================
-RESULTADOS (TEXTO ORIGINAL)
-================================ */
-
-function showResults(){
-showSection("results");
-circles.innerHTML = "";
-tips.innerHTML = "";
-
-let total = 0;
-
-modules.forEach(m=>{
-const max = m.questions.length * 2;
-const p = Math.round(scores[m.name] / max * 100);
-total += p;
-
-circles.innerHTML += `
-<div class="circle ${p < 40 ? "low" : p < 70 ? "mid" : "high"}">
-<strong>${p}%</strong>
-<small>${m.name}</small>
-</div>`;
+function verify(data){
+return data.sig === sign({
+start:data.start,
+block1:data.block1,
+block2:data.block2,
+block3:data.block3,
+stage:data.stage
 });
-
-const avg = Math.round(total / modules.length);
-globalResult.innerText = "Humanidad global: " + avg + "%";
-tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
 }
 
-function commonFeedback(avg){
-if (avg < 40)
-return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
-if (avg < 70)
-return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
-return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
+function getCycle(){
+let c = JSON.parse(localStorage.getItem("hm_cycle") || "null");
+if(!c) return null;
+if(!verify(c)) {
+localStorage.removeItem("hm_cycle");
+return null;
+}
+return c;
 }
 
-/* ===============================
-SEMANA (GUARDADO SEMANAL SE MANTIENE)
-================================ */
-
-function startWeekly(){
-weeklyIndex = 0;
-weeklyScores = [];
-weeklyThermoFill.style.width = "0%";
-showSection("weekly");
-weeklyQuestion.innerText = WEEKLY_QUESTIONS[0];
-}
-
-function weeklyAnswer(value){
-weeklyScores.push(value);
-weeklyIndex++;
-weeklyThermoFill.style.width =
-Math.round((weeklyScores.length / 3) * 100) + "%";
-
-if(weeklyIndex >= 3){
-showWeeklyResultScreen();
-}else{
-weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-}
-}
-
-function showWeeklyResultScreen(){
-const avg = weeklyScores.reduce((a,b)=>a+b,0)/3;
-
-if (avg < 0.8){
-weeklyText.innerText =
-"Esta semana mostró una desconexión entre intención y acción.";
-weeklyAdvice.innerText =
-"Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
-}
-else if (avg < 1.5){
-weeklyText.innerText =
-"Tu humanidad estuvo presente, pero de forma fluctuante.";
-weeklyAdvice.innerText =
-"Sostener la atención consciente puede estabilizar tu respuesta emocional.";
-}
-else{
-weeklyText.innerText =
-"Mostraste coherencia humana y presencia consciente esta semana.";
-weeklyAdvice.innerText =
-"Continuar actuando desde la empatía refuerza tu equilibrio interno.";
-}
-
-saveWeekly();
-showSection("weeklyResultScreen");
-}
-
-function saveWeekly(){
-const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
-const avg = weeklyScores.reduce((a,b)=>a+b,0)/3;
-
-history.push({
-date: new Date().toISOString().slice(0,10),
-score: avg
+function setCycle(data){
+data.sig = sign({
+start:data.start,
+block1:data.block1,
+block2:data.block2,
+block3:data.block3,
+stage:data.stage
 });
-
-localStorage.setItem("humanometro_semanal", JSON.stringify(history));
-weeklySaved.classList.remove("hidden");
+localStorage.setItem("hm_cycle", JSON.stringify(data));
 }
 
-/* ===============================
-UTIL
-================================ */
-
-function showPrivacy(){ showSection("privacy"); }
-function restart(){ showSection("start"); }
-
-function showSection(id){
-["start","test","results","weekly","weeklyResultScreen","privacy"]
-.forEach(s=>document.getElementById(s)?.classList.add("hidden"));
-document.getElementById(id)?.classList.remove("hidden");
+function resetCycle(){
+localStorage.removeItem("hm_cycle");
 }
 
-function updateThermometer(){
-const totalQ = modules.reduce((s,m)=>s+m.questions.length,0);
-const answered =
-modules.slice(0,currentModule)
-.reduce((s,m)=>s+m.questions.length,0)
-+ currentQuestion;
+/* CONTADOR VISUAL */
 
-thermoFill.style.width =
-Math.round((answered/totalQ)*100)+"%";
+function daysRemaining(timestamp){
+let diff = BLOCK_DURATION - (now() - timestamp);
+if(diff <= 0) return 0;
+return Math.ceil(diff / (24*60*60*1000));
 }
 
-function goToV2(){
+function updateCounters(){
+const cycle = getCycle();
+if(!cycle) return;
+
+if(cycle.block1){
+let d = daysRemaining(cycle.block1);
+if(d>0) document.getElementById("block1Counter").innerText =
+"Disponible en "+d+" día(s)";
+}
+
+if(cycle.block2){
+let d = daysRemaining(cycle.block2);
+if(d>0) document.getElementById("block2Counter").innerText =
+"Disponible en "+d+" día(s)";
+}
+}
+
+setInterval(updateCounters,60000);
+
+/* BLOQUEO 1 */
+
+function activateBlock1(){
+
+let cycle = getCycle();
+
+if(!cycle){
+cycle = {
+start: now(),
+block1: now(),
+block2: null,
+block3: null,
+stage: 1
+};
+setCycle(cycle);
+startWeekly();
+return;
+}
+
+if(cycle.block1 && daysRemaining(cycle.block1)>0){
+alert("Debes esperar 7 días.");
+return;
+}
+
+cycle.block1 = now();
+cycle.stage = 1;
+setCycle(cycle);
+startWeekly();
+}
+
+/* BLOQUEO 2 */
+
+function activateBlock2(){
+
+let cycle = getCycle();
+if(!cycle || cycle.stage !== 1){
+alert("Orden incorrecto.");
+return;
+}
+
+if(weeklyScores.length !== 3){
+alert("Debes responder exactamente 3 preguntas.");
+return;
+}
+
+cycle.block2 = now();
+cycle.stage = 2;
+setCycle(cycle);
+
 window.location.href="./humanometro-v2/";
 }
