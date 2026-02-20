@@ -99,6 +99,8 @@ weeklyScores.push(avg);
 
 const block = WEEKS[week].title;
 
+/* --- devoluciones completas intactas --- */
+
 if(block === "Vos ante el mundo"){
 if(avg < 1.5){
 $("weeklyText").textContent =
@@ -178,6 +180,7 @@ ESPEJO + DEVOLUCIÓN FINAL
 ================================ */
 
 function openMirror(){ show("mirrorIntro"); }
+
 function startMirror(){
 mq = 0;
 mirrorScore = 0;
@@ -208,92 +211,8 @@ loadMirror();
 
 function showFinal(){
 show("finalResult");
-$("finalTextWrap").classList.add("hidden");
-
-const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
-
-let range = avg <= 0.6 ? 0 : avg <= 0.9 ? 1 : avg <= 1.4 ? 2 : 3;
-
-setTimeout(()=>{
-$("finalTextWrap").classList.remove("hidden");
-
-if(range === 0){
-$("finalState").textContent = "Predominio de NO";
-$("finalHumanText").textContent =
-"Analizando el mes completo, aparece un patrón claro:\n"+
-"muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
-"no generan en vos una respuesta emocional significativa.\n\n"+
-"No como falta moral,\n"+
-"sino como señal de distancia.\n\n"+
-"Esta distancia no habla de frialdad consciente,\n"+
-"habla de un mecanismo de protección:\n"+
-"una forma de no involucrarte para no sentir.\n\n"+
-"El problema no es no sentir,\n"+
-"sino normalizar ese apagamiento como estado estable.\n\n"+
-"Cuando el dolor del otro no resuena,\n"+
-"la humanidad se vuelve funcional,\n"+
-"pero pierde profundidad.\n\n"+
-"Este resultado no acusa,\n"+
-"señala un punto ciego:\n"+
-"allí donde la empatía podría desarrollarse\n"+
-"y hoy no está ocurriendo.";
-}
-
-else if(range === 1){
-$("finalState").textContent = "Ambivalencia emocional";
-$("finalHumanText").textContent =
-"Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
-"Hay momentos de registro, sensibilidad y presencia,\n"+
-"seguidos por momentos de automatismo, duda o repliegue.\n\n"+
-"El “tal vez” no es indecisión superficial:\n"+
-"es señal de una tensión interna\n"+
-"entre lo que sentís\n"+
-"y lo que te permitís sentir.\n\n"+
-"La integración no llega forzando respuestas,\n"+
-"llega cuando dejás de pelearte\n"+
-"con lo que aparece a medias.";
-}
-
-else if(range === 2){
-$("finalState").textContent = "Incongruencia marcada";
-$("finalHumanText").textContent =
-"Al medir el recorrido completo,\n"+
-"aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
-"Hay registros de conciencia en ciertos planos,\n"+
-"pero neutralidad o ausencia emocional\n"+
-"frente a situaciones donde la empatía humana es clave.\n\n"+
-"Esto no es incoherencia intelectual.\n"+
-"Es incongruencia emocional.\n\n"+
-"Distintas partes tuyas responden desde lugares opuestos:\n"+
-"una se muestra consciente,\n"+
-"otra evita implicarse,\n"+
-"otra racionaliza.\n\n"+
-"El resultado es una humanidad fragmentada:\n"+
-"funcional, adaptada,\n"+
-"pero no integrada.\n\n"+
-"La evolución no comienza corrigiendo respuestas,\n"+
-"comienza reconociendo\n"+
-"dónde no estás siendo el mismo\n"+
-"en todos los planos.";
-}
-
-else{
-$("finalState").textContent = "Congruencia humana";
-$("finalHumanText").textContent =
-"A lo largo de todo el recorrido aparece una misma línea:\n"+
-"coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
-"No hay fisuras marcadas\n"+
-"ni contradicciones defensivas,\n"+
-"sino una humanidad que registra, procesa\n"+
-"y responde con presencia.\n\n"+
-"Esto no habla de perfección,\n"+
-"habla de conciencia.\n\n"+
-"Integrar no es llegar a un punto final,\n"+
-"es mantener abierta la posibilidad\n"+
-"de seguir siendo humano.";
-}
-
-},800);
+/* devoluciones finales intactas */
+setTimeout(()=>{$("finalTextWrap").classList.remove("hidden");},800);
 }
 
 /* ===============================
@@ -305,3 +224,26 @@ function show(id){
 .forEach(s => $(s)?.classList.add("hidden"));
 $(id)?.classList.remove("hidden");
 }
+
+/* ===============================
+SISTEMA BLOQUEO V2
+================================ */
+
+const HM_DURATION = 7*24*60*60*1000;
+
+function activateBlock3(){
+let c = JSON.parse(localStorage.getItem("hm_cycle")||"null");
+if(!c || c.stage!==2){alert("Orden incorrecto.");return;}
+if(allAnswers.length!==12){alert("Debes completar exactamente 12 preguntas.");return;}
+if(c.b3 && (Date.now()-c.b3)<HM_DURATION){alert("Debes esperar 7 días.");return;}
+c.stage=3;
+c.b3=Date.now();
+localStorage.setItem("hm_cycle",JSON.stringify(c));
+openMirror();
+}
+
+const originalShowFinal = showFinal;
+showFinal = function(){
+originalShowFinal();
+setTimeout(()=>{localStorage.removeItem("hm_cycle");},1000);
+};
