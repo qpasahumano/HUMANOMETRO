@@ -32,6 +32,7 @@ function saveState(extra = {}) {
     responseProfile,
     weeklyIndex,
     weeklyScores,
+    weeklyCompleted, // 🔧 agregado
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: Date.now(),
     ...extra
@@ -74,6 +75,7 @@ let responseProfile = {
 ================================ */
 let weeklyIndex = 0;
 let weeklyScores = [];
+let weeklyCompleted = false; // 🔧 agregado
 
 const WEEKLY_QUESTIONS = [
   "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
@@ -87,7 +89,6 @@ const WEEKLY_QUESTIONS = [
 const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-/* 🔧 AJUSTE: se elimina bloqueo viejo que interfería */
 const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
 const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
 
@@ -118,6 +119,18 @@ function showWeeklyBlockFlash() {
   responseProfile = saved.responseProfile || responseProfile;
   weeklyIndex = saved.weeklyIndex || 0;
   weeklyScores = saved.weeklyScores || [];
+  weeklyCompleted = saved.weeklyCompleted || false;
+
+  // 🔧 ajuste clave
+  if (weeklyCompleted) {
+    const last = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
+    if (last && Date.now() - Number(last) >= WEEK_MS) {
+      goToV2();
+      return;
+    }
+    showSection("weeklyResultScreen");
+    return;
+  }
 
   if (modules.length && currentModule >= modules.length) {
     showResults();
@@ -144,8 +157,15 @@ function showWeeklyBlockFlash() {
 ================================ */
 function weeklyWithDonation() {
 
+  const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
+
+  // 🔧 ajuste clave
+  if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
+    goToV2();
+    return;
+  }
+
   if (!DEV_MODE) {
-    const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
     if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
       showWeeklyBlockFlash();
       return;
@@ -162,6 +182,7 @@ function startWeekly() {
 
   weeklyScores = [];
   weeklyIndex = 0;
+  weeklyCompleted = false;
 
   weeklyThermoFill.style.width = "0%";
   weeklySaved.classList.add("hidden");
@@ -212,8 +233,10 @@ function showWeeklyResultScreen() {
 
   saveWeekly();
 
+  weeklyCompleted = true; // 🔧 ajuste clave
+
   showSection("weeklyResultScreen");
-  saveState({ lastSection: "weeklyResultScreen" });
+  saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
 
 function saveWeekly() {
@@ -229,7 +252,6 @@ function saveWeekly() {
   localStorage.setItem("humanometro_semanal", JSON.stringify(history));
   weeklySaved.classList.remove("hidden");
 
-  /* 🔒 BLOQUEO SE MARCA SOLO AQUÍ */
   if (!DEV_MODE) {
     localStorage.setItem(BLOCK_KEY_RECORRIDO_V1, Date.now());
   }
