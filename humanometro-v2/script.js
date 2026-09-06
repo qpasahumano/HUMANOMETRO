@@ -3,12 +3,13 @@ const $ = id => document.getElementById(id);
 /* ===============================
    BLOQUEO SEMANAL — CONFIG
 ================================ */
-const DEV_MODE = false; // ⬅️ usuario bloqueado | dev puede poner true
+const DEV_MODE = false; // Setear en true únicamente para testing
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week";
+const V2_STATE_KEY = "hm_v2_progress_state";
 
 /* ===============================
-   BLOQUEO — UTILIDADES
+   BLOQUEO Y PERSISTENCIA — UTILIDADES
 ================================ */
 function now(){ return Date.now(); }
 
@@ -23,8 +24,29 @@ function marcarSemana(){
   localStorage.setItem(V2_BLOCK_KEY, now());
 }
 
+function saveV2State(extra = {}) {
+  const state = {
+    week,
+    q,
+    currentScore,
+    weeklyScores,
+    allAnswers,
+    mirrorLog,
+    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
+    timestamp: now(),
+    ...extra
+  };
+  localStorage.setItem(V2_STATE_KEY, JSON.stringify(state));
+}
+
+function loadV2State() {
+  const raw = localStorage.getItem(V2_STATE_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
 /* ===============================
-   BLOQUEO VISUAL UNIFICADO (MAGIA)
+   BLOQUEO VISUAL UNIFICADO
 ================================ */
 function showWeeklyBlockFlash(){
   const d = document.createElement("div");
@@ -52,7 +74,7 @@ function showWeeklyBlockFlash(){
   setTimeout(()=>d.remove(),1300);
 }
 
-/* CACHE */
+/* CACHE DOM */
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
 const questionMeasure = $("questionMeasure");
@@ -106,8 +128,39 @@ const WEEKS = [
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
+/* REANUDACIÓN AUTOMÁTICA EN V2 */
+(function resumeV2() {
+  const saved = loadV2State();
+  if (!saved) return;
+
+  week = saved.week || 0;
+  q = saved.q || 0;
+  currentScore = saved.currentScore || 0;
+  weeklyScores = saved.weeklyScores || [];
+  allAnswers = saved.allAnswers || [];
+  mirrorLog = saved.mirrorLog || [];
+
+  if (saved.lastSection) {
+    show(saved.lastSection);
+    if (saved.lastSection === "test") loadQuestion();
+    if (saved.lastSection === "mirrorTest") loadMirror();
+  }
+})();
+
 /* FLUJO */
 function startV2(){
+  const saved = loadV2State();
+  if (saved && saved.week > 0) {
+    // Si ya tiene progreso guardado, retoma la semana guardada
+    if (!pasoUnaSemana()) {
+      showWeeklyBlockFlash();
+      return;
+    }
+    show("test"); 
+    loadQuestion();
+    return;
+  }
+
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
@@ -115,6 +168,7 @@ function startV2(){
   document.body.classList.remove("mirror-bg");
   week = 0; q = 0; currentScore = 0;
   weeklyScores = []; allAnswers = []; mirrorLog = [];
+  saveV2State({ lastSection: "test" });
   show("test"); loadQuestion();
 }
 
@@ -130,11 +184,12 @@ function answer(v){
   currentScore += v;
   allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
+  saveV2State({ q, currentScore, allAnswers });
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
 /* ===============================
-   DEVOLUCIONES SEMANALES — EXTENDIDAS
+   DEVOLUCIONES SEMANALES
 ================================ */
 function showWeekly(){
   show("weeklyResult");
@@ -160,7 +215,7 @@ function showWeekly(){
       weeklyText.textContent =
         "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
         "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
-        "como información lejana, sin generar un impacto emocional sostenido.\n\n"+
+        "como información lejana, sin generar un impacto emocional sustained.\n\n"+
         "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
         "de defensa, cansancio o saturación emocional.";
       weeklyAdvice.textContent =
@@ -216,6 +271,7 @@ function showWeekly(){
     }
   }
 
+  saveV2State({ lastSection: "weeklyResult", weeklyScores });
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
@@ -226,6 +282,7 @@ function nextWeek(){
   }
   marcarSemana();
   week++; q = 0; currentScore = 0;
+  saveV2State({ week, q, currentScore, lastSection: week >= WEEKS.length ? "monthlyResult" : "test" });
   week >= WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
 }
 
@@ -235,6 +292,7 @@ function nextWeek(){
 function showMonthly(){
   show("monthlyResult");
   marcarSemana();
+  saveV2State({ lastSection: "monthlyResult" });
 }
 
 /* ===============================
@@ -253,12 +311,17 @@ const MIRROR_QUESTIONS = [
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
+function gateMirrorIntro(){
+  openMirror();
+}
+
 function openMirror(){
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
   show("mirrorIntro");
+  saveV2State({ lastSection: "mirrorIntro" });
 }
 
 function startMirror(){
@@ -268,6 +331,7 @@ function startMirror(){
   }
   document.body.classList.add("mirror-bg");
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  saveV2State({ lastSection: "mirrorTest" });
   show("mirrorTest"); loadMirror();
 }
 
@@ -291,6 +355,7 @@ function answerMirror(v){
     mirrorScore += semanticDelta;
   }
 
+  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
@@ -300,6 +365,7 @@ function answerMirror(v){
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
+  saveV2State({ lastSection: "finalResult" });
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
@@ -371,7 +437,7 @@ function showFinal(){
         "Hay registros de conciencia en ciertos planos,\n"+
         "pero neutralidad o ausencia emocional\n"+
         "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intelectual.\n"+
+        "Esto no es incoherencia intellectual.\n"+
         "Es incongruencia emocional.\n\n"+
         "Distintas partes tuyas responden desde lugares opuestos:\n"+
         "una se muestra consciente,\n"+
@@ -419,4 +485,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-     }
+}
