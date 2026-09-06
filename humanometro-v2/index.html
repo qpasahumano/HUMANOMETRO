@@ -2,154 +2,84 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>HUMANÓMETRO v.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <title>Human Meter V2</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<main id="app">
 
-<section id="start">
-  <h1 class="brand">
-    <span class="brand-main">HUMANÓMETRO</span><br>
-    <span class="brand-meta">v.2 ®</span>
-  </h1>
-  <p class="intro">
-    Humanómetro no se recorre de una sola vez.<br><br>
-    Este volumen continúa tu proceso humano de forma semanal y consecutiva.<br>
-    La humanidad se construye en movimiento, no en velocidad.
-  </p>
-  <button class="primary" onclick="startV2()">Continuar seguimiento</button>
-</section>
+  <main>
+    <!-- PANTALLA INICIAL -->
+    <section id="welcome">
+      <h1>Human Meter</h1>
+      <p>Un recorrido de autoconocimiento semanal.</p>
+      <button onclick="startV2()">Comenzar experiencia</button>
+    </section>
 
-<section id="test" class="hidden">
-  <h2 id="weekTitle" class="neon-title"></h2>
-  <div class="thermo"><div id="thermoFill"></div></div>
-  <p id="questionText" class="question"></p>
-  <small id="questionMeasure" class="legal"></small>
-  <div class="answers">
-    <button onclick="answer(2)">Sí</button>
-    <button onclick="answer(1)">A veces</button>
-    <button onclick="answer(0)">No</button>
-  </div>
-</section>
-
-<section id="weeklyResult" class="hidden">
-  <h2 class="neon-title">Lectura semanal</h2>
-  <div id="weeklySymbol" class="symbol"></div>
-  <div id="weeklyTextWrap" class="result-text hidden">
-    <p id="weeklyText"></p>
-    <p id="weeklyAdvice" class="legal"></p>
-    <button class="primary" onclick="nextWeek()">Continuar</button>
-  </div>
-</section>
-
-<section id="monthlyResult" class="hidden">
-  <h2 class="neon-title">Tu humanidad en movimiento</h2>
-  <div class="result-row">
-    <div class="vertical-thermo">
-      <div id="monthlyFill" class="gradient"></div>
-    </div>
-    <div id="monthlyTextWrap" class="result-text hidden">
-      <div id="monthlySymbol" class="symbol"></div>
-      <p id="monthlyLongText"></p>
-      <p id="monthlyText"></p>
-      <button class="primary" onclick="gateMirrorIntro()">Mirar tu reflejo</button>
-    </div>
-  </div>
-</section>
-
-<section id="mirrorIntro" class="hidden">
-  <h2 class="neon-title">EL ESPEJO</h2>
-  <p class="intro">
-    No muestra lo que sos.<br>
-    Refleja lo que estás haciendo con lo que sentís.
-  </p>
-  <button class="primary" onclick="startMirror()">Mirar tu reflejo</button>
-</section>
-
-<section id="mirrorTest" class="hidden">
-  <div id="mirrorEmoji" class="mirror-symbol">⬤</div>
-  <p id="mirrorQuestion" class="question"></p>
-  <div class="answers">
-    <button onclick="answerMirror(3)">MUCHO</button>
-    <button onclick="answerMirror(2)">POCO</button>
-    <button onclick="answerMirror(1)">NADA</button>
-    <button onclick="answerMirror(null)">NINGUNA</button>
-  </div>
-</section>
-
-<section id="finalResult" class="hidden">
-  <div class="result-row">
-    <div class="vertical-thermo">
-      <div id="finalFill" class="gradient"></div>
-    </div>
-    <div id="finalTextWrap" class="result-text hidden">
-
-      <div class="donation-wrap" style="margin:14px 0 18px; text-align:center;">
-        <button
-          class="donation-heart"
-          onclick="window.open('https://mpago.la/2EFaaLx','_blank')"
-          title="Aporte voluntario"
-        >💜</button>
-        <div class="legal small" style="margin-top:6px;">
-          Aporte voluntario para sostener el proyecto
-        </div>
+    <!-- PANTALLA DE PREGUNTAS SEMANALES (1 A 3) -->
+    <section id="test" class="hidden">
+      <h2 id="weekTitle">Semana</h2>
+      <div class="thermo-bar">
+        <div id="thermoFill" class="thermo-fill"></div>
       </div>
-
-      <p id="finalState" class="legal small state-led"></p>
-
-      <div class="glass-sheet">
-        <div class="scroll-sheet">
-          <p id="finalHumanText" class="legal"></p>
-          <p class="legal small" style="margin-top:18px;">
-            Cuando necesites volver a medir tu humanidad,<br>
-            Humanómetro está para eso.
-          </p>
-        </div>
+      <p id="questionMeasure" class="measure-tag"></p>
+      <p id="questionText" class="question-text"></p>
+      <div class="buttons-grid">
+        <button onclick="answer(0)">Nunca / Nada</button>
+        <button onclick="answer(1)">A veces / Poco</button>
+        <button onclick="answer(2)">Casi siempre / Mucho</button>
       </div>
+    </section>
 
-      <div class="glass-sheet" style="margin-top:22px; opacity:.88;">
-        <div class="scroll-sheet" style="max-height:38vh;">
-          <p class="legal small">
-            <strong>¿Cómo se obtuvo esta devolución?</strong><br><br>
-
-            La devolución final de Humanómetro surge de dos lecturas combinadas:<br><br>
-
-            <strong>1. Lectura cuantitativa:</strong><br>
-            Se registra la intensidad de tus respuestas a lo largo del mes,
-            sin clasificarlas como buenas o malas, sino como niveles de implicación humana.<br><br>
-
-            <strong>2. Lectura semántica cruzada:</strong><br>
-            Se contrasta lo que expresaste en preguntas generales
-            con cómo respondiste ante situaciones emocionales concretas del bloque Espejo.<br><br>
-
-            Cuando predominan respuestas como “nada”, “ninguna” o “poco”
-            frente a situaciones de dolor ajeno o desconexión,
-            eso influye directamente en la lectura final,
-            incluso si el promedio numérico es más alto.<br><br>
-
-            Las preguntas sin experiencia vivida (“ninguna”)
-            no penalizan, pero sí delimitan el campo de medición.<br><br>
-
-            El resultado no es un juicio:
-            es un reflejo del modo en que tu humanidad estuvo operando
-            durante este período.
-          </p>
-        </div>
+    <!-- DEVOLUCIÓN SEMANAL (CON BOTÓN BLOQUEADO A 7 DÍAS) -->
+    <section id="weeklyResult" class="hidden">
+      <div id="weeklySymbol" class="symbol-display"></div>
+      <div id="weeklyTextWrap">
+        <p id="weeklyText" class="result-text"></p>
+        <p id="weeklyAdvice" class="advice-text"></p>
+        <!-- Este botón llama a nextWeek() que evalúa los 7 días -->
+        <button onclick="nextWeek()">Continuar</button>
       </div>
+    </section>
 
-    </div>
-  </div>
-</section>
+    <!-- PANTALLA MENSUAL DE TRANSICIÓN AL ESPEJO -->
+    <section id="monthlyResult" class="hidden">
+      <h2>Fin de las 3 semanas</h2>
+      <p>Has completado el ciclo inicial de observación.</p>
+      <!-- Este botón evalúa los 7 días desde la Semana 3 antes de ir a la intro -->
+      <button onclick="gateMirrorIntro()">Mirar tu reflejo</button>
+    </section>
 
-</main>
+    <!-- INTRODUCCIÓN AL ESPEJO -->
+    <section id="mirrorIntro" class="hidden">
+      <h2>El Espejo</h2>
+      <p>A continuación ingresarás en una etapa de autoobservación más profunda. Responde con la mayor honestidad posible.</p>
+      <!-- Este botón evalúa los 7 días antes de iniciar el test del Espejo -->
+      <button onclick="startMirror()">Entrar al Espejo</button>
+    </section>
 
-<script src="script.js"></script>
-<script src="bloqueos.js"></script>
-<script src="estado-v2.js"></script>
+    <!-- PANTALLA DE PREGUNTAS DEL ESPEJO -->
+    <section id="mirrorTest" class="hidden">
+      <div id="mirrorEmoji" class="mirror-emoji">😡</div>
+      <p id="mirrorQuestion" class="question-text"></p>
+      <div class="buttons-grid">
+        <button onclick="answerMirror(0)">No me pasa / Mínimo</button>
+        <button onclick="answerMirror(1)">Moderado</button>
+        <button onclick="answerMirror(2)">Intenso / Frecuente</button>
+      </div>
+    </section>
 
+    <!-- PANTALLA FINAL INTEGRAL -->
+    <section id="finalResult" class="hidden">
+      <h2>Devolución Final</h2>
+      <div id="finalTextWrap">
+        <h3 id="finalState" class="state-title"></h3>
+        <p id="finalHumanText" class="result-text"></p>
+        <button onclick="startV2()">Volver a empezar</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
