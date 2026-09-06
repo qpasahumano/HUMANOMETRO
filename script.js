@@ -1,456 +1,432 @@
-/* ===============================
-   REFERENCIAS DOM
-================================ */
-const areaTitle = document.getElementById("areaTitle");
-const questionText = document.getElementById("questionText");
-const questionNote = document.getElementById("questionNote");
-const thermoFill = document.getElementById("thermoFill");
-
-const circles = document.getElementById("circles");
-const tips = document.getElementById("tips");
-const globalResult = document.getElementById("globalResult");
-const weeklyAccess = document.getElementById("weeklyAccess");
-
-const weeklyQuestion = document.getElementById("weeklyQuestion");
-const weeklyThermoFill = document.getElementById("weeklyThermoFill");
-const weeklyText = document.getElementById("weeklyText");
-const weeklyAdvice = document.getElementById("weeklyAdvice");
-const weeklySaved = document.getElementById("weeklySaved");
+const $ = id => document.getElementById(id);
 
 /* ===============================
-   ESTADO PERSISTENTE
+   BLOQUEO SEMANAL — CONFIG
 ================================ */
-const HM_STATE_KEY = "hm_v1_state";
-
-function saveState(extra = {}) {
-  const state = {
-    mode,
-    currentModule,
-    currentQuestion,
-    modules,
-    scores,
-    responseProfile,
-    weeklyIndex,
-    weeklyScores,
-    weeklyCompleted, // 🔧 agregado
-    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
-    timestamp: Date.now(),
-    ...extra
-  };
-  localStorage.setItem(HM_STATE_KEY, JSON.stringify(state));
-}
-
-function loadState() {
-  const raw = localStorage.getItem(HM_STATE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
-}
-
-function clearState() {
-  localStorage.removeItem(HM_STATE_KEY);
-}
-
-/* ===============================
-   VARIABLES PRINCIPALES
-================================ */
-let mode = "common";
-let currentModule = 0;
-let currentQuestion = 0;
-let modules = [];
-let scores = {};
-
-let responseProfile = {
-  no: 0,
-  maybe: 0,
-  yes: 0,
-  total: 0
-};
-
-/* ===============================
-   CONTEO SEMANAL
-================================ */
-let weeklyIndex = 0;
-let weeklyScores = [];
-let weeklyCompleted = false; // 🔧 agregado
-
-const WEEKLY_QUESTIONS = [
-  "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
-  "Ante diferencias o tensiones con alguna persona esta semana, ¿intentaste comprender lo que el otro podía estar sintiendo?",
-  "Frente a emociones densas surgidas en la semana con algún vínculo, ¿lograste soltarlas sin quedarte atrapado en ellas?"
-];
-
-/* ===============================
-   BLOQUEO + REANUDACIÓN — CONFIG
-================================ */
-const DEV_MODE = false;
+const DEV_MODE = false; // ⬅️ usuario bloqueado | dev puede poner true
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
-const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
+const V2_BLOCK_KEY = "hm_v2_last_week";
 
 /* ===============================
-   DESTELLO BLOQUEO
+   BLOQUEO — UTILIDADES
 ================================ */
-function showWeeklyBlockFlash() {
-  const el = document.getElementById("weeklyBlockFlash");
-  if (!el) return;
-  el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 1400);
+function now(){ return Date.now(); }
+
+function pasoUnaSemana(){
+  if (DEV_MODE) return true;
+  const last = localStorage.getItem(V2_BLOCK_KEY);
+  if (!last) return true;
+  return (now() - Number(last)) >= WEEK_MS;
 }
 
-/* ===============================
-   REANUDACIÓN AUTOMÁTICA
-================================ */
-(function resumeIfWaiting() {
-
-  const saved = loadState();
-  if (!saved) return;
-
-  mode = saved.mode;
-  currentModule = saved.currentModule;
-  currentQuestion = saved.currentQuestion;
-  modules = saved.modules || [];
-  scores = saved.scores || {};
-  responseProfile = saved.responseProfile || responseProfile;
-  weeklyIndex = saved.weeklyIndex || 0;
-  weeklyScores = saved.weeklyScores || [];
-  weeklyCompleted = saved.weeklyCompleted || false;
-
-  // 🔧 ajuste clave
-  if (weeklyCompleted) {
-    const last = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
-    if (last && Date.now() - Number(last) >= WEEK_MS) {
-      goToV2();
-      return;
-    }
-    showSection("weeklyResultScreen");
-    return;
-  }
-
-  if (modules.length && currentModule >= modules.length) {
-    showResults();
-    return;
-  }
-
-  showSection(saved.lastSection || "start");
-
-  if (saved.lastSection === "test") {
-    showQuestion();
-    updateThermometer();
-  }
-
-  if (saved.lastSection === "weekly") {
-    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-    weeklyThermoFill.style.width =
-      Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
-  }
-
-})();
-
-/* ===============================
-   ACCESO RECORRIDO MENSUAL
-================================ */
-function weeklyWithDonation() {
-
-  const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
-
-  // 🔧 ajuste clave
-  if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
-    goToV2();
-    return;
-  }
-
-  if (!DEV_MODE) {
-    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
-      showWeeklyBlockFlash();
-      return;
-    }
-  }
-
-  startWeekly();
+function marcarSemana(){
+  localStorage.setItem(V2_BLOCK_KEY, now());
 }
 
 /* ===============================
-   INICIO BLOQUE SEMANAL
+   BLOQUEO VISUAL UNIFICADO (MAGIA)
 ================================ */
-function startWeekly() {
-
-  weeklyScores = [];
-  weeklyIndex = 0;
-  weeklyCompleted = false;
-
-  weeklyThermoFill.style.width = "0%";
-  weeklySaved.classList.add("hidden");
-
-  showSection("weekly");
-  weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-
-  saveState({ lastSection: "weekly" });
-}
-
-function weeklyAnswer(value) {
-
-  weeklyScores.push(value);
-  weeklyIndex++;
-
-  weeklyThermoFill.style.width =
-    Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
-
-  saveState({ weeklyIndex, weeklyScores });
-
-  if (weeklyIndex >= WEEKLY_QUESTIONS.length) {
-    showWeeklyResultScreen();
-  } else {
-    weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-  }
-}
-
-function showWeeklyResultScreen() {
-
-  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
-
-  if (avg < 0.8) {
-    weeklyText.innerText =
-      "Esta semana mostró una desconexión entre intención y acción.";
-    weeklyAdvice.innerText =
-      "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
-  } else if (avg < 1.5) {
-    weeklyText.innerText =
-      "Tu humanidad estuvo presente, pero de forma fluctuante.";
-    weeklyAdvice.innerText =
-      "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
-  } else {
-    weeklyText.innerText =
-      "Mostraste coherencia humana y presencia consciente esta semana.";
-    weeklyAdvice.innerText =
-      "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
-  }
-
-  saveWeekly();
-
-  weeklyCompleted = true; // 🔧 ajuste clave
-
-  showSection("weeklyResultScreen");
-  saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
-}
-
-function saveWeekly() {
-
-  const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
-  const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
-
-  history.push({
-    date: new Date().toISOString().slice(0, 10),
-    score: avg
-  });
-
-  localStorage.setItem("humanometro_semanal", JSON.stringify(history));
-  weeklySaved.classList.remove("hidden");
-
-  if (!DEV_MODE) {
-    localStorage.setItem(BLOCK_KEY_RECORRIDO_V1, Date.now());
-  }
+function showWeeklyBlockFlash(){
+  const d = document.createElement("div");
+  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+  d.style.cssText = `
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    font-size:1.35rem;
+    color:#eaffff;
+    background:
+      radial-gradient(circle, rgba(180,255,255,.28), transparent 60%),
+      rgba(6,18,40,.45);
+    text-shadow:
+      0 0 12px rgba(140,255,240,1),
+      0 0 26px rgba(140,255,240,.85);
+    z-index:9999;
+    animation: blockFade 1.3s ease-out forwards;
+  `;
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),1300);
 }
 
 /* ===============================
-   TEST PRINCIPAL
+   ⬇️ CORRECCIÓN CRÍTICA
+   MOSTRAR BLOQUEO AL REINGRESAR
 ================================ */
-const BASE_MODULES = [
-  { name: "Familia", questions: [
-    { q: "¿Estuviste emocionalmente presente con tu familia?", n: "Aquí se mide presencia, no perfección." },
-    { q: "¿Escuchaste sin juzgar?", n: "Se mide apertura." },
-    { q: "¿Expresaste afecto sin que te lo pidan?", n: "Se mide intención." }
+window.addEventListener("load", () => {
+  if (!pasoUnaSemana()) {
+    showWeeklyBlockFlash();
+  }
+});
+
+/* CACHE */
+const weekTitle = $("weekTitle");
+const questionText = $("questionText");
+const questionMeasure = $("questionMeasure");
+const thermoFill = $("thermoFill");
+
+const weeklySymbol = $("weeklySymbol");
+const weeklyText = $("weeklyText");
+const weeklyAdvice = $("weeklyAdvice");
+const weeklyTextWrap = $("weeklyTextWrap");
+
+const monthlyFill = $("monthlyFill");
+const monthlyTextWrap = $("monthlyTextWrap");
+const monthlySymbol = $("monthlySymbol");
+const monthlyLongText = $("monthlyLongText");
+const monthlyText = $("monthlyText");
+
+const mirrorEmoji = $("mirrorEmoji");
+const mirrorQuestion = $("mirrorQuestion");
+
+const finalFill = $("finalFill");
+const finalTextWrap = $("finalTextWrap");
+const finalHumanText = $("finalHumanText");
+const finalState = $("finalState");
+
+/* EMOJIS ESPEJO */
+const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
+
+/* DATOS BASE */
+const WEEKS = [
+  { title:"Vos ante el mundo", questions:[
+    ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
+    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
+    ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso humano"],
+    ["¿Te afecta el sufrimiento ajeno?","Sensibilidad emocional"]
   ]},
-  { name: "Social", questions: [
-    { q: "¿Trataste a las personas con respeto?", n: "Se mide trato humano." },
-    { q: "¿Escuchaste opiniones distintas a la tuya?", n: "Se mide tolerancia." },
-    { q: "¿Actuaste con empatía en espacios públicos?", n: "Conciencia social." }
+  { title:"Vos y la tecnología", questions:[
+    ["¿Podés soltar el celular al compartir?","Uso consciente"],
+    ["¿Controlás el tiempo en pantallas?","Autocontrol digital"],
+    ["¿Recordás que hay personas reales detrás de una pantalla?","Empatía digital"],
+    ["¿La tecnología acompaña sin absorberte?","Equilibrio tecnológico"]
   ]},
-  { name: "Amistad", questions: [
-    { q: "¿Estuviste presente para tus amistades?", n: "Presencia real." },
-    { q: "¿Cuidaste el vínculo aun sin coincidir?", n: "Cuidado del lazo." },
-    { q: "¿Escuchaste sin imponer tu visión?", n: "Respeto mutuo." }
-  ]},
-  { name: "Laboral", questions: [
-    { q: "¿Generaste buen clima laboral aun sin estar cómodo?", n: "Responsabilidad humana." },
-    { q: "¿Respetaste a tus compañeros?", n: "Trato consciente." },
-    { q: "¿Evitaste sobrecargar a otros?", n: "Conciencia colectiva." }
-  ]},
-  { name: "Planeta", questions: [
-    { q: "¿Reconociste a los animales como seres sensibles?", n: "Empatía." },
-    { q: "¿Cuidaste el entorno donde vivís?", n: "Conciencia cotidiana." },
-    { q: "¿Reduciste tu impacto cuando estuvo a tu alcance?", n: "Intención posible." }
+  { title:"Integración humana", questions:[
+    ["¿Hay coherencia entre lo que pensás y hacés?","Coherencia"],
+    ["¿Podés observarte sin juzgarte?","Autoconciencia"],
+    ["¿Asumís tu impacto en otros?","Responsabilidad"],
+    ["¿Sentís evolución humana?","Integración"]
   ]}
 ];
 
-const PREMIUM_MODULES = [
-  { name: "Conciencia Profunda", questions: [
-    { q: "¿Tomaste decisiones desde la conciencia?", n: "Atención interna." },
-    { q: "¿Fuiste coherente entre pensamiento y acción?", n: "Alineación." },
-    { q: "¿Asumiste responsabilidad por tu impacto?", n: "Madurez emocional." }
-  ]}
+/* REGISTRO */
+let week = 0, q = 0, currentScore = 0;
+let weeklyScores = [], allAnswers = [], mirrorLog = [];
+
+/* FLUJO */
+function startV2(){
+  if(!pasoUnaSemana()){
+    showWeeklyBlockFlash();
+    return;
+  }
+  document.body.classList.remove("mirror-bg");
+  week = 0; q = 0; currentScore = 0;
+  weeklyScores = []; allAnswers = []; mirrorLog = [];
+  show("test"); loadQuestion();
+}
+
+function loadQuestion(){
+  const w = WEEKS[week];
+  weekTitle.textContent = w.title;
+  questionText.textContent = w.questions[q][0];
+  questionMeasure.textContent = w.questions[q][1];
+  thermoFill.style.width = (q/4)*100 + "%";
+}
+
+function answer(v){
+  currentScore += v;
+  allAnswers.push({ block: WEEKS[week].title, q, v });
+  q++;
+  q >= 4 ? showWeekly() : loadQuestion();
+}
+
+/* ===============================
+   DEVOLUCIONES SEMANALES — EXTENDIDAS
+================================ */
+function showWeekly(){
+  show("weeklyResult");
+  weeklyTextWrap.classList.add("hidden");
+
+  const avg = currentScore / 4;
+  weeklyScores.push(avg);
+
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
+
+  weeklySymbol.textContent =
+    range === "low" ? "🦇" :
+    range === "midLow" ? "🦇" :
+    range === "mid" ? "🐞" : "🐦";
+
+  const block = WEEKS[week].title;
+
+  if(block === "Vos ante el mundo"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
+        "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
+        "como información lejana, sin generar un impacto emocional sostenido.\n\n"+
+        "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
+        "de defensa, cansancio o saturación emocional.";
+      weeklyAdvice.textContent =
+        "Observar cuándo te cerrás y cuándo te abrís al otro "+
+        "puede ser el primer gesto de reconexión humana.";
+    } else {
+      weeklyText.textContent =
+        "El mundo no pasa desapercibido.\n\n"+
+        "Hay registro del dolor, de la injusticia y de lo que afecta "+
+        "a otros seres humanos.";
+      weeklyAdvice.textContent =
+        "Sostener esta sensibilidad sin que te abrume "+
+        "es parte de un equilibrio humano maduro.";
+    }
+  }
+
+  if(block === "Vos y la tecnología"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "La atención aparece fragmentada.\n\n"+
+        "La tecnología tiende a absorber momentos que podrían "+
+        "ser habitados con mayor presencia.\n\n"+
+        "No como error, sino como hábito automatizado.";
+      weeklyAdvice.textContent =
+        "Pequeños cortes conscientes pueden devolver densidad "+
+        "a la experiencia cotidiana.";
+    } else {
+      weeklyText.textContent =
+        "Lo digital acompaña sin dominar.\n\n"+
+        "Hay uso consciente y registro del presente.";
+      weeklyAdvice.textContent =
+        "Este equilibrio sostiene vínculos más reales "+
+        "y una experiencia más encarnada.";
+    }
+  }
+
+  if(block === "Integración humana"){
+    if(avg < 1.5){
+      weeklyText.textContent =
+        "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
+        "No siempre lo que sentís logra expresarse "+
+        "ni lo que pensás logra sostenerse en el hacer.";
+      weeklyAdvice.textContent =
+        "Nombrar estas incongruencias no es debilidad: "+
+        "es el inicio del proceso de integración.";
+    } else {
+      weeklyText.textContent =
+        "Las respuestas muestran una percepción de coherencia interna.\n\n"+
+        "Esta lectura se limita a cómo te pensás y te observás a vos mismo.\n\n"+
+        "Cómo esta coherencia se expresa en el vínculo con el mundo y la tecnología\n"+
+        "se observa en el siguiente tramo.";
+      weeklyAdvice.textContent = "";
+    }
+  }
+
+  setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
+}
+
+function nextWeek(){
+  if(!pasoUnaSemana()){
+    showWeeklyBlockFlash();
+    return;
+  }
+  marcarSemana();
+  week++; q = 0; currentScore = 0;
+  week >= WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
+}
+
+/* ===============================
+   CIERRE VOLUMEN 2
+================================ */
+function showMonthly(){
+  show("monthlyResult");
+  marcarSemana();
+}
+
+/* ===============================
+   ESPEJO — PREGUNTAS COMPLETAS
+================================ */
+const MIRROR_QUESTIONS = [
+  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
-function startTest(isPremium) {
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
-  mode = isPremium ? "premium" : "common";
-  modules = JSON.parse(JSON.stringify(BASE_MODULES));
-  if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
-
-  scores = {};
-  modules.forEach(m => scores[m.name] = 0);
-
-  currentModule = 0;
-  currentQuestion = 0;
-  responseProfile = { no:0, maybe:0, yes:0, total:0 };
-
-  showSection("test");
-  showQuestion();
-  updateThermometer();
-  saveState({ lastSection: "test" });
+function openMirror(){
+  if(!pasoUnaSemana()){
+    showWeeklyBlockFlash();
+    return;
+  }
+  show("mirrorIntro");
 }
 
-function showQuestion() {
-  const m = modules[currentModule];
-  areaTitle.innerText = m.name;
-  questionText.innerText = m.questions[currentQuestion].q;
-  questionNote.innerText = m.questions[currentQuestion].n;
+function startMirror(){
+  if(!pasoUnaSemana()){
+    showWeeklyBlockFlash();
+    return;
+  }
+  document.body.classList.add("mirror-bg");
+  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  show("mirrorTest"); loadMirror();
 }
 
-function answer(v) {
+function loadMirror(){
+  mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
+  mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
+}
 
-  scores[modules[currentModule].name] += v;
+function answerMirror(v){
+  mirrorLog.push(v ?? 0);
+  if(v !== null){ mirrorScore += v; mirrorCount++; }
+  mq++;
 
-  if (v === 0) responseProfile.no++;
-  else if (v === 1) responseProfile.maybe++;
-  else if (v === 2) responseProfile.yes++;
-  responseProfile.total++;
-
-  currentQuestion++;
-
-  if (currentQuestion >= modules[currentModule].questions.length) {
-    currentQuestion = 0;
-    currentModule++;
+  if(mq === MIRROR_QUESTIONS.length){
+    let semanticDelta = 0;
+    const evitacion = mirrorLog[7] ?? 0;
+    const desconexion = mirrorLog[5] ?? 0;
+    const alegria = mirrorLog[6] ?? 0;
+    semanticDelta -= (evitacion + desconexion) * 0.1;
+    semanticDelta += alegria * 0.1;
+    mirrorScore += semanticDelta;
   }
 
-  saveState({ currentModule, currentQuestion, scores, responseProfile });
-
-  currentModule >= modules.length ? showResults() : showQuestion();
-  updateThermometer();
+  mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
 /* ===============================
-   RESULTADOS
+   DEVOLUCIÓN FINAL INTEGRATIVA
 ================================ */
-function showResults() {
+function showFinal(){
+  show("finalResult");
+  finalTextWrap.classList.add("hidden");
 
-  showSection("results");
-  circles.innerHTML = "";
-  tips.innerHTML = "";
-  weeklyAccess.innerHTML = "";
+  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
-  let total = 0;
+  const tristezaAjena = mirrorLog[1] ?? 0;
+  const desconexion = mirrorLog[5] ?? 0;
+  const evitacion = mirrorLog[7] ?? 0;
 
-  modules.forEach(m => {
-    const max = m.questions.length * 2;
-    const p = Math.round(scores[m.name] / max * 100);
-    total += p;
+  const bajaEmpatia = tristezaAjena <= 0.5;
+  const desconexionActiva = desconexion >= 1;
+  const evitacionActiva = evitacion >= 1;
 
-    circles.innerHTML += `
-      <div class="circle ${p < 40 ? "low" : p < 70 ? "mid" : "high"}">
-        <strong>${p}%</strong>
-        <small>${m.name}</small>
-      </div>`;
+  let semanticPenalty = 0;
+  if(bajaEmpatia) semanticPenalty++;
+  if(desconexionActiva) semanticPenalty++;
+  if(evitacionActiva) semanticPenalty++;
 
-    if (mode === "premium") {
-      tips.innerHTML += `<li>${premiumFeedback(m.name, p)}</li>`;
+  let range =
+    avg <= 0.6 ? 0 :
+    avg <= 0.9 ? 1 :
+    avg <= 1.4 ? 2 : 3;
+
+  if(range >= 2 && semanticPenalty >= 2){
+    range -= 1;
+  }
+
+  animateGauge(finalFill, (avg/2)*100, ()=>{
+    finalTextWrap.classList.remove("hidden");
+
+    if(range === 0){
+      finalState.textContent = "Predominio de NO";
+      finalHumanText.textContent =
+        "Analizando el mes completo, aparece un patrón claro:\n"+
+        "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
+        "no generan en vos una respuesta emocional significativa.\n\n"+
+        "No como falta moral,\n"+
+        "sino como señal de distancia.\n\n"+
+        "Esta distancia no habla de frialdad consciente,\n"+
+        "habla de un mecanismo de protección:\n"+
+        "una forma de no involucrarte para no sentir.\n\n"+
+        "El problema no es no sentir,\n"+
+        "sino normalizar ese apagamiento como estado estable.\n\n"+
+        "Cuando el dolor del otro no resuena,\n"+
+        "la humanidad se vuelve funcional,\n"+
+        "pero pierde profundidad.\n\n"+
+        "Este resultado no acusa,\n"+
+        "señala un punto ciego:\n"+
+        "allí donde la empatía podría desarrollarse\n"+
+        "y hoy no está ocurriendo.";
+    }
+    else if(range === 1){
+      finalState.textContent = "Ambivalencia emocional";
+      finalHumanText.textContent =
+        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, sensibilidad y presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
+        "con lo que aparece a medias.";
+    }
+    else if(range === 2){
+      finalState.textContent = "Incongruencia marcada";
+      finalHumanText.textContent =
+        "Al medir el recorrido completo,\n"+
+        "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
+        "Hay registros de conciencia en ciertos planos,\n"+
+        "pero neutralidad o ausencia emocional\n"+
+        "frente a situaciones donde la empatía humana es clave.\n\n"+
+        "Esto no es incoherencia intelectual.\n"+
+        "Es incongruencia emocional.\n\n"+
+        "Distintas partes tuyas responden desde lugares opuestos:\n"+
+        "una se muestra consciente,\n"+
+        "otra evita implicarse,\n"+
+        "otra racionaliza.\n\n"+
+        "El resultado es una humanidad fragmentada:\n"+
+        "funcional, adaptada,\n"+
+        "pero no integrada.\n\n"+
+        "La evolución no comienza corrigiendo respuestas,\n"+
+        "comienza reconociendo\n"+
+        "dónde no estás siendo el mismo\n"+
+        "en todos los planos.";
+    }
+    else{
+      finalState.textContent = "Congruencia humana";
+      finalHumanText.textContent =
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "No hay fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano.";
     }
   });
+}
 
-  const avg = Math.round(total / modules.length);
-  globalResult.innerText = "Humanidad global: " + avg + "%";
-
-  if (mode === "common") {
-    tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
+/* UTIL */
+function animateGauge(el,target,done){
+  el.style.height="0%";
+  const start = performance.now(), dur = 1800;
+  function step(t){
+    const p = Math.min(1,(t-start)/dur);
+    el.style.height = p*target + "%";
+    p < 1 ? requestAnimationFrame(step) : done && done();
   }
-
-  if (mode === "premium") {
-    weeklyAccess.innerHTML =
-      `<button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>`;
-  }
-
-  saveState({ lastSection: "results", finalAvg: avg });
+  requestAnimationFrame(step);
 }
 
-/* ===============================
-   DEVOLUCIONES
-================================ */
-function commonFeedback(avg) {
-  if (avg < 40)
-    return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
-  if (avg < 70)
-    return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
-  return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
-}
-
-function premiumFeedback(area, p) {
-  if (p < 40)
-    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tu reacción puede generar un cambio profundo.`;
-  if (p < 70)
-    return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
-  return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
-}
-
-/* ===============================
-   TERMÓMETRO
-================================ */
-function updateThermometer() {
-
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule)
-      .reduce((s, m) => s + m.questions.length, 0) +
-    currentQuestion;
-
-  thermoFill.style.width =
-    Math.round((answered / totalQ) * 100) + "%";
-}
-
-/* ===============================
-   NAVEGACIÓN
-================================ */
-function restart() {
-
-  if (!DEV_MODE) {
-    const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
-    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
-      showWeeklyBlockFlash();
-      return;
-    }
-    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
-  }
-
-  clearState();
-  showSection("start");
-}
-
-function showPrivacy() {
-  showSection("privacy");
-}
-
-function showSection(id) {
-
-  ["start","test","results","weekly","weeklyResultScreen","privacy"]
-    .forEach(s => document.getElementById(s).classList.add("hidden"));
-
-  document.getElementById(id).classList.remove("hidden");
-}
-
-function goToV2() {
-  window.location.href = "./humanometro-v2/";
-}
+function show(id){
+  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
+    .forEach(s => $(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+         }
