@@ -7,7 +7,5 @@
   "scope": "/",
   "short_name": "Humanómetro",
   "start_url": "/",
-  "theme_color": "#ffffff",
-  "id": "/",
-  "description": "El test interactivo para medir el pulso de tu humanidad y conectar con vos mismo"
+  "theme_color": "#ffffff"
 }
