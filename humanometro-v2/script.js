@@ -7,8 +7,6 @@ const DEV_MODE = false; // ⬅️ usuario bloqueado | dev puede poner true
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week";
 
-const V2_MIRROR_BLOCK_KEY = "hm_v2_mirror_last_week";
-
 /* ===============================
    BLOQUEO — UTILIDADES
 ================================ */
@@ -23,17 +21,6 @@ function pasoUnaSemana(){
 
 function marcarSemana(){
   localStorage.setItem(V2_BLOCK_KEY, now());
-}
-
-function pasoUnaSemanaMirror(){
-  if (DEV_MODE) return true;
-  const last = localStorage.getItem(V2_MIRROR_BLOCK_KEY);
-  if (!last) return true;
-  return (now() - Number(last)) >= WEEK_MS;
-}
-
-function marcarSemanaMirror(){
-  localStorage.setItem(V2_MIRROR_BLOCK_KEY, now());
 }
 
 /* ===============================
@@ -277,7 +264,7 @@ const MIRROR_QUESTIONS = [
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function openMirror(){
-  if(!pasoUnaSemanaMirror()){
+  if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
@@ -285,7 +272,7 @@ function openMirror(){
 }
 
 function startMirror(){
-  if(!pasoUnaSemanaMirror()){
+  if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
@@ -323,7 +310,6 @@ function answerMirror(v){
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
-  marcarSemanaMirror();
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
