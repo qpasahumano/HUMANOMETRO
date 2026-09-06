@@ -1,27 +1,13 @@
 {
-  "name": "Humanómetro",
-  "short_name": "Humanómetro",
-  "description": "Humanómetro es una herramienta reflexiva que permite observar la coherencia, la emoción y la humanidad personal a lo largo del tiempo. No juzga: solo refleja.",
-  "id": "/index.html",
-  "start_url": "/index.html",
-  "scope": "/",
+  "background_color": "#ffffff",
+  "dir": "ltr",
   "display": "standalone",
-  "background_color": "#0b1220",
-  "theme_color": "#0b1220",
-  "orientation": "portrait",
-  "categories": ["lifestyle", "health", "education"],
-  "icons": [
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ]
+  "name": "Humanómetro",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Humanómetro",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "/",
+  "description": "El test interactivo para medir el pulso de tu humanidad y conectar con vos mismo"
 }
