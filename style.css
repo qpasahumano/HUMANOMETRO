@@ -4,7 +4,6 @@
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
-  /* Fondo puramente negro sin lilas ni colores infantiles, integrando textura sutil de manos en marca de agua */
   background: #000000 url("bg-manos-marca-agua.png") center / cover no-repeat fixed;
   color: #f6fffc;
   position: relative;
