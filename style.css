@@ -297,34 +297,34 @@ button.premium {
 
 button.spaced { margin-top: 26px; }
 
-/* ===== SELLO ===== */
+/* ===== SELLO LIMPIO (Sin fondo negro ni marco de celular) ===== */
 .sello-wrap {
   display: flex;
   justify-content: center;
-  margin: 18px auto 6px;
+  margin: 12px auto 4px;
   position: relative;
 }
 
 .sello-humanometro {
-  width: 140px;
+  width: 90px;
   height: auto;
   animation: freqFloat 6s ease-in-out infinite;
-  opacity: 0.65;
+  opacity: 0.95;
   filter:
-    drop-shadow(0 0 6px rgba(120,255,230,.6))
-    drop-shadow(0 0 14px rgba(120,200,255,.6));
+    drop-shadow(0 0 8px rgba(120,255,230,.8))
+    drop-shadow(0 0 20px rgba(120,200,255,.7));
 }
 
 .sello-wrap::before {
   content: "";
   position: absolute;
-  width: 160px;
-  height: 160px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background:
     conic-gradient(#6aff9f,#6ad0ff,#c77dff,#6aff9f);
-  filter: blur(12px);
-  opacity: 0.45;
+  filter: blur(14px);
+  opacity: 0.35;
   animation: auraSpin 10s linear infinite;
   z-index: -1;
 }
