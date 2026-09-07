@@ -7,6 +7,10 @@ body {
   background: #0b1220 url("bg-humanometro.png") center / cover no-repeat fixed;
   color: #f6fffc;
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ===== LÁMINA SUTIL – ACOMPAÑA EL FONDO ===== */
@@ -22,9 +26,60 @@ body::before {
   z-index: -1;
 }
 
+/* =================================================
+   CONTENEDOR RESPONSIVO (MARCO DE CELULAR EN PC / FULL EN MÓVIL)
+   ================================================= */
+.device-frame-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.device-screen {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* En pantallas medianas y grandes (Tablets / Computadoras), simulamos el marco del dispositivo */
+@media (min-width: 769px) {
+  .device-frame-wrapper {
+    padding: 24px;
+    background: radial-gradient(circle at center, #152238 0%, #05080f 100%);
+  }
+
+  .device-screen {
+    max-width: 420px;
+    height: 850px;
+    max-height: 90vh;
+    background: #0b1220;
+    border: 12px solid #1a2333;
+    border-radius: 40px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(120,255,230,0.15);
+    overflow-y: auto;
+    position: relative;
+  }
+
+  /* Barra de scroll limpia dentro del marco simulado */
+  .device-screen::-webkit-scrollbar {
+    width: 4px;
+  }
+  .device-screen::-webkit-scrollbar-thumb {
+    background: rgba(120,255,230,0.3);
+    border-radius: 4px;
+  }
+}
+
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
+  width: 100%;
   margin: auto;
   padding: 20px;
   text-align: center;
@@ -131,7 +186,7 @@ button.premium {
   transition: width .4s ease;
 }
 
-/* ===== CÍRCULOS – NUEVO LAYOUT 3x2 ===== */
+/* ===== CÍRCULOS – LAYOUT 3x2 ===== */
 #circles {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -155,7 +210,6 @@ button.premium {
     circleIn 0.6s ease-out both,
     circlePulse 3.6s ease-in-out infinite;
 
-  /* NUEVO HALO LED */
   box-shadow:
     0 0 8px rgba(120,255,230,.45),
     0 0 18px rgba(120,200,255,.35);
@@ -194,7 +248,6 @@ button.premium {
   position: relative;
 }
 
-/* Borde LED */
 #tips::before {
   content: "";
   position: absolute;
