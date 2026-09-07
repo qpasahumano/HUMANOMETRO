@@ -11,6 +11,10 @@ body {
   background-attachment: fixed;
   color: #f6fffc;
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ===== OVERLAY GLOBAL – AZUL NOCHE SUTIL ===== */
@@ -44,6 +48,7 @@ body.mirror-bg::before {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
+  width: 100%;
   margin: 10px auto 40px;
   padding: 26px;
   background: rgba(11,18,32,0.38);
@@ -180,7 +185,7 @@ button {
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  margin-top: -36px; /* SUBE MÁS TODO EL BLOQUE FINAL */
+  margin-top: -36px;
 }
 
 .result-text { text-align: left; }
@@ -250,22 +255,22 @@ button {
 @keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
 
 /* =========================================
-   ❤️ DONACIÓN – CORAZÓN + TEXTO (SUBE MÁS)
+   ❤️ DONACIÓN – CORAZÓN + TEXTO
    ========================================= */
 
 .donation-wrap {
-  margin-top: -58px;   /* SUBE MÁS EL CORAZÓN */
-  margin-bottom: 34px; /* EMPUJA TODO LO DEMÁS HACIA ARRIBA */
+  margin-top: -58px;
+  margin-bottom: 34px;
 }
 
 .donation-wrap .legal.small {
-  margin-top: 0px;     /* TEXTO PEGADO AL CORAZÓN */
+  margin-top: 0px;
 }
 
 .donation-heart {
   background: transparent;
   border: none;
-  font-size: 1.9rem;   /* CORAZÓN UN POCO MÁS CHICO */
+  font-size: 1.9rem;
   cursor: pointer;
   padding: 4px;
   position: relative;
@@ -277,7 +282,6 @@ button {
     0 0 26px rgba(190,150,255,.95);
 }
 
-/* ÍCONO DINERO DENTRO DEL CORAZÓN (SIN ANIMACIÓN) */
 .donation-heart::after {
   content: "💰";
   position: absolute;
@@ -295,4 +299,4 @@ button {
   60%  { transform: scale(1.17); }
   80%  { transform: scale(1); }
   100% { transform: scale(1); }
-  }
+}
