@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 /* ===============================
    BLOQUEO SEMANAL — CONFIG
 ================================ */
-const DEV_MODE = false; // Setear en true únicamente para testing
+const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week";
 const V2_STATE_KEY = "hm_v2_progress_state";
@@ -151,7 +151,6 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 function startV2(){
   const saved = loadV2State();
   if (saved && saved.week > 0) {
-    // Si ya tiene progreso guardado, retoma la semana guardada
     if (!pasoUnaSemana()) {
       showWeeklyBlockFlash();
       return;
@@ -404,7 +403,7 @@ function showFinal(){
         "sino como señal de distancia.\n\n"+
         "Esta distancia no habla de frialdad consciente,\n"+
         "habla de un mecanismo de protección:\n"+
-        "una forma de no involucrarte para no sentir.\n\n"+
+        "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
         "sino normalizar ese apagamiento como estado estable.\n\n"+
         "Cuando el dolor del otro no resuena,\n"+
@@ -485,4 +484,4 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => $(s).classList.add("hidden"));
   $(id).classList.remove("hidden");
-}
+  }
