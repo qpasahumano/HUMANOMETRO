@@ -1,84 +1,122 @@
-<!-- SECCIÓN: VOLUMEN 2 (TRANSICIÓN / CONTINUACIÓN) -->
-    <section id="v2Section" class="hidden">
-      <div class="brand">
-        <div class="brand-main">Humanómetro V2</div>
-        <div class="brand-meta">Expansión existencial <span class="on-led">● ON</span></div>
-      </div>
-      
-      <h2 class="neon-title">Expansión y Profundidad</h2>
-      <p class="intro">Has completado el ciclo base. Adentrémonos en los planos sutiles de la percepción y el vínculo.</p>
-      
-      <button class="primary" onclick="startV2Test()">Iniciar Test V2</button>
-      <button onclick="gateMirrorIntro()">Entrar al Espejo Humano</button>
-      <button onclick="showSection('start')">Volver al Inicio</button>
-    </section>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanómetro — Vol. 2</title>
 
-    <!-- SECCIÓN: TEST V2 -->
-    <section id="v2Test" class="hidden">
-      <h2 id="v2AreaTitle" class="neon-title">Área V2</h2>
-      <div class="thermo"><div id="v2ThermoFill"></div></div>
-      <p id="v2QuestionText" class="question">Cargando...</p>
-      <small id="v2QuestionNote" class="legal"></small>
-      <div class="answers">
-        <button onclick="answerV2(0)">No</button>
-        <button onclick="answerV2(1)">Tal vez</button>
-        <button onclick="answerV2(2)">Sí</button>
-      </div>
-    </section>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- SECCIÓN: RESULTADOS V2 -->
-    <section id="v2Results" class="hidden">
-      <h2 class="neon-title">Lectura Profunda V2</h2>
-      <div id="v2Circles" class="circles-grid"></div>
-      <div class="glass-sheet">
-        <ul id="v2Tips" class="scroll-sheet"></ul>
-      </div>
-      <button onclick="restartV2()">Reiniciar V2</button>
-      <button onclick="showSection('start')">Ir al Inicio</button>
-    </section>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <!-- SECCIÓN: ESPEJO HUMANO (INTRO) -->
-    <section id="mirrorIntro" class="hidden">
-      <div class="brand">
-        <div class="brand-main">Espejo Humano</div>
-        <div class="brand-meta">Reflexión interior <span class="on-led">● ON</span></div>
-      </div>
-      
-      <h2 class="neon-title">El Umbral del Espejo</h2>
-      <p class="intro">Un espacio para contemplar el reflejo sin juicios. La honestidad es la única llave de acceso.</p>
-      
-      <button class="primary" onclick="startMirrorTest()">Mirar a través del Espejo</button>
-      <button onclick="showSection('start')">Volver</button>
-    </section>
+  <!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
+  <div class="device-frame-wrapper">
+    <div class="device-screen">
+      <div class="app-container">
 
-    <!-- SECCIÓN: ESPEJO HUMANO (TEST / PREGUNTAS) -->
-    <section id="mirrorTest" class="hidden">
-      <div class="mirror-symbol">🪞</div>
-      <h2 class="neon-title">Reflexión en Curso</h2>
-      <div class="thermo"><div id="mirrorThermoFill"></div></div>
-      <p id="mirrorQuestionText" class="question">Cargando...</p>
-      <div class="answers">
-        <button onclick="answerMirror(0)">Apenas</button>
-        <button onclick="answerMirror(1)">A veces</button>
-        <button onclick="answerMirror(2)">Profundamente</button>
-      </div>
-    </section>
+        <!-- INICIO V2 -->
+        <section id="start">
+          <div class="card">
+            <div class="subtitle">Volumen II</div>
+            <h1>Humanómetro</h1>
+            <p class="description">
+              Continuación del proceso de observación personal.<br><br>
+              Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
+            </p>
+            <button class="btn btn-primary" onclick="startV2()">Comenzar Módulo</button>
+          </div>
+        </section>
 
-    <!-- SECCIÓN: ESPEJO HUMANO (RESULTADO FINAL) -->
-    <section id="mirrorResult" class="hidden">
-      <div class="mirror-symbol">✨</div>
-      <h2 class="neon-title state-led">Estado del Espejo</h2>
-      <div class="glass-sheet">
-        <p id="mirrorResultText" class="intro"></p>
-        <p id="mirrorAdviceText" class="legal small"></p>
-      </div>
+        <!-- TEST SEMANAL -->
+        <section id="test" class="hidden">
+          <div class="card">
+            <div class="subtitle" id="weekTitle">Semana</div>
+            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+            <span class="measure-badge" id="questionMeasure">Medición</span>
+            <p class="description" id="questionText">Cargando pregunta...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answer(2)">Sí, totalmente</button>
+              <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
+              <button class="btn" onclick="answer(0)">No / Casi nunca</button>
+            </div>
+          </div>
+        </section>
 
-      <!-- BLOQUE DONACIÓN / CIERRE -->
-      <div class="donation-wrap">
-        <button class="donation-heart" onclick="handleDonation()" title="Apoyar el proyecto">❤️</button>
-        <p class="legal small">Si este espacio te brindó claridad, puedes sostenerlo voluntariamente.</p>
-      </div>
+        <!-- DEVOLUCIÓN SEMANAL -->
+        <section id="weeklyResult" class="hidden">
+          <div class="card">
+            <div class="symbol-large" id="weeklySymbol">🐞</div>
+            <h2>Lectura Semanal</h2>
+            <div id="weeklyTextWrap">
+              <p class="description" id="weeklyText"></p>
+              <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
+              <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
+            </div>
+          </div>
+        </section>
 
-      <button class="primary" onclick="restartMirror()">Volver a Reflejarse</button>
-      <button onclick="showSection('start')">Volver al Inicio</button>
-    </section>
+        <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
+        <section id="monthlyResult" class="hidden">
+          <div class="card">
+            <div class="subtitle">Cierre de Módulo</div>
+            <h2>Continuidad</h2>
+            <p class="description">
+              Has completado la medición de patrones y relación con el entorno.<br><br>
+              Queda habilitada la fase reflexiva final: "El Espejo".
+            </p>
+            <button class="btn btn-primary" onclick="gateMirrorIntro()">Entrar a "El Espejo"</button>
+          </div>
+        </section>
+
+        <!-- INTRODUCCIÓN AL ESPEJO -->
+        <section id="mirrorIntro" class="hidden">
+          <div class="card">
+            <div class="subtitle">Fase Final</div>
+            <h1>El Espejo</h1>
+            <p class="description">
+              En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas.<br><br>
+              Respondé observando tu verdad interna, no lo que te gustaría sentir.
+            </p>
+            <button class="btn btn-primary" onclick="startMirror()">Comenzar Espejo</button>
+          </div>
+        </section>
+
+        <!-- TEST ESPEJO -->
+        <section id="mirrorTest" class="hidden">
+          <div class="card">
+            <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
+            <div class="subtitle">Situación Emocional</div>
+            <p class="description" id="mirrorQuestion">Cargando situación...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
+              <button class="btn" onclick="answerMirror(1)">Moderada</button>
+              <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTADO FINAL INTEGRADO -->
+        <section id="finalResult" class="hidden">
+          <div class="card">
+            <div class="subtitle">Diagnóstico Integrativo</div>
+            <div class="vertical-gauge-wrap">
+              <div class="vertical-gauge-fill" id="finalFill"></div>
+            </div>
+            <h2 id="finalState">Analizando...</h2>
+            <div id="finalTextWrap" class="hidden">
+              <p class="description" id="finalHumanText"></p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
