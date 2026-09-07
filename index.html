@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>HUMANÓMETRO</title>
+  <title>Humanómetro®</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Google Analytics -->
@@ -45,22 +45,20 @@
   <div class="device-screen">
     <main id="app">
 
-      <!-- INICIO -->
+      <!-- CAPA DE MANOS DE FONDO (Nueva capa sutil) -->
+      <div class="manos-fondo"></div>
+
+      <!-- SELLO HUMANÓMETRO LIMPIO (Movido fuera de #start para persistencia global) -->
+      <div class="sello-wrap global-logo">
+        <img
+          src="./activos/logo.png"
+          alt="Sello Humanómetro"
+          class="sello-humanometro"
+        >
+      </div>
+
+      <!-- INICIO (Título duplicado eliminado de aquí) -->
       <section id="start">
-        <h1 class="brand">
-          <span class="brand-main">HUMANÓMETRO</span><br>
-          <span class="brand-meta">v.1 ®</span>
-        </h1>
-
-        <!-- SELLO HUMANÓMETRO LIMPIO (Sin marco de celular ni duplicación de texto) -->
-        <div class="sello-wrap">
-          <img
-            src="./activos/hm_logo_limpio.png (1).png"
-            alt="Sello Humanómetro"
-            class="sello-humanometro"
-          >
-        </div>
-
         <p class="intro">
           Esta herramienta no mide perfección ni juicio.<br>
           Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
@@ -158,8 +156,7 @@
       <!-- 🔒 TEXTO PRIMER BLOQUEO -->
       <div id="weeklyBlockFlash" class="hidden weekly-block-flash">
         No seas ansioso.<br>
-     
-   Tiene que pasar una semana.
+        Tiene que pasar una semana.
       </div>
 
     </main>
