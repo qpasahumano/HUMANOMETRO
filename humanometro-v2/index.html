@@ -9,329 +9,114 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* VARIABLES */
-    :root {
-      --bg-dark: #07090e;
-      --bg-card: rgba(18, 22, 33, 0.75);
-      --border-glow: rgba(140, 255, 240, 0.25);
-      --border-glow-active: rgba(140, 255, 240, 0.6);
-      --cyan-bright: #8cfff0;
-      --cyan-glow: rgba(140, 255, 240, 0.4);
-      --text-main: #e2e8f0;
-      --text-muted: #94a3b8;
-      --gold-accent: #d4af37;
-    }
-
-    /* BASE */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
-      position: relative;
-      overflow-x: hidden;
-      transition: background 0.8s ease;
-    }
-
-    body.mirror-bg {
-      background: radial-gradient(circle at 50% 30%, #101926 0%, #05070a 100%);
-    }
-
-    /* CONTENEDOR PRINCIPAL */
-    .app-container {
-      width: 100%;
-      max-width: 480px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* SECCIONES Y TARJETAS */
-    section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-glow);
-      border-radius: 24px;
-      padding: 2.5rem 1.8rem;
-      width: 100%;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 15px rgba(140,255,240,0.05);
-      position: relative;
-    }
-
-    /* TIPOGRAFÍA */
-    h1, h2 {
-      font-family: 'Cinzel', serif;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #fff;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 10px var(--cyan-glow);
-    }
-
-    h2 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: var(--cyan-bright);
-    }
-
-    .subtitle {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    p.description {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: var(--text-main);
-      margin-bottom: 2rem;
-      white-space: pre-line;
-    }
-
-    .measure-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      padding: 4px 12px;
-      border-radius: 12px;
-      background: rgba(140, 255, 240, 0.1);
-      border: 1px solid var(--border-glow);
-      color: var(--cyan-bright);
-      margin-bottom: 1rem;
-    }
-
-    /* TERMÓMETRO / MEDIDOR VERTICAL Y HORIZONTAL */
-    .thermo-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
-      margin-bottom: 2rem;
-      overflow: hidden;
-    }
-
-    .thermo-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--cyan-bright);
-      box-shadow: 0 0 8px var(--cyan-bright);
-      transition: width 0.4s ease;
-    }
-
-    .vertical-gauge-wrap {
-      width: 14px;
-      height: 160px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 10px;
-      margin: 1.5rem auto;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border-glow);
-    }
-
-    .vertical-gauge-fill {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 0%;
-      background: linear-gradient(to top, var(--cyan-bright), #ffffff);
-      box-shadow: 0 0 12px var(--cyan-bright);
-      transition: height 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* BOTONES */
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      width: 100%;
-    }
-
-    .btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-glow);
-      color: var(--text-main);
-      padding: 1rem 1.2rem;
-      border-radius: 14px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-      background: rgba(140, 255, 240, 0.15);
-      border-color: var(--cyan-bright);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(140, 255, 240, 0.2), rgba(140, 255, 240, 0.05));
-      border-color: var(--cyan-bright);
-      color: #fff;
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-
-    /* EMOJIS Y ELEMENTOS ESPEJO */
-    .mirror-emoji {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
-    }
-
-    .symbol-large {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    /* ANIMACIONES */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes blockFade {
-      0% { opacity: 0; transform: scale(0.95); }
-      20% { opacity: 1; transform: scale(1); }
-      80% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.98); }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="app-container">
+  <!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
+  <div class="device-frame-wrapper">
+    <div class="device-screen">
+      <div class="app-container">
 
-    <!-- INICIO V2 -->
-    <section id="start">
-      <div class="card">
-        <div class="subtitle">Volumen II</div>
-        <h1>Humanómetro</h1>
-        <p class="description">
-          Continuación del proceso de observación personal.\n\n
-          Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
-        </p>
-        <button class="btn btn-primary" onclick="startV2()">Comenzar Módulo</button>
+        <!-- INICIO V2 -->
+        <section id="start">
+          <div class="card">
+            <div class="subtitle">Volumen II</div>
+            <h1>Humanómetro</h1>
+            <p class="description">
+              Continuación del proceso de observación personal.<br><br>
+              Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
+            </p>
+            <button class="btn btn-primary" onclick="startV2()">Comenzar Módulo</button>
+          </div>
+        </section>
+
+        <!-- TEST SEMANAL -->
+        <section id="test" class="hidden">
+          <div class="card">
+            <div class="subtitle" id="weekTitle">Semana</div>
+            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+            <span class="measure-badge" id="questionMeasure">Medición</span>
+            <p class="description" id="questionText">Cargando pregunta...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answer(2)">Sí, totalmente</button>
+              <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
+              <button class="btn" onclick="answer(0)">No / Casi nunca</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- DEVOLUCIÓN SEMANAL -->
+        <section id="weeklyResult" class="hidden">
+          <div class="card">
+            <div class="symbol-large" id="weeklySymbol">🐞</div>
+            <h2>Lectura Semanal</h2>
+            <div id="weeklyTextWrap">
+              <p class="description" id="weeklyText"></p>
+              <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
+              <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
+        <section id="monthlyResult" class="hidden">
+          <div class="card">
+            <div class="subtitle">Cierre de Módulo</div>
+            <h2>Continuidad</h2>
+            <p class="description">
+              Has completado la medición de patrones y relación con el entorno.<br><br>
+              Queda habilitada la fase reflexiva final: "El Espejo".
+            </p>
+            <button class="btn btn-primary" onclick="gateMirrorIntro()">Entrar a "El Espejo"</button>
+          </div>
+        </section>
+
+        <!-- INTRODUCCIÓN AL ESPEJO -->
+        <section id="mirrorIntro" class="hidden">
+          <div class="card">
+            <div class="subtitle">Fase Final</div>
+            <h1>El Espejo</h1>
+            <p class="description">
+              En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas.<br><br>
+              Respondé observando tu verdad interna, no lo que te gustaría sentir.
+            </p>
+            <button class="btn btn-primary" onclick="startMirror()">Comenzar Espejo</button>
+          </div>
+        </section>
+
+        <!-- TEST ESPEJO -->
+        <section id="mirrorTest" class="hidden">
+          <div class="card">
+            <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
+            <div class="subtitle">Situación Emocional</div>
+            <p class="description" id="mirrorQuestion">Cargando situación...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
+              <button class="btn" onclick="answerMirror(1)">Moderada</button>
+              <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTADO FINAL INTEGRADO -->
+        <section id="finalResult" class="hidden">
+          <div class="card">
+            <div class="subtitle">Diagnóstico Integrativo</div>
+            <div class="vertical-gauge-wrap">
+              <div class="vertical-gauge-fill" id="finalFill"></div>
+            </div>
+            <h2 id="finalState">Analizando...</h2>
+            <div id="finalTextWrap" class="hidden">
+              <p class="description" id="finalHumanText"></p>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
-
-    <!-- TEST SEMANAL -->
-    <section id="test" class="hidden">
-      <div class="card">
-        <div class="subtitle" id="weekTitle">Semana</div>
-        <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
-        <span class="measure-badge" id="questionMeasure">Medición</span>
-        <p class="description" id="questionText">Cargando pregunta...</p>
-        <div class="btn-group">
-          <button class="btn" onclick="answer(2)">Sí, totalmente</button>
-          <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
-          <button class="btn" onclick="answer(0)">No / Casi nunca</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- DEVOLUCIÓN SEMANAL -->
-    <section id="weeklyResult" class="hidden">
-      <div class="card">
-        <div class="symbol-large" id="weeklySymbol">🐞</div>
-        <h2>Lectura Semanal</h2>
-        <div id="weeklyTextWrap">
-          <p class="description" id="weeklyText"></p>
-          <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
-          <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
-    <section id="monthlyResult" class="hidden">
-      <div class="card">
-        <div class="subtitle">Cierre de Módulo</div>
-        <h2>Continuidad</h2>
-        <p class="description">
-          Has completado la medición de patrones y relación con el entorno.\n\n
-          Queda habilitada la fase reflexiva final: "El Espejo".
-        </p>
-        <button class="btn btn-primary" onclick="gateMirrorIntro()">Entrar a "El Espejo"</button>
-      </div>
-    </section>
-
-    <!-- INTRODUCCIÓN AL ESPEJO -->
-    <section id="mirrorIntro" class="hidden">
-      <div class="card">
-        <div class="subtitle">Fase Final</div>
-        <h1>El Espejo</h1>
-        <p class="description">
-          En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas.\n\n
-          Respondé observando tu verdad interna, no lo que te gustaría sentir.
-        </p>
-        <button class="btn btn-primary" onclick="startMirror()">Comenzar Espejo</button>
-      </div>
-    </section>
-
-    <!-- TEST ESPEJO -->
-    <section id="mirrorTest" class="hidden">
-      <div class="card">
-        <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
-        <div class="subtitle">Situación Emocional</div>
-        <p class="description" id="mirrorQuestion">Cargando situación...</p>
-        <div class="btn-group">
-          <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
-          <button class="btn" onclick="answerMirror(1)">Moderada</button>
-          <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESULTADO FINAL INTEGRADO -->
-    <section id="finalResult" class="hidden">
-      <div class="card">
-        <div class="subtitle">Diagnóstico Integrativo</div>
-        <div class="vertical-gauge-wrap">
-          <div class="vertical-gauge-fill" id="finalFill"></div>
-        </div>
-        <h2 id="finalState">Analizando...</h2>
-        <div id="finalTextWrap" class="hidden">
-          <p class="description" id="finalHumanText"></p>
-        </div>
-      </div>
-    </section>
-
+    </div>
   </div>
 
-  <!-- SCRIPT ÚNICO V2 COMPLETO Y PERSISTENTE -->
   <script src="script.js"></script>
 </body>
 </html>
