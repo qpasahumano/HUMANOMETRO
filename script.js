@@ -32,7 +32,7 @@ function saveState(extra = {}) {
     responseProfile,
     weeklyIndex,
     weeklyScores,
-    weeklyCompleted, // 🔧 agregado
+    weeklyCompleted,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: Date.now(),
     ...extra
@@ -75,7 +75,7 @@ let responseProfile = {
 ================================ */
 let weeklyIndex = 0;
 let weeklyScores = [];
-let weeklyCompleted = false; // 🔧 agregado
+let weeklyCompleted = false;
 
 const WEEKLY_QUESTIONS = [
   "Cuando viviste alguna incomodidad o tensión emocional esta semana con algún vínculo cercano, ¿pudiste observar tu reacción antes de actuar?",
@@ -121,7 +121,6 @@ function showWeeklyBlockFlash() {
   weeklyScores = saved.weeklyScores || [];
   weeklyCompleted = saved.weeklyCompleted || false;
 
-  // 🔧 ajuste clave
   if (weeklyCompleted) {
     const last = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
     if (last && Date.now() - Number(last) >= WEEK_MS) {
@@ -159,7 +158,6 @@ function weeklyWithDonation() {
 
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
 
-  // 🔧 ajuste clave
   if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
     goToV2();
     return;
@@ -233,7 +231,7 @@ function showWeeklyResultScreen() {
 
   saveWeekly();
 
-  weeklyCompleted = true; // 🔧 ajuste clave
+  weeklyCompleted = true;
 
   showSection("weeklyResultScreen");
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
@@ -453,4 +451,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+       }
