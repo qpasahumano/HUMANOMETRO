@@ -176,9 +176,7 @@ function loadQuestion(){
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
-  if (thermoFill) {
-    thermoFill.style.width = (q/4)*100 + "%";
-  }
+  updateThermometer((q/4)*100);
 }
 
 function answer(v){
@@ -195,6 +193,7 @@ function answer(v){
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
+  updateThermometer(100);
 
   const avg = currentScore / 4;
   weeklyScores.push(avg);
@@ -272,6 +271,18 @@ function showWeekly(){
     }
   }
 
+  // Ajuste estético de circunferencias en resultados semanales V2
+  const weeklyCircles = document.querySelector('#weeklyResult .circles, #weeklyResult #circles');
+  if (weeklyCircles) {
+    let circlesHtml = "";
+    WEEKS.forEach((wObj, i) => {
+      let scoreVal = weeklyScores[i] !== undefined ? weeklyScores[i] : 0;
+      let circlePct = Math.round((scoreVal / 2) * 100);
+      circlesHtml += `<div class="circle"><span>${wObj.title}</span><br><strong>${circlePct}%</strong></div>`;
+    });
+    weeklyCircles.innerHTML = circlesHtml;
+  }
+
   saveV2State({ lastSection: "weeklyResult", weeklyScores });
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -293,6 +304,7 @@ function nextWeek(){
 function showMonthly(){
   show("monthlyResult");
   marcarSemana();
+  updateThermometer(100);
   saveV2State({ lastSection: "monthlyResult" });
 }
 
@@ -300,14 +312,14 @@ function showMonthly(){
    ESPEJO — PREGUNTAS COMPLETAS
 ================================ */
 const MIRROR_QUESTIONS = [
-  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
+  { t:"Когда algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
   { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -322,6 +334,7 @@ function openMirror(){
     return;
   }
   show("mirrorIntro");
+  updateThermometer(100);
   saveV2State({ lastSection: "mirrorIntro" });
 }
 
@@ -339,6 +352,7 @@ function startMirror(){
 function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
+  updateThermometer(((mq + 1) / MIRROR_QUESTIONS.length) * 100);
 }
 
 function answerMirror(v){
@@ -366,6 +380,7 @@ function answerMirror(v){
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
+  updateThermometer(100);
   saveV2State({ lastSection: "finalResult" });
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
@@ -390,6 +405,18 @@ function showFinal(){
 
   if(range >= 2 && semanticPenalty >= 2){
     range -= 1;
+  }
+
+  // Ajuste estético de circunferencias en resultados finales del espejo V2
+  const finalCircles = document.querySelector('#finalResult .circles, #finalResult #circles');
+  if (finalCircles) {
+    let circlesHtml = "";
+    MIRROR_QUESTIONS.forEach((mqObj, i) => {
+      let val = mirrorLog[i] !== undefined ? mirrorLog[i] : 0;
+      let circlePct = Math.round((val / 2) * 100);
+      circlesHtml += `<div class="circle"><span>Espejo ${i+1}</span><br><strong>${circlePct}%</strong></div>`;
+    });
+    finalCircles.innerHTML = circlesHtml;
   }
 
   animateGauge(finalFill, (avg/2)*100, ()=>{
@@ -470,6 +497,18 @@ function showFinal(){
   });
 }
 
+/* ===============================
+   TERMÓMETRO GLOBAL INTEGRADO V2
+================================ */
+function updateThermometer(percent) {
+  if (percent !== undefined) {
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill');
+    fills.forEach(fill => {
+      if (fill) fill.style.width = percent + '%';
+    });
+  }
+}
+
 /* UTIL */
 function animateGauge(el,target,
 done){
@@ -479,7 +518,8 @@ done){
   }
   el.style.height="0%";
   const start = performance.now(), dur = 1800;
-  function step(t){
+  
+function step(t){
     const p = Math.min(1,(t-start)/dur);
     el.style.height = p*target + "%";
     p < 1 ? requestAnimationFrame(step) : done && done();
@@ -495,4 +535,4 @@ function show(id){
     });
   const targetEl = $(id);
   if (targetEl) targetEl.classList.remove("hidden");
-     }
+         }
