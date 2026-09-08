@@ -1,379 +1,104 @@
-* { box-sizing: border-box; }
+/* ==========================================================
+   CSS 2 - HUMANÓMETRO (ESTILOS ESPECÍFICOS: VOL. II Y MÓDULO ESPEJO)
+   ================================================---------- */
 
-/* ===== BODY + FONDO NEGRO PURO & MANOS EN MARCA DE AGUA ===== */
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: #000000 url("activos/v2/bg-manos-marca-agua.png") center / cover no-repeat fixed;
-  color: #f6fffc;
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ===== OVERLAY GLOBAL – NEGRO INMERSIVO PROFUNDO ===== */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.88);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* ===== FONDO ESPEJO – COMPLEMENTO OSCURO ===== */
-body.mirror-bg {
-  background-image: url("v2_espejo_manos.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-body.mirror-bg::before {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-/* ===== CONTENEDOR PRINCIPAL ===== */
-#app {
-  max-width: 520px;
+/* CONTENEDORES Y ESTRUCTURAS ESPECÍFICAS DE V2 */
+.app-container {
   width: 100%;
-  margin: 10px auto 40px;
-  padding: 26px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 22px;
-  box-shadow:
-    0 0 30px rgba(0,0,0,.6),
-    0 0 60px rgba(120,255,230,.08);
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.hidden { display: none !important; }
-
-/* ===== TIPOGRAFÍA Y TÍTULOS (Montserrat y Poppins) ===== */
-h1, h2, h3, h4, h5, h6, .secondary-header, .brand-main {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-/* Eliminación total de fuente ornamental en encabezados secundarios */
-.secondary-header, .card-title, .sheet-title {
-  font-family: "Montserrat", sans-serif !important;
-  font-style: normal !important;
-}
-
-.brand-main {
-  font-size: 2.4rem;
-  letter-spacing: .08em;
-  color: #dffaff;
-  text-shadow:
-    0 0 8px rgba(120,255,230,.9),
-    0 0 22px rgba(120,255,230,.7);
-}
-
-.brand-meta { font-family: "Poppins", sans-serif; font-size: .7rem; opacity: .9; }
-
-/* ===== TEXTOS ===== */
-.intro { font-family: "Poppins", sans-serif; font-size: .95rem; line-height: 1.5; margin: 20px 0; }
-.legal { font-family: "Poppins", sans-serif; font-size: .75rem; opacity: .92; }
-.legal.small { font-family: "Poppins", sans-serif; font-size: .72rem; line-height: 1.45; }
-
-/* ===== TÍTULOS NEON ===== */
-.neon-title {
-  color: #cffff4;
-  text-shadow:
-    0 0 10px rgba(140,255,240,1),
-    0 0 26px rgba(140,255,240,.85);
-  animation: glow 2.5s infinite alternate;
-}
-
-@keyframes glow { from { opacity: .85; } to { opacity: 1; } }
-
-/* ===== PREGUNTAS ===== */
-.question { font-family: "Poppins", sans-serif; font-size: 1.05rem; margin-top: 20px; }
-
-/* ===== BOTONES – ESTILO LED BRILLANTE ===== */
-button {
-  width: 90%;
-  max-width: 340px;
-  margin: 14px auto;
-  padding: 14px;
-  border-radius: 40px;
-  border: 1px solid rgba(120, 255, 230, 0.4);
-  font-size: 1em;
-  cursor: pointer;
-  color: #f2fbff;
-  background: linear-gradient(45deg, #101826, #1d2b45);
-  box-shadow:
-    0 0 18px rgba(120,255,230,0.35),
-    inset 0 0 12px rgba(120,255,230,0.2);
-  transition: transform .15s ease, box-shadow .15s ease;
-  font-family: "Poppins", sans-serif;
-}
-
-button:active { transform: scale(0.96); }
-
-/* Botones generales / Primary con luz LED verde esmeralda */
-.primary, .btn-primary {
-  background: linear-gradient(45deg, #162a24, #1f4037);
-  border-color: rgba(106,255,159,0.7);
-  box-shadow: 0 0 22px rgba(106,255,159,0.5), inset 0 0 12px rgba(106,255,159,0.3);
-  font-weight: 600;
-}
-
-/* Respuestas generales */
-.answers button {
-  background: linear-gradient(45deg, #162a24, #1f4037);
-  border-color: rgba(106,255,159,0.6);
-  box-shadow: 0 0 18px rgba(106,255,159,0.4), inset 0 0 10px rgba(106,255,159,0.2);
-  font-weight: 600;
-}
-
-/* ===== BOTONES ESPEJO – AZUL CIAN LED ===== */
-#mirrorTest .answers button {
-  background: linear-gradient(45deg,#0b3c66,#1aa6c9);
-  border-color: rgba(120,220,255,0.7);
-  box-shadow:
-    0 0 18px rgba(120,220,255,.6),
-    inset 0 0 12px rgba(255,255,255,.2);
-  color: #f2fbff;
-}
-
-/* ===== TERMÓMETRO HORIZONTAL – ESTILO LED FLOTANTE ===== */
-.thermo, .led-thermometer {
-  width: 100%;
-  height: 14px;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(120, 255, 230, 0.3);
-  border-radius: 20px;
-  margin: 20px 0;
-  overflow: hidden;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 16px rgba(120,255,230,0.3);
-}
-
-#thermoFill {
   height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow:
-    0 0 14px rgba(120,255,230,.9),
-    inset 0 0 8px rgba(255,255,255,.5);
-  transition: width .6s ease-in-out;
-}
-
-/* ===== TERMÓMETROS VERTICALES – LED ===== */
-.vertical-thermo, .vertical-gauge-wrap {
-  width: 30px;
-  height: 220px;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(120, 255, 230, 0.3);
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  margin: 0 auto;
-  box-shadow:
-    inset 0 0 12px rgba(0,0,0,.5),
-    0 0 26px rgba(120,255,230,.6);
-  animation: pulseLed 2.4s infinite ease-in-out;
-}
-
-@keyframes pulseLed {
-  0% { box-shadow: 0 0 18px rgba(120,255,230,.4); }
-  50% { box-shadow: 0 0 32px rgba(120,255,230,.9); }
-  100% { box-shadow: 0 0 18px rgba(120,255,230,.4); }
-}
-
-.gradient, .vertical-gauge-fill {
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(to top, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow:
-    inset 0 0 14px rgba(255,255,255,.5),
-    0 0 26px rgba(120,255,230,0.9);
-}
-
-/* ===== RESULTADOS Y TARJETAS CON SCROLL Y TRANSPARENCIA ===== */
-.card {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 16px;
-  margin: 8px auto;
-  width: 100%;
-  max-height: calc(100dvh - 80px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border: 1px solid rgba(120, 255, 230, 0.25);
-}
-
-.result-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin-top: -36px;
-}
-
-.result-text { text-align: left; }
-
-/* ===== SÍMBOLOS ===== */
-.symbol, .symbol-large {
-  font-size: 3.4rem;
-  margin-bottom: 10px;
-  animation: floatBase 2.6s infinite ease-in-out;
-  text-shadow: 0 0 15px rgba(120,255,230,0.6);
-}
-
-@keyframes floatBase {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
-}
-
-/* ===== BLOQUE ESPEJO ===== */
-.mirror-symbol, .mirror-emoji {
-  font-size: 48px;
-  color: #cffff4;
-  text-align: center;
-  margin: 16px auto;
-  text-shadow:
-    0 0 14px rgba(140,255,240,1),
-    0 0 32px rgba(140,255,240,.8);
-  animation: pulseMirror 2.6s infinite ease-in-out;
-}
-
-@keyframes pulseMirror {
-  0% { transform: scale(1); opacity: .7; }
-  50% { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(1); opacity: .7; }
-}
-
-/* ===== DEVOLUCIÓN FINAL Y LÁMINA SCROLLEABLE ===== */
-.glass-sheet, .scroll-sheet {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(140,255,240,.45);
-  border-radius: 14px;
-  padding: 16px;
-  max-height: calc(100dvh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  box-shadow:
-    0 0 8px rgba(140,255,240,.35),
-    inset 0 0 8px rgba(140,255,240,.18);
-}
-
-/* ===== ESTADO FINAL LED ===== */
-.state-led {
-  text-shadow:
-    0 0 10px rgba(140,255,240,1),
-    0 0 26px rgba(140,255,240,.85);
-  animation: glowState 2.2s infinite alternate;
-}
-
-@keyframes glowState { from { opacity: .65; } to { opacity: 1; } }
-
-/* =========================================
-   ❤️ DONACIÓN – CORAZÓN + TEXTO
-   ========================================= */
-
-.donation-wrap {
-  margin-top: -58px;
-  margin-bottom: 34px;
-}
-
-.donation-wrap .legal.small {
-  margin-top: 0px;
-}
-
-.donation-heart {
-  background: transparent;
-  border: none;
-  font-size: 1.9rem;
-  cursor: pointer;
-  padding: 4px;
   position: relative;
-  animation: heartBeat 4.2s infinite ease-in-out;
-  color: #cfa9ff;
-  text-shadow:
-    0 0 6px rgba(190,150,255,.65),
-    0 0 14px rgba(190,150,255,.85),
-    0 0 26px rgba(190,150,255,.95);
+  overflow: hidden;
 }
 
-.donation-heart::after {
-  content: "💰";
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: .7rem;
-  text-shadow: none;
+.subtitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--cyan-bright);
+  margin-bottom: 4px;
 }
 
-@keyframes heartBeat {
-  0%   { transform: scale(1); }
-  20%  { transform: scale(1.14); }
-  40%  { transform: scale(1); }
-  60%  { transform: scale(1.17); }
-  80%  { transform: scale(1); }
-  100% { transform: scale(1); }
+.symbol-large {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
 }
 
-/* ===== SELLO LIMPIO Y FLOTANTE (COMPATIBILIDAD V2) ===== */
-.sello-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 12px auto 4px;
+.measure-badge {
+  display: inline-block;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid var(--border-glow);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--cyan-bright);
+  margin-bottom: 8px;
+}
+
+/* FASE ESPEJO */
+.mirror-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  animation: pulseGlow 2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--cyan-bright)); }
+  100% { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--emerald)); }
+}
+
+/* MEDIDOR VERTICAL PARA DIAGNÓSTICO INTEGRATIVO */
+.vertical-gauge-wrap {
+  width: 100%H;
+  width: 100%;
+  height: 140px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin: 10px 0;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 }
 
-.sello-humanometro {
-  width: 90px;
-  height: auto;
-  animation: freqFloat 6s ease-in-out infinite;
-  opacity: 0.95;
-  filter:
-    drop-shadow(0 0 10px rgba(120,255,230,.9))
-    drop-shadow(0 0 25px rgba(120,200,255,.8));
+.vertical-gauge-fill {
+  width: 100%;
+  height: 75%;
+  background: linear-gradient(180deg, var(--cyan-bright), var(--emerald));
+  box-shadow: 0 0 12px var(--emerald);
+  border-radius: 8px 8px 0 0;
+  transition: height 0.6s ease;
 }
 
-.sello-wrap::before {
-  content: "";
-  position: absolute;
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: conic-gradient(#6aff9f,#6ad0ff,#c77dff,#6aff9f);
-  filter: blur(16px);
-  opacity: 0.4;
-  animation: auraSpin 10s linear infinite;
-  z-index: -1;
+/* AJUSTES ADICIONALES PARA TEXTOS Y TARJETAS EN V2 */
+#weeklyTextWrap, #finalTextWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-@keyframes freqFloat {
-  0%,100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.03) rotate(0.4deg); }
+#weeklyTextWrap .description {
+  font-size: 0.82rem;
+  color: var(--text-main);
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 8px;
+  border-left: 3px solid var(--emerald);
 }
 
-@keyframes auraSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+#weeklyAdvice {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: left;
 }
 
-/* Rangos dinámicos transversales adicionales */
-.range-success { background-color: #2ecc71 !important; border-color: #2ecc71 !important; }
-.range-warning { background-color: #f1c40f !important; border-color: #f1c40f !important; }
-.range-danger  { background-color: #e74c3c !important; border-color: #e74c3c !important; }
+/* CLASES DE UTILIDAD PARA CONTROL DE VISIBILIDAD */
+.hidden {
+  display: none !important;
+}
