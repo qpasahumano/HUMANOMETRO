@@ -43,6 +43,8 @@ body.mirror-bg::before {
   margin: 10px auto 40px;
   padding: 26px;
   background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 22px;
   box-shadow:
     0 0 30px rgba(0,0,0,.6),
@@ -52,11 +54,22 @@ body.mirror-bg::before {
   z-index: 2;
 }
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
-/* ===== MARCA ===== */
+/* ===== TIPOGRAFÍA Y TÍTULOS (Montserrat y Poppins) ===== */
+h1, h2, h3, h4, h5, h6, .secondary-header, .brand-main {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Eliminación total de fuente ornamental en encabezados secundarios */
+.secondary-header, .card-title, .sheet-title {
+  font-family: "Montserrat", sans-serif !important;
+  font-style: normal !important;
+}
+
 .brand-main {
-  font-family: "Mystery Quest", cursive;
   font-size: 2.4rem;
   letter-spacing: .08em;
   color: #dffaff;
@@ -65,14 +78,14 @@ body.mirror-bg::before {
     0 0 22px rgba(120,255,230,.7);
 }
 
-.brand-meta { font-size: .7rem; opacity: .9; }
+.brand-meta { font-family: "Poppins", sans-serif; font-size: .7rem; opacity: .9; }
 
 /* ===== TEXTOS ===== */
-.intro { font-size: .95rem; line-height: 1.5; margin: 20px 0; }
-.legal { font-size: .75rem; opacity: .92; }
-.legal.small { font-size: .72rem; line-height: 1.45; }
+.intro { font-family: "Poppins", sans-serif; font-size: .95rem; line-height: 1.5; margin: 20px 0; }
+.legal { font-family: "Poppins", sans-serif; font-size: .75rem; opacity: .92; }
+.legal.small { font-family: "Poppins", sans-serif; font-size: .72rem; line-height: 1.45; }
 
-/* ===== TÍTULOS ===== */
+/* ===== TÍTULOS NEON ===== */
 .neon-title {
   color: #cffff4;
   text-shadow:
@@ -84,7 +97,7 @@ body.mirror-bg::before {
 @keyframes glow { from { opacity: .85; } to { opacity: 1; } }
 
 /* ===== PREGUNTAS ===== */
-.question { font-size: 1.05rem; margin-top: 20px; }
+.question { font-family: "Poppins", sans-serif; font-size: 1.05rem; margin-top: 20px; }
 
 /* ===== BOTONES – ESTILO LED BRILLANTE ===== */
 button {
@@ -102,15 +115,17 @@ button {
     0 0 18px rgba(120,255,230,0.35),
     inset 0 0 12px rgba(120,255,230,0.2);
   transition: transform .15s ease, box-shadow .15s ease;
+  font-family: "Poppins", sans-serif;
 }
 
 button:active { transform: scale(0.96); }
 
 /* Botones generales / Primary con luz LED verde esmeralda */
-.primary {
+.primary, .btn-primary {
   background: linear-gradient(45deg, #162a24, #1f4037);
   border-color: rgba(106,255,159,0.7);
   box-shadow: 0 0 22px rgba(106,255,159,0.5), inset 0 0 12px rgba(106,255,159,0.3);
+  font-weight: 600;
 }
 
 /* Respuestas generales */
@@ -132,7 +147,7 @@ button:active { transform: scale(0.96); }
 }
 
 /* ===== TERMÓMETRO HORIZONTAL – ESTILO LED FLOTANTE ===== */
-.thermo {
+.thermo, .led-thermometer {
   width: 100%;
   height: 14px;
   background: rgba(15, 23, 42, 0.85);
@@ -146,7 +161,7 @@ button:active { transform: scale(0.96); }
 #thermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff3b5c, #ffd13b, #6aff9f);
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
   box-shadow:
     0 0 14px rgba(120,255,230,.9),
     inset 0 0 8px rgba(255,255,255,.5);
@@ -154,7 +169,7 @@ button:active { transform: scale(0.96); }
 }
 
 /* ===== TERMÓMETROS VERTICALES – LED ===== */
-.vertical-thermo {
+.vertical-thermo, .vertical-gauge-wrap {
   width: 30px;
   height: 220px;
   background: rgba(15, 23, 42, 0.85);
@@ -162,6 +177,7 @@ button:active { transform: scale(0.96); }
   border-radius: 20px;
   overflow: hidden;
   position: relative;
+  margin: 0 auto;
   box-shadow:
     inset 0 0 12px rgba(0,0,0,.5),
     0 0 26px rgba(120,255,230,.6);
@@ -174,16 +190,34 @@ button:active { transform: scale(0.96); }
   100% { box-shadow: 0 0 18px rgba(120,255,230,.4); }
 }
 
-.gradient {
+.gradient, .vertical-gauge-fill {
   width: 100%;
   height: 0%;
-  background: linear-gradient(#ff3b5c,#ffd13b,#6aff9f);
+  background: linear-gradient(to top, #e74c3c, #f1c40f, #2ecc71);
   box-shadow:
     inset 0 0 14px rgba(255,255,255,.5),
     0 0 26px rgba(120,255,230,0.9);
 }
 
-/* ===== RESULTADOS ===== */
+/* ===== RESULTADOS Y TARJETAS CON SCROLL Y TRANSPARENCIA ===== */
+.card {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 8px auto;
+  width: 100%;
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid rgba(120, 255, 230, 0.25);
+}
+
 .result-row {
   display: flex;
   align-items: flex-start;
@@ -194,7 +228,7 @@ button:active { transform: scale(0.96); }
 .result-text { text-align: left; }
 
 /* ===== SÍMBOLOS ===== */
-.symbol {
+.symbol, .symbol-large {
   font-size: 3.4rem;
   margin-bottom: 10px;
   animation: floatBase 2.6s infinite ease-in-out;
@@ -208,7 +242,7 @@ button:active { transform: scale(0.96); }
 }
 
 /* ===== BLOQUE ESPEJO ===== */
-.mirror-symbol {
+.mirror-symbol, .mirror-emoji {
   font-size: 48px;
   color: #cffff4;
   text-align: center;
@@ -225,26 +259,17 @@ button:active { transform: scale(0.96); }
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== DEVOLUCIÓN FINAL ===== */
-.glass-sheet {
-  background: rgba(10, 15, 25, 0.85);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(120,255,230,0.25);
-  border-radius: 22px;
-  padding: 24px;
-  box-shadow:
-    0 0 28px rgba(120,255,230,.25),
-    inset 0 0 22px rgba(255,255,255,.05);
-}
-
-/* ===== LÁMINA SCROLLEABLE – LED FINO ===== */
-.scroll-sheet {
-  max-height: 60vh;
-  overflow-y: auto;
-  padding-right: 8px;
+/* ===== DEVOLUCIÓN FINAL Y LÁMINA SCROLLEABLE ===== */
+.glass-sheet, .scroll-sheet {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(140,255,240,.45);
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.5);
+  padding: 16px;
+  max-height: calc(100dvh - 100px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow:
     0 0 8px rgba(140,255,240,.35),
     inset 0 0 8px rgba(140,255,240,.18);
@@ -347,3 +372,8 @@ button:active { transform: scale(0.96); }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Rangos dinámicos transversales adicionales */
+.range-success { background-color: #2ecc71 !important; border-color: #2ecc71 !important; }
+.range-warning { background-color: #f1c40f !important; border-color: #f1c40f !important; }
+.range-danger  { background-color: #e74c3c !important; border-color: #e74c3c !important; }
