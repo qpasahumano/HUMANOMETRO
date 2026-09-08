@@ -48,14 +48,16 @@
 
         <!-- DEVOLUCIÓN SEMANAL -->
         <section id="weeklyResult" class="hidden">
-          <div class="card scroll-sheet">
+          <div class="card scroll-sheet scroll-sheet-compact">
             <div class="symbol-large" id="weeklySymbol">🐞</div>
             <h2>Lectura Semanal</h2>
-            <div id="circles"></div>
+            <div id="circles" class="circles-grid-compact"></div>
             <div id="weeklyTextWrap">
               <p class="description" id="weeklyText"></p>
               <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
-              <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
+              <div class="results-action-wrap">
+                <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
+              </div>
             </div>
           </div>
         </section>
@@ -102,13 +104,13 @@
 
         <!-- RESULTADO FINAL INTEGRADO -->
         <section id="finalResult" class="hidden">
-          <div class="card scroll-sheet">
+          <div class="card scroll-sheet scroll-sheet-compact">
             <div class="subtitle">Diagnóstico Integrativo</div>
-            <div id="circles"></div>
+            <div id="circles" class="circles-grid-compact"></div>
             <div class="vertical-gauge-wrap">
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
-            <h2 id="finalState">Analizando...</h2>
+            <h2 id="finalState" class="global-result-compact">Analizando...</h2>
             <div id="finalTextWrap" class="hidden">
               <p class="description" id="finalHumanText"></p>
             </div>
