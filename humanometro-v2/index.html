@@ -34,7 +34,7 @@
         <!-- TEST SEMANAL -->
         <section id="test" class="hidden">
           <div class="card scroll-sheet">
-            <div class="subtitle" id="weekTitle">Semana</div>
+            <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
             <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             <span class="measure-badge" id="questionMeasure">Medición</span>
             <p class="description" id="questionText">Cargando pregunta...</p>
@@ -51,6 +51,7 @@
           <div class="card scroll-sheet">
             <div class="symbol-large" id="weeklySymbol">🐞</div>
             <h2>Lectura Semanal</h2>
+            <div id="circles"></div>
             <div id="weeklyTextWrap">
               <p class="description" id="weeklyText"></p>
               <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
@@ -89,7 +90,7 @@
         <section id="mirrorTest" class="hidden">
           <div class="card scroll-sheet">
             <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
-            <div class="subtitle">Situación Emocional</div>
+            <div class="subtitle segment-title-compact">Situación Emocional</div>
             <p class="description" id="mirrorQuestion">Cargando situación...</p>
             <div class="btn-group">
               <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
@@ -103,6 +104,7 @@
         <section id="finalResult" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle">Diagnóstico Integrativo</div>
+            <div id="circles"></div>
             <div class="vertical-gauge-wrap">
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
