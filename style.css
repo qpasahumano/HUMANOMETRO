@@ -31,10 +31,9 @@ body::before {
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Usamos la ruta exacta que definiste en tu CSS original */
   background: transparent url("bg-manos-marca-agua.png") center / cover no-repeat;
-  opacity: 0.15; /* AJUSTE: Sutil como marca de agua */
-  z-index: -1; /* AJUSTE: Detrás de todo el contenido */
+  opacity: 0.15;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -58,7 +57,7 @@ body::before {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: transparent; /* AJUSTE: Transparente sobre las manos */
+  background-color: transparent;
   position: relative;
   overflow: hidden;
 }
@@ -74,46 +73,46 @@ body::before {
     max-width: 420px;
     height: 850px;
     max-height: 90vh;
-    background: #000000; /* Fondo del "teléfono" */
+    background: #000000;
     border: 12px solid #121216;
     border-radius: 40px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.95), 0 0 35px rgba(120,255,230,0.12);
-    overflow-y: auto; /* Scroll interno del teléfono */
+    overflow-y: auto;
   }
 
   .device-screen::-webkit-scrollbar { width: 4px; }
   .device-screen::-webkit-scrollbar-thumb { background: rgba(120,255,230,0.3); border-radius: 4px; }
 }
 
-/* ===== CONTENEDOR PRINCIPAL (Ya no es negro sólido) ===== */
+/* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
   max-width: 520px;
   width: 100%;
   margin: auto;
   padding: 20px;
   text-align: center;
-  background: transparent; /* AJUSTE CLAVE: Fondo transparente, flotando sobre las manos */
+  background: transparent;
   border-radius: 16px;
   position: relative;
-  z-index: 1; /* Contenido sobre las manos */
+  z-index: 1;
 }
 
 .hidden { display: none !important; }
 
 /* ===== LOGO / SELLO (Global y Flotante) ===== */
 .global-logo {
-  margin: 20px auto 10px !important; /* Ajuste de margen superior */
+  margin: 20px auto 10px !important;
 }
 
 .sello-wrap {
   display: flex;
   justify-content: center;
   position: relative;
-  z-index: 2; /* Por encima de las manos */
+  z-index: 2;
 }
 
 .sello-humanometro {
-  width: 90px; /* Tamaño original */
+  width: 90px;
   height: auto;
   animation: freqFloat 6s ease-in-out infinite;
   opacity: 0.95;
@@ -122,17 +121,54 @@ body::before {
     drop-shadow(0 0 25px rgba(120,200,255,.8));
 }
 
-/* Eliminamos los estilos de .brand (título grande) ya que no está en el HTML */
+@keyframes freqFloat {
+  0%,100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.03) rotate(0.4deg); }
+}
 
-/* ===== TÍTULOS ===== */
+/* ===== TÍTULOS Y FUENTES ESPECÍFICAS (Montserrat y Poppins) ===== */
+h1, h2, h3, h4, h5, h6, .secondary-header {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Eliminación total de fuente ornamental en encabezados secundarios */
+.secondary-header, .card-title, .sheet-title {
+  font-family: "Montserrat", sans-serif !important;
+  font-style: normal !important;
+}
+
 .led-title {
   color: #e9fbff;
   text-shadow:
     0 0 6px rgba(120,220,255,0.9),
     0 0 14px rgba(120,220,255,0.7);
-  font-family: "Mystery Quest", cursive;
-  font-size: 2.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.2rem;
   margin: 10px 0;
+}
+
+/* =================================================
+   LÁMINAS DE RESULTADOS, TARJETAS Y BLOQUES DE DEVOLUCIÓN
+   (Scroll interno, transparencia y altura máxima para vista móvil perfecta)
+   ================================================= */
+.card, .scroll-sheet, .results-sheet, .feedback-block {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 8px auto;
+  width: calc(100% - 32px);
+  max-height: calc(100dvh - 120px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid rgba(120, 255, 230, 0.25);
 }
 
 /* =================================================
@@ -158,7 +194,7 @@ button, .answers button {
 
 button:active, .answers button:active { transform: scale(0.96); }
 
-button.premium {
+button.premium, .btn-primary {
   background: linear-gradient(45deg, #162a24, #1f4037);
   border-color: rgba(106,255,159,0.7);
   box-shadow:
@@ -185,9 +221,9 @@ button.premium {
 }
 
 /* =================================================
-   TERMÓMETROS LED FLOTANTES
+   TERMÓMETROS LED FLOTANTES Y RANGOS DINÁMICOS TRANSVERSALES
    ================================================= */
-#thermometer, .weekly-thermo {
+#thermometer, .weekly-thermo, .led-thermometer {
   width: 100%;
   height: 14px;
   background: rgba(15, 23, 42, 0.8);
@@ -202,5 +238,12 @@ button.premium {
 #weeklyThermoFill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff3b5c, #ffd13b, #6aff9f);
-  box-shadow: 0 0 14px rgba(120,255,230,
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
+  box-shadow: 0 0 14px rgba(120,255,230,0.6);
+  transition: width 0.4s ease;
+}
+
+/* Rangos dinámicos transversales para termómetros y círculos */
+.range-success { background-color: #2ecc71 !important; border-color: #2ecc71 !important; }
+.range-warning { background-color: #f1c40f !important; border-color: #f1c40f !important; }
+.range-danger  { background-color: #e74c3c !important; border-color: #e74c3c !important; }
