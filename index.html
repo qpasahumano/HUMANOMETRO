@@ -22,7 +22,7 @@
   <meta property="og:type" content="website">
 
   <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -37,7 +37,7 @@
       <!-- CAPA DE MANOS DE FONDO (Global y sutil en toda la app) -->
       <div class="manos-fondo"></div>
 
-      <!-- SELLO HUMANÓMETRO LIMPIO (Movido fuera de #start para persistencia global) -->
+      <!-- SELLO HUMANÓMETRO LIMPIO -->
       <div class="sello-wrap global-logo">
         <img
           src="./activos/logo.png"
@@ -63,10 +63,10 @@
 
       <!-- TEST -->
       <section id="test" class="hidden">
-        <!-- TÍTULO DEL SEGMENTO (Usará la fuente Poppins corregida y tamaño armónico) -->
-        <h2 id="areaTitle" class="led-title"></h2>
+        <!-- TÍTULO DEL SEGMENTO (Más pequeño y con tipografía refinada) -->
+        <h2 id="areaTitle" class="segment-title-compact"></h2>
 
-        <!-- TERMÓMETRO LED (Barra superior global) -->
+        <!-- TERMÓMETRO LED -->
         <div id="thermometer">
           <div id="thermoFill"></div>
         </div>
@@ -85,11 +85,11 @@
       <section id="results" class="hidden">
         <h2>Resultado Humanómetro</h2>
 
-        <!-- CÍRCULOS LUMINOSOS (Con bordes LED restaurados) -->
+        <!-- CÍRCULOS LUMINOSOS (Restaurados en las devoluciones porcentuales) -->
         <div id="circles"></div>
         <h3 id="globalResult"></h3>
 
-        <!-- LECTURA HUMANA (Contenedor con scroll interno y transparencia translúcida) -->
+        <!-- LECTURA HUMANA (Con scroll interno y transparencia) -->
         <div class="scroll-sheet">
             <h3>Lectura humana</h3>
             <ul id="tips"></ul>
@@ -100,7 +100,7 @@
 
       <!-- PRIMERA SEMANA – PREGUNTAS -->
       <section id="weekly" class="hidden">
-        <h2 id="weeklyTitle" class="led-title">Primera semana</h2>
+        <h2 id="weeklyTitle" class="segment-title-compact">Primera semana</h2>
 
         <p class="weekly-intro">
           ¿Cómo fue tu semana?<br>
@@ -126,7 +126,7 @@
           ⚖️
         </div>
 
-        <!-- DEVOLUCIÓN SEMANAL (Contenedor con scroll interno y transparencia translúcida) -->
+        <!-- DEVOLUCIÓN SEMANAL (Con scroll interno y transparencia) -->
         <div class="scroll-sheet">
             <p id="weeklyText" class="weekly-result-text"></p>
             <p id="weeklyAdvice" class="legal weekly-result-text"></p>
