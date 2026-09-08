@@ -175,7 +175,7 @@ button:active, .btn:active { transform: scale(0.96); }
   color: #f2fbff;
 }
 
-/* ===== CÍRCULOS PORCENTUALES: Rejilla 3x2 (3 arriba, 3 abajo) con LED y tipografía ajustada para no pisarse ===== */
+/* ===== CÍRCULOS PORCENTUALES: Ajustados para que el texto entre perfecto en una sola línea ===== */
 #circles, .circles-grid-compact {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
@@ -195,12 +195,12 @@ button:active, .btn:active { transform: scale(0.96); }
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 0.65rem !important; /* Ajustado para quedar completamente adentro y evitar que se pisen */
+  font-size: 0.55rem !important; /* Ajustado para asegurar que la palabra quede entera en una sola línea sin desbordarse */
   font-weight: 600 !important;
   line-height: 1 !important;
   text-align: center !important;
-  padding: 2px !important;
-  word-break: break-word !important;
+  padding: 1px !important;
+  white-space: nowrap !important;
   color: #f6fffc !important;
   background: rgba(16, 24, 38, 0.95) !important;
   box-shadow: 0 0 12px rgba(120, 255, 230, 0.5), inset 0 0 8px rgba(120, 255, 230, 0.3) !important;
