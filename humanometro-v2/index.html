@@ -34,7 +34,8 @@
             
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-led-label">Medidor Semanal</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumVal" class="thermo-num-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -51,7 +52,8 @@
           <div class="card scroll-sheet">
             <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-led-label">Medidor Semanal</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumVal" class="thermo-num-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
             <span class="measure-badge" id="questionMeasure">Medición</span>
@@ -72,7 +74,8 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-led-label">Medidor Semanal</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumVal" class="thermo-num-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -95,7 +98,8 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-led-label">Medidor Semanal</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumVal" class="thermo-num-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -115,7 +119,8 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-led-label">Medidor Semanal</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumVal" class="thermo-num-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -133,10 +138,11 @@
             <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
             <div class="subtitle segment-title-compact">Situación Emocional</div>
 
-            <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
+            <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA (ESPEJO: MEDIDOR MENSUAL) -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-led-label">Medidor Mensual</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumValMirror" class="thermo-num-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill" id="thermoFillMirror"></div></div>
             </div>
 
             <p class="description" id="mirrorQuestion">Cargando situación...</p>
@@ -153,10 +159,11 @@
           <div class="card scroll-sheet scroll-sheet-compact">
             <div class="subtitle">Diagnóstico Integrativo</div>
 
-            <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
+            <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA (ESPEJO: MEDIDOR MENSUAL) -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-led-label">Medidor Mensual</div>
+              <div class="thermo-scale"><span>0%</span><span id="thermoNumValMirror" class="thermo-num-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill" id="thermoFillMirror"></div></div>
             </div>
 
             <div id="circles" class="circles-grid-compact"></div>
@@ -176,4 +183,4 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+  </html>
