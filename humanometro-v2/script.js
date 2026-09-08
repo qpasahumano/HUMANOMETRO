@@ -142,8 +142,17 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
   if (saved.lastSection) {
     show(saved.lastSection);
-    if (saved.lastSection === "test") loadQuestion();
-    if (saved.lastSection === "mirrorTest") loadMirror();
+    if (saved.lastSection === "test") {
+      loadQuestion();
+    } else if (saved.lastSection === "weeklyResult") {
+      updateThermometer(100);
+    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
+      updateThermometer(100);
+    } else if (saved.lastSection === "mirrorTest") {
+      loadMirror();
+    } else if (saved.lastSection === "finalResult") {
+      updateThermometer(100);
+    }
   }
 })();
 
@@ -176,7 +185,7 @@ function loadQuestion(){
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
-  updateThermometer((q/4)*100);
+  updateThermometer((q / 4) * 100);
 }
 
 function answer(v){
@@ -271,7 +280,6 @@ function showWeekly(){
     }
   }
 
-  // Ajuste estético de circunferencias en resultados semanales V2
   const weeklyCircles = document.querySelector('#weeklyResult .circles, #weeklyResult #circles');
   if (weeklyCircles) {
     let circlesHtml = "";
@@ -314,11 +322,11 @@ function showMonthly(){
 const MIRROR_QUESTIONS = [
   { t:"Когда algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
   { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
-  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Quando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
   { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
@@ -407,7 +415,6 @@ function showFinal(){
     range -= 1;
   }
 
-  // Ajuste estético de circunferencias en resultados finales del espejo V2
   const finalCircles = document.querySelector('#finalResult .circles, #finalResult #circles');
   if (finalCircles) {
     let circlesHtml = "";
@@ -419,7 +426,7 @@ function showFinal(){
     finalCircles.innerHTML = circlesHtml;
   }
 
-  animateGauge(finalFill, (avg/2)*100, ()=>{
+  animateGauge(finalFill, (avg / 2) * 100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
     if(range === 0){
@@ -510,8 +517,7 @@ function updateThermometer(percent) {
 }
 
 /* UTIL */
-function animateGauge(el,target,
-done){
+function animateGauge(el, target, done){
   if (!el) {
     done && done();
     return;
@@ -519,9 +525,9 @@ done){
   el.style.height="0%";
   const start = performance.now(), dur = 1800;
   
-function step(t){
+  function step(t){
     const p = Math.min(1,(t-start)/dur);
-    el.style.height = p*target + "%";
+    el.style.height = p * target + "%";
     p < 1 ? requestAnimationFrame(step) : done && done();
   }
   requestAnimationFrame(step);
