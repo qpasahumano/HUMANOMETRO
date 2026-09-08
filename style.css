@@ -4,7 +4,7 @@
 
 :root {
   --bg-dark: #07090e;
-  --card-bg: rgba(7, 9, 14, 0.85);
+  --card-bg: rgba(7, 9, 14, 0.90);
   --emerald: #00ffc4;
   --cyan-bright: #00e5ff;
   --text-main: #f0f4f8;
@@ -28,12 +28,6 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-}
-
-h1, h2, h3, .secondary-header, .led-title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  color: var(--text-main);
 }
 
 /* MARCA DE AGUA / FONDO MANOS */
@@ -76,19 +70,40 @@ h1, h2, h3, .secondary-header, .led-title {
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
   overflow: hidden;
+  padding: 10px;
+}
+
+/* LOGO / SELLO FLOTANTE CENTRADO */
+.sello-wrap.global-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.sello-humanometro {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 255, 196, 0.3);
 }
 
 /* SECCIONES Y TARJETAS CON SCROLL INTERNO */
 section {
   position: absolute;
-  inset: 0;
+  inset: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 12px;
+  padding: 6px;
   transition: opacity 0.3s ease;
 }
 
@@ -102,29 +117,15 @@ section.hidden {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-glow);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   width: 100%;
-  max-height: 94dvh;
+  max-height: 88dvh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
-}
-
-/* LOGO / SELLO FLOTANTE */
-.sello-wrap.global-logo {
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-.sello-humanometro {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 255, 196, 0.3);
 }
 
 /* TERMÓMETRO LED HORIZONTAL */
@@ -135,7 +136,7 @@ section.hidden {
   border-radius: 4px;
   overflow: hidden;
   position: relative;
-  margin: 8px 0 12px 0;
+  margin: 6px 0 10px 0;
   box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
 }
 
@@ -152,17 +153,17 @@ section.hidden {
 .btn-group, .answers {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 button, .btn-primary, .btn {
   background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 255, 196, 0.15));
   border: 1px solid var(--cyan-bright);
   color: var(--text-main);
-  padding: 10px 14px;
-  font-size: 0.9rem;
+  padding: 8px 12px;
+  font-size: 0.85rem;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
   border-radius: 10px;
@@ -181,21 +182,21 @@ button:active, .btn:active {
 .results-circles-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  margin: 10px 0;
+  margin: 8px 0;
 }
 
 .result-circle-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .metric-circle {
-  width: 54px;
-  height: 54px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 2px solid var(--cyan-bright);
   display: flex;
@@ -203,34 +204,34 @@ button:active, .btn:active {
   justify-content: center;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--emerald);
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4), inset 0 0 8px rgba(0, 255, 196, 0.2);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4), inset 0 0 6px rgba(0, 255, 196, 0.2);
   background: rgba(0, 0, 0, 0.6);
 }
 
 .result-circle-item span {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
 }
 
 .global-score-text {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--cyan-bright);
-  margin: 6px 0;
+  margin: 4px 0;
 }
 
 /* TEXTOS Y LECTURA HUMANA */
 .intro, .question, .description, .result-text {
-  font-size: 0.88rem;
-  line-height: 1.35;
+  font-size: 0.82rem;
+  line-height: 1.3;
   color: var(--text-muted);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .question {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-main);
 }
@@ -239,12 +240,19 @@ button:active, .btn:active {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 10px;
+  padding: 8px;
   width: 100%;
   text-align: left;
 }
 
 .result-text {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   color: var(--text-main);
+}
+
+h1, h2, h3, .secondary-header, .led-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 1.15rem;
 }
