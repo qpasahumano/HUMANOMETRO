@@ -34,12 +34,15 @@
               Mide tu nivel de integración humana, consciente y social frente al ritmo actual.<br><br>
               Un diagnóstico rápido para calibrar tu bienestar y tu impacto cotidiano.
             </p>
-            <button class="btn-primary" onclick="startTest()">Comenzar Medición</button>
+            <button class="btn-primary" onclick="startTest()">On</button>
             
-            <!-- POLÍTICA DE PRIVACIDAD Y TÉRMINOS EN LA PANTALLA DE INICIO -->
+            <!-- POLÍTICA DE PRIVACIDAD INTEGRADA -->
             <div class="privacy-footer" style="margin-top: 15px; font-size: 0.72rem; color: var(--text-muted);">
-              <a href="#" onclick="showPrivacyPolicy(); return false;" style="color: var(--cyan-bright); text-decoration: underline;">Política de Privacidad</a> &bull; 
-              <a href="#" onclick="showTerms(); return false;" style="color: var(--cyan-bright); text-decoration: underline;">Términos de Uso</a>
+              <a href="#" onclick="togglePrivacy(); return false;" style="color: var(--cyan-bright); text-decoration: underline;">Política de Privacidad</a>
+            </div>
+            
+            <div id="privacyBox" class="hidden" style="margin-top: 10px; font-size: 0.7rem; text-align: left; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 8px; border: 1px solid var(--border-glow);">
+              Tus datos y respuestas son procesados localmente en el dispositivo para garantizar absoluta privacidad y confidencialidad en el diagnóstico.
             </div>
           </div>
         </section>
@@ -109,6 +112,12 @@
     </div>
   </div>
 
+  <script>
+    function togglePrivacy() {
+      const box = document.getElementById('privacyBox');
+      box.classList.toggle('hidden');
+    }
+  </script>
   <script src="bloqueos.js"></script>
   <script src="script.js"></script>
 </body>
