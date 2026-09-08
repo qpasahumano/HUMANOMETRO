@@ -21,8 +21,8 @@
   <meta property="og:url" content="https://qpasahumano.github.io/HUMANOMETRO/">
   <meta property="og:type" content="website">
 
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <!-- FUENTES (Montserrat y Poppins integradas correctamente) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -37,7 +37,7 @@
       <!-- CAPA DE MANOS DE FONDO (Global y sutil en toda la app) -->
       <div class="manos-fondo"></div>
 
-      <!-- SELLO HUMANÓMETRO LIMPIO (Movido fuera de #start para persistencia global) -->
+      <!-- SELLO HUMANÓMETRO LIMPIO (Persistencia global fuera de #start y de cualquier pantalla inicial) -->
       <div class="sello-wrap global-logo">
         <img
           src="./activos/logo.png"
@@ -63,11 +63,11 @@
 
       <!-- TEST -->
       <section id="test" class="hidden">
-        <!-- TÍTULO DEL SEGMENTO (Usará la fuente Poppins corregida y tamaño armónico) -->
-        <h2 id="areaTitle" class="led-title"></h2>
+        <!-- TÍTULO DEL SEGMENTO (Sin fuentes ornamentales, usando Montserrat corporativa) -->
+        <h2 id="areaTitle" class="secondary-header"></h2>
 
-        <!-- TERMÓMETRO LED (Barra superior global) -->
-        <div id="thermometer">
+        <!-- TERMÓMETRO LED (Barra superior global con lógica dinámica transversal) -->
+        <div id="thermometer" class="led-thermometer">
           <div id="thermoFill"></div>
         </div>
 
@@ -85,12 +85,12 @@
       <section id="results" class="hidden">
         <h2>Resultado Humanómetro</h2>
 
-        <!-- CÍRCULOS LUMINOSOS (Con bordes LED restaurados) -->
+        <!-- CÍRCULOS LUMINOSOS (Con rangos dinámicos del termómetro LED) -->
         <div id="circles"></div>
         <h3 id="globalResult"></h3>
 
-        <!-- LECTURA HUMANA (Contenedor con scroll interno y transparencia) -->
-        <div class="scroll-sheet">
+        <!-- LECTURA HUMANA (Contenedor con scroll interno, altura máxima estricta y transparencia con backdrop-filter) -->
+        <div class="scroll-sheet card">
             <h3>Lectura humana</h3>
             <ul id="tips"></ul>
         </div>
@@ -100,14 +100,14 @@
 
       <!-- PRIMERA SEMANA – PREGUNTAS -->
       <section id="weekly" class="hidden">
-        <h2 id="weeklyTitle" class="led-title">Primera semana</h2>
+        <h2 id="weeklyTitle" class="secondary-header">Primera semana</h2>
 
         <p class="weekly-intro">
           ¿Cómo fue tu semana?<br>
           Respondé con sinceridad para reconocer tu tendencia humana actual.
         </p>
 
-        <div id="weeklyThermometer" class="weekly-thermo">
+        <div id="weeklyThermometer" class="weekly-thermo led-thermometer">
           <div id="weeklyThermoFill"></div>
         </div>
 
@@ -126,8 +126,8 @@
           ⚖️
         </div>
 
-        <!-- DEVOLUCIÓN SEMANAL (Contenedor con scroll interno y transparencia) -->
-        <div class="scroll-sheet">
+        <!-- DEVOLUCIÓN SEMANAL (Contenedor scrolleable con transparencia y ajuste absoluto al viewport) -->
+        <div class="scroll-sheet card">
             <p id="weeklyText" class="weekly-result-text"></p>
             <p id="weeklyAdvice" class="legal weekly-result-text"></p>
         </div>
