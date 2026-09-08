@@ -415,8 +415,10 @@ function updateThermometer() {
       .reduce((s, m) => s + m.questions.length, 0) +
     currentQuestion;
 
-  thermoFill.style.width =
-    Math.round((answered / totalQ) * 100) + "%";
+  if (thermoFill) {
+    thermoFill.style.width =
+      Math.round((answered / totalQ) * 100) + "%";
+  }
 }
 
 /* ===============================
@@ -451,4 +453,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-       }
+}
