@@ -63,7 +63,7 @@
 
       <!-- TEST -->
       <section id="test" class="hidden">
-        <!-- TÍTULO DEL SEGMENTO (Más pequeño y con tipografía refinada) -->
+        <!-- TÍTULO DEL SEGMENTO -->
         <h2 id="areaTitle" class="segment-title-compact"></h2>
 
         <!-- TERMÓMETRO LED -->
@@ -83,19 +83,20 @@
 
       <!-- RESULTADOS -->
       <section id="results" class="hidden">
-        <h2>Resultado Humanómetro</h2>
+        <h2 class="results-title-compact">Resultado Humanómetro</h2>
 
-        <!-- CÍRCULOS LUMINOSOS (Restaurados en las devoluciones porcentuales) -->
-        <div id="circles"></div>
-        <h3 id="globalResult"></h3>
+        <!-- CÍRCULOS LUMINOSOS (3 arriba y 3 abajo con borde LED) -->
+        <div id="circles" class="circles-grid-compact"></div>
+        <h3 id="globalResult" class="global-result-compact"></h3>
 
-        <!-- LECTURA HUMANA (Con scroll interno y transparencia) -->
-        <div class="scroll-sheet">
+        <!-- LECTURA HUMANA (Con scroll interno compacto, optimizado para subir el botón) -->
+        <div class="scroll-sheet scroll-sheet-compact">
             <h3>Lectura humana</h3>
             <ul id="tips"></ul>
         </div>
 
-        <div id="weeklyAccess"></div>
+        <!-- BOTÓN DE CONTINUAR / ACCESO (Respetando nombre y funcionalidad original) -->
+        <div id="weeklyAccess" class="results-action-wrap"></div>
       </section>
 
       <!-- PRIMERA SEMANA – PREGUNTAS -->
