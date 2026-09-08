@@ -219,14 +219,14 @@ body.mirror-bg {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.62rem;
+  font-size: 0.52rem;
   font-weight: 600;
   color: #eaffff;
   box-shadow: 0 0 10px rgba(120,255,230,0.2);
   text-align: center;
   line-height: 1;
-  padding: 2px;
-  word-break: break-word;
+  padding: 1px;
+  white-space: nowrap;
 }
 
 .segment-title-compact {
@@ -334,4 +334,4 @@ body.mirror-bg {
 
 .global-result-compact {
   font-family: "Montserrat", sans-serif;
-  }
+}
