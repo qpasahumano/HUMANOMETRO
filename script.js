@@ -1,6 +1,6 @@
-/* ===============================
-   REFERENCIAS DOM
-================================ */
+// ===============================
+// REFERENCIAS DOM
+// ===============================
 const areaTitle = document.getElementById("areaTitle");
 const questionText = document.getElementById("questionText");
 const questionNote = document.getElementById("questionNote");
@@ -145,8 +145,7 @@ function showWeeklyBlockFlash() {
 
   if (saved.lastSection === "weekly") {
     weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-    weeklyThermoFill.style.width =
-      Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
+    updateThermometer(Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100));
   }
 
 })();
@@ -182,7 +181,7 @@ function startWeekly() {
   weeklyIndex = 0;
   weeklyCompleted = false;
 
-  weeklyThermoFill.style.width = "0%";
+  updateThermometer(0);
   weeklySaved.classList.add("hidden");
 
   showSection("weekly");
@@ -196,8 +195,7 @@ function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
 
-  weeklyThermoFill.style.width =
-    Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100) + "%";
+  updateThermometer(Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100));
 
   saveState({ weeklyIndex, weeklyScores });
 
@@ -359,10 +357,10 @@ function showResults() {
     const p = Math.round(scores[m.name] / max * 100);
     total += p;
 
+    // Ajuste estético de círculos compactos con texto ajustado en tamaño para evitar cortes
     circles.innerHTML += `
       <div class="circle ${p < 40 ? "low" : p < 70 ? "mid" : "high"}">
-        <strong>${p}%</strong>
-        <small>${m.name}</small>
+        <span>${m.name}</span><br><strong>${p}%</strong>
       </div>`;
 
     if (mode === "premium") {
@@ -405,19 +403,25 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO
+   TERMÓMETRO GLOBAL INTEGRADO
 ================================ */
-function updateThermometer() {
-
-  const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-  const answered =
-    modules.slice(0, currentModule)
-      .reduce((s, m) => s + m.questions.length, 0) +
-    currentQuestion;
-
-  if (thermoFill) {
-    thermoFill.style.width =
-      Math.round((answered / totalQ) * 100) + "%";
+function updateThermometer(percent) {
+  if (percent !== undefined) {
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill');
+    fills.forEach(fill => {
+      if (fill) fill.style.width = percent + '%';
+    });
+  } else {
+    const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
+    const answered =
+      modules.slice(0, currentModule)
+        .reduce((s, m) => s + m.questions.length, 0) +
+      currentQuestion;
+    const pct = totalQ > 0 ? Math.round((answered / totalQ) * 100) : 0;
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill');
+    fills.forEach(fill => {
+      if (fill) fill.style.width = pct + '%';
+    });
   }
 }
 
@@ -441,6 +445,7 @@ function restart() {
 
 function showPrivacy() {
   showSection("privacy");
+  updateThermometer(100);
 }
 
 function showSection(id) {
