@@ -1,169 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Humanómetro®</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanómetro</title>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWPMQM4ZZ7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-QWPMQM4ZZ7');
-  </script>
-
-  <!-- Open Graph / Compartir -->
-  <meta property="og:title" content="Humanómetro®">
-  <meta property="og:description" content="Una herramienta reflexiva donde te observás a vos en coherencia, emoción y humanidad en el tiempo. No juzga, solo te muestra.">
-  <meta property="og:image" content="https://qpasahumano.github.io/HUMANOMETRO/activos/humanometro_og_1200x630.png">
-  <meta property="og:url" content="https://qpasahumano.github.io/HUMANOMETRO/">
-  <meta property="og:type" content="website">
-
-  <!-- FUENTES (Montserrat y Poppins integradas correctamente) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
-<div class="device-frame-wrapper">
-  <div class="device-screen">
-    <main id="app">
 
-      <!-- CAPA DE MANOS DE FONDO (Global y sutil en toda la app) -->
-      <div class="manos-fondo"></div>
+  <!-- CAPA DE FONDO: MARCA DE AGUA (MANOS) -->
+  <div class="manos-fondo"></div>
 
-      <!-- SELLO HUMANÓMETRO LIMPIO (Persistencia global fuera de #start y de cualquier pantalla inicial) -->
-      <div class="sello-wrap global-logo">
-        <img
-          src="./activos/logo.png"
-          alt="Sello Humanómetro"
-          class="sello-humanometro"
-        >
+  <!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
+  <div class="device-frame-wrapper">
+    <div class="device-screen">
+      <div id="app">
+
+        <!-- LOGO / SELLO FLOTANTE PERSISTENTE -->
+        <div class="sello-wrap global-logo">
+          <img src="logo.png" alt="Humanómetro Sello" class="sello-humanometro">
+        </div>
+
+        <!-- INICIO -->
+        <section id="start">
+          <div class="card scroll-sheet">
+            <h1 class="led-title">Humanómetro</h1>
+            <p class="intro">
+              Mide tu nivel de integración humana, consciente y social frente al ritmo actual.<br><br>
+              Un diagnóstico rápido para calibrar tu bienestar y tu impacto cotidiano.
+            </p>
+            <button class="btn-primary" onclick="startTest()">Comenzar Medición</button>
+          </div>
+        </section>
+
+        <!-- TEST -->
+        <section id="test" class="hidden">
+          <div class="card scroll-sheet">
+            <h2 class="secondary-header" id="dimensionTitle">Dimensión</h2>
+            <!-- Termómetro LED persistente durante el test -->
+            <div class="led-thermometer"><div id="thermoFill"></div></div>
+            <p class="question" id="questionText">Cargando pregunta...</p>
+            <div class="answers btn-group">
+              <button onclick="answer(2)">Sí</button>
+              <button onclick="answer(1)">Tal vez / A veces</button>
+              <button onclick="answer(0)">No</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTADOS -->
+        <section id="results" class="hidden">
+          <div class="card scroll-sheet">
+            <h2 class="secondary-header">Resultado Humanómetro</h2>
+            <!-- Termómetro LED fino debajo del título de resultados -->
+            <div class="led-thermometer" style="margin: 10px 0 15px;"><div id="resultThermoFill"></div></div>
+            
+            <!-- Círculos de resultados por área restaurados -->
+            <div class="results-circles-grid">
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circleFamilia">100%</div>
+                <span>Familia</span>
+              </div>
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circleSocial">100%</div>
+                <span>Social</span>
+              </div>
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circleAmistad">100%</div>
+                <span>Amistad</span>
+              </div>
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circleLaboral">100%</div>
+                <span>Laboral</span>
+              </div>
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circlePlaneta">100%</div>
+                <span>Planeta</span>
+              </div>
+              <div class="result-circle-item">
+                <div class="metric-circle" id="circleConciencia">100%</div>
+                <span>Conciencia</span>
+              </div>
+            </div>
+
+            <div class="global-score-text" id="globalScoreText">Humanidad global: 100%</div>
+
+            <div class="glass-sheet" style="margin-top: 15px;">
+              <h3 class="secondary-header">Lectura humana</h3>
+              <div id="feedbackContainer" class="result-text"></div>
+            </div>
+
+            <button class="primary" onclick="goToV2()" style="margin-top: 20px;">Pasar al Volumen II</button>
+          </div>
+        </section>
+
       </div>
-
-      <!-- INICIO -->
-      <section id="start">
-        <h1>Humanómetro</h1>
-        <p class="intro">
-          Esta herramienta no mide perfección ni juicio.<br>
-          Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
-        </p>
-
-        <button class="premium power-on" onclick="startTest(true)">
-          Humanómetro <span class="on-led">ON</span>
-        </button>
-
-        <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-      </section>
-
-      <!-- TEST -->
-      <section id="test" class="hidden">
-        <!-- TÍTULO DEL SEGMENTO (Sin fuentes ornamentales, usando Montserrat corporativa) -->
-        <h2 id="areaTitle" class="secondary-header"></h2>
-
-        <!-- TERMÓMETRO LED (Barra superior global con lógica dinámica transversal) -->
-        <div id="thermometer" class="led-thermometer">
-          <div id="thermoFill"></div>
-        </div>
-
-        <p id="questionText"></p>
-        <small id="questionNote" class="legal"></small>
-
-        <div class="answers">
-          <button onclick="answer(2)">Sí</button>
-          <button onclick="answer(1)">Tal vez / A veces</button>
-          <button onclick="answer(0)">No</button>
-        </div>
-      </section>
-
-      <!-- RESULTADOS -->
-      <section id="results" class="hidden">
-        <h2>Resultado Humanómetro</h2>
-
-        <!-- CÍRCULOS LUMINOSOS (Con rangos dinámicos del termómetro LED) -->
-        <div id="circles"></div>
-        <h3 id="globalResult"></h3>
-
-        <!-- LECTURA HUMANA (Contenedor con scroll interno, altura máxima estricta y transparencia con backdrop-filter) -->
-        <div class="scroll-sheet card">
-            <h3>Lectura humana</h3>
-            <ul id="tips"></ul>
-        </div>
-
-        <div id="weeklyAccess"></div>
-      </section>
-
-      <!-- PRIMERA SEMANA – PREGUNTAS -->
-      <section id="weekly" class="hidden">
-        <h2 id="weeklyTitle" class="secondary-header">Primera semana</h2>
-
-        <p class="weekly-intro">
-          ¿Cómo fue tu semana?<br>
-          Respondé con sinceridad para reconocer tu tendencia humana actual.
-        </p>
-
-        <div id="weeklyThermometer" class="weekly-thermo led-thermometer">
-          <div id="weeklyThermoFill"></div>
-        </div>
-
-        <p id="weeklyQuestion"></p>
-
-        <div class="answers">
-          <button onclick="weeklyAnswer(2)">Sí</button>
-          <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-          <button onclick="weeklyAnswer(0)">No</button>
-        </div>
-      </section>
-
-      <!-- PRIMERA SEMANA – RESULTADO -->
-      <section id="weeklyResultScreen" class="hidden">
-        <div class="balance-wrap">
-          ⚖️
-        </div>
-
-        <!-- DEVOLUCIÓN SEMANAL (Contenedor scrolleable con transparencia y ajuste absoluto al viewport) -->
-        <div class="scroll-sheet card">
-            <p id="weeklyText" class="weekly-result-text"></p>
-            <p id="weeklyAdvice" class="legal weekly-result-text"></p>
-        </div>
-
-        <button class="premium spaced" onclick="weeklyWithDonation()">Volvé pronto</button>
-
-        <p id="weeklySaved" class="legal hidden">
-          ✔ Conteo semanal guardado correctamente.
-        </p>
-      </section>
-
-      <!-- PRIVACIDAD -->
-      <section id="privacy" class="hidden">
-        <h2>Privacidad y uso</h2>
-        <p>
-          Humanómetro no recopila datos personales.<br>
-          Todo ocurre localmente.<br>
-          No es diagnóstico médico ni psicológico.<br>
-          Es una herramienta reflexiva.
-        </p>
-
-        <button onclick="restart()">Volver</button>
-      </section>
-
-      <!-- 🔒 TEXTO PRIMER BLOQUEO -->
-      <div id="weeklyBlockFlash" class="hidden weekly-block-flash block-flash">
-        No seas ansioso.<br>
-        Todavía no pasó la semana.
-      </div>
-
-    </main>
+    </div>
   </div>
-</div>
 
-<script src="script.js"></script>
-<script src="bloqueos.js"></script>
-
+  <script src="bloqueos.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
