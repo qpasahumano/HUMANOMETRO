@@ -1,7 +1,7 @@
 /* ===== VOLUMEN 2 — EXTENSIÓN Y COMPLEMENTOS CSS ===== */
 
 body.mirror-bg {
-  background-image: radial-gradient(circle, rgba(16,36,60,.75), rgba(4,10,20,.95)), url("./activos/v2/mirror-bg.jpg");
+  background-image: radial-gradient(circle, rgba(16,36,60,.75), rgba(4,10,20,.95)), url("activos/v2/mirror-bg.jpg");
   background-blend-mode: overlay;
 }
 
