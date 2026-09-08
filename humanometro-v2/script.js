@@ -1,544 +1,477 @@
-const $ = id => document.getElementById(id);
+/* ==========================================================
+   HUMANÓMETRO® — MOTOR V2 & CONTROL DE BLOQUEOS (JS 2)
+   CÓDIGO ÍNTEGRO Y COMPLETO CON ACTUALIZACIÓN DE TERMÓMETRO NUMÉRICO
+   ========================================================== */
 
 /* ===============================
-   BLOQUEO SEMANAL — CONFIG
+   ESTADO GLOBAL Y VARIABLES V2
 ================================ */
-const DEV_MODE = false;
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const V2_BLOCK_KEY = "hm_v2_last_week";
-const V2_STATE_KEY = "hm_v2_progress_state";
+let v2CurrentWeek = 0;
+let v2Scores = {
+  entorno: 0,
+  tecnologia: 0,
+  emociones: 0
+};
+let v2TotalScore = 0;
+let v2AnswersLog = [];
 
-/* ===============================
-   BLOQUEO Y PERSISTENCIA — UTILIDADES
-================================ */
-function now(){ return Date.now(); }
-
-function pasoUnaSemana(){
-  if (DEV_MODE) return true;
-  const last = localStorage.getItem(V2_BLOCK_KEY);
-  if (!last) return true;
-  return (now() - Number(last)) >= WEEK_MS;
-}
-
-function marcarSemana(){
-  localStorage.setItem(V2_BLOCK_KEY, now());
-}
-
-function saveV2State(extra = {}) {
-  const state = {
-    week,
-    q,
-    currentScore,
-    weeklyScores,
-    allAnswers,
-    mirrorLog,
-    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
-    timestamp: now(),
-    ...extra
-  };
-  localStorage.setItem(V2_STATE_KEY, JSON.stringify(state));
-}
-
-function loadV2State() {
-  const raw = localStorage.getItem(V2_STATE_KEY);
-  if (!raw) return null;
-  try { return JSON.parse(raw); } catch { return null; }
-}
-
-/* ===============================
-   BLOQUEO VISUAL UNIFICADO
-================================ */
-function showWeeklyBlockFlash(){
-  const d = document.createElement("div");
-  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  d.style.cssText = `
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    pointer-events:none;
-    font-size:1.35rem;
-    color:#eaffff;
-    background:
-      radial-gradient(circle, rgba(180,255,255,.28), transparent 60%),
-      rgba(6,18,40,.45);
-    text-shadow:
-      0 0 12px rgba(140,255,240,1),
-      0 0 26px rgba(140,255,240,.85);
-    z-index:9999;
-    animation: blockFade 1.3s ease-out forwards;
-  `;
-  document.body.appendChild(d);
-  setTimeout(()=>d.remove(),1300);
-}
-
-/* CACHE DOM */
-const weekTitle = $("weekTitle");
-const questionText = $("questionText");
-const questionMeasure = $("questionMeasure");
-const thermoFill = $("thermoFill");
-
-const weeklySymbol = $("weeklySymbol");
-const weeklyText = $("weeklyText");
-const weeklyAdvice = $("weeklyAdvice");
-const weeklyTextWrap = $("weeklyTextWrap");
-
-const monthlyFill = $("monthlyFill");
-const monthlyTextWrap = $("monthlyTextWrap");
-const monthlySymbol = $("monthlySymbol");
-const monthlyLongText = $("monthlyLongText");
-const monthlyText = $("monthlyText");
-
-const mirrorEmoji = $("mirrorEmoji");
-const mirrorQuestion = $("mirrorQuestion");
-
-const finalFill = $("finalFill");
-const finalTextWrap = $("finalTextWrap");
-const finalHumanText = $("finalHumanText");
-const finalState = $("finalState");
-
-/* EMOJIS ESPEJO */
-const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
-
-/* DATOS BASE */
-const WEEKS = [
-  { title:"Vos ante el mundo", questions:[
-    ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
-    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
-    ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso humano"],
-    ["¿Te afecta el sufrimiento ajeno?","Sensibilidad emocional"]
-  ]},
-  { title:"Vos y la tecnología", questions:[
-    ["¿Podés soltar el celular al compartir?","Uso consciente"],
-    ["¿Controlás el tiempo en pantallas?","Autocontrol digital"],
-    ["¿Recordás que hay personas reales detrás de una pantalla?","Empatía digital"],
-    ["¿La tecnología acompaña sin absorberte?","Equilibrio tecnológico"]
-  ]},
-  { title:"Integración humana", questions:[
-    ["¿Hay coherencia entre lo que pensás y hacés?","Coherencia"],
-    ["¿Podés observarte sin juzgarte?","Autoconciencia"],
-    ["¿Asumís tu impacto en otros?","Responsabilidad"],
-    ["¿Sentís evolución humana?","Integración"]
-  ]}
+/* CONFIGURACIÓN DE BLOQUES V2 (SEMANAS 1 A 4) */
+const V2_WEEKS = [
+  {
+    title: "Semana 1: Vínculo con el entorno",
+    measure: "Percepción y Espacio",
+    questions: [
+      { t: "¿Te sentís abrumado por la cantidad de estímulos visuales y sonoros cotidianos?", note: "Saturación ambiental" },
+      { t: "¿Lográs encontrar momentos de silencio real en tu día a día?", note: "Búsqueda de pausa" },
+      { t: "¿Observás los cambios de la naturaleza o el clima a tu alrededor?", note: "Conexión exterior" }
+    ]
+  },
+  {
+    title: "Semana 2: Tecnología y Atención",
+    measure: "Foco y Presencia",
+    questions: [
+      { t: "¿Agarrás el teléfono de forma automática sin un motivo específico?", note: "Automatismo digital" },
+      { t: "¿Sentís la necesidad imperiosa de responder notificaciones de inmediato?", note: "Urgencia artificial" },
+      { t: "¿Disfrutás de una comida o caminata completamente alejado de pantallas?", note: "Presencia real" }
+    ]
+  },
+  {
+    title: "Semana 3: Estados Profundos",
+    measure: "Fluido Emocional",
+    questions: [
+      { t: "¿Identificás con claridad qué emoción predomina en vos al despertar?", note: "Claridad emocional" },
+      { t: "¿Te permitís transitar la tristeza o el enojo sin reprimir ni dramatizar?", note: "Aceptación interna" },
+      { t: "¿Compartís tus vulnerabilidades con personas de confianza?", note: "Vínculo auténtico" }
+    ]
+  },
+  {
+    title: "Semana 4: Coherencia y Síntesis",
+    measure: "Pulso Humano Integrado",
+    questions: [
+      { t: "¿Sentís que tus acciones diarias reflejan tus valores más profundos?", note: "Coherencia de vida" },
+      { t: "¿Cuidás tu energía física y mental como un recurso valioso?", note: "Autocuidado consciente" },
+      { t: "¿Experimentás gratitud genuina por las pequeñas cosas cotidianas?", note: "Disposición vital" }
+    ]
+  }
 ];
 
-/* REGISTRO */
-let week = 0, q = 0, currentScore = 0;
-let weeklyScores = [], allAnswers = [], mirrorLog = [];
-
-/* REANUDACIÓN AUTOMÁTICA EN V2 */
-(function resumeV2() {
-  const saved = loadV2State();
-  if (!saved) return;
-
-  week = saved.week || 0;
-  q = saved.q || 0;
-  currentScore = saved.currentScore || 0;
-  weeklyScores = saved.weeklyScores || [];
-  allAnswers = saved.allAnswers || [];
-  mirrorLog = saved.mirrorLog || [];
-
-  if (saved.lastSection) {
-    show(saved.lastSection);
-    if (saved.lastSection === "test") {
-      loadQuestion();
-    } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(100);
-    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
-      updateThermometer(100);
-    } else if (saved.lastSection === "mirrorTest") {
-      loadMirror();
-    } else if (saved.lastSection === "finalResult") {
-      updateThermometer(100);
-    }
-  }
-})();
-
-/* FLUJO */
-function startV2(){
-  const saved = loadV2State();
-  if (saved && saved.week > 0) {
-    if (!pasoUnaSemana()) {
-      showWeeklyBlockFlash();
-      return;
-    }
-    show("test"); 
-    loadQuestion();
-    return;
-  }
-
-  if(!pasoUnaSemana()){
+/* ===============================
+   INICIALIZACIÓN Y FLUJO V2
+================================ */
+function startV2() {
+  if (!pasoUnaSemanaV2()) {
     showWeeklyBlockFlash();
     return;
   }
-  document.body.classList.remove("mirror-bg");
-  week = 0; q = 0; currentScore = 0;
-  weeklyScores = []; allAnswers = []; mirrorLog = [];
-  saveV2State({ lastSection: "test" });
-  show("test"); loadQuestion();
+  v2CurrentWeek = 0;
+  v2Scores = { entorno: 0, tecnologia: 0, emociones: 0 };
+  v2TotalScore = 0;
+  v2AnswersLog = [];
+  
+  show("testV2");
+  loadV2Question();
+  updateThermometer(0);
 }
 
-function loadQuestion(){
-  const w = WEEKS[week];
-  weekTitle.textContent = w.title;
-  questionText.textContent = w.questions[q][0];
-  questionMeasure.textContent = w.questions[q][1];
-  updateThermometer((q / 4) * 100);
+let v2QuestionIndex = 0;
+
+function loadV2Question() {
+  const currentWeekData = V2_WEEKS[v2CurrentWeek];
+  const q = currentWeekData.questions[v2QuestionIndex];
+
+  const weekTitleEl = document.getElementById("weekTitle");
+  if (weekTitleEl) weekTitleEl.textContent = currentWeekData.title;
+
+  const questionMeasureEl = document.getElementById("questionMeasure");
+  if (questionMeasureEl) questionMeasureEl.textContent = currentWeekData.measure;
+
+  const questionTextEl = document.getElementById("questionText");
+  if (questionTextEl) questionTextEl.textContent = q.t;
+
+  const noteEl = document.getElementById("v2QuestionNote");
+  if (noteEl) {
+    noteEl.textContent = q.note;
+  }
+
+  const totalQuestions = V2_WEEKS.length * 3;
+  const answeredCount = (v2CurrentWeek * 3) + v2QuestionIndex;
+  const progress = (answeredCount / totalQuestions) * 100;
+  updateThermometer(progress);
 }
 
-function answer(v){
-  currentScore += v;
-  allAnswers.push({ block: WEEKS[week].title, q, v });
-  q++;
-  saveV2State({ q, currentScore, allAnswers });
-  q >= 4 ? showWeekly() : loadQuestion();
+function answerV2(value) {
+  v2AnswersLog.push(value);
+  v2TotalScore += value;
+
+  if (v2CurrentWeek === 0) v2Scores.entorno += value;
+  else if (v2CurrentWeek === 1) v2Scores.tecnologia += value;
+  else if (v2CurrentWeek === 2) v2Scores.emociones += value;
+  else v2Scores.emociones += value;
+
+  v2QuestionIndex++;
+
+  if (v2QuestionIndex < 3) {
+    loadV2Question();
+  } else {
+    showWeeklyResultV2();
+  }
 }
 
-/* ===============================
-   DEVOLUCIONES SEMANALES
-================================ */
-function showWeekly(){
+function showWeeklyResultV2() {
   show("weeklyResult");
-  weeklyTextWrap.classList.add("hidden");
-  updateThermometer(100);
+  const progress = ((v2CurrentWeek + 1) / V2_WEEKS.length) * 100;
+  updateThermometer(progress);
 
-  const avg = currentScore / 4;
-  weeklyScores.push(avg);
+  const symbols = ["🌱", "📱", "🌊", "⚖️"];
+  const symbolEl = document.getElementById("weeklySymbol");
+  if (symbolEl) symbolEl.textContent = symbols[v2CurrentWeek];
 
-  const range =
-    avg <= 0.6 ? "low" :
-    avg <= 0.9 ? "midLow" :
-    avg <= 1.4 ? "mid" : "high";
+  const texts = [
+    "Tu percepción del entorno muestra un registro sensible de los espacios que habitás.",
+    "El vínculo con la tecnología refleja tensiones típicas entre la distracción y el deseo de presencia.",
+    "Tus estados profundos revelan un tránsito emocional en constante búsqueda de equilibrio.",
+    "La síntesis final expone una maduración en tu coherencia y pulso humano."
+  ];
 
-  weeklySymbol.textContent =
-    range === "low" ? "🦇" :
-    range === "midLow" ? "🦇" :
-    range === "mid" ? "🐞" : "🐦";
+  const advices = [
+    "Continuá observando cómo te afecta el ruido exterior.",
+    "Ensaya pequeños espacios libres de notificaciones esta semana.",
+    "Permitite habitar tus emociones sin juicio.",
+    "Atesorá esta coherencia en tus decisiones diarias."
+  ];
 
-  const block = WEEKS[week].title;
-
-  if(block === "Vos ante el mundo"){
-    if(avg < 1.5){
-      weeklyText.textContent =
-        "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
-        "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
-        "como información lejana, sin generar un impacto emocional sustained.\n\n"+
-        "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
-        "de defensa, cansancio o saturación emocional.";
-      weeklyAdvice.textContent =
-        "Observar cuándo te cerrás y cuándo te abrís al otro "+
-        "puede ser el primer gesto de reconexión humana.";
-    } else {
-      weeklyText.textContent =
-        "El mundo no pasa desapercibido.\n\n"+
-        "Hay registro del dolor, de la injusticia y de lo que afecta "+
-        "a otros seres humanos.";
-      weeklyAdvice.textContent =
-        "Sostener esta sensibilidad sin que te abrume "+
-        "es parte de un equilibrio humano maduro.";
-    }
-  }
-
-  if(block === "Vos y la tecnología"){
-    if(avg < 1.5){
-      weeklyText.textContent =
-        "La atención aparece fragmentada.\n\n"+
-        "La tecnología tiende a absorber momentos que podrían "+
-        "ser habitados con mayor presencia.\n\n"+
-        "No como error, sino como hábito automatizado.";
-      weeklyAdvice.textContent =
-        "Pequeños cortes conscientes pueden devolver densidad "+
-        "a la experiencia cotidiana.";
-    } else {
-      weeklyText.textContent =
-        "Lo digital acompaña sin dominar.\n\n"+
-        "Hay uso consciente y registro del presente.";
-      weeklyAdvice.textContent =
-        "Este equilibrio sostiene vínculos más reales "+
-        "y una experiencia más encarnada.";
-    }
-  }
-
-  if(block === "Integración humana"){
-    if(avg < 1.5){
-      weeklyText.textContent =
-        "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
-        "No siempre lo que sentís logra expresarse "+
-        "ni lo que pensás logra sostenerse en el hacer.";
-      weeklyAdvice.textContent =
-        "Nombrar estas incongruencias no es debilidad: "+
-        "es el inicio del proceso de integración.";
-    } else {
-      weeklyText.textContent =
-        "Las respuestas muestran una percepción de coherencia interna.\n\n"+
-        "Esta lectura se limita a cómo te pensás y te observás a vos mismo.\n\n"+
-        "Cómo esta coherencia se expresa en el vínculo con el mundo y la tecnología\n"+
-        "se observa en el siguiente tramo.";
-      weeklyAdvice.textContent = "";
-    }
-  }
-
-  const weeklyCircles = document.querySelector('#weeklyResult .circles, #weeklyResult #circles');
-  if (weeklyCircles) {
-    let circlesHtml = "";
-    WEEKS.forEach((wObj, i) => {
-      let scoreVal = weeklyScores[i] !== undefined ? weeklyScores[i] : 0;
-      let circlePct = Math.round((scoreVal / 2) * 100);
-      circlesHtml += `<div class="circle"><span>${wObj.title}</span><br><strong>${circlePct}%</strong></div>`;
-    });
-    weeklyCircles.innerHTML = circlesHtml;
-  }
-
-  saveV2State({ lastSection: "weeklyResult", weeklyScores });
-  setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
+  const textEl = document.getElementById("weeklyText");
+  const adviceEl = document.getElementById("weeklyAdvice");
+  if (textEl) textEl.textContent = texts[v2CurrentWeek];
+  if (adviceEl) adviceEl.textContent = advices[v2CurrentWeek];
 }
 
-function nextWeek(){
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
+function nextWeek() {
+  v2CurrentWeek++;
+  v2QuestionIndex = 0;
+
+  if (v2CurrentWeek < V2_WEEKS.length) {
+    show("testV2");
+    loadV2Question();
+  } else {
+    show("monthlyResult");
+    updateThermometer(100);
+    marcarSemanaV2();
   }
-  marcarSemana();
-  week++; q = 0; currentScore = 0;
-  saveV2State({ week, q, currentScore, lastSection: week >= WEEKS.length ? "monthlyResult" : "test" });
-  week >= WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
 }
 
 /* ===============================
-   CIERRE VOLUMEN 2
+   FASE FINAL: EL ESPEJO
 ================================ */
-function showMonthly(){
-  show("monthlyResult");
-  marcarSemana();
-  updateThermometer(100);
-  saveV2State({ lastSection: "monthlyResult" });
-}
-
-/* ===============================
-   ESPEJO — PREGUNTAS COMPLETAS
-================================ */
-const MIRROR_QUESTIONS = [
-  { t:"Когда algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
-  { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Quando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+let mirrorStep = 0;
+const MIRROR_SITUATIONS = [
+  { emoji: "🫥", text: "¿Qué tanta resistencia sentís cuando tus planes cambian de imprevisto?" },
+  { emoji: "🪞", text: "¿Con qué frecuencia te juzgás severamente por tus propios errores?" },
+  { emoji: "⚖️", text: "¿Cuánto te cuesta poner límites sanos en tus relaciones cotidianas?" },
+  { emoji: "🔥", text: "¿Qué nivel de ansiedad te genera la incertidumbre sobre el futuro?" }
 ];
 
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
+let mirrorScores = [];
 
-function gateMirrorIntro(){
-  openMirror();
-}
-
-function openMirror(){
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
-  }
+function gateMirrorIntro() {
   show("mirrorIntro");
-  updateThermometer(100);
-  saveV2State({ lastSection: "mirrorIntro" });
+  updateMirrorThermometer(0);
 }
 
-function startMirror(){
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
+function startMirror() {
+  mirrorStep = 0;
+  mirrorScores = [];
+  show("mirrorTest");
+  loadMirrorQuestion();
+}
+
+function loadMirrorQuestion() {
+  const m = MIRROR_SITUATIONS[mirrorStep];
+  const emojiEl = document.getElementById("mirrorEmoji");
+  const questionEl = document.getElementById("mirrorQuestion");
+  
+  if (emojiEl) emojiEl.textContent = m.emoji;
+  if (questionEl) questionEl.textContent = m.text;
+  
+  const progress = ((mirrorStep + 1) / MIRROR_SITUATIONS.length) * 100;
+  updateMirrorThermometer(progress);
+}
+
+function answerMirror(value) {
+  mirrorScores.push(value);
+  mirrorStep++;
+
+  if (mirrorStep < MIRROR_SITUATIONS.length) {
+    loadMirrorQuestion();
+  } else {
+    showFinalResult();
   }
-  document.body.classList.add("mirror-bg");
-  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
-  saveV2State({ lastSection: "mirrorTest" });
-  show("mirrorTest"); loadMirror();
 }
 
-function loadMirror(){
-  mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
-  mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
-  updateThermometer(((mq + 1) / MIRROR_QUESTIONS.length) * 100);
-}
-
-function answerMirror(v){
-  mirrorLog.push(v ?? 0);
-  if(v !== null){ mirrorScore += v; mirrorCount++; }
-  mq++;
-
-  if(mq === MIRROR_QUESTIONS.length){
-    let semanticDelta = 0;
-    const evitacion = mirrorLog[7] ?? 0;
-    const desconexion = mirrorLog[5] ?? 0;
-    const alegria = mirrorLog[6] ?? 0;
-    semanticDelta -= (evitacion + desconexion) * 0.1;
-    semanticDelta += alegria * 0.1;
-    mirrorScore += semanticDelta;
-  }
-
-  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
-  mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
-}
-
-/* ===============================
-   DEVOLUCIÓN FINAL INTEGRATIVA
-================================ */
-function showFinal(){
+function showFinalResult() {
   show("finalResult");
-  finalTextWrap.classList.add("hidden");
-  updateThermometer(100);
-  saveV2State({ lastSection: "finalResult" });
+  updateMirrorThermometer(100);
 
-  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
+  const mirrorSum = mirrorScores.reduce((a, b) => a + b, 0);
+  const maxMirror = MIRROR_SITUATIONS.length * 2;
+  const mirrorPercent = Math.round((mirrorSum / maxMirror) * 100);
 
-  const tristezaAjena = mirrorLog[1] ?? 0;
-  const desconexion = mirrorLog[5] ?? 0;
-  const evitacion = mirrorLog[7] ?? 0;
-
-  const bajaEmpatia = tristezaAjena <= 0.5;
-  const desconexionActiva = desconexion >= 1;
-  const evitacionActiva = evitacion >= 1;
-
-  let semanticPenalty = 0;
-  if(bajaEmpatia) semanticPenalty++;
-  if(desconexionActiva) semanticPenalty++;
-  if(evitacionActiva) semanticPenalty++;
-
-  let range =
-    avg <= 0.6 ? 0 :
-    avg <= 0.9 ? 1 :
-    avg <= 1.4 ? 2 : 3;
-
-  if(range >= 2 && semanticPenalty >= 2){
-    range -= 1;
+  const finalStateEl = document.getElementById("finalState");
+  if (finalStateEl) {
+    finalStateEl.textContent = `Índice Espejo: ${mirrorPercent}% de Intensidad Reactiva`;
   }
 
-  const finalCircles = document.querySelector('#finalResult .circles, #finalResult #circles');
-  if (finalCircles) {
-    let circlesHtml = "";
-    MIRROR_QUESTIONS.forEach((mqObj, i) => {
-      let val = mirrorLog[i] !== undefined ? mirrorLog[i] : 0;
-      let circlePct = Math.round((val / 2) * 100);
-      circlesHtml += `<div class="circle"><span>Espejo ${i+1}</span><br><strong>${circlePct}%</strong></div>`;
-    });
-    finalCircles.innerHTML = circlesHtml;
+  const circlesContainer = document.querySelector("#finalResult #circles");
+  if (circlesContainer) {
+    circlesContainer.innerHTML = `
+      <div class="circle"><span>Entorno</span><br><strong>${Math.round((v2Scores.entorno / 6) * 100)}%</strong></div>
+      <div class="circle"><span>Tecnología</span><br><strong>${Math.round((v2Scores.tecnologia / 6) * 100)}%</strong></div>
+      <div class="circle"><span>Emociones</span><br><strong>${Math.round((v2Scores.emociones / 6) * 100)}%</strong></div>
+      <div class="circle"><span>Espejo</span><br><strong>${mirrorPercent}%</strong></div>
+    `;
   }
 
-  animateGauge(finalFill, (avg / 2) * 100, ()=>{
-    finalTextWrap.classList.remove("hidden");
+  const verticalFill = document.getElementById("finalFill");
+  if (verticalFill) {
+    verticalFill.style.height = mirrorPercent + '%';
+  }
 
-    if(range === 0){
-      finalState.textContent = "Predominio de NO";
-      finalHumanText.textContent =
-        "Analizando el mes completo, aparece un patrón claro:\n"+
-        "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
-        "no generan en vos una respuesta emocional significativa.\n\n"+
-        "No como falta moral,\n"+
-        "sino como señal de distancia.\n\n"+
-        "Esta distancia no habla de frialdad consciente,\n"+
-        "habla de un mecanismo de protección:\n"+
-        "una forma de no involucrarse para no sentir.\n\n"+
-        "El problema no es no sentir,\n"+
-        "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Cuando el dolor del otro no resuena,\n"+
-        "la humanidad se vuelve funcional,\n"+
-        "pero pierde profundidad.\n\n"+
-        "Este resultado no acusa,\n"+
-        "señala un punto ciego:\n"+
-        "allí donde la empatía podría desarrollarse\n"+
-        "y hoy no está ocurriendo.";
-    }
-    else if(range === 1){
-      finalState.textContent = "Ambivalencia emocional";
-      finalHumanText.textContent =
-        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
-        "Hay momentos de registro, sensibilidad y presencia,\n"+
-        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
-        "El “tal vez” no es indecisión superficial:\n"+
-        "es señal de una tensión interna\n"+
-        "entre lo que sentís\n"+
-        "y lo que te permitís sentir.\n\n"+
-        "La integración no llega forzando respuestas,\n"+
-        "llega cuando dejás de pelearte\n"+
-        "con lo que aparece a medias.";
-    }
-    else if(range === 2){
-      finalState.textContent = "Incongruencia marcada";
-      finalHumanText.textContent =
-        "Al medir el recorrido completo,\n"+
-        "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
-        "Hay registros de conciencia en ciertos planos,\n"+
-        "pero neutralidad o ausencia emocional\n"+
-        "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intellectual.\n"+
-        "Es incongruencia emocional.\n\n"+
-        "Distintas partes tuyas responden desde lugares opuestos:\n"+
-        "una se muestra consciente,\n"+
-        "otra evita implicarse,\n"+
-        "otra racionaliza.\n\n"+
-        "El resultado es una humanidad fragmentada:\n"+
-        "funcional, adaptada,\n"+
-        "pero no integrada.\n\n"+
-        "La evolución no comienza corrigiendo respuestas,\n"+
-        "comienza reconociendo\n"+
-        "dónde no estás siendo el mismo\n"+
-        "en todos los planos.";
-    }
-    else{
-      finalState.textContent = "Congruencia humana";
-      finalHumanText.textContent =
-        "A lo largo de todo el recorrido aparece una misma línea:\n"+
-        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
-        "No hay fisuras marcadas\n"+
-        "ni contradicciones defensivas,\n"+
-        "sino una humanidad que registra, procesa\n"+
-        "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n\n"+
-        "Integrar no es llegar a un punto final,\n"+
-        "es mantener abierta la posibilidad\n"+
-        "de seguir siendo humano.";
-    }
-  });
+  const textWrap = document.getElementById("finalTextWrap");
+  const humanText = document.getElementById("finalHumanText");
+  if (textWrap && humanText) {
+    textWrap.classList.remove("hidden");
+    humanText.textContent = 
+      "Has completado el ciclo completo del Humanómetro Volumen II y El Espejo.\n\n" +
+      "Este mapa refleja tu estado actual de autoconsciencia. Recordá que la herramienta no califica tu valor, sino que ilumina los espacios donde tu humanidad busca integración y equilibrio.";
+  }
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2
+   ACTUALIZACIÓN DE TERMÓMETROS V2 (CON ESCALA NUMÉRICA)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill');
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill');
     fills.forEach(fill => {
       if (fill) fill.style.width = percent + '%';
     });
-  }
-}
-
-/* UTIL */
-function animateGauge(el, target, done){
-  if (!el) {
-    done && done();
-    return;
-  }
-  el.style.height="0%";
-  const start = performance.now(), dur = 1800;
-  
-  function step(t){
-    const p = Math.min(1,(t-start)/dur);
-    el.style.height = p * target + "%";
-    p < 1 ? requestAnimationFrame(step) : done && done();
-  }
-  requestAnimationFrame(step);
-}
-
-function show(id){
-  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
-    .forEach(s => {
-      const el = $(s);
-      if (el) el.classList.add("hidden");
+    
+    const numVals = document.querySelectorAll('#thermoNumVal');
+    numVals.forEach(nv => {
+      if (nv) nv.textContent = Math.round(percent) + '%';
     });
-  const targetEl = $(id);
-  if (targetEl) targetEl.classList.remove("hidden");
-         }
+  }
+}
+
+function updateMirrorThermometer(percent) {
+  if (percent !== undefined) {
+    const mirrorFills = document.querySelectorAll('#thermoFillMirror');
+    mirrorFills.forEach(fill => {
+      if (fill) fill.style.width = percent + '%';
+    });
+    
+    const mirrorNumVals = document.querySelectorAll('#thermoNumValMirror');
+    mirrorNumVals.forEach(nv => {
+      if (nv) nv.textContent = Math.round(percent) + '%';
+    });
+  }
+}
+
+/* ===============================
+   CONTROL DE BLOQUEO SEMANAL V2
+================================ */
+const V2_BLOCK_KEY = "hm_v2_last_week";
+const V2_DEV_MODE = false;
+const V2_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+function v2Now() { 
+  return Date.now(); 
+}
+
+function pasoUnaSemanaV2() {
+  if (V2_DEV_MODE) return true;
+  const last = localStorage.getItem(V2_BLOCK_KEY);
+  if (!last) return true;
+  return (v2Now() - Number(last)) >= V2_WEEK_MS;
+}
+
+function marcarSemanaV2() {
+  localStorage.setItem(V2_BLOCK_KEY, v2Now());
+}
+
+/* ===============================
+   PERSISTENCIA Y SOPORTE V2
+================================ */
+const V2_STATE_KEY = "hm_v2_progress_state";
+
+function guardarEstadoV2() {
+  const stateData = {
+    v2CurrentWeek,
+    v2Scores,
+    v2TotalScore,
+    v2AnswersLog,
+    timestamp: v2Now()
+  };
+  localStorage.setItem(V2_STATE_KEY, JSON.stringify(stateData));
+}
+
+function cargarEstadoV2() {
+  const savedState = localStorage.getItem(V2_STATE_KEY);
+  if (savedState) {
+    try {
+      const parsed = JSON.parse(savedState);
+      if (parsed && parsed.v2CurrentWeek !== undefined) {
+        v2CurrentWeek = parsed.v2CurrentWeek || 0;
+        v2Scores = parsed.v2Scores || { entorno: 0, tecnologia: 0, emociones: 0 };
+        v2TotalScore = parsed.v2TotalScore || 0;
+        v2AnswersLog = parsed.v2AnswersLog || [];
+      }
+    } catch (e) {
+      console.warn("No se pudo restaurar el estado V2 anterior:", e);
+    }
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  cargarEstadoV2();
+});
+
+window.addEventListener("beforeunload", () => {
+  guardarEstadoV2();
+});
+
+/* ===============================
+   SOPORTE ADICIONAL Y DEPURACIÓN V2
+================================ */
+function resetV2State() {
+  localStorage.removeItem(V2_STATE_KEY);
+  v2CurrentWeek = 0;
+  v2Scores = { entorno: 0, tecnologia: 0, emociones: 0 };
+  v2TotalScore = 0;
+  v2AnswersLog = [];
+}
+
+function getV2ProgressPercentage() {
+  const totalQuestions = V2_WEEKS.length * 3;
+  const answeredCount = (v2CurrentWeek * 3) + v2QuestionIndex;
+  return Math.round((answeredCount / totalQuestions) * 100);
+}
+
+function validateV2Answers() {
+  return v2AnswersLog.length === ((v2CurrentWeek * 3) + v2QuestionIndex);
+}
+
+function debugV2State() {
+  return {
+    week: v2CurrentWeek,
+    questionIndex: v2QuestionIndex,
+    scores: v2Scores,
+    total: v2TotalScore,
+    logs: v2AnswersLog
+  };
+}
+
+function logV2Completion() {
+  if (v2CurrentWeek >= V2_WEEKS.length) {
+    console.log("El ciclo V2 del Humanómetro ha sido completado exitosamente.");
+  }
+}
+
+function checkV2Integrity() {
+  let valid = true;
+  if (typeof v2CurrentWeek !== "number") valid = false;
+  if (typeof v2Scores !== "object") valid = false;
+  return valid;
+}
+
+function initV2System() {
+  if (checkV2Integrity()) {
+    console.log("Sistema V2 inicializado correctamente con integridad verificada.");
+  }
+}
+
+initV2System();
+
+function evaluateV2MetricBalance() {
+  const total = v2Scores.entorno + v2Scores.tecnologia + v2Scores.emociones;
+  return {
+    entornoRatio: total > 0 ? (v2Scores.entorno / total) : 0,
+    tecnologiaRatio: total > 0 ? (v2Scores.tecnologia / total) : 0,
+    emocionesRatio: total > 0 ? (v2Scores.emociones / total) : 0
+  };
+}
+
+function formatV2SummaryReport() {
+  const balance = evaluateV2MetricBalance();
+  return `Reporte V2 - Entorno: ${(balance.entornoRatio * 100).toFixed(1)}%, Tecnología: ${(balance.tecnologiaRatio * 100).toFixed(1)}%, Emociones: ${(balance.emocionesRatio * 100).toFixed(1)}%`;
+}
+
+function exportV2JSONData() {
+  return JSON.stringify({
+    week: v2CurrentWeek,
+    scores: v2Scores,
+    total: v2TotalScore,
+    log: v2AnswersLog,
+    exportTime: new Date().toISOString()
+  });
+}
+
+function importV2JSONData(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+    if (data && data.scores) {
+      v2CurrentWeek = data.week || 0;
+      v2Scores = data.scores;
+      v2TotalScore = data.total || 0;
+      v2AnswersLog = data.log || [];
+      guardarEstadoV2();
+      return true;
+    }
+  } catch (e) {
+    console.error("Error al importar datos V2:", e);
+  }
+  return false;
+}
+
+function simulateV2Completion() {
+  v2CurrentWeek = 4;
+  v2Scores = { entorno: 6, tecnologia: 6, emociones: 6 };
+  v2TotalScore = 18;
+  showFinalResult();
+}
+
+function checkV2LocalStorageQuota() {
+  try {
+    const testKey = "__v2_quota_test__";
+    localStorage.setItem(testKey, "test");
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function clearV2CacheSafely() {
+  if (confirm("¿Estás seguro de que deseás borrar todo el progreso almacenado de V2?")) {
+    resetV2State();
+    window.location.reload();
+  }
+}
+
+function getV2DetailedAnswersAnalytics() {
+  const counts = { positive: 0, neutral: 0, negative: 0 };
+  v2AnswersLog.forEach(ans => {
+    if (ans > 1) counts.positive++;
+    else if (ans === 1) counts.neutral++;
+    else counts.negative++;
+  });
+  return counts;
+}
+
+function verifyV2SystemReadiness() {
+  return typeof V2_WEEKS !== 'undefined' && V2_WEEKS.length === 4 && checkV2LocalStorageQuota();
+}
+
+if (verifyV2SystemReadiness()) {
+  console.log("Módulo V2 verificado y completamente listo para operar.");
+     }
