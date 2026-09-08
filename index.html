@@ -3,27 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <title>Humanómetro®</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWPMQM4ZZ7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QWPMQM4ZZ7');
+  </script>
+
+  <!-- Open Graph / Compartir -->
+  <meta property="og:title" content="Humanómetro®">
+  <meta property="og:description" content="Una herramienta reflexiva donde te observás a vos en coherencia, emoción y humanidad en el tiempo. No juzga, solo te muestra.">
+  <meta property="og:image" content="https://qpasahumano.github.io/HUMANOMETRO/activos/humanometro_og_1200x630.png">
+  <meta property="og:url" content="https://qpasahumano.github.io/HUMANOMETRO/">
+  <meta property="og:type" content="website">
 
   <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Mystery+Quest&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Mystery+Quest&display=swap" rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<!-- CONTENEDOR ADAPTABLE -->
+<!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
 <div class="device-frame-wrapper">
   <div class="device-screen">
     <main id="app">
 
-      <!-- CAPA DE MANOS DE FONDO (Marca de agua sutil) -->
+      <!-- CAPA DE MANOS DE FONDO (Global y sutil en toda la app) -->
       <div class="manos-fondo"></div>
 
-      <!-- SELLO HUMANÓMETRO (Global) -->
+      <!-- SELLO HUMANÓMETRO LIMPIO (Movido fuera de #start para persistencia global) -->
       <div class="sello-wrap global-logo">
-        <img src="./activos/logo.png" alt="Sello Humanómetro" class="sello-humanometro">
+        <img
+          src="./activos/logo.png"
+          alt="Sello Humanómetro"
+          class="sello-humanometro"
+        >
       </div>
 
       <!-- INICIO -->
@@ -43,15 +63,16 @@
 
       <!-- TEST -->
       <section id="test" class="hidden">
+        <!-- TÍTULO DEL SEGMENTO (Usará la fuente Poppins corregida y tamaño armónico) -->
         <h2 id="areaTitle" class="led-title"></h2>
 
-        <!-- Termómetro LED (Barra de progreso) -->
-        <div id="thermometer" class="thermo-bar">
-          <div id="thermoFill" class="thermo-fill"></div>
+        <!-- TERMÓMETRO LED (Barra superior global) -->
+        <div id="thermometer">
+          <div id="thermoFill"></div>
         </div>
 
-        <p id="questionText" class="question"></p>
-        <small id="questionNote" class="legal small"></small>
+        <p id="questionText"></p>
+        <small id="questionNote" class="legal"></small>
 
         <div class="answers">
           <button onclick="answer(2)">Sí</button>
@@ -60,18 +81,18 @@
         </div>
       </section>
 
-      <!-- RESULTADOS (Primera parte) -->
+      <!-- RESULTADOS -->
       <section id="results" class="hidden">
         <h2>Resultado Humanómetro</h2>
 
-        <!-- Contenedor de círculos luminosos (JS inyecta aquí) -->
+        <!-- CÍRCULOS LUMINOSOS (Con bordes LED restaurados) -->
         <div id="circles"></div>
-        <h3 id="globalResult" class="state-led"></h3>
+        <h3 id="globalResult"></h3>
 
-        <!-- LÁMINA DEVOLUCIÓN CON SCROLL INTERNO -->
-        <div class="card result-text">
-           <h3>Lectura humana</h3>
-           <ul id="tips"></ul>
+        <!-- LECTURA HUMANA (Contenedor con scroll interno y transparencia) -->
+        <div class="scroll-sheet">
+            <h3>Lectura humana</h3>
+            <ul id="tips"></ul>
         </div>
 
         <div id="weeklyAccess"></div>
@@ -81,17 +102,16 @@
       <section id="weekly" class="hidden">
         <h2 id="weeklyTitle" class="led-title">Primera semana</h2>
 
-        <p class="intro weekly-intro">
+        <p class="weekly-intro">
           ¿Cómo fue tu semana?<br>
           Respondé con sinceridad para reconocer tu tendencia humana actual.
         </p>
 
-        <!-- Termómetro LED Semanal -->
-        <div id="weeklyThermometer" class="weekly-thermo thermo-bar">
-          <div id="weeklyThermoFill" class="thermo-fill"></div>
+        <div id="weeklyThermometer" class="weekly-thermo">
+          <div id="weeklyThermoFill"></div>
         </div>
 
-        <p id="weeklyQuestion" class="question"></p>
+        <p id="weeklyQuestion"></p>
 
         <div class="answers">
           <button onclick="weeklyAnswer(2)">Sí</button>
@@ -102,12 +122,14 @@
 
       <!-- PRIMERA SEMANA – RESULTADO -->
       <section id="weeklyResultScreen" class="hidden">
-        <div class="balance-wrap symbol-large">⚖️</div>
+        <div class="balance-wrap">
+          ⚖️
+        </div>
 
-        <!-- LÁMINA DEVOLUCIÓN CON SCROLL INTERNO -->
-        <div class="card weekly-result-text scroll-sheet">
-            <p id="weeklyText"></p>
-            <p id="weeklyAdvice" style="color: var(--led-cyan);"></p>
+        <!-- DEVOLUCIÓN SEMANAL (Contenedor con scroll interno y transparencia) -->
+        <div class="scroll-sheet">
+            <p id="weeklyText" class="weekly-result-text"></p>
+            <p id="weeklyAdvice" class="legal weekly-result-text"></p>
         </div>
 
         <button class="premium spaced" onclick="weeklyWithDonation()">Volvé pronto</button>
@@ -120,21 +142,20 @@
       <!-- PRIVACIDAD -->
       <section id="privacy" class="hidden">
         <h2>Privacidad y uso</h2>
-        <div class="card">
-            <p>
-              Humanómetro no recopila datos personales.<br>
-              Todo ocurre localmente.<br>
-              No es diagnóstico médico ni psicológico.<br>
-              Es una herramienta reflexiva.
-            </p>
-            <button onclick="restart()">Volver</button>
-        </div>
+        <p>
+          Humanómetro no recopila datos personales.<br>
+          Todo ocurre localmente.<br>
+          No es diagnóstico médico ni psicológico.<br>
+          Es una herramienta reflexiva.
+        </p>
+
+        <button onclick="restart()">Volver</button>
       </section>
 
       <!-- 🔒 TEXTO PRIMER BLOQUEO -->
-      <div id="weeklyBlockFlash" class="hidden weekly-block-flash">
+      <div id="weeklyBlockFlash" class="hidden weekly-block-flash block-flash">
         No seas ansioso.<br>
-        Tiene que pasar una semana.
+        Todavía no pasó la semana.
       </div>
 
     </main>
@@ -142,7 +163,7 @@
 </div>
 
 <script src="script.js"></script>
-<script src="bloqueos.js"></script> <!-- Asumo que este archivo existe y no se toca -->
+<script src="bloqueos.js"></script>
 
 </body>
 </html>
