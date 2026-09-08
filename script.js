@@ -128,6 +128,7 @@ function showWeeklyBlockFlash() {
       return;
     }
     showSection("weeklyResultScreen");
+    updateThermometer(100);
     return;
   }
 
@@ -232,6 +233,7 @@ function showWeeklyResultScreen() {
   weeklyCompleted = true;
 
   showSection("weeklyResultScreen");
+  updateThermometer(100);
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
 
@@ -357,7 +359,6 @@ function showResults() {
     const p = Math.round(scores[m.name] / max * 100);
     total += p;
 
-    // Ajuste estético de círculos compactos con texto ajustado en tamaño para evitar cortes
     circles.innerHTML += `
       <div class="circle ${p < 40 ? "low" : p < 70 ? "mid" : "high"}">
         <span>${m.name}</span><br><strong>${p}%</strong>
@@ -370,6 +371,8 @@ function showResults() {
 
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
+
+  updateThermometer(avg);
 
   if (mode === "common") {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
@@ -441,6 +444,7 @@ function restart() {
 
   clearState();
   showSection("start");
+  updateThermometer(0);
 }
 
 function showPrivacy() {
