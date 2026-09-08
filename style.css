@@ -1,249 +1,250 @@
-* { box-sizing: border-box; }
+/* ==========================================================
+   CSS 1 - HUMANÓMETRO (ESTILOS GENERALES Y ADAPTABILIDAD MÓVIL)
+   ================================================---------- */
 
-/* ===== BODY + FONDO NEGRO PURO ===== */
-body {
+:root {
+  --bg-dark: #07090e;
+  --card-bg: rgba(7, 9, 14, 0.85);
+  --emerald: #00ffc4;
+  --cyan-bright: #00e5ff;
+  --text-main: #f0f4f8;
+  --text-muted: #94a3b8;
+  --border-glow: rgba(0, 229, 255, 0.4);
+}
+
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: #000000; /* Fondo negro sólido de respaldo */
-  color: #f6fffc;
-  position: relative;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Poppins', sans-serif;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
 }
 
-/* Capa de profundidad oscura general */
-body::before {
-  content: "";
+h1, h2, h3, .secondary-header, .led-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* MARCA DE AGUA / FONDO MANOS */
+.manos-fondo {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background-image: url('manos.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
 }
 
-/* ===== NUEVA CAPA: MARCA DE AGUA (MANOS) ===== */
-.manos-fondo {
-  position: fixed; /* Fija respecto a la pantalla */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: transparent url("bg-manos-marca-agua.png") center / cover no-repeat;
-  opacity: 0.15;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* =================================================
-   CONTENEDOR RESPONSIVO (MARCO DE CELULAR EN PC / FULL EN MÓVIL)
-   ================================================= */
+/* CONTENEDOR ADAPTABLE DE DISPOSITIVO */
 .device-frame-wrapper {
+  position: relative;
   width: 100%;
+  max-width: 440px;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 0;
-  background: transparent;
+  z-index: 1;
 }
 
 .device-screen {
   width: 100%;
   height: 100%;
-  min-height: 100vh;
+  background: var(--bg-dark);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  background-color: transparent;
   position: relative;
   overflow: hidden;
 }
 
-/* En pantallas grandes, simulamos el marco del dispositivo */
-@media (min-width: 769px) {
-  .device-frame-wrapper {
-    padding: 24px;
-    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
-  }
-
-  .device-screen {
-    max-width: 420px;
-    height: 850px;
-    max-height: 90vh;
-    background: #000000;
-    border: 12px solid #121216;
-    border-radius: 40px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.95), 0 0 35px rgba(120,255,230,0.12);
-    overflow-y: auto;
-  }
-
-  .device-screen::-webkit-scrollbar { width: 4px; }
-  .device-screen::-webkit-scrollbar-thumb { background: rgba(120,255,230,0.3); border-radius: 4px; }
-}
-
-/* ===== CONTENEDOR PRINCIPAL ===== */
 #app {
-  max-width: 520px;
   width: 100%;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-  background: transparent;
-  border-radius: 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.hidden { display: none !important; }
-
-/* ===== LOGO / SELLO (Global y Flotante) ===== */
-.global-logo {
-  margin: 20px auto 10px !important;
-}
-
-.sello-wrap {
+  height: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
-  z-index: 2;
+  overflow: hidden;
+}
+
+/* SECCIONES Y TARJETAS CON SCROLL INTERNO */
+section {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  transition: opacity 0.3s ease;
+}
+
+section.hidden {
+  display: none !important;
+}
+
+.card, .scroll-sheet {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glow);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  max-height: 94dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+}
+
+/* LOGO / SELLO FLOTANTE */
+.sello-wrap.global-logo {
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .sello-humanometro {
-  width: 90px;
-  height: auto;
-  animation: freqFloat 6s ease-in-out infinite;
-  opacity: 0.95;
-  filter:
-    drop-shadow(0 0 10px rgba(120,255,230,.9))
-    drop-shadow(0 0 25px rgba(120,200,255,.8));
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 255, 196, 0.3);
 }
 
-@keyframes freqFloat {
-  0%,100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.03) rotate(0.4deg); }
-}
-
-/* ===== TÍTULOS Y FUENTES ESPECÍFICAS (Montserrat y Poppins) ===== */
-h1, h2, h3, h4, h5, h6, .secondary-header {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-/* Eliminación total de fuente ornamental en encabezados secundarios */
-.secondary-header, .card-title, .sheet-title {
-  font-family: "Montserrat", sans-serif !important;
-  font-style: normal !important;
-}
-
-.led-title {
-  color: #e9fbff;
-  text-shadow:
-    0 0 6px rgba(120,220,255,0.9),
-    0 0 14px rgba(120,220,255,0.7);
-  font-family: "Montserrat", sans-serif;
-  font-size: 2.2rem;
-  margin: 10px 0;
-}
-
-/* =================================================
-   LÁMINAS DE RESULTADOS, TARJETAS Y BLOQUES DE DEVOLUCIÓN
-   (Scroll interno, transparencia y altura máxima para vista móvil perfecta)
-   ================================================= */
-.card, .scroll-sheet, .results-sheet, .feedback-block {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 16px;
-  margin: 8px auto;
-  width: calc(100% - 32px);
-  max-height: calc(100dvh - 120px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  border: 1px solid rgba(120, 255, 230, 0.25);
-}
-
-/* =================================================
-   BOTONES CON LUMINOSIDAD LED
-   ================================================= */
-button, .answers button {
-  width: 90%;
-  max-width: 340px;
-  margin: 12px auto;
-  padding: 15px;
-  border-radius: 40px;
-  border: 1px solid rgba(120, 255, 230, 0.4);
-  font-size: 1em;
-  cursor: pointer;
-  background: linear-gradient(45deg, #101826, #1d2b45);
-  color: #f6fffc;
-  box-shadow:
-    0 0 18px rgba(120,255,230,0.35),
-    inset 0 0 12px rgba(120,255,230,0.2);
-  transition: transform .15s ease, box-shadow .15s ease;
-  font-family: "Poppins", sans-serif;
-}
-
-button:active, .answers button:active { transform: scale(0.96); }
-
-button.premium, .btn-primary {
-  background: linear-gradient(45deg, #162a24, #1f4037);
-  border-color: rgba(106,255,159,0.7);
-  box-shadow:
-    0 0 22px rgba(106,255,159,0.5),
-    inset 0 0 12px rgba(106,255,159,0.3);
-  font-weight: 600;
-}
-
-/* ===== ON LED ===== */
-.on-led {
-  margin-left: 8px;
-  font-weight: 600;
-  color: #6aff9f;
-  text-shadow:
-    0 0 6px rgba(106,255,159,0.95),
-    0 0 18px rgba(106,255,159,0.85);
-  animation: ledPulse 2.2s ease-in-out infinite;
-  display: inline-block;
-}
-
-@keyframes ledPulse {
-  0%,100% { opacity: .55; }
-  50% { opacity: 1; }
-}
-
-/* =================================================
-   TERMÓMETROS LED FLOTANTES Y RANGOS DINÁMICOS TRANSVERSALES
-   ================================================= */
-#thermometer, .weekly-thermo, .led-thermometer {
+/* TERMÓMETRO LED HORIZONTAL */
+.led-thermometer {
   width: 100%;
-  height: 14px;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(120, 255, 230, 0.25);
-  border-radius: 20px;
-  margin: 15px 0 25px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 12px rgba(120,255,230,0.15);
+  position: relative;
+  margin: 8px 0 12px 0;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
 }
 
-#thermoFill,
-#weeklyThermoFill {
+.led-thermometer > div, #thermoFill, #resultThermoFill {
   height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71);
-  box-shadow: 0 0 14px rgba(120,255,230,0.6);
+  width: 50%;
+  background: linear-gradient(90deg, var(--emerald), var(--cyan-bright));
+  box-shadow: 0 0 8px var(--cyan-bright);
+  border-radius: 4px;
   transition: width 0.4s ease;
 }
 
-/* Rangos dinámicos transversales para termómetros y círculos */
-.range-success { background-color: #2ecc71 !important; border-color: #2ecc71 !important; }
-.range-warning { background-color: #f1c40f !important; border-color: #f1c40f !important; }
-.range-danger  { background-color: #e74c3c !important; border-color: #e74c3c !important; }
+/* BOTONES COMPACTOS PARA EVITAR DESBORDE */
+.btn-group, .answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+button, .btn-primary, .btn {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 255, 196, 0.15));
+  border: 1px solid var(--cyan-bright);
+  color: var(--text-main);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+  width: 100%;
+}
+
+button:active, .btn:active {
+  transform: scale(0.98);
+  background: rgba(0, 229, 255, 0.3);
+}
+
+/* CÍRCULOS DE RESULTADOS RESTAURADOS (GRILLA) */
+.results-circles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.result-circle-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.metric-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--emerald);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4), inset 0 0 8px rgba(0, 255, 196, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.result-circle-item span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.global-score-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--cyan-bright);
+  margin: 6px 0;
+}
+
+/* TEXTOS Y LECTURA HUMANA */
+.intro, .question, .description, .result-text {
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.question {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.glass-sheet {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+}
+
+.result-text {
+  font-size: 0.8rem;
+  color: var(--text-main);
+}
