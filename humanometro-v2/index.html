@@ -7,7 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -20,9 +20,9 @@
 
         <!-- INICIO V2 -->
         <section id="start">
-          <div class="card">
-            <div class="subtitle">Volumen II</div>
-            <h1>Humanómetro</h1>
+          <div class="card scroll-sheet">
+            <div class="subtitle secondary-header">Volumen II</div>
+            <h1 class="secondary-header">Humanómetro</h1>
             <p class="description">
               Continuación del proceso de observación personal.<br><br>
               Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
@@ -33,9 +33,9 @@
 
         <!-- TEST SEMANAL -->
         <section id="test" class="hidden">
-          <div class="card">
-            <div class="subtitle" id="weekTitle">Semana</div>
-            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+          <div class="card scroll-sheet">
+            <div class="subtitle secondary-header" id="weekTitle">Semana</div>
+            <div class="thermo-bar led-thermometer"><div class="thermo-fill" id="thermoFill"></div></div>
             <span class="measure-badge" id="questionMeasure">Medición</span>
             <p class="description" id="questionText">Cargando pregunta...</p>
             <div class="btn-group">
@@ -48,9 +48,9 @@
 
         <!-- DEVOLUCIÓN SEMANAL -->
         <section id="weeklyResult" class="hidden">
-          <div class="card">
+          <div class="card scroll-sheet">
             <div class="symbol-large" id="weeklySymbol">🐞</div>
-            <h2>Lectura Semanal</h2>
+            <h2 class="secondary-header">Lectura Semanal</h2>
             <div id="weeklyTextWrap">
               <p class="description" id="weeklyText"></p>
               <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
@@ -61,9 +61,9 @@
 
         <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
         <section id="monthlyResult" class="hidden">
-          <div class="card">
-            <div class="subtitle">Cierre de Módulo</div>
-            <h2>Continuidad</h2>
+          <div class="card scroll-sheet">
+            <div class="subtitle secondary-header">Cierre de Módulo</div>
+            <h2 class="secondary-header">Continuidad</h2>
             <p class="description">
               Has completado la medición de patrones y relación con el entorno.<br><br>
               Queda habilitada la fase reflexiva final: "El Espejo".
@@ -74,9 +74,9 @@
 
         <!-- INTRODUCCIÓN AL ESPEJO -->
         <section id="mirrorIntro" class="hidden">
-          <div class="card">
-            <div class="subtitle">Fase Final</div>
-            <h1>El Espejo</h1>
+          <div class="card scroll-sheet">
+            <div class="subtitle secondary-header">Fase Final</div>
+            <h1 class="secondary-header">El Espejo</h1>
             <p class="description">
               En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas.<br><br>
               Respondé observando tu verdad interna, no lo que te gustaría sentir.
@@ -87,9 +87,9 @@
 
         <!-- TEST ESPEJO -->
         <section id="mirrorTest" class="hidden">
-          <div class="card">
+          <div class="card scroll-sheet">
             <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
-            <div class="subtitle">Situación Emocional</div>
+            <div class="subtitle secondary-header">Situación Emocional</div>
             <p class="description" id="mirrorQuestion">Cargando situación...</p>
             <div class="btn-group">
               <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
@@ -101,12 +101,12 @@
 
         <!-- RESULTADO FINAL INTEGRADO -->
         <section id="finalResult" class="hidden">
-          <div class="card">
-            <div class="subtitle">Diagnóstico Integrativo</div>
+          <div class="card scroll-sheet">
+            <div class="subtitle secondary-header">Diagnóstico Integrativo</div>
             <div class="vertical-gauge-wrap">
-              <div class="vertical-gauge-fill" id="finalFill"></div>
+              <div class="vertical-gauge-fill led-thermometer" id="finalFill"></div>
             </div>
-            <h2 id="finalState">Analizando...</h2>
+            <h2 class="secondary-header" id="finalState">Analizando...</h2>
             <div id="finalTextWrap" class="hidden">
               <p class="description" id="finalHumanText"></p>
             </div>
