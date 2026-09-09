@@ -1,8 +1,35 @@
 /* ===== VOLUMEN 2 — EXTENSIÓN Y COMPLEMENTOS CSS ===== */
 
+body {
+  background-color: #030712;
+  color: #eaffff;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
 body.mirror-bg {
   background-image: radial-gradient(circle, rgba(16,36,60,.75), rgba(4,10,20,.95)), url("activos/v2/mirror-bg.jpg");
   background-blend-mode: overlay;
+  background-color: #030712;
+}
+
+.device-frame-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #030712;
+}
+
+.device-screen {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  background-color: #030712;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-container {
@@ -16,16 +43,18 @@ body.mirror-bg {
   justify-content: center;
   min-height: 100%;
   box-sizing: border-box;
+  position: relative;
+  z-index: 2;
 }
 
 .card {
   width: 100%;
-  background: rgba(8, 14, 26, 0.92);
+  background: rgba(8, 14, 26, 0.98);
   border: 1px solid rgba(120, 255, 230, 0.3);
   border-radius: 24px;
   padding: 24px 20px;
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.9),
     0 0 25px rgba(120, 255, 230, 0.12);
   text-align: center;
   backdrop-filter: blur(12px);
@@ -60,6 +89,7 @@ body.mirror-bg {
   line-height: 1.55;
   color: #d2ece6;
   margin-bottom: 20px;
+  white-space: pre-line;
 }
 
 .measure-badge {
@@ -72,6 +102,7 @@ body.mirror-bg {
   border-radius: 20px;
   margin-bottom: 12px;
   letter-spacing: 0.05em;
+  font-family: "Montserrat", sans-serif;
 }
 
 .btn-group {
@@ -85,7 +116,7 @@ body.mirror-bg {
 .btn {
   width: 100%;
   max-width: 100%;
-  margin: 0;
+  margin: 0 auto;
   padding: 12px 16px;
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
@@ -130,6 +161,7 @@ body.mirror-bg {
   padding: 0 2px 2px 2px;
   font-weight: 500;
   letter-spacing: 0.04em;
+  font-family: "Montserrat", sans-serif;
 }
 
 .thermo-bar {
@@ -148,7 +180,7 @@ body.mirror-bg {
   width: 0%;
   background: linear-gradient(90deg, #ff3b5c 0%, #ffd13b 50%, #6aff9f 100%);
   box-shadow: 0 0 10px rgba(120,255,230,0.8);
-  transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out, background 0.4s ease-in-out;
 }
 
 .vertical-gauge-wrap {
@@ -161,6 +193,9 @@ body.mirror-bg {
   overflow: hidden;
   position: relative;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 0 20px rgba(120,255,230,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .vertical-gauge-fill {
@@ -175,6 +210,7 @@ body.mirror-bg {
 
 .symbol-large {
   font-size: 3rem;
+  margin-top: 4px;
   margin-bottom: 8px;
   text-shadow: 0 0 20px rgba(120,255,230,0.5);
   animation: floatSymbol 3s ease-in-out infinite;
@@ -187,7 +223,7 @@ body.mirror-bg {
 
 .mirror-emoji {
   font-size: 3.5rem;
-  margin: 8px 0 12px 0;
+  margin: 4px 0 12px 0;
   text-shadow: 0 0 25px rgba(140,255,240,0.8);
   animation: pulseEmoji 2.5s ease-in-out infinite;
 }
@@ -216,38 +252,12 @@ body.mirror-bg {
   border-radius: 4px;
 }
 
-.circles-grid-compact {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  justify-content: center;
-  margin: 14px auto;
-  max-width: 240px;
-}
-
-.circles-grid-compact > div {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(16,24,38,0.9);
-  border: 1px solid rgba(120,255,230,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.52rem;
-  font-weight: 600;
-  color: #eaffff;
-  box-shadow: 0 0 10px rgba(120,255,230,0.2);
-  text-align: center;
-  line-height: 1;
-  padding: 1px;
-  white-space: nowrap;
-}
-
 .segment-title-compact {
   font-size: 1.1rem;
   color: #6aff9f;
+  margin-top: 0;
   margin-bottom: 6px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .global-result-compact {
@@ -255,19 +265,11 @@ body.mirror-bg {
   color: #eaffff;
   margin: 12px 0 8px 0;
   text-shadow: 0 0 10px rgba(120,255,230,0.4);
+  font-family: "Montserrat", sans-serif;
 }
 
 .results-action-wrap {
   margin-top: 16px;
-}
-
-.mirror-bg {
-  transition: background 0.5s ease-in-out;
-}
-
-.app-container {
-  position: relative;
-  z-index: 2;
 }
 
 .card .description strong {
@@ -276,12 +278,6 @@ body.mirror-bg {
 
 .card .description span {
   display: inline-block;
-}
-
-.vertical-gauge-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
 }
 
 #finalTextWrap {
@@ -298,33 +294,4 @@ body.mirror-bg {
 
 .hidden {
   display: none !important;
-}
-
-.card .subtitle.segment-title-compact {
-  margin-top: 0;
-}
-
-.btn-group .btn {
-  margin: 0 auto;
-}
-
-.circles-grid-compact > div span {
-  font-size: inherit;
-  color: inherit;
-}
-
-.card .symbol-large {
-  margin-top: 4px;
-}
-
-.card .mirror-emoji {
-  margin-top: 4px;
-}
-
-.card h1, .card h2 {
-  font-family: "Cinzel", serif;
-}
-
-.card .subtitle, .card .description, .btn, .measure-badge, .global-result-compact {
-  font-family: "Montserrat", sans-serif;
 }
