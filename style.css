@@ -27,20 +27,20 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(120, 255, 230, 0.25) 0%, rgba(31, 64, 55, 0.35) 50%, transparent 80%);
+  background: radial-gradient(circle at center, rgba(120, 255, 230, 0.08) 0%, rgba(31, 64, 55, 0.12) 40%, transparent 70%);
   pointer-events: none;
   z-index: -1;
-  animation: auraPulse 4s infinite alternate ease-in-out;
+  animation: auraPulse 6s infinite alternate ease-in-out;
 }
 
 @keyframes auraPulse {
   0% {
-    transform: scale(0.9);
-    opacity: 0.5;
+    transform: scale(0.95);
+    opacity: 0.4;
   }
   100% {
-    transform: scale(1.1);
-    opacity: 1;
+    transform: scale(1.15);
+    opacity: 0.85;
   }
 }
 
@@ -501,4 +501,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-}
+    }
