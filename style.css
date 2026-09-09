@@ -93,7 +93,6 @@ body.mirror-bg::before {
   z-index: 2;
   overflow: hidden;
   
-  /* Funde los bordes perimetrales con el fondo negro para eliminar líneas de corte */
   mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
 }
@@ -275,15 +274,18 @@ button:active, .btn:active { transform: scale(0.96); }
   height: 100%;
   width: 0%;
   /* 
-    Evolución progresiva real (arranca profundo en rojo y descubre amarillo/verde según el avance): 
+    Gama estricta de rojos profundos e intermedios extendida, 
+    reservando el verde exclusivamente para el extremo superior final (>60-70%).
   */
   background: linear-gradient(
     90deg, 
-    #570000 0%,     
-    #aa0018 30%,  
-    #ff2a47 55%,  
-    #ffc107 78%,  
-    #6aff9f 92%,  
+    #3b0000 0%,     
+    #570000 20%,  
+    #800010 40%,  
+    #aa0018 55%,  
+    #cc1133 70%,  
+    #ff2a47 85%,  
+    #ffc107 94%,  
     #10b981 100%    
   );
   box-shadow:
@@ -316,15 +318,16 @@ button:active, .btn:active { transform: scale(0.96); }
 .gradient, .vertical-gauge-fill {
   width: 100%;
   height: 0%;
-  /* Versión vertical con la misma lógica de evolución ascendente */
   background: linear-gradient(
     180deg, 
     #10b981 0%, 
-    #6aff9f 10%, 
-    #ffc107 25%, 
-    #ff2a47 50%, 
-    #aa0018 75%, 
-    #570000 100%
+    #ffc107 10%, 
+    #ff2a47 22%, 
+    #cc1133 40%, 
+    #aa0018 60%, 
+    #800010 75%, 
+    #570000 90%,
+    #3b0000 100%
   );
   box-shadow:
     inset 0 0 14px rgba(255,255,255,.5),
@@ -527,4 +530,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-                                }
+}
