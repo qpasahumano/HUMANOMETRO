@@ -168,14 +168,29 @@
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
             <h2 id="finalState" class="global-result-compact">Analizando...</h2>
+            
+            <!-- RECUADRO DE TEXTO CON SCROLL PROPIO (SOLO TEXTO) -->
             <div id="finalTextWrap" class="hidden">
-              <p class="description" id="finalHumanText"></p>
+              <div class="scroll-sheet final-text-sheet">
+                <p class="description" id="finalHumanText"></p>
+              </div>
             </div>
+          </div>
+
+          <!-- BOTÓN DE FINALIZAR FUERA DEL RECUADRO DE TEXTO -->
+          <div class="results-action-wrap" id="finalActionWrap">
+            <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar medición mensual</button>
           </div>
         </section>
 
       </div>
     </div>
+  </div>
+
+  <!-- OVERLAY DE TRANSICIÓN CON CUBO GIRATORIO LENTO (3 SEGUNDOS) -->
+  <div class="cube-transition-overlay" id="cubeOverlay">
+    <img src="activos/image_cube.png" alt="Cubo Humanómetro">
+    <span>Cerrando medición mensual...</span>
   </div>
 
   <script src="script.js"></script>
