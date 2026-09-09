@@ -159,13 +159,13 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 /* FLUJO */
 function startV2(){
   const saved = loadV2State();
-  if (saved && saved.week > 0) {
+  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
     if (!pasoUnaSemana()) {
       showWeeklyBlockFlash();
       return;
     }
-    show("test"); 
-    loadQuestion();
+    show(saved.lastSection || "test"); 
+    if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
     return;
   }
 
@@ -182,6 +182,7 @@ function startV2(){
 
 function loadQuestion(){
   const w = WEEKS[week];
+  if (!w) return;
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
@@ -302,8 +303,9 @@ function nextWeek(){
   }
   marcarSemana();
   week++; q = 0; currentScore = 0;
-  saveV2State({ week, q, currentScore, lastSection: week >= WEEKS.length ? "monthlyResult" : "test" });
-  week >= WEEKS.length ? showMonthly() : (show("test"), loadQuestion());
+  const isFinished = week >= WEEKS.length;
+  saveV2State({ week, q, currentScore, lastSection: isFinished ? "monthlyResult" : "test" });
+  isFinished ? showMonthly() : (show("test"), loadQuestion());
 }
 
 /* ===============================
@@ -321,13 +323,13 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Когда algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, хотя no la expreses?" },
   { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Quando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Когда появляется uma emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -437,7 +439,7 @@ function showFinal(){
         "no generan en vos una respuesta emocional significativa.\n\n"+
         "No como falta moral,\n"+
         "sino como señal de distancia.\n\n"+
-        "Esta distancia no habla de frialdad consciente,\n"+
+        "Эта distancia no habla de frialdad consciente,\n"+
         "habla de un mecanismo de protección:\n"+
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
@@ -495,7 +497,7 @@ function showFinal(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
+        "Это no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
@@ -541,4 +543,4 @@ function show(id){
     });
   const targetEl = $(id);
   if (targetEl) targetEl.classList.remove("hidden");
-}
+     }
