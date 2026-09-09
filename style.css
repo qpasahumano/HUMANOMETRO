@@ -245,7 +245,7 @@ button:active, .btn:active { transform: scale(0.96); }
   color: #a7f3d0 !important;
 }
 
-/* ===== TERMÓMETRO LED ESTÉTICO CON ESCALA PROPORCIONAL DE 3 TRAMOS (33.3% C/U) ===== */
+/* ===== TERMÓMETRO V1 CON EVOLUCIÓN PROGRESIVA Y LUMINISCENCIA ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 12px 0;
@@ -274,19 +274,22 @@ button:active, .btn:active { transform: scale(0.96); }
 #thermoFill, .thermo-fill {
   height: 100%;
   width: 0%;
+  /* 
+    Evolución progresiva real (arranca profundo en rojo y descubre amarillo/verde según el avance): 
+  */
   background: linear-gradient(
     90deg, 
-    #8b0000 0%,     
-    #ff3b5c 33.2%,  
-    #e6b800 33.4%,  
-    #ffd13b 66.5%,  
-    #6aff9f 66.7%,  
+    #570000 0%,     
+    #aa0018 30%,  
+    #ff2a47 55%,  
+    #ffc107 78%,  
+    #6aff9f 92%,  
     #10b981 100%    
   );
   box-shadow:
     0 0 16px rgba(120,255,230,.7),
     inset 0 0 8px rgba(255,255,255,.6);
-  transition: width .6s ease-in-out;
+  transition: width .6s ease-in-out, background .6s ease-in-out;
 }
 
 .vertical-thermo, .vertical-gauge-wrap {
@@ -313,14 +316,15 @@ button:active, .btn:active { transform: scale(0.96); }
 .gradient, .vertical-gauge-fill {
   width: 100%;
   height: 0%;
+  /* Versión vertical con la misma lógica de evolución ascendente */
   background: linear-gradient(
     180deg, 
     #10b981 0%, 
-    #6aff9f 33.3%, 
-    #ffd13b 50%, 
-    #e6b800 66.6%, 
-    #ff3b5c 85%, 
-    #8b0000 100%
+    #6aff9f 10%, 
+    #ffc107 25%, 
+    #ff2a47 50%, 
+    #aa0018 75%, 
+    #570000 100%
   );
   box-shadow:
     inset 0 0 14px rgba(255,255,255,.5),
@@ -523,4 +527,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-}
+                                }
