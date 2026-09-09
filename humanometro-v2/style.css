@@ -30,18 +30,32 @@ body.mirror-bg {
   background-color: #030712;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* ENCABEZADO FIJO GLOBAL SUPERIOR */
+.app-global-header {
+  width: 100%;
+  padding: 12px 16px 4px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: #030712;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .app-container {
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 8px 16px 16px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
+  flex-grow: 1;
   box-sizing: border-box;
   position: relative;
   z-index: 2;
@@ -234,7 +248,7 @@ body.mirror-bg {
 }
 
 .scroll-sheet {
-  max-height: 75vh;
+  max-height: 70vh;
   overflow-y: auto;
   padding-right: 4px;
 }
