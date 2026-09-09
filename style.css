@@ -462,7 +462,7 @@ button:active, .btn:active { transform: scale(0.96); }
   to { transform: rotate(360deg); }
 }
 
-/* ===== ESTILO ELEGANTE PARA MENSAJES DE BLOQUEO EN TODA LA APP ===== */
+/* ===== ESTILO ORIGINAL PARA MENSAJES DE BLOQUEO EN TODA LA APP ===== */
 #weeklyBlockFlash, 
 .weekly-block-flash, 
 .block-flash {
@@ -476,4 +476,4 @@ button:active, .btn:active { transform: scale(0.96); }
   line-height: 1.5;
   margin: 15px auto;
   text-align: center;
-}
+  }
