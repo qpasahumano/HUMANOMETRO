@@ -462,9 +462,18 @@ button:active, .btn:active { transform: scale(0.96); }
   to { transform: rotate(360deg); }
 }
 
-/* ===== OCULTAMIENTO SEGURO DEL BLOQUEADOR VISUAL NO ESTÉTICO ===== */
+/* ===== ESTILO ELEGANTE PARA MENSAJES DE BLOQUEO EN TODA LA APP ===== */
 #weeklyBlockFlash, 
 .weekly-block-flash, 
 .block-flash {
-  display: none !important;
-                         }
+  display: block !important;          
+  background: transparent !important;   
+  border: none !important;              
+  box-shadow: none !important;          
+  color: #a7f3d0 !important;            
+  text-shadow: 0 0 10px rgba(106, 255, 159, 0.4); 
+  font-size: 0.95rem !important;
+  line-height: 1.5;
+  margin: 15px auto;
+  text-align: center;
+}
