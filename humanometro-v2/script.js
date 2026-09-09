@@ -84,12 +84,6 @@ const weeklyText = $("weeklyText");
 const weeklyAdvice = $("weeklyAdvice");
 const weeklyTextWrap = $("weeklyTextWrap");
 
-const monthlyFill = $("monthlyFill");
-const monthlyTextWrap = $("monthlyTextWrap");
-const monthlySymbol = $("monthlySymbol");
-const monthlyLongText = $("monthlyLongText");
-const monthlyText = $("monthlyText");
-
 const mirrorEmoji = $("mirrorEmoji");
 const mirrorQuestion = $("mirrorQuestion");
 
@@ -159,19 +153,11 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 function startV2(){
   const saved = loadV2State();
   if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
-    if (!pasoUnaSemana()) {
-      showWeeklyBlockFlash();
-      return;
-    }
     show(saved.lastSection || "test"); 
     if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
     return;
   }
 
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
-  }
   document.body.classList.remove("mirror-bg");
   week = 0; q = 0; currentScore = 0;
   weeklyScores = []; allAnswers = []; mirrorLog = [];
@@ -297,12 +283,7 @@ function nextWeek(){
   const isFinished = week >= WEEKS.length;
 
   if (isFinished) {
-    // Al terminar el 3er cuestionario, exigimos el bloqueo de 7 días antes de ir a Tu Reflejo
-    if(!pasoUnaSemana()){
-      showWeeklyBlockFlash();
-      week--; // Revertimos el incremento para mantener el estado correcto
-      return;
-    }
+    // Marcamos el sello temporal al finalizar el tercer cuestionario completo con sus devoluciones
     marcarSemana();
     saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
     showMonthly();
@@ -340,14 +321,15 @@ const MIRROR_QUESTIONS = [
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function gateMirrorIntro(){
-  openMirror();
-}
-
-function openMirror(){
+  // El único bloqueo de los 7 días vive aquí, custodiando el botón de acceso a Tu Reflejo
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
+  openMirror();
+}
+
+function openMirror(){
   show("mirrorIntro");
   updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "mirrorIntro" });
@@ -586,4 +568,4 @@ function show(id){
       const el = $(s);
       if (el) el.classList.toggle("hidden", s !== id);
     });
-}
+       }
