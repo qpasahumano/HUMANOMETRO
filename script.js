@@ -149,10 +149,15 @@ function showWeeklyBlockFlash() {
 
   if (saved.lastSection === "weekly") {
     weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-    // Se ajusta para reflejar puntos reales en vez de conteo plano de preguntas
-    const totalMax = WEEKLY_QUESTIONS.length * 2;
-    const totalEarned = weeklyScores.reduce((a, b) => a + b, 0);
-    updateThermometer(totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0);
+    const totalAnswered = weeklyScores.length;
+    const totalQuestions = WEEKLY_QUESTIONS.length;
+    const progressPct = Math.round((totalAnswered / totalQuestions) * 100);
+    const sumEarned = weeklyScores.reduce((a, b) => a + b, 0);
+    const maxPossible = totalAnswered * 2;
+    const qualityRatio = maxPossible > 0 ? (sumEarned / maxPossible) : 0;
+    const baseProgress = Math.max(5, progressPct);
+    const finalPct = Math.min(100, Math.round(baseProgress * (0.3 + (qualityRatio * 0.7))));
+    updateThermometer(finalPct);
   }
 
 })();
@@ -188,7 +193,7 @@ function startWeekly() {
   weeklyIndex = 0;
   weeklyCompleted = false;
 
-  updateThermometer(0);
+  updateThermometer(5);
   weeklySaved.classList.add("hidden");
 
   showSection("weekly");
@@ -202,9 +207,15 @@ function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
 
-  const totalMax = WEEKLY_QUESTIONS.length * 2;
-  const totalEarned = weeklyScores.reduce((a, b) => a + b, 0);
-  updateThermometer(totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0);
+  const totalAnswered = weeklyScores.length;
+  const totalQuestions = WEEKLY_QUESTIONS.length;
+  const progressPct = Math.round((totalAnswered / totalQuestions) * 100);
+  const sumEarned = weeklyScores.reduce((a, b) => a + b, 0);
+  const maxPossible = totalAnswered * 2;
+  const qualityRatio = maxPossible > 0 ? (sumEarned / maxPossible) : 0;
+  const baseProgress = Math.max(5, progressPct);
+  const finalPct = Math.min(100, Math.round(baseProgress * (0.3 + (qualityRatio * 0.7))));
+  updateThermometer(finalPct);
 
   saveState({ weeklyIndex, weeklyScores });
 
@@ -416,7 +427,7 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO (ACTUALIZADO - FRENADO EN PUNTAJE REAL)
+   TERMÓMETRO GLOBAL INTEGRADO (MECÁNICA ESCALONADA: ARRANCA EN ROJO PROFUNDO Y MODULA POR PROGRESO Y PESO)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
@@ -427,27 +438,48 @@ function updateThermometer(percent) {
       }
     });
   } else {
-    // Cálculo basado en puntos acumulados reales frente al total posible de preguntas ya respondidas
-    let totalMaxPointsSoFar = 0;
+    let totalQuestionsCount = 0;
+    modules.forEach(m => { totalQuestionsCount += m.questions.length; });
+
+    let answeredCount = 0;
     let totalEarnedPoints = 0;
+    let totalMaxPossibleSoFar = 0;
 
     modules.forEach((m, mIndex) => {
-      const maxForModule = m.questions.length * 2;
+      const qLen = m.questions.length;
       if (mIndex < currentModule) {
-        totalMaxPointsSoFar += maxForModule;
+        answeredCount += qLen;
+        totalMaxPossibleSoFar += qLen * 2;
         totalEarnedPoints += (scores[m.name] || 0);
       } else if (mIndex === currentModule) {
-        totalMaxPointsSoFar += currentQuestion * 2;
-        totalEarnedPoints += (scores[m.name] || 0);
+        answeredCount += currentQuestion;
+        totalMaxPossibleSoFar += currentQuestion * 2;
+        // Tomamos el puntaje parcial acumulado en el módulo actual
+        // Como scores[m.name] acumula el total del módulo actual a medida que se responde, 
+        // estimamos proporcionalmente al número de preguntas ya respondidas en este módulo
+        const currentModuleEarned = scores[m.name] || 0;
+        totalEarnedPoints += currentModuleEarned;
       }
     });
 
-    const pct = totalMaxPointsSoFar > 0 ? Math.round((totalEarnedPoints / totalMaxPointsSoFar) * 100) : 0;
+    if (totalQuestionsCount === 0) {
+      updateThermometer(5);
+      return;
+    }
+
+    const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
+    const baseProgress = Math.max(5, progressPhysicalPct);
+
+    const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
     
+    // El ancho final combina el avance físico de la pregunta en curso (para que avance de forma escalonada)
+    // con el peso de la calidad de las respuestas para modular el color y la altura progresivamente hacia el verde.
+    const finalCalculatedPct = Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
+
     const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
       if (fill && fill.id !== 'weeklyResultThermoFill') {
-        fill.style.width = Math.min(100, Math.max(1, pct)) + '%';
+        fill.style.width = finalCalculatedPct + '%';
       }
     });
   }
@@ -469,7 +501,7 @@ function restart() {
 
   clearState();
   showSection("start");
-  updateThermometer(0);
+  updateThermometer(5);
 }
 
 function showPrivacy() {
@@ -487,4 +519,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-                    }
+}
