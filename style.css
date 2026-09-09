@@ -453,8 +453,8 @@ button:active, .btn:active { transform: scale(0.96); }
 }
 
 @keyframes freqFloat {
-  0%,100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.03) rotate(0.4deg); }
+  0%,100% { transform: scale(1) rotate(0deg); opacity: 0.95; }
+  50% { transform: scale(1.04) rotate(0deg); opacity: 1; }
 }
 
 @keyframes auraSpin {
@@ -479,4 +479,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-}
+  }
