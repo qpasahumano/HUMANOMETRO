@@ -411,24 +411,36 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO
+   TERMÓMETRO GLOBAL INTEGRADO (ACTUALIZADO)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill');
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
-      if (fill) fill.style.width = percent + '%';
+      // Excluimos explícitamente el weeklyResultThermoFill para que no interfiera con su propia lógica
+      if (fill && fill.id !== 'weeklyResultThermoFill') {
+        fill.style.width = percent + '%';
+      }
     });
   } else {
-    const totalQ = modules.reduce((s, m) => s + m.questions.length, 0);
-    const answered =
-      modules.slice(0, currentModule)
-        .reduce((s, m) => s + m.questions.length, 0) +
-      currentQuestion;
-    const pct = totalQ > 0 ? Math.round((answered / totalQ) * 100) : 0;
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill');
+    // Cálculo basado en puntos acumulados reales y no en cuántas preguntas pasaron
+    let totalMaxPoints = 0;
+    let totalEarnedPoints = 0;
+
+    modules.forEach(m => {
+      totalMaxPoints += m.questions.length * 2;
+      if (scores[m.name] !== undefined) {
+        totalEarnedPoints += scores[m.name];
+      }
+    });
+
+    const pct = totalMaxPoints > 0 ? Math.round((totalEarnedPoints / totalMaxPoints) * 100) : 0;
+    
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
-      if (fill) fill.style.width = pct + '%';
+      if (fill && fill.id !== 'weeklyResultThermoFill') {
+        fill.style.width = pct + '%';
+      }
     });
   }
 }
