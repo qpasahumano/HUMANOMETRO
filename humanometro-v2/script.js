@@ -78,7 +78,6 @@ function showWeeklyBlockFlash(){
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
 const questionMeasure = $("questionMeasure");
-const thermoFill = $("thermoFill");
 
 const weeklySymbol = $("weeklySymbol");
 const weeklyText = $("weeklyText");
@@ -317,7 +316,7 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
@@ -500,14 +499,12 @@ function finalizarYReiniciar() {
   if (overlay) overlay.classList.add("active");
 
   setTimeout(() => {
-    // Limpieza completa del almacenamiento del Volumen 2 para permitir futuros ciclos mensuales limpios
     localStorage.removeItem(V2_STATE_KEY);
     localStorage.removeItem(V2_BLOCK_KEY);
 
     if (overlay) overlay.classList.remove("active");
     document.body.classList.remove("mirror-bg");
     
-    // Retorno a la pantalla de inicio limpia
     show("start");
   }, 3000);
 }
@@ -536,21 +533,14 @@ function calculateFinalPercentage() {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2
+   TERMÓMETRO GLOBAL INTEGRADO V2 (SELECTOR ÚNICO)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill');
+    const fills = document.querySelectorAll('#thermoFill');
     fills.forEach(fill => {
       if (fill) {
         fill.style.width = percent + '%';
-        if (percent < 35) {
-          fill.style.background = 'linear-gradient(90deg, #ff4d4d, #ff9933)';
-        } else if (percent < 70) {
-          fill.style.background = 'linear-gradient(90deg, #ff9933, #ffd11a)';
-        } else {
-          fill.style.background = 'linear-gradient(90deg, #ffd11a, #2ecc71)';
-        }
       }
     });
 
@@ -582,8 +572,6 @@ function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => {
       const el = $(s);
-      if (el) el.classList.add("hidden");
+      if (el) el.classList.toggle("hidden", s !== id);
     });
-  const targetEl = $(id);
-  if (targetEl) targetEl.classList.remove("hidden");
 }
