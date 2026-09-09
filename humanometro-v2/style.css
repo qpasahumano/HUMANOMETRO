@@ -190,7 +190,7 @@ body.mirror-bg {
   box-shadow: 0 4px 24px rgba(106,255,159,0.4), inset 0 0 14px rgba(106,255,159,0.25);
 }
 
-/* ===== TERMÓMETRO V2 CON ESCALA PROPORCIONAL DE 3 TRAMOS (33.3% C/U) ===== */
+/* ===== TERMÓMETRO V2 UNIFICADO CON GRADIENTE PROGRESIVO ESTRICTO (VOL. 1) ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 10px 0 14px 0;
@@ -221,17 +221,18 @@ body.mirror-bg {
 .thermo-fill {
   height: 100%;
   width: 0%;
+  /* Gradiente estricto: Rojos profundos al inicio, transición ámbar intermedia, y verde luminoso exclusivamente en la recta final (>75%) */
   background: linear-gradient(
     90deg, 
-    #8b0000 0%,     
-    #ff3b5c 33.2%,  
-    #e6b800 33.4%,  
-    #ffd13b 66.5%,  
-    #6aff9f 66.7%,  
+    #570000 0%,     
+    #aa0018 25%,  
+    #ff2a47 45%,  
+    #ffc107 70%,  
+    #6aff9f 88%,  
     #10b981 100%    
   );
   box-shadow: 0 0 10px rgba(120,255,230,0.8);
-  transition: width 0.4s ease-in-out, background 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
 }
 
 .vertical-gauge-wrap {
@@ -415,4 +416,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120, 255, 230, 0.5);
   animation: fadeInOut 3s ease-in-out forwards;
-    }
+}
