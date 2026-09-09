@@ -172,9 +172,7 @@ function loadQuestion(){
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
   
-  const totalQIndex = (week * 4) + q;
-  const pct = Math.round((totalQIndex / (WEEKS.length * 4)) * 100);
-  updateThermometer(pct);
+  updateThermometer(calculateCurrentPercentage());
 }
 
 function answer(v){
@@ -283,12 +281,10 @@ function nextWeek(){
   const isFinished = week >= WEEKS.length;
 
   if (isFinished) {
-    // Marcamos el sello temporal al finalizar el tercer cuestionario completo con sus devoluciones
     marcarSemana();
     saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
     showMonthly();
   } else {
-    // Transición libre y fluida entre cuestionarios sin bloqueos intermedios
     saveV2State({ week, q, currentScore, lastSection: "test" });
     show("test"); 
     loadQuestion();
@@ -309,7 +305,7 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
@@ -321,7 +317,6 @@ const MIRROR_QUESTIONS = [
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function gateMirrorIntro(){
-  // El único bloqueo de los 7 días vive aquí, custodiando el botón de acceso a Tu Reflejo
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
@@ -350,9 +345,7 @@ function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
   
-  const hist = calculateHistoricalPercentage();
-  const mirrorProgress = Math.round(hist + ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist));
-  updateThermometer(mirrorProgress);
+  updateThermometer(calculateMirrorCurrentPercentage());
 }
 
 function answerMirror(v){
@@ -407,7 +400,7 @@ function showFinal(){
     range -= 1;
   }
 
-  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+  animateGauge(finalFill, calculateFinalPercentage(), ()=>{
     finalTextWrap.classList.remove("hidden");
 
     if(range === 0){
@@ -504,12 +497,25 @@ function finalizarYReiniciar() {
 }
 
 /* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (FRENADO EN PUNTAJE REAL)
 ================================ */
 function calculateCurrentPercentage() {
-  const totalAnswersSoFar = (week * 4) + q;
-  const maxQ = WEEKS.length * 4;
-  return Math.min(100, Math.max(1, Math.round((totalAnswersSoFar / maxQ) * 100)));
+  let totalMax = 0;
+  let totalEarned = 0;
+
+  for (let w = 0; w <= week; w++) {
+    const limit = (w === week) ? q : 4;
+    for (let i = 0; i < limit; i++) {
+      totalMax += 2;
+      const ans = allAnswers.find(item => item.block === WEEKS[w].title && item.q === i);
+      if (ans) {
+        totalEarned += ans.v;
+      }
+    }
+  }
+
+  if (totalMax === 0) return 1;
+  return Math.min(100, Math.max(1, Math.round((totalEarned / totalMax) * 100)));
 }
 
 function calculateHistoricalPercentage() {
@@ -517,6 +523,19 @@ function calculateHistoricalPercentage() {
   let sum = weeklyScores.reduce((a, b) => a + b, 0);
   let avg = sum / weeklyScores.length;
   return Math.min(100, Math.max(1, Math.round((avg / 2) * 100)));
+}
+
+function calculateMirrorCurrentPercentage() {
+  const hist = calculateHistoricalPercentage();
+  let mirrorEarned = 0;
+  let mirrorMax = mq * 2;
+
+  for (let i = 0; i < mq; i++) {
+    mirrorEarned += (mirrorLog[i] ?? 0);
+  }
+
+  const mirrorPct = mirrorMax > 0 ? (mirrorEarned / mirrorMax) * 100 : hist;
+  return Math.min(100, Math.max(1, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
 }
 
 function calculateFinalPercentage() {
@@ -556,7 +575,7 @@ function animateGauge(el, target, done){
   
   function step(t){
     const p = Math.min(1,(t-start)/dur);
-    el.style.height = p * target + "%";
+    el.style.height = (p * target) + "%";
     p < 1 ? requestAnimationFrame(step) : done && done();
   }
   requestAnimationFrame(step);
@@ -568,4 +587,4 @@ function show(id){
       const el = $(s);
       if (el) el.classList.toggle("hidden", s !== id);
     });
-       }
+               }
