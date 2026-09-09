@@ -442,7 +442,6 @@ button:active, .btn:active { transform: scale(0.96); }
 .sello-wrap::before {
   content: "";
   position: absolute;
-
   width: 110px;
   height: 110px;
   border-radius: 50%;
@@ -462,3 +461,10 @@ button:active, .btn:active { transform: scale(0.96); }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* ===== OCULTAMIENTO SEGURO DEL BLOQUEADOR VISUAL NO ESTÉTICO ===== */
+#weeklyBlockFlash, 
+.weekly-block-flash, 
+.block-flash {
+  display: none !important;
+                         }
