@@ -96,11 +96,11 @@
           </div>
         </section>
 
-        <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
+        <!-- CIERRE DE CICLO V2 / TRANSICIÓN AL ESPEJO -->
         <section id="monthlyResult" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle">Cierre</div>
-            <h2>Continuidad</h2>
+            <h2>Cierre de Ciclo</h2>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
@@ -109,18 +109,18 @@
             </div>
 
             <p class="description">
-              Has completado la medición de patrones y relación con el entorno.<br><br>
-              Queda habilitada la fase reflexiva final: "El Espejo".
+              Has completado los tres ciclos de medición de patrones y relación con el entorno.<br><br>
+              Queda habilitada la fase reflexiva final: "Tu reflejo".
             </p>
-            <button class="btn btn-primary" onclick="gateMirrorIntro()">Entrar a "El Espejo"</button>
+            <button class="btn btn-primary" onclick="gateMirrorIntro()">Entrar a "Tu reflejo"</button>
           </div>
         </section>
 
-        <!-- INTRODUCCIÓN AL ESPEJO -->
+        <!-- INTRODUCCIÓN A TU REFLEJO -->
         <section id="mirrorIntro" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle">Fase Final</div>
-            <h1>El Espejo</h1>
+            <h1>Tu reflejo</h1>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
@@ -129,14 +129,14 @@
             </div>
 
             <p class="description">
-              En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas.<br><br>
+              En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas, integrando todo el recorrido realizado.<br><br>
               Respondé observando tu verdad interna, no lo que te gustaría sentir.
             </p>
-            <button class="btn btn-primary" onclick="startMirror()">Comenzar Espejo</button>
+            <button class="btn btn-primary" onclick="startMirror()">Comenzar Tu reflejo</button>
           </div>
         </section>
 
-        <!-- TEST ESPEJO -->
+        <!-- TEST TU REFLEJO -->
         <section id="mirrorTest" class="hidden">
           <div class="card scroll-sheet">
             <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
@@ -183,7 +183,7 @@
 
           <!-- BOTÓN DE FINALIZAR FUERA DEL RECUADRO DE TEXTO -->
           <div class="results-action-wrap" id="finalActionWrap">
-            <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar medición mensual</button>
+            <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar ciclo</button>
           </div>
         </section>
 
@@ -194,7 +194,7 @@
   <!-- OVERLAY DE TRANSICIÓN CON CUBO GIRATORIO LENTO (3 SEGUNDOS) -->
   <div class="cube-transition-overlay" id="cubeOverlay">
     <img src="activos/image_cube.png" alt="Cubo Humanómetro">
-    <span>Cerrando medición mensual...</span>
+    <span>Cerrando ciclo...</span>
   </div>
 
   <script src="script.js"></script>
