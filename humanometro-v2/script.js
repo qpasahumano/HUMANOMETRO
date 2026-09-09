@@ -32,6 +32,9 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
+    mq,
+    mirrorScore,
+    mirrorCount,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -120,6 +123,7 @@ const WEEKS = [
 /* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 /* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
@@ -132,6 +136,9 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
+  mq = saved.mq || 0;
+  mirrorScore = saved.mirrorScore || 0;
+  mirrorCount = saved.mirrorCount || 0;
 
   if (saved.lastSection) {
     show(saved.lastSection);
@@ -161,6 +168,7 @@ function startV2(){
   document.body.classList.remove("mirror-bg");
   week = 0; q = 0; currentScore = 0;
   weeklyScores = []; allAnswers = []; mirrorLog = [];
+  mq = 0; mirrorScore = 0; mirrorCount = 0;
   saveV2State({ lastSection: "test" });
   show("test"); loadQuestion();
 }
@@ -180,6 +188,8 @@ function answer(v){
   allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
   saveV2State({ q, currentScore, allAnswers });
+  
+  updateThermometer(calculateCurrentPercentage());
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
@@ -305,7 +315,7 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
@@ -313,8 +323,6 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
   { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
-
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function gateMirrorIntro(){
   if(!pasoUnaSemana()){
@@ -364,6 +372,8 @@ function answerMirror(v){
   }
 
   saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
+  
+  updateThermometer(calculateMirrorCurrentPercentage());
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
@@ -497,52 +507,59 @@ function finalizarYReiniciar() {
 }
 
 /* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (FRENADO EN PUNTAJE REAL)
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (PROGRESIÓN ESCALONADA Y ROJO PROFUNDO INICIAL)
 ================================ */
 function calculateCurrentPercentage() {
-  let totalMax = 0;
-  let totalEarned = 0;
+  const totalQuestionsCount = 4; // 4 preguntas por semana en V2
+  const answeredCount = q;
 
-  for (let w = 0; w <= week; w++) {
-    const limit = (w === week) ? q : 4;
-    for (let i = 0; i < limit; i++) {
-      totalMax += 2;
-      const ans = allAnswers.find(item => item.block === WEEKS[w].title && item.q === i);
-      if (ans) {
-        totalEarned += ans.v;
-      }
-    }
-  }
+  if (totalQuestionsCount === 0) return 5;
 
-  if (totalMax === 0) return 1;
-  return Math.min(100, Math.max(1, Math.round((totalEarned / totalMax) * 100)));
+  const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
+  const baseProgress = Math.max(5, progressPhysicalPct);
+
+  let totalMaxPossibleSoFar = answeredCount * 2;
+  let totalEarnedPoints = currentScore;
+
+  const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
+  
+  return Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
 }
 
 function calculateHistoricalPercentage() {
-  if (weeklyScores.length === 0) return 50;
+  if (weeklyScores.length === 0) return 5;
   let sum = weeklyScores.reduce((a, b) => a + b, 0);
   let avg = sum / weeklyScores.length;
-  return Math.min(100, Math.max(1, Math.round((avg / 2) * 100)));
+  return Math.min(100, Math.max(5, Math.round((avg / 2) * 100)));
 }
 
 function calculateMirrorCurrentPercentage() {
   const hist = calculateHistoricalPercentage();
-  let mirrorEarned = 0;
-  let mirrorMax = mq * 2;
+  const totalQuestionsCount = MIRROR_QUESTIONS.length;
+  const answeredCount = mq;
 
+  if (totalQuestionsCount === 0) return hist;
+
+  const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
+  const baseProgress = Math.max(5, progressPhysicalPct);
+
+  let mirrorEarned = 0;
   for (let i = 0; i < mq; i++) {
     mirrorEarned += (mirrorLog[i] ?? 0);
   }
+  let mirrorMax = mq * 2;
+  const qualityRatio = mirrorMax > 0 ? (mirrorEarned / mirrorMax) : 0;
 
-  const mirrorPct = mirrorMax > 0 ? (mirrorEarned / mirrorMax) * 100 : hist;
-  return Math.min(100, Math.max(1, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+  const mirrorPct = Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
+  
+  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
 }
 
 function calculateFinalPercentage() {
   const hist = calculateHistoricalPercentage();
-  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
-  const mirrorPct = (mirrorAvg / 2) * 100;
-  return Math.min(100, Math.max(1, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 0;
+  const mirrorPct = Math.min(100, Math.max(5, Math.round((mirrorAvg / 2) * 100)));
+  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
 }
 
 /* ===============================
@@ -550,7 +567,7 @@ function calculateFinalPercentage() {
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFill');
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
       if (fill) {
         fill.style.width = percent + '%';
@@ -566,25 +583,4 @@ function updateThermometer(percent) {
 
 /* UTIL */
 function animateGauge(el, target, done){
-  if (!el) {
-    done && done();
-    return;
-  }
-  el.style.height="0%";
-  const start = performance.now(), dur = 1800;
-  
-  function step(t){
-    const p = Math.min(1,(t-start)/dur);
-    el.style.height = (p * target) + "%";
-    p < 1 ? requestAnimationFrame(step) : done && done();
-  }
-  requestAnimationFrame(step);
-}
-
-function show(id){
-  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
-    .forEach(s => {
-      const el = $(s);
-      if (el) el.classList.toggle("hidden", s !== id);
-    });
-               }
+ 
