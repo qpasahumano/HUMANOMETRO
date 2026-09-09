@@ -77,24 +77,27 @@ body.mirror-bg::before {
   .device-screen::-webkit-scrollbar-thumb { background: rgba(120,255,230,0.3); border-radius: 4px; }
 }
 
-/* ===== LÁMINA PRINCIPAL CON PULSO DE AURA CUÁNTICA INTERNO ===== */
+/* ===== LÁMINA PRINCIPAL CON FUSIÓN PERIMETRAL Y AURA INTERNA ===== */
 #app {
   max-width: 520px;
   width: 100%;
   margin: 10px auto 40px;
   padding: 26px;
-  background: rgba(0, 0, 0, 0.82);
+  background: rgba(0, 0, 0, 0.92);
   border-radius: 22px;
   box-shadow:
-    0 0 30px rgba(0,0,0,.6),
+    0 0 40px rgba(0,0,0,.8),
     0 0 60px rgba(120,255,230,.08);
   text-align: center;
   position: relative;
   z-index: 2;
   overflow: hidden;
+  
+  /* Funde los bordes perimetrales con el fondo negro para eliminar líneas de corte */
+  mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
 }
 
-/* El aura vive dentro de la lámina, respirando por detrás del contenido */
 #app::before {
   content: "";
   position: absolute;
