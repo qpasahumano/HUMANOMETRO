@@ -149,7 +149,10 @@ function showWeeklyBlockFlash() {
 
   if (saved.lastSection === "weekly") {
     weeklyQuestion.innerText = WEEKLY_QUESTIONS[weeklyIndex];
-    updateThermometer(Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100));
+    // Se ajusta para reflejar puntos reales en vez de conteo plano de preguntas
+    const totalMax = WEEKLY_QUESTIONS.length * 2;
+    const totalEarned = weeklyScores.reduce((a, b) => a + b, 0);
+    updateThermometer(totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0);
   }
 
 })();
@@ -199,7 +202,9 @@ function weeklyAnswer(value) {
   weeklyScores.push(value);
   weeklyIndex++;
 
-  updateThermometer(Math.round((weeklyScores.length / WEEKLY_QUESTIONS.length) * 100));
+  const totalMax = WEEKLY_QUESTIONS.length * 2;
+  const totalEarned = weeklyScores.reduce((a, b) => a + b, 0);
+  updateThermometer(totalMax > 0 ? Math.round((totalEarned / totalMax) * 100) : 0);
 
   saveState({ weeklyIndex, weeklyScores });
 
@@ -411,35 +416,38 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO (ACTUALIZADO)
+   TERMÓMETRO GLOBAL INTEGRADO (ACTUALIZADO - FRENADO EN PUNTAJE REAL)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
     const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
-      // Excluimos explícitamente el weeklyResultThermoFill para que no interfiera con su propia lógica
       if (fill && fill.id !== 'weeklyResultThermoFill') {
         fill.style.width = percent + '%';
       }
     });
   } else {
-    // Cálculo basado en puntos acumulados reales y no en cuántas preguntas pasaron
-    let totalMaxPoints = 0;
+    // Cálculo basado en puntos acumulados reales frente al total posible de preguntas ya respondidas
+    let totalMaxPointsSoFar = 0;
     let totalEarnedPoints = 0;
 
-    modules.forEach(m => {
-      totalMaxPoints += m.questions.length * 2;
-      if (scores[m.name] !== undefined) {
-        totalEarnedPoints += scores[m.name];
+    modules.forEach((m, mIndex) => {
+      const maxForModule = m.questions.length * 2;
+      if (mIndex < currentModule) {
+        totalMaxPointsSoFar += maxForModule;
+        totalEarnedPoints += (scores[m.name] || 0);
+      } else if (mIndex === currentModule) {
+        totalMaxPointsSoFar += currentQuestion * 2;
+        totalEarnedPoints += (scores[m.name] || 0);
       }
     });
 
-    const pct = totalMaxPoints > 0 ? Math.round((totalEarnedPoints / totalMaxPoints) * 100) : 0;
+    const pct = totalMaxPointsSoFar > 0 ? Math.round((totalEarnedPoints / totalMaxPointsSoFar) * 100) : 0;
     
     const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
     fills.forEach(fill => {
       if (fill && fill.id !== 'weeklyResultThermoFill') {
-        fill.style.width = pct + '%';
+        fill.style.width = Math.min(100, Math.max(1, pct)) + '%';
       }
     });
   }
@@ -479,4 +487,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+                    }
