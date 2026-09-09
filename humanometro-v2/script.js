@@ -187,7 +187,6 @@ function loadQuestion(){
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
   
-  // Cálculo progresivo de la semana actual (de 0 a 100 dentro del bloque o global acumulado)
   const totalQIndex = (week * 4) + q;
   const pct = Math.round((totalQIndex / (WEEKS.length * 4)) * 100);
   updateThermometer(pct);
@@ -318,7 +317,7 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
@@ -358,7 +357,6 @@ function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
   
-  // Termómetro mensual / Espejo: parte del histórico y avanza con las 8 preguntas
   const hist = calculateHistoricalPercentage();
   const mirrorProgress = Math.round(hist + ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist));
   updateThermometer(mirrorProgress);
@@ -384,7 +382,7 @@ function answerMirror(v){
 }
 
 /* ===============================
-   DEVOLUCIÓN FINAL INTEGRATIVA
+   DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE
 ================================ */
 function showFinal(){
   show("finalResult");
@@ -495,6 +493,26 @@ function showFinal(){
 }
 
 /* ===============================
+   CIERRE Y LIMPIEZA DE MEDICIÓN MENSUAL (3 SEGUNDOS DE ANIMACIÓN)
+================================ */
+function finalizarYReiniciar() {
+  const overlay = document.getElementById("cubeOverlay");
+  if (overlay) overlay.classList.add("active");
+
+  setTimeout(() => {
+    // Limpieza completa del almacenamiento del Volumen 2 para permitir futuros ciclos mensuales limpios
+    localStorage.removeItem(V2_STATE_KEY);
+    localStorage.removeItem(V2_BLOCK_KEY);
+
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("mirror-bg");
+    
+    // Retorno a la pantalla de inicio limpia
+    show("start");
+  }, 3000);
+}
+
+/* ===============================
    CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
 ================================ */
 function calculateCurrentPercentage() {
@@ -518,7 +536,7 @@ function calculateFinalPercentage() {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2 (CON GAMA CROMÁTICA Y VALOR NUMÉRICO)
+   TERMÓMETRO GLOBAL INTEGRADO V2
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
@@ -526,7 +544,6 @@ function updateThermometer(percent) {
     fills.forEach(fill => {
       if (fill) {
         fill.style.width = percent + '%';
-        // Asignación dinámica de gama cromática: Rojos (0-33) -> Amarillos (34-66) -> Verdes (67-100)
         if (percent < 35) {
           fill.style.background = 'linear-gradient(90deg, #ff4d4d, #ff9933)';
         } else if (percent < 70) {
@@ -537,7 +554,6 @@ function updateThermometer(percent) {
       }
     });
 
-    // Actualización de los contadores numéricos porcentuales en pantalla
     const valSpans = document.querySelectorAll('.thermo-percentage-val');
     valSpans.forEach(span => {
       span.textContent = percent + '%';
