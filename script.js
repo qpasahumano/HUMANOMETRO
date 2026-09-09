@@ -128,7 +128,10 @@ function showWeeklyBlockFlash() {
       return;
     }
     showSection("weeklyResultScreen");
-    updateThermometer(100);
+    const avg = weeklyScores.length ? weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length : 2;
+    const weeklyPercent = Math.round((avg / 2) * 100);
+    const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
+    if (weeklyResultFill) weeklyResultFill.style.width = weeklyPercent + '%';
     return;
   }
 
@@ -233,7 +236,9 @@ function showWeeklyResultScreen() {
   weeklyCompleted = true;
 
   showSection("weeklyResultScreen");
-  updateThermometer(100);
+  const weeklyPercent = Math.round((avg / 2) * 100);
+  const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
+  if (weeklyResultFill) weeklyResultFill.style.width = weeklyPercent + '%';
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
 
