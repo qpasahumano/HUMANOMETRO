@@ -165,6 +165,12 @@
 
         <button class="premium spaced" onclick="weeklyWithDonation()">Volvé pronto</button>
 
+        <!-- 🔒 ÚNICA UBICACIÓN CORRECTA DEL TEXTO DE BLOQUEO AL HACER CLIC EN EL BOTÓN -->
+        <div id="weeklyBlockFlash" class="hidden weekly-block-flash block-flash">
+          No seas ansioso.<br>
+          Todavía no pasó la semana.
+        </div>
+
         <p id="weeklySaved" class="legal hidden">
           ✔ Conteo semanal guardado correctamente.
         </p>
@@ -191,12 +197,6 @@
         <button onclick="restart()">Volver</button>
       </section>
 
-      <!-- 🔒 TEXTO PRIMER BLOQUEO -->
-      <div id="weeklyBlockFlash" class="hidden weekly-block-flash block-flash">
-        No seas ansioso.<br>
-        Todavía no pasó la semana.
-      </div>
-
     </main>
   </div>
 </div>
@@ -205,4 +205,4 @@
 <script src="bloqueos.js"></script>
 
 </body>
-</html>
+            </html>
