@@ -290,29 +290,41 @@ function showWeekly(){
 }
 
 function nextWeek(){
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
-  }
-  marcarSemana();
-  week++; q = 0; currentScore = 0;
+  week++; 
+  q = 0; 
+  currentScore = 0;
+  
   const isFinished = week >= WEEKS.length;
-  saveV2State({ week, q, currentScore, lastSection: isFinished ? "monthlyResult" : "test" });
-  isFinished ? showMonthly() : (show("test"), loadQuestion());
+
+  if (isFinished) {
+    // Al terminar el 3er cuestionario, exigimos el bloqueo de 7 días antes de ir a Tu Reflejo
+    if(!pasoUnaSemana()){
+      showWeeklyBlockFlash();
+      week--; // Revertimos el incremento para mantener el estado correcto
+      return;
+    }
+    marcarSemana();
+    saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
+    showMonthly();
+  } else {
+    // Transición libre y fluida entre cuestionarios sin bloqueos intermedios
+    saveV2State({ week, q, currentScore, lastSection: "test" });
+    show("test"); 
+    loadQuestion();
+  }
 }
 
 /* ===============================
-   CIERRE VOLUMEN 2
+   CIERRE DE CICLO VOLUMEN 2
 ================================ */
 function showMonthly(){
   show("monthlyResult");
-  marcarSemana();
   updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "monthlyResult" });
 }
 
 /* ===============================
-   ESPEJO — PREGUNTAS COMPLETAS
+   TU REFLEJO — PREGUNTAS COMPLETAS
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
@@ -419,7 +431,7 @@ function showFinal(){
     if(range === 0){
       finalState.textContent = "Predominio de NO";
       finalHumanText.textContent =
-        "Analizando el mes completo, aparece un patrón claro:\n"+
+        "Analizando el ciclo completo, aparece un patrón claro:\n"+
         "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
         "no generan en vos una respuesta emocional significativa.\n\n"+
         "No como falta moral,\n"+
@@ -492,7 +504,7 @@ function showFinal(){
 }
 
 /* ===============================
-   CIERRE Y LIMPIEZA DE MEDICIÓN MENSUAL (3 SEGUNDOS DE ANIMACIÓN)
+   CIERRE Y LIMPIEZA DE CICLO (3 SEGUNDOS DE ANIMACIÓN)
 ================================ */
 function finalizarYReiniciar() {
   const overlay = document.getElementById("cubeOverlay");
