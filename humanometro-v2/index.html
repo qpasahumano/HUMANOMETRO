@@ -21,8 +21,14 @@
         <!-- INICIO V2 -->
         <section id="start">
           <div class="card scroll-sheet">
-            <!-- SELLO HUMANÓMETRO LIMPIO -->
+            <!-- ICONO DEL CUBO DE LA APLICACIÓN Y SELLO LIMPIO -->
             <div class="sello-wrap global-logo">
+              <img
+                src="activos/image_cube.png"
+                alt="Cubo Humanómetro"
+                class="app-cube-icon"
+                style="width: 48px; height: 48px; margin-bottom: 8px;"
+              >
               <img
                 src="activos/image_3.png"
                 alt="Sello Humanómetro"
@@ -34,7 +40,7 @@
             
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValStart">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -42,7 +48,7 @@
               Continuación del proceso de observación personal.<br><br>
               Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
             </p>
-            <button class="btn btn-primary" onclick="startV2()">Comenzar Módulo</button>
+            <button class="btn btn-primary" onclick="startV2()">Próxima semana</button>
           </div>
         </section>
 
@@ -51,7 +57,7 @@
           <div class="card scroll-sheet">
             <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValTest">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
             <span class="measure-badge" id="questionMeasure">Medición</span>
@@ -72,11 +78,10 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValWeekly">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
-            <div id="circles" class="circles-grid-compact"></div>
             <div id="weeklyTextWrap">
               <p class="description" id="weeklyText"></p>
               <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
@@ -90,12 +95,12 @@
         <!-- CIERRE MES V2 / TRANSICIÓN AL ESPEJO -->
         <section id="monthlyResult" class="hidden">
           <div class="card scroll-sheet">
-            <div class="subtitle">Cierre de Módulo</div>
+            <div class="subtitle">Cierre</div>
             <h2>Continuidad</h2>
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValMonthly">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -115,7 +120,7 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValMirrorIntro">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -135,7 +140,7 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValMirrorTest">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
@@ -155,11 +160,10 @@
 
             <!-- TERMÓMETRO GLOBAL INCORPORADO CON ESCALA -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoValFinal">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
             </div>
 
-            <div id="circles" class="circles-grid-compact"></div>
             <div class="vertical-gauge-wrap">
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
