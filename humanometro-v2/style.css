@@ -46,6 +46,19 @@ body.mirror-bg {
   flex-shrink: 0;
 }
 
+.sello-wrap.global-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sello-humanometro {
+  max-width: 120px;
+  height: auto;
+  opacity: 0.9;
+}
+
 .app-container {
   width: 100%;
   max-width: 480px;
@@ -381,6 +394,13 @@ body.mirror-bg {
   100% { opacity: 0; }
 }
 
+@keyframes blockFade {
+  0% { opacity: 0; transform: scale(0.95); }
+  20% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+
 .cube-transition-overlay {
   position: fixed;
   inset: 0;
@@ -416,4 +436,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120, 255, 230, 0.5);
   animation: fadeInOut 3s ease-in-out forwards;
-}
+  }
