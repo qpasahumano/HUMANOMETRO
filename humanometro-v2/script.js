@@ -145,13 +145,13 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
     if (saved.lastSection === "test") {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(100);
+      updateThermometer(calculateCurrentPercentage());
     } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
-      updateThermometer(100);
+      updateThermometer(calculateHistoricalPercentage());
     } else if (saved.lastSection === "mirrorTest") {
       loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      updateThermometer(100);
+      updateThermometer(calculateFinalPercentage());
     }
   }
 })();
@@ -186,7 +186,11 @@ function loadQuestion(){
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
-  updateThermometer((q / 4) * 100);
+  
+  // Cálculo progresivo de la semana actual (de 0 a 100 dentro del bloque o global acumulado)
+  const totalQIndex = (week * 4) + q;
+  const pct = Math.round((totalQIndex / (WEEKS.length * 4)) * 100);
+  updateThermometer(pct);
 }
 
 function answer(v){
@@ -203,10 +207,12 @@ function answer(v){
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
-  updateThermometer(100);
-
+  
   const avg = currentScore / 4;
   weeklyScores.push(avg);
+  
+  const currentPct = calculateCurrentPercentage();
+  updateThermometer(currentPct);
 
   const range =
     avg <= 0.6 ? "low" :
@@ -281,17 +287,6 @@ function showWeekly(){
     }
   }
 
-  const weeklyCircles = document.querySelector('#weeklyResult .circles, #weeklyResult #circles');
-  if (weeklyCircles) {
-    let circlesHtml = "";
-    WEEKS.forEach((wObj, i) => {
-      let scoreVal = weeklyScores[i] !== undefined ? weeklyScores[i] : 0;
-      let circlePct = Math.round((scoreVal / 2) * 100);
-      circlesHtml += `<div class="circle"><span>${wObj.title}</span><br><strong>${circlePct}%</strong></div>`;
-    });
-    weeklyCircles.innerHTML = circlesHtml;
-  }
-
   saveV2State({ lastSection: "weeklyResult", weeklyScores });
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
@@ -314,7 +309,7 @@ function nextWeek(){
 function showMonthly(){
   show("monthlyResult");
   marcarSemana();
-  updateThermometer(100);
+  updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "monthlyResult" });
 }
 
@@ -322,14 +317,14 @@ function showMonthly(){
    ESPEJO — PREGUNTAS COMPLETAS
 ================================ */
 const MIRROR_QUESTIONS = [
-  { t:"Когда algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, хотя no la expreses?" },
-  { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Quando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда появляется uma emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -344,7 +339,7 @@ function openMirror(){
     return;
   }
   show("mirrorIntro");
-  updateThermometer(100);
+  updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "mirrorIntro" });
 }
 
@@ -362,7 +357,11 @@ function startMirror(){
 function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
-  updateThermometer(((mq + 1) / MIRROR_QUESTIONS.length) * 100);
+  
+  // Termómetro mensual / Espejo: parte del histórico y avanza con las 8 preguntas
+  const hist = calculateHistoricalPercentage();
+  const mirrorProgress = Math.round(hist + ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist));
+  updateThermometer(mirrorProgress);
 }
 
 function answerMirror(v){
@@ -390,7 +389,7 @@ function answerMirror(v){
 function showFinal(){
   show("finalResult");
   finalTextWrap.classList.add("hidden");
-  updateThermometer(100);
+  updateThermometer(calculateFinalPercentage());
   saveV2State({ lastSection: "finalResult" });
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
@@ -417,17 +416,6 @@ function showFinal(){
     range -= 1;
   }
 
-  const finalCircles = document.querySelector('#finalResult .circles, #finalResult #circles');
-  if (finalCircles) {
-    let circlesHtml = "";
-    MIRROR_QUESTIONS.forEach((mqObj, i) => {
-      let val = mirrorLog[i] !== undefined ? mirrorLog[i] : 0;
-      let circlePct = Math.round((val / 2) * 100);
-      circlesHtml += `<div class="circle"><span>Espejo ${i+1}</span><br><strong>${circlePct}%</strong></div>`;
-    });
-    finalCircles.innerHTML = circlesHtml;
-  }
-
   animateGauge(finalFill, (avg / 2) * 100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
@@ -439,7 +427,7 @@ function showFinal(){
         "no generan en vos una respuesta emocional significativa.\n\n"+
         "No como falta moral,\n"+
         "sino como señal de distancia.\n\n"+
-        "Эта distancia no habla de frialdad consciente,\n"+
+        "Esta distancia no habla de frialdad consciente,\n"+
         "habla de un mecanismo de protección:\n"+
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
@@ -474,7 +462,7 @@ function showFinal(){
         "Hay registros de conciencia en ciertos planos,\n"+
         "pero neutralidad o ausencia emocional\n"+
         "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intellectual.\n"+
+        "Esto no es incoherencia intelectual.\n"+
         "Es incongruencia emocional.\n\n"+
         "Distintas partes tuyas responden desde lugares opuestos:\n"+
         "una se muestra consciente,\n"+
@@ -497,7 +485,7 @@ function showFinal(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "Это no habla de perfección,\n"+
+        "Esto no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
@@ -507,13 +495,52 @@ function showFinal(){
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
+================================ */
+function calculateCurrentPercentage() {
+  const totalAnswersSoFar = (week * 4) + q;
+  const maxQ = WEEKS.length * 4;
+  return Math.min(100, Math.max(1, Math.round((totalAnswersSoFar / maxQ) * 100)));
+}
+
+function calculateHistoricalPercentage() {
+  if (weeklyScores.length === 0) return 50;
+  let sum = weeklyScores.reduce((a, b) => a + b, 0);
+  let avg = sum / weeklyScores.length;
+  return Math.min(100, Math.max(1, Math.round((avg / 2) * 100)));
+}
+
+function calculateFinalPercentage() {
+  const hist = calculateHistoricalPercentage();
+  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
+  const mirrorPct = (mirrorAvg / 2) * 100;
+  return Math.min(100, Math.max(1, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+}
+
+/* ===============================
+   TERMÓMETRO GLOBAL INTEGRADO V2 (CON GAMA CROMÁTICA Y VALOR NUMÉRICO)
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
     const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill');
     fills.forEach(fill => {
-      if (fill) fill.style.width = percent + '%';
+      if (fill) {
+        fill.style.width = percent + '%';
+        // Asignación dinámica de gama cromática: Rojos (0-33) -> Amarillos (34-66) -> Verdes (67-100)
+        if (percent < 35) {
+          fill.style.background = 'linear-gradient(90deg, #ff4d4d, #ff9933)';
+        } else if (percent < 70) {
+          fill.style.background = 'linear-gradient(90deg, #ff9933, #ffd11a)';
+        } else {
+          fill.style.background = 'linear-gradient(90deg, #ffd11a, #2ecc71)';
+        }
+      }
+    });
+
+    // Actualización de los contadores numéricos porcentuales en pantalla
+    const valSpans = document.querySelectorAll('.thermo-percentage-val');
+    valSpans.forEach(span => {
+      span.textContent = percent + '%';
     });
   }
 }
@@ -543,4 +570,4 @@ function show(id){
     });
   const targetEl = $(id);
   if (targetEl) targetEl.classList.remove("hidden");
-     }
+}
