@@ -119,8 +119,19 @@
             <ul id="tips"></ul>
         </div>
 
-        <!-- BOTÓN DE CONTINUAR / ACCESO (Respetando nombre y funcionalidad original) -->
-        <div id="weeklyAccess" class="results-action-wrap"></div>
+        <!-- CONTENEDOR CON BOTÓN (Lectura evolutiva) Y RELOJ DE ARENA 3D ANIMADO -->
+        <div id="weeklyAccess" class="results-action-wrap">
+          <div class="evolution-container">
+            <div class="hourglass-3d" aria-hidden="true">
+              <div class="hg-top"></div>
+              <div class="hg-glass">
+                <div class="hg-sand"></div>
+              </div>
+              <div class="hg-bottom"></div>
+            </div>
+            <button class="premium spaced" onclick="goToWeekly()">Lectura evolutiva</button>
+          </div>
+        </div>
       </section>
 
       <!-- PRIMERA SEMANA – PREGUNTAS -->
@@ -197,7 +208,8 @@
           <div class="thermo-bar">
             <div id="thermoFillPrivacy" class="thermo-fill"></div>
           </div>
-        </div>
+  
+      </div>
 
         <button onclick="restart()">Volver</button>
       </section>
