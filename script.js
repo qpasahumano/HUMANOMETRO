@@ -393,7 +393,9 @@ function showResults() {
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
 
-  updateThermometer(avg);
+  // Aquí actualizamos el termómetro de resultados específicamente con el porcentaje final exacto (avg)
+  const resultsFill = document.getElementById("thermoFillResults");
+  if (resultsFill) resultsFill.style.width = avg + '%';
 
   if (mode === "common") {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
@@ -431,9 +433,9 @@ function premiumFeedback(area, p) {
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
+    const fills = document.querySelectorAll('#thermoFillStart, #thermoFillTest, #thermoFillPrivacy, .thermo-fill');
     fills.forEach(fill => {
-      if (fill && fill.id !== 'weeklyResultThermoFill') {
+      if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
         fill.style.width = percent + '%';
       }
     });
@@ -454,9 +456,6 @@ function updateThermometer(percent) {
       } else if (mIndex === currentModule) {
         answeredCount += currentQuestion;
         totalMaxPossibleSoFar += currentQuestion * 2;
-        // Tomamos el puntaje parcial acumulado en el módulo actual
-        // Como scores[m.name] acumula el total del módulo actual a medida que se responde, 
-        // estimamos proporcionalmente al número de preguntas ya respondidas en este módulo
         const currentModuleEarned = scores[m.name] || 0;
         totalEarnedPoints += currentModuleEarned;
       }
@@ -472,13 +471,11 @@ function updateThermometer(percent) {
 
     const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
     
-    // El ancho final combina el avance físico de la pregunta en curso (para que avance de forma escalonada)
-    // con el peso de la calidad de las respuestas para modular el color y la altura progresivamente hacia el verde.
     const finalCalculatedPct = Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
 
-    const fills = document.querySelectorAll('#thermoFill, .thermo-fill');
+    const fills = document.querySelectorAll('#thermoFillStart, #thermoFillTest, #thermoFillPrivacy, .thermo-fill');
     fills.forEach(fill => {
-      if (fill && fill.id !== 'weeklyResultThermoFill') {
+      if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
         fill.style.width = finalCalculatedPct + '%';
       }
     });
@@ -519,4 +516,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+     }
