@@ -421,72 +421,6 @@ button:active, .btn:active { transform: scale(0.96); }
   font-size: 0.85em;
 }
 
-/* ===== ESTILOS PARA EL CONTENEDOR DE EVOLUCIÓN Y RELOJ DE ARENA 3D ===== */
-.evolution-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin: 4px auto;
-  width: 100%;
-}
-
-.hourglass-3d {
-  position: relative;
-  width: 26px;
-  height: 42px;
-  animation: hgRotate3D 6s infinite ease-in-out;
-  transform-style: preserve-3d;
-  flex-shrink: 0;
-}
-
-.hg-top, .hg-bottom {
-  position: absolute;
-  width: 26px;
-  height: 6px;
-  background: linear-gradient(90deg, #10b981, #6aff9f);
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(106, 255, 159, 0.7);
-}
-
-.hg-top { top: 0; }
-.hg-bottom { bottom: 0; }
-
-.hg-glass {
-  position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: 4px;
-  right: 4px;
-  border-left: 2px solid rgba(120, 255, 230, 0.7);
-  border-right: 2px solid rgba(120, 255, 230, 0.7);
-  background: rgba(120, 255, 230, 0.05);
-  overflow: hidden;
-}
-
-.hg-sand {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(255, 225, 105, 0.9) 0%, rgba(255, 193, 7, 0.9) 50%, rgba(255, 225, 105, 0.9) 100%);
-  box-shadow: 0 0 8px rgba(255, 225, 105, 0.8);
-  animation: sandFall 3s infinite linear;
-}
-
-@keyframes hgRotate3D {
-  0%, 15% { transform: rotate(0deg); }
-  45%, 65% { transform: rotate(180deg); }
-  95%, 100% { transform: rotate(360deg); }
-}
-
-@keyframes sandFall {
-  0% { transform: translateY(-100%); }
-  50% { transform: translateY(0%); }
-  100% { transform: translateY(100%); }
-}
-
 .state-led {
   text-shadow:
     0 0 10px rgba(140,255,240,1),
@@ -596,4 +530,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-   }
+}
