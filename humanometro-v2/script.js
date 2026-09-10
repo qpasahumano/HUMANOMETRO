@@ -156,10 +156,22 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
   }
 })();
 
+/* CONTROL DE VISIBILIDAD DE SECCIONES */
+function show(sectionId) {
+  const sections = document.querySelectorAll("section");
+  sections.forEach(sec => {
+    if (sec.id === sectionId) {
+      sec.classList.remove("hidden");
+    } else {
+      sec.classList.add("hidden");
+    }
+  });
+}
+
 /* FLUJO */
 function startV2(){
   const saved = loadV2State();
-  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
+  if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
     show(saved.lastSection || "test"); 
     if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
     return;
@@ -315,13 +327,13 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 function gateMirrorIntro(){
@@ -426,7 +438,7 @@ function showFinal(){
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
         "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Cuando el dolor del otro no resuena,\n"+
+        "Когда el dolor del otro no resuena,\n"+
         "la humanidad se vuelve funcional,\n"+
         "pero pierde profundidad.\n\n"+
         "Este resultado no acusa,\n"+
@@ -480,7 +492,7 @@ function showFinal(){
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
         "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n\n"+
+        "habla de conciencia.\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
         "de seguir siendo humano.";
@@ -507,10 +519,10 @@ function finalizarYReiniciar() {
 }
 
 /* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (PROGRESIÓN ESCALONADA Y ROJO PROFUNDO INICIAL)
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO
 ================================ */
 function calculateCurrentPercentage() {
-  const totalQuestionsCount = 4; // 4 preguntas por semana en V2
+  const totalQuestionsCount = 4;
   const answeredCount = q;
 
   if (totalQuestionsCount === 0) return 5;
@@ -563,7 +575,7 @@ function calculateFinalPercentage() {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2 (SELECTOR ÚNICO)
+   TERMÓMETRO GLOBAL INTEGRADO V2
 ================================ */
 function updateThermometer(percent) {
   if (percent !== undefined) {
@@ -574,13 +586,4 @@ function updateThermometer(percent) {
       }
     });
 
-    const valSpans = document.querySelectorAll('.thermo-percentage-val');
-    valSpans.forEach(span => {
-      span.textContent = percent + '%';
-    });
-  }
-}
-
-/* UTIL */
-function animateGauge(el, target, done){
- 
+    const valSpans = docum
