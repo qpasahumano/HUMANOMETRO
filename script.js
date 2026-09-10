@@ -131,7 +131,16 @@ function showWeeklyBlockFlash() {
     const avg = weeklyScores.length ? weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length : 2;
     const weeklyPercent = Math.round((avg / 2) * 100);
     const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
-    if (weeklyResultFill) weeklyResultFill.style.width = weeklyPercent + '%';
+    if (weeklyResultFill) {
+      weeklyResultFill.style.width = weeklyPercent + '%';
+      if (weeklyPercent <= 33.3) {
+        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+      } else if (weeklyPercent <= 66.6) {
+        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
+      } else {
+        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
+      }
+    }
     return;
   }
 
@@ -254,7 +263,16 @@ function showWeeklyResultScreen() {
   showSection("weeklyResultScreen");
   const weeklyPercent = Math.round((avg / 2) * 100);
   const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
-  if (weeklyResultFill) weeklyResultFill.style.width = weeklyPercent + '%';
+  if (weeklyResultFill) {
+    weeklyResultFill.style.width = weeklyPercent + '%';
+    if (weeklyPercent <= 33.3) {
+      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+    } else if (weeklyPercent <= 66.6) {
+      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
+    } else {
+      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
+    }
+  }
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
 
@@ -393,9 +411,17 @@ function showResults() {
   const avg = Math.round(total / modules.length);
   globalResult.innerText = "Humanidad global: " + avg + "%";
 
-  // Aquí actualizamos el termómetro de resultados específicamente con el porcentaje final exacto (avg)
   const resultsFill = document.getElementById("thermoFillResults");
-  if (resultsFill) resultsFill.style.width = avg + '%';
+  if (resultsFill) {
+    resultsFill.style.width = avg + '%';
+    if (avg <= 33.3) {
+      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+    } else if (avg <= 66.6) {
+      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
+    } else {
+      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
+    }
+  }
 
   if (mode === "common") {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
@@ -429,17 +455,12 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO (MECÁNICA ESCALONADA: ARRANCA EN ROJO PROFUNDO Y MODULA POR PROGRESO Y PESO)
+   TERMÓMETRO GLOBAL INTEGRADO (TRAMOS ESTRICTOS 33.3% / 33.3% / 33.3%)
 ================================ */
 function updateThermometer(percent) {
-  if (percent !== undefined) {
-    const fills = document.querySelectorAll('#thermoFillStart, #thermoFillTest, #thermoFillPrivacy, .thermo-fill');
-    fills.forEach(fill => {
-      if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
-        fill.style.width = percent + '%';
-      }
-    });
-  } else {
+  let targetPct = percent;
+
+  if (targetPct === undefined) {
     let totalQuestionsCount = 0;
     modules.forEach(m => { totalQuestionsCount += m.questions.length; });
 
@@ -462,24 +483,30 @@ function updateThermometer(percent) {
     });
 
     if (totalQuestionsCount === 0) {
-      updateThermometer(5);
-      return;
+      targetPct = 5;
+    } else {
+      const progressPhysicalPct = (answeredCount / totalQuestionsCount);
+      const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
+      
+      const rawCalc = (progressPhysicalPct * 0.35) + (qualityRatio * 0.65);
+      targetPct = Math.min(100, Math.max(5, Math.round(rawCalc * 100)));
     }
-
-    const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
-    const baseProgress = Math.max(5, progressPhysicalPct);
-
-    const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
-    
-    const finalCalculatedPct = Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
-
-    const fills = document.querySelectorAll('#thermoFillStart, #thermoFillTest, #thermoFillPrivacy, .thermo-fill');
-    fills.forEach(fill => {
-      if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
-        fill.style.width = finalCalculatedPct + '%';
-      }
-    });
   }
+
+  const fills = document.querySelectorAll('#thermoFillStart, #thermoFillTest, #thermoFillPrivacy, .thermo-fill');
+  fills.forEach(fill => {
+    if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
+      fill.style.width = targetPct + '%';
+      
+      if (targetPct <= 33.3) {
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+      } else if (targetPct <= 66.6) {
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
+      } else {
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
+      }
+    }
+  });
 }
 
 /* ===============================
@@ -516,4 +543,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-     }
+}
