@@ -244,7 +244,7 @@ button:active, .btn:active { transform: scale(0.96); }
   color: #a7f3d0 !important;
 }
 
-/* ===== TERMÓMETRO V1 CON EVOLUCIÓN PROGRESIVA Y LUMINISCENCIA ===== */
+/* ===== TERMÓMETRO V1 CON TERCIOS EXACTOS (0%-33.3% ROJO, 33.3%-66.6% AMARILLO, 66.6%-100% VERDE) ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 12px 0;
@@ -273,19 +273,16 @@ button:active, .btn:active { transform: scale(0.96); }
 #thermoFill, .thermo-fill {
   height: 100%;
   width: 0%;
-  /* 
-    Gama estricta de rojos profundos e intermedios extendida, 
-    reservando el verde exclusivamente para el extremo superior final (>60-70%).
-  */
   background: linear-gradient(
     90deg, 
     #3b0000 0%,     
-    #570000 20%,  
-    #800010 40%,  
-    #aa0018 55%,  
-    #cc1133 70%,  
-    #ff2a47 85%,  
-    #ffc107 94%,  
+    #aa0018 16.6%,  
+    #ff2a47 33.2%,  
+    #ff2a47 33.3%,  
+    #ffc107 49.9%,  
+    #ffe169 66.5%,  
+    #ffe169 66.6%,  
+    #6aff9f 83.3%,  
     #10b981 100%    
   );
   box-shadow:
@@ -321,12 +318,11 @@ button:active, .btn:active { transform: scale(0.96); }
   background: linear-gradient(
     180deg, 
     #10b981 0%, 
-    #ffc107 10%, 
-    #ff2a47 22%, 
-    #cc1133 40%, 
-    #aa0018 60%, 
-    #800010 75%, 
-    #570000 90%,
+    #6aff9f 16.7%, 
+    #ffe169 33.3%, 
+    #ffc107 50%, 
+    #ff2a47 66.6%, 
+    #aa0018 83.3%, 
     #3b0000 100%
   );
   box-shadow:
@@ -530,4 +526,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-}
+  }
