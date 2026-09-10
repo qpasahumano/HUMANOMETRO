@@ -244,7 +244,7 @@ button:active, .btn:active { transform: scale(0.96); }
   color: #a7f3d0 !important;
 }
 
-/* ===== TERMÓMETRO V1 (COLOR SÓLIDO DINÁMICO POR TRAMO EXACTO) ===== */
+/* ===== TERMÓMETRO V1 CON TERCIOS EXACTOS (0%-33.3% ROJO, 33.3%-66.6% AMARILLO, 66.6%-100% VERDE) ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 12px 0;
@@ -273,7 +273,18 @@ button:active, .btn:active { transform: scale(0.96); }
 #thermoFill, .thermo-fill {
   height: 100%;
   width: 0%;
-  background: #ff2a47; /* Se actualiza dinámicamente o por defecto a rojo */
+  background: linear-gradient(
+    90deg, 
+    #3b0000 0%,     
+    #aa0018 16.6%,  
+    #ff2a47 33.2%,  
+    #ff2a47 33.3%,  
+    #ffc107 49.9%,  
+    #ffe169 66.5%,  
+    #ffe169 66.6%,  
+    #6aff9f 83.3%,  
+    #10b981 100%    
+  );
   box-shadow:
     0 0 16px rgba(120,255,230,.7),
     inset 0 0 8px rgba(255,255,255,.6);
@@ -515,4 +526,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
   100% { opacity: 0.7; }
-  }
+                }
