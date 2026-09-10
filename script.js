@@ -1,6 +1,6 @@
-// ===============================
-// REFERENCIAS DOM
-// ===============================
+/* ===============================
+   REFERENCIAS DOM
+================================ */
 const areaTitle = document.getElementById("areaTitle");
 const questionText = document.getElementById("questionText");
 const questionNote = document.getElementById("questionNote");
@@ -321,7 +321,7 @@ const BASE_MODULES = [
   { name: "Planeta", questions: [
     { q: "¿Reconociste a los animales como seres sensibles?", n: "Empatía." },
     { q: "¿Cuidaste el entorno donde vivís?", n: "Conciencia cotidiana." },
-    { q: "¿Reduciste tu impacto cuando estuvo a tu alcance?", n: "Intención posible." }
+    { q: "¿Reduciste tu impacto estuvo a tu alcance?", n: "Intención posible." }
   ]}
 ];
 
@@ -455,7 +455,7 @@ function premiumFeedback(area, p) {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO (TRAMOS ESTRICTOS 33.3% / 33.3% / 33.3%)
+   TERMÓMETRO GLOBAL INTEGRADO (PROGRESIVO POR TRAMOS DE PREGUNTAS)
 ================================ */
 function updateThermometer(percent) {
   let targetPct = percent;
@@ -465,31 +465,53 @@ function updateThermometer(percent) {
     modules.forEach(m => { totalQuestionsCount += m.questions.length; });
 
     let answeredCount = 0;
-    let totalEarnedPoints = 0;
-    let totalMaxPossibleSoFar = 0;
-
     modules.forEach((m, mIndex) => {
       const qLen = m.questions.length;
       if (mIndex < currentModule) {
         answeredCount += qLen;
-        totalMaxPossibleSoFar += qLen * 2;
-        totalEarnedPoints += (scores[m.name] || 0);
       } else if (mIndex === currentModule) {
         answeredCount += currentQuestion;
-        totalMaxPossibleSoFar += currentQuestion * 2;
-        const currentModuleEarned = scores[m.name] || 0;
-        totalEarnedPoints += currentModuleEarned;
       }
     });
 
-    if (totalQuestionsCount === 0) {
+    if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
-      const progressPhysicalPct = (answeredCount / totalQuestionsCount);
-      const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
-      
-      const rawCalc = (progressPhysicalPct * 0.35) + (qualityRatio * 0.65);
-      targetPct = Math.min(100, Math.max(5, Math.round(rawCalc * 100)));
+      // 1. Progreso físico exacto basado en el porcentaje de preguntas respondidas (0 a 100%)
+      const progressFraction = answeredCount / totalQuestionsCount;
+
+      // 2. Cálculo del puntaje acumulado real vs el máximo posible acumulado hasta ahora
+      let totalEarned = 0;
+      let maxPossibleSoFar = 0;
+
+      modules.forEach((m, mIndex) => {
+        const qLen = m.questions.length;
+        if (mIndex < currentModule) {
+          maxPossibleSoFar += qLen * 2;
+          totalEarned += (scores[m.name] || 0);
+        } else if (mIndex === currentModule) {
+          maxPossibleSoFar += currentQuestion * 2;
+          totalEarned += (scores[m.name] || 0);
+        }
+      });
+
+      const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
+
+      // 3. Mapeo estricto por tercios de preguntas contestadas para evitar saltos bruscos:
+      let baseMin = 5;
+      let baseMax = 33;
+
+      if (progressFraction > 0.333 && progressFraction <= 0.666) {
+        baseMin = 34;
+        baseMax = 66;
+      } else if (progressFraction > 0.666) {
+        baseMin = 67;
+        baseMax = 100;
+      }
+
+      // El porcentaje dentro del tercio actual responde a la calidad de las respuestas
+      targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
+      targetPct = Math.min(100, Math.max(5, targetPct));
     }
   }
 
@@ -498,6 +520,7 @@ function updateThermometer(percent) {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
       
+      // Aplicación de la paleta de colores según el tramo visual correspondiente
       if (targetPct <= 33.3) {
         fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPct <= 66.6) {
