@@ -1,4 +1,4 @@
-/* ===== VOLUMEN 2 — EXTENSIÓN Y COMPLEMENTOS CSS ===== */
+/* ===== CSS2: VOLUMEN 2 — EXTENSIÓN Y COMPLEMENTOS CSS ===== */
 
 body {
   background-color: #030712;
@@ -201,7 +201,7 @@ body.mirror-bg {
   box-shadow: 0 4px 24px rgba(106,255,159,0.4), inset 0 0 14px rgba(106,255,159,0.25);
 }
 
-/* ===== TERMÓMETRO V2 CON GAMA DE ROJOS EXTENDIDA (SIN VERDE PREMATURO) ===== */
+/* ===== TERMÓMETRO V2 CON TERCIOS EXACTOS (0%-33.3% ROJO, 33.3%-66.6% AMARILLO, 66.6%-100% VERDE) ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 10px 0 14px 0;
@@ -232,16 +232,16 @@ body.mirror-bg {
 .thermo-fill {
   height: 100%;
   width: 0%;
-  /* Gradiente corregido: Gama estricta de rojos profundos e intermedios extendida, verde reservado exclusivamente para el tramo final (>90%) */
   background: linear-gradient(
     90deg, 
     #3b0000 0%,     
-    #570000 20%,  
-    #800010 40%,  
-    #aa0018 55%,  
-    #cc1133 70%,  
-    #ff2a47 85%,  
-    #ffc107 94%,  
+    #aa0018 16.6%,  
+    #ff2a47 33.2%,  
+    #ff2a47 33.3%,  
+    #ffc107 49.9%,  
+    #ffe169 66.5%,  
+    #ffe169 66.6%,  
+    #6aff9f 83.3%,  
     #10b981 100%    
   );
   box-shadow: 0 0 10px rgba(120,255,230,0.8);
@@ -269,12 +269,11 @@ body.mirror-bg {
   background: linear-gradient(
     180deg, 
     #10b981 0%, 
-    #ffc107 10%, 
-    #ff2a47 22%, 
-    #cc1133 40%, 
-    #aa0018 60%, 
-    #800010 75%, 
-    #570000 90%,
+    #6aff9f 16.7%, 
+    #ffe169 33.3%, 
+    #ffc107 50%, 
+    #ff2a47 66.6%, 
+    #aa0018 83.3%, 
     #3b0000 100%
   );
   position: absolute;
@@ -438,4 +437,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120, 255, 230, 0.5);
   animation: fadeInOut 3s ease-in-out forwards;
-  }
+}
