@@ -106,14 +106,8 @@ body.mirror-bg {
 }
 
 @keyframes cardAuraPulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
+  0% { transform: scale(0.9); opacity: 0.5; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 .card h1, .card h2 {
@@ -201,7 +195,7 @@ body.mirror-bg {
   box-shadow: 0 4px 24px rgba(106,255,159,0.4), inset 0 0 14px rgba(106,255,159,0.25);
 }
 
-/* ===== TERMÓMETRO V2 CON TERCIOS EXACTOS (0%-33.3% ROJO, 33.3%-66.6% AMARILLO, 66.6%-100% VERDE) ===== */
+/* ===== TERMÓMETRO V2 CON BLOQUEO PROGRESIVO DE GAMAS ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 10px 0 14px 0;
@@ -232,16 +226,18 @@ body.mirror-bg {
 .thermo-fill {
   height: 100%;
   width: 0%;
+  /* 
+    Garantiza que al inicio solo se vea rojo profundo/claro 
+    y que los amarillos y verdes no aparezcan comprimidos en anchos chicos.
+  */
   background: linear-gradient(
     90deg, 
     #3b0000 0%,     
-    #aa0018 16.6%,  
+    #aa0018 15%,  
     #ff2a47 33.2%,  
-    #ff2a47 33.3%,  
-    #ffc107 49.9%,  
+    #ffc107 45%,  
     #ffe169 66.5%,  
-    #ffe169 66.6%,  
-    #6aff9f 83.3%,  
+    #6aff9f 82%,  
     #10b981 100%    
   );
   box-shadow: 0 0 10px rgba(120,255,230,0.8);
@@ -269,11 +265,11 @@ body.mirror-bg {
   background: linear-gradient(
     180deg, 
     #10b981 0%, 
-    #6aff9f 16.7%, 
-    #ffe169 33.3%, 
+    #6aff9f 18%, 
+    #ffe169 35%, 
     #ffc107 50%, 
-    #ff2a47 66.6%, 
-    #aa0018 83.3%, 
+    #ff2a47 68%, 
+    #aa0018 85%, 
     #3b0000 100%
   );
   position: absolute;
@@ -437,4 +433,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120, 255, 230, 0.5);
   animation: fadeInOut 3s ease-in-out forwards;
-}
+    }
