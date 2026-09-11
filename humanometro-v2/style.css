@@ -53,6 +53,15 @@ body.mirror-bg {
   justify-content: center;
 }
 
+@keyframes slowRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.app-cube-icon {
+  animation: slowRotate 25s linear infinite;
+}
+
 .sello-humanometro {
   max-width: 120px;
   height: auto;
@@ -437,4 +446,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120, 255, 230, 0.5);
   animation: fadeInOut 3s ease-in-out forwards;
-       }
+}
