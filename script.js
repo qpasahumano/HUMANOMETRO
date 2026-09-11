@@ -427,7 +427,6 @@ function showResults() {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
   }
 
-  // BOTÓN DE ACCESO SEMANAL DISPONIBLE EN AMBOS MODOS PARA QUE EL BLOQUEO ACTÚE CORRECTAMENTE
   weeklyAccess.innerHTML =
     `<button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>`;
 
@@ -560,4 +559,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+             }
