@@ -96,11 +96,11 @@ const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
    DESTELLO BLOQUEO
 ================================ */
 function showWeeklyBlockFlash() {
-  const el = document.getElementById("weeklyBlockFlash");
+  const el = document.getElementById("weeklyBlockNotice") || document.getElementById("weeklyBlockFlash");
   if (!el) return;
   el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
   el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 1400);
+  setTimeout(() => el.classList.add("hidden"), 2000);
 }
 
 /* ===============================
@@ -427,10 +427,9 @@ function showResults() {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
   }
 
-  if (mode === "premium") {
-    weeklyAccess.innerHTML =
-      `<button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>`;
-  }
+  // BOTÓN DE ACCESO SEMANAL DISPONIBLE EN AMBOS MODOS PARA QUE EL BLOQUEO ACTÚE CORRECTAMENTE
+  weeklyAccess.innerHTML =
+    `<button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>`;
 
   saveState({ lastSection: "results", finalAvg: avg });
 }
@@ -477,10 +476,8 @@ function updateThermometer(percent) {
     if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
-      // 1. Progreso físico exacto basado en el porcentaje de preguntas respondidas (0 a 100%)
       const progressFraction = answeredCount / totalQuestionsCount;
 
-      // 2. Cálculo del puntaje acumulado real vs el máximo posible acumulado hasta ahora
       let totalEarned = 0;
       let maxPossibleSoFar = 0;
 
@@ -497,7 +494,6 @@ function updateThermometer(percent) {
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
 
-      // 3. Mapeo estricto por tercios de preguntas contestadas para evitar saltos bruscos:
       let baseMin = 5;
       let baseMax = 33;
 
@@ -509,7 +505,6 @@ function updateThermometer(percent) {
         baseMax = 100;
       }
 
-      // El porcentaje dentro del tercio actual responde a la calidad de las respuestas
       targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
       targetPct = Math.min(100, Math.max(5, targetPct));
     }
@@ -520,7 +515,6 @@ function updateThermometer(percent) {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
       
-      // Aplicación de la paleta de colores según el tramo visual correspondiente
       if (targetPct <= 33.3) {
         fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPct <= 66.6) {
