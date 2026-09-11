@@ -513,21 +513,34 @@ button:active, .btn:active { transform: scale(0.96); }
   to { transform: rotate(360deg); }
 }
 
-/* ===== ESTILO DEL CARTEL DE BLOQUEO "NO SEAS ANSIOSO" ===== */
+/* ===== ESTILO DEL CARTEL DE BLOQUEO "NO SEAS ANSIOSO" (CONTENEDORES FANTASMAS ELIMINADOS & ROJO VISIBLE) ===== */
+.hidden, 
+#weeklySaved:empty, 
+.weekly-saved:empty, 
+[id*="Notice"]:empty, 
+[id*="Flash"]:empty {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
 .weekly-block-flash, .block-flash {
-  font-size: 0.82rem;
-  color: #ff6584;
-  text-shadow: 0 0 10px rgba(255, 101, 132, 0.6);
+  font-size: 0.88rem;
+  color: #ff2a47;
+  text-shadow: 0 0 12px rgba(255, 42, 71, 0.75);
   margin-top: 10px;
   margin-bottom: 6px;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.03em;
   animation: pulseFlash 1.8s infinite ease-in-out;
 }
 
 @keyframes pulseFlash {
   0% { opacity: 0.7; }
-  50% { opacity: 1; text-shadow: 0 0 16px rgba(255, 101, 132, 0.9); }
+  50% { opacity: 1; text-shadow: 0 0 18px rgba(255, 42, 71, 1); }
   100% { opacity: 0.7; }
-   }
+}
