@@ -178,16 +178,14 @@ function weeklyWithDonation() {
 
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
 
-  if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
-    goToV2();
+  if (!DEV_MODE && lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
+    showWeeklyBlockFlash();
     return;
   }
 
-  if (!DEV_MODE) {
-    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
-      showWeeklyBlockFlash();
-      return;
-    }
+  if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
+    goToV2();
+    return;
   }
 
   startWeekly();
@@ -559,4 +557,5 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-             }
+     }
+         
