@@ -172,7 +172,7 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO RECORRIDO MENSUAL
+   ACCESO LECTURA EVOLUTIVA
 ================================ */
 function weeklyWithDonation() {
 
@@ -429,7 +429,7 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML =
-      `<button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>`;
+      `<button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>`;
   }
 
   saveState({ lastSection: "results", finalAvg: avg });
