@@ -93,7 +93,7 @@ const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
 const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
 
 /* ===============================
-   DESTELLO BLOQUEO
+   DESTELLO BLOQUEO (AJUSTE 1, 2 Y 3: SIN CONTENEDORES FANTASMAS Y ROJO BRILLANTE)
 ================================ */
 function showWeeklyBlockFlash() {
   const el = document.getElementById("weeklyBlockNotice") || document.getElementById("weeklyBlockFlash");
@@ -557,5 +557,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-     }
-         
+}
