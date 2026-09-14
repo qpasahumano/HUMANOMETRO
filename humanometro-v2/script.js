@@ -32,6 +32,9 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
+    mq,
+    mirrorScore,
+    mirrorCount,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -74,9 +77,7 @@ function showWeeklyBlockFlash(){
   setTimeout(()=>d.remove(),1300);
 }
 
-/* ===============================
-   CACHE DOM
-================================ */
+/* CACHE DOM */
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
 const questionMeasure = $("questionMeasure");
@@ -101,14 +102,10 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
-/* ===============================
-   EMOJIS ESPEJO
-================================ */
+/* EMOJIS ESPEJO */
 const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
 
-/* ===============================
-   DATOS BASE
-================================ */
+/* DATOS BASE */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -130,15 +127,11 @@ const WEEKS = [
   ]}
 ];
 
-/* ===============================
-   REGISTRO
-================================ */
+/* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
-/* ===============================
-   REANUDACIÓN AUTOMÁTICA EN V2
-================================ */
+/* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
   const saved = loadV2State();
   if (!saved) return;
@@ -149,6 +142,10 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
+
+  mq = saved.mq || 0;
+  mirrorScore = saved.mirrorScore || 0;
+  mirrorCount = saved.mirrorCount || 0;
 
   if (saved.lastSection) {
 
@@ -167,7 +164,7 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
       !pasoUnaSemana()
     ) {
       show("monthlyResult");
-      updateThermometer(calculateHistoricalPercentage());
+      updateThermometer(100);
       saveV2State({ lastSection: "monthlyResult" });
       return;
     }
@@ -177,112 +174,77 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
     if (saved.lastSection === "test") {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(calculateCurrentPercentage());
-    } else if (saved.lastSection === "monthlyResult") {
-      updateThermometer(calculateHistoricalPercentage());
-    } else if (saved.lastSection === "mirrorIntro") {
-      updateThermometer(calculateHistoricalPercentage());
+      updateThermometer(100);
+    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
+      updateThermometer(100);
     } else if (saved.lastSection === "mirrorTest") {
       loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      updateThermometer(calculateFinalPercentage());
+      updateThermometer(100);
     }
   }
 })();
 
-/* ===============================
-   FLUJO
-================================ */
+/* FLUJO */
 function startV2(){
   const saved = loadV2State();
 
-  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
+  /*
+    NO HAY BLOQUEO DE 7 DÍAS AL ENTRAR A V2.
+    Los tres bloques de V2 se realizan consecutivamente.
+    El único bloqueo de V2 corresponde a "Tu reflejo",
+    después de completar los tres bloques.
+  */
 
-    /*
-      IMPORTANTE:
-      No existe bloqueo entre los tres bloques de V2.
-      El bloqueo de 7 días solamente corresponde a "Tu reflejo",
-      después de completar los tres bloques.
-    */
+  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
 
     show(saved.lastSection || "test");
 
     if (saved.lastSection === "test" || !saved.lastSection) {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(calculateCurrentPercentage());
-    } else if (saved.lastSection === "monthlyResult") {
-      updateThermometer(calculateHistoricalPercentage());
-    } else if (saved.lastSection === "mirrorIntro") {
-      if (!pasoUnaSemana()) {
-        showWeeklyBlockFlash();
-        show("monthlyResult");
-        updateThermometer(calculateHistoricalPercentage());
-        saveV2State({ lastSection: "monthlyResult" });
-        return;
-      }
-      updateThermometer(calculateHistoricalPercentage());
+      updateThermometer(100);
+    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
+      updateThermometer(100);
     } else if (saved.lastSection === "mirrorTest") {
       if (!pasoUnaSemana()) {
         showWeeklyBlockFlash();
         show("monthlyResult");
-        updateThermometer(calculateHistoricalPercentage());
+        updateThermometer(100);
         saveV2State({ lastSection: "monthlyResult" });
         return;
       }
       loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      updateThermometer(calculateFinalPercentage());
+      updateThermometer(100);
     }
 
     return;
   }
 
   document.body.classList.remove("mirror-bg");
-
-  week = 0;
-  q = 0;
-  currentScore = 0;
-  weeklyScores = [];
-  allAnswers = [];
-  mirrorLog = [];
+  week = 0; q = 0; currentScore = 0;
+  weeklyScores = []; allAnswers = []; mirrorLog = [];
+  mq = 0; mirrorScore = 0; mirrorCount = 0;
 
   saveV2State({ lastSection: "test" });
-  show("test");
-  loadQuestion();
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
   const w = WEEKS[week];
   if (!w) return;
-
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
-  
-  const totalQIndex = (week * 4) + q;
-  const pct = Math.round((totalQIndex / (WEEKS.length * 4)) * 100);
-
-  updateThermometer(pct);
+  updateThermometer((q / 4) * 100);
 }
 
 function answer(v){
   currentScore += v;
-
-  allAnswers.push({
-    block: WEEKS[week].title,
-    q,
-    v
-  });
-
+  allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
-
-  saveV2State({
-    q,
-    currentScore,
-    allAnswers
-  });
-
+  saveV2State({ q, currentScore, allAnswers });
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
@@ -292,12 +254,10 @@ function answer(v){
 function showWeekly(){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
-  
+  updateThermometer(100);
+
   const avg = currentScore / 4;
   weeklyScores.push(avg);
-  
-  const currentPct = calculateCurrentPercentage();
-  updateThermometer(currentPct);
 
   const range =
     avg <= 0.6 ? "low" :
@@ -372,17 +332,21 @@ function showWeekly(){
     }
   }
 
-  saveV2State({
-    lastSection: "weeklyResult",
-    weeklyScores
-  });
+  const weeklyCircles = document.querySelector('#weeklyResult .circles, #weeklyResult #circles');
+  if (weeklyCircles) {
+    let circlesHtml = "";
+    WEEKS.forEach((wObj, i) => {
+      let scoreVal = weeklyScores[i] !== undefined ? weeklyScores[i] : 0;
+      let circlePct = Math.round((scoreVal / 2) * 100);
+      circlesHtml += `<div class="circle"><span>${wObj.title}</span><br><strong>${circlePct}%</strong></div>`;
+    });
+    weeklyCircles.innerHTML = circlesHtml;
+  }
 
+  saveV2State({ lastSection: "weeklyResult", weeklyScores });
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
-/* ===============================
-   AVANCE ENTRE BLOQUES V2
-================================ */
 function nextWeek(){
 
   /*
@@ -430,7 +394,7 @@ function nextWeek(){
 ================================ */
 function showMonthly(){
   show("monthlyResult");
-  updateThermometer(calculateHistoricalPercentage());
+  updateThermometer(100);
   saveV2State({ lastSection: "monthlyResult" });
 }
 
@@ -439,111 +403,64 @@ function showMonthly(){
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, хотя no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Quando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Cuando aparece uma emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
-/* ===============================
-   ACCESO A TU REFLEJO
-================================ */
 function gateMirrorIntro(){
   openMirror();
 }
 
 function openMirror(){
-
-  /*
-    BLOQUEO DE 7 DÍAS:
-    Se comprueba siempre al intentar acceder a Tu reflejo.
-  */
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
-
   show("mirrorIntro");
-  updateThermometer(calculateHistoricalPercentage());
+  updateThermometer(100);
   saveV2State({ lastSection: "mirrorIntro" });
 }
 
 function startMirror(){
-
-  /*
-    SEGUNDA COMPROBACIÓN:
-    Aunque se haya llegado a la pantalla de introducción,
-    el bloqueo se vuelve a verificar antes de comenzar.
-  */
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
-
   document.body.classList.add("mirror-bg");
-
-  mq = 0;
-  mirrorScore = 0;
-  mirrorCount = 0;
-  mirrorLog = [];
-
-  saveV2State({
-    lastSection: "mirrorTest"
-  });
-
-  show("mirrorTest");
-  loadMirror();
+  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  saveV2State({ lastSection: "mirrorTest" });
+  show("mirrorTest"); loadMirror();
 }
 
 function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
-  
-  const hist = calculateHistoricalPercentage();
-  const mirrorProgress =
-    Math.round(
-      hist +
-      ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist)
-    );
-
-  updateThermometer(mirrorProgress);
+  updateThermometer(((mq + 1) / MIRROR_QUESTIONS.length) * 100);
 }
 
 function answerMirror(v){
   mirrorLog.push(v ?? 0);
-
-  if(v !== null){
-    mirrorScore += v;
-    mirrorCount++;
-  }
-
+  if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
 
   if(mq === MIRROR_QUESTIONS.length){
     let semanticDelta = 0;
-
     const evitacion = mirrorLog[7] ?? 0;
     const desconexion = mirrorLog[5] ?? 0;
     const alegria = mirrorLog[6] ?? 0;
-
     semanticDelta -= (evitacion + desconexion) * 0.1;
     semanticDelta += alegria * 0.1;
-
     mirrorScore += semanticDelta;
   }
 
-  saveV2State({
-    mq,
-    mirrorScore,
-    mirrorCount,
-    mirrorLog
-  });
-
+  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
@@ -552,14 +469,9 @@ function answerMirror(v){
 ================================ */
 function showFinal(){
   show("finalResult");
-
   finalTextWrap.classList.add("hidden");
-
-  updateThermometer(calculateFinalPercentage());
-
-  saveV2State({
-    lastSection: "finalResult"
-  });
+  updateThermometer(100);
+  saveV2State({ lastSection: "finalResult" });
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
@@ -572,7 +484,6 @@ function showFinal(){
   const evitacionActiva = evitacion >= 1;
 
   let semanticPenalty = 0;
-
   if(bajaEmpatia) semanticPenalty++;
   if(desconexionActiva) semanticPenalty++;
   if(evitacionActiva) semanticPenalty++;
@@ -586,21 +497,29 @@ function showFinal(){
     range -= 1;
   }
 
-  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+  const finalCircles = document.querySelector('#finalResult .circles, #finalResult #circles');
+  if (finalCircles) {
+    let circlesHtml = "";
+    MIRROR_QUESTIONS.forEach((mqObj, i) => {
+      let val = mirrorLog[i] !== undefined ? mirrorLog[i] : 0;
+      let circlePct = Math.round((val / 2) * 100);
+      circlesHtml += `<div class="circle"><span>Espejo ${i+1}</span><br><strong>${circlePct}%</strong></div>`;
+    });
+    finalCircles.innerHTML = circlesHtml;
+  }
 
+  animateGauge(finalFill, (avg / 2) * 100, ()=>{
     finalTextWrap.classList.remove("hidden");
 
     if(range === 0){
-
       finalState.textContent = "Predominio de NO";
-
       finalHumanText.textContent =
         "Analizando el mes completo, aparece un patrón claro:\n"+
         "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
         "no generan en vos una respuesta emocional significativa.\n\n"+
         "No como falta moral,\n"+
         "sino como señal de distancia.\n\n"+
-        "Esta distancia no habla de frialdad consciente,\n"+
+        "Эта distancia no habla de frialdad consciente,\n"+
         "habla de un mecanismo de protección:\n"+
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
@@ -613,11 +532,8 @@ function showFinal(){
         "allí donde la empatía podría desarrollarse\n"+
         "y hoy no está ocurriendo.";
     }
-
     else if(range === 1){
-
       finalState.textContent = "Ambivalencia emocional";
-
       finalHumanText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
         "Hay momentos de registro, sensibilidad y presencia,\n"+
@@ -630,18 +546,15 @@ function showFinal(){
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
     }
-
     else if(range === 2){
-
       finalState.textContent = "Incongruencia marcada";
-
       finalHumanText.textContent =
         "Al medir el recorrido completo,\n"+
         "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
         "Hay registros de conciencia en ciertos planos,\n"+
         "pero neutralidad o ausencia emocional\n"+
         "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intelectual.\n"+
+        "Esto no es incoherencia intellectual.\n"+
         "Es incongruencia emocional.\n\n"+
         "Distintas partes tuyas responden desde lugares opuestos:\n"+
         "una se muestra consciente,\n"+
@@ -655,11 +568,8 @@ function showFinal(){
         "dónde no estás siendo el mismo\n"+
         "en todos los planos.";
     }
-
     else{
-
       finalState.textContent = "Congruencia humana";
-
       finalHumanText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
         "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
@@ -667,7 +577,7 @@ function showFinal(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
+        "Это no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
@@ -677,129 +587,31 @@ function showFinal(){
 }
 
 /* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
-================================ */
-function calculateCurrentPercentage() {
-  const totalAnswersSoFar = (week * 4) + q;
-  const maxQ = WEEKS.length * 4;
-
-  return Math.min(
-    100,
-    Math.max(
-      1,
-      Math.round((totalAnswersSoFar / maxQ) * 100)
-    )
-  );
-}
-
-function calculateHistoricalPercentage() {
-  if (weeklyScores.length === 0) return 50;
-
-  let sum = weeklyScores.reduce((a, b) => a + b, 0);
-  let avg = sum / weeklyScores.length;
-
-  return Math.min(
-    100,
-    Math.max(
-      1,
-      Math.round((avg / 2) * 100)
-    )
-  );
-}
-
-function calculateFinalPercentage() {
-  const hist = calculateHistoricalPercentage();
-  const mirrorAvg = mirrorCount
-    ? (mirrorScore / mirrorCount)
-    : 1;
-
-  const mirrorPct = (mirrorAvg / 2) * 100;
-
-  return Math.min(
-    100,
-    Math.max(
-      1,
-      Math.round((hist * 0.4) + (mirrorPct * 0.6))
-    )
-  );
-}
-
-/* ===============================
    TERMÓMETRO GLOBAL INTEGRADO V2
-   (CON GAMA CROMÁTICA Y VALOR NUMÉRICO)
 ================================ */
 function updateThermometer(percent) {
-
   if (percent !== undefined) {
-
-    const fills = document.querySelectorAll(
-      '#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill'
-    );
-
+    const fills = document.querySelectorAll('#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill');
     fills.forEach(fill => {
-
-      if (fill) {
-
-        fill.style.width = percent + '%';
-
-        if (percent < 35) {
-
-          fill.style.background =
-            'linear-gradient(90deg, #ff4d4d, #ff9933)';
-
-        } else if (percent < 70) {
-
-          fill.style.background =
-            'linear-gradient(90deg, #ff9933, #ffd11a)';
-
-        } else {
-
-          fill.style.background =
-            'linear-gradient(90deg, #ffd11a, #2ecc71)';
-        }
-      }
-    });
-
-    const valSpans = document.querySelectorAll(
-      '.thermo-percentage-val'
-    );
-
-    valSpans.forEach(span => {
-      span.textContent = percent + '%';
+      if (fill) fill.style.width = percent + '%';
     });
   }
 }
 
-/* ===============================
-   ANIMACIÓN DEL GAUGE
-================================ */
+/* UTIL */
 function animateGauge(el, target, done){
-
   if (!el) {
     done && done();
     return;
   }
-
   el.style.height="0%";
-
-  const start = performance.now();
-  const dur = 1800;
+  const start = performance.now(), dur = 1800;
   
   function step(t){
-
-    const p = Math.min(
-      1,
-      (t - start) / dur
-    );
-
-    el.style.height =
-      p * target + "%";
-
-    p < 1
-      ? requestAnimationFrame(step)
-      : done && done();
+    const p = Math.min(1,(t-start)/dur);
+    el.style.height = p * target + "%";
+    p < 1 ? requestAnimationFrame(step) : done && done();
   }
-
   requestAnimationFrame(step);
 }
 
@@ -808,37 +620,17 @@ function animateGauge(el, target, done){
 ================================ */
 function finalizarYReiniciar(){
 
-  /*
-    Se eliminan todos los estados persistentes
-    del Volumen 2.
-  */
   localStorage.removeItem(V2_STATE_KEY);
   localStorage.removeItem(V2_BLOCK_KEY);
 
-  /*
-    Se eliminan todos los estados persistentes
-    del Volumen 1.
-  */
   localStorage.removeItem("hm_v1_state");
   localStorage.removeItem("hm_v1_block_recorrido");
   localStorage.removeItem("hm_v1_block_volve_pronto");
 
-  /*
-    Se elimina también el historial semanal
-    para que el nuevo recorrido comience limpio.
-  */
   localStorage.removeItem("humanometro_semanal");
 
-  /*
-    Se limpia el estado visual de Tu reflejo.
-  */
   document.body.classList.remove("mirror-bg");
 
-  /*
-    Volvemos al inicio del Volumen 1.
-    V2 está dentro de /humanometro-v2/,
-    por lo que ../ lleva al index.html principal.
-  */
   window.location.href = "../";
 }
 
@@ -846,28 +638,12 @@ function finalizarYReiniciar(){
    NAVEGACIÓN
 ================================ */
 function show(id){
-
-  [
-    "start",
-    "test",
-    "weeklyResult",
-    "monthlyResult",
-    "mirrorIntro",
-    "mirrorTest",
-    "finalResult"
-  ]
+  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => {
-
       const el = $(s);
-
-      if (el) {
-        el.classList.add("hidden");
-      }
+      if (el) el.classList.add("hidden");
     });
 
   const targetEl = $(id);
-
-  if (targetEl) {
-    targetEl.classList.remove("hidden");
-  }
+  if (targetEl) targetEl.classList.remove("hidden");
 }
