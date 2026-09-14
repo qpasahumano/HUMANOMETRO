@@ -107,7 +107,6 @@ function showWeeklyBlockFlash() {
    REANUDACIÓN AUTOMÁTICA
 ================================ */
 (function resumeIfWaiting() {
-
   const saved = loadState();
   if (!saved) return;
 
@@ -133,13 +132,6 @@ function showWeeklyBlockFlash() {
     const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
     if (weeklyResultFill) {
       weeklyResultFill.style.width = weeklyPercent + '%';
-      if (weeklyPercent <= 33.3) {
-        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
-      } else if (weeklyPercent <= 66.6) {
-        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
-      } else {
-        weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
-      }
     }
     return;
   }
@@ -168,11 +160,10 @@ function showWeeklyBlockFlash() {
     const finalPct = Math.min(100, Math.round(baseProgress * (0.3 + (qualityRatio * 0.7))));
     updateThermometer(finalPct);
   }
-
 })();
 
 /* ===============================
-   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días)
+   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
 ================================ */
 function goToWeekly() {
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
@@ -188,7 +179,7 @@ function goToWeekly() {
 }
 
 /* ===============================
-   ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días)
+   ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días estricto)
 ================================ */
 function weeklyWithDonation() {
   const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
@@ -211,7 +202,6 @@ function weeklyWithDonation() {
    INICIO BLOQUE SEMANAL
 ================================ */
 function startWeekly() {
-
   weeklyScores = [];
   weeklyIndex = 0;
   weeklyCompleted = false;
@@ -226,7 +216,6 @@ function startWeekly() {
 }
 
 function weeklyAnswer(value) {
-
   weeklyScores.push(value);
   weeklyIndex++;
 
@@ -250,28 +239,20 @@ function weeklyAnswer(value) {
 }
 
 function showWeeklyResultScreen() {
-
   const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
   if (avg < 0.8) {
-    weeklyText.innerText =
-      "Esta semana mostró una desconexión entre intención y acción.";
-    weeklyAdvice.innerText =
-      "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
+    weeklyText.innerText = "Esta semana mostró una desconexión entre intención y acción.";
+    weeklyAdvice.innerText = "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
   } else if (avg < 1.5) {
-    weeklyText.innerText =
-      "Tu humanidad estuvo presente, pero de forma fluctuante.";
-    weeklyAdvice.innerText =
-      "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
+    weeklyText.innerText = "Tu humanidad estuvo presente, pero de forma fluctuante.";
+    weeklyAdvice.innerText = "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
   } else {
-    weeklyText.innerText =
-      "Mostraste coherencia humana y presencia consciente esta semana.";
-    weeklyAdvice.innerText =
-      "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
+    weeklyText.innerText = "Mostraste coherencia humana y presencia consciente esta semana.";
+    weeklyAdvice.innerText = "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
   }
 
   saveWeekly();
-
   weeklyCompleted = true;
 
   showSection("weeklyResultScreen");
@@ -279,19 +260,11 @@ function showWeeklyResultScreen() {
   const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
   if (weeklyResultFill) {
     weeklyResultFill.style.width = weeklyPercent + '%';
-    if (weeklyPercent <= 33.3) {
-      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
-    } else if (weeklyPercent <= 66.6) {
-      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
-    } else {
-      weeklyResultFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
-    }
   }
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
 
 function saveWeekly() {
-
   const history = JSON.parse(localStorage.getItem("humanometro_semanal") || "[]");
   const avg = weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length;
 
@@ -348,7 +321,6 @@ const PREMIUM_MODULES = [
 ];
 
 function startTest(isPremium) {
-
   mode = isPremium ? "premium" : "common";
   modules = JSON.parse(JSON.stringify(BASE_MODULES));
   if (mode === "premium") modules = modules.concat(PREMIUM_MODULES);
@@ -374,7 +346,6 @@ function showQuestion() {
 }
 
 function answer(v) {
-
   scores[modules[currentModule].name] += v;
 
   if (v === 0) responseProfile.no++;
@@ -399,7 +370,6 @@ function answer(v) {
    RESULTADOS
 ================================ */
 function showResults() {
-
   showSection("results");
   circles.innerHTML = "";
   tips.innerHTML = "";
@@ -428,13 +398,6 @@ function showResults() {
   const resultsFill = document.getElementById("thermoFillResults");
   if (resultsFill) {
     resultsFill.style.width = avg + '%';
-    if (avg <= 33.3) {
-      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
-    } else if (avg <= 66.6) {
-      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
-    } else {
-      resultsFill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
-    }
   }
 
   if (mode === "common") {
@@ -442,35 +405,24 @@ function showResults() {
   }
 
   if (mode === "premium") {
-    weeklyAccess.innerHTML =
-      `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
+    weeklyAccess.innerHTML = `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
   }
 
   saveState({ lastSection: "results", finalAvg: avg });
 }
 
-/* ===============================
-   DEVOLUCIONES
-================================ */
 function commonFeedback(avg) {
-  if (avg < 40)
-    return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
-  if (avg < 70)
-    return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
+  if (avg < 40) return "Se observa una desconexión entre intención y acción. Reconocerlo abre un proceso de conciencia.";
+  if (avg < 70) return "Tu humanidad está presente, aunque con fluctuaciones. La observación consciente puede estabilizarla.";
   return "Existe coherencia entre lo que sentís, pensás y hacés. Tu humanidad se expresa con claridad.";
 }
 
 function premiumFeedback(area, p) {
-  if (p < 40)
-    return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tu reacción puede generar un cambio profundo.`;
-  if (p < 70)
-    return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
+  if (p < 40) return `En ${area}, hay carencia de coherencia interna. Detenerte a observar tu reacción puede generar un cambio profundo.`;
+  if (p < 70) return `En ${area}, existe intención consciente, pero aún inestable. Sostener la presencia fortalece tu accionar.`;
   return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
 }
 
-/* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO (PROGRESIVO POR TRAMOS DE PREGUNTAS)
-================================ */
 function updateThermometer(percent) {
   let targetPct = percent;
 
@@ -481,18 +433,14 @@ function updateThermometer(percent) {
     let answeredCount = 0;
     modules.forEach((m, mIndex) => {
       const qLen = m.questions.length;
-      if (mIndex < currentModule) {
-        answeredCount += qLen;
-      } else if (mIndex === currentModule) {
-        answeredCount += currentQuestion;
-      }
+      if (mIndex < currentModule) answeredCount += qLen;
+      else if (mIndex === currentModule) answeredCount += currentQuestion;
     });
 
     if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
       const progressFraction = answeredCount / totalQuestionsCount;
-
       let totalEarned = 0;
       let maxPossibleSoFar = 0;
 
@@ -508,16 +456,12 @@ function updateThermometer(percent) {
       });
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
-
-      let baseMin = 5;
-      let baseMax = 33;
+      let baseMin = 5, baseMax = 33;
 
       if (progressFraction > 0.333 && progressFraction <= 0.666) {
-        baseMin = 34;
-        baseMax = 66;
+        baseMin = 34; baseMax = 66;
       } else if (progressFraction > 0.666) {
-        baseMin = 67;
-        baseMax = 100;
+        baseMin = 67; baseMax = 100;
       }
 
       targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
@@ -529,21 +473,10 @@ function updateThermometer(percent) {
   fills.forEach(fill => {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
-      
-      if (targetPct <= 33.3) {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
-      } else if (targetPct <= 66.6) {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
-      } else {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
-      }
     }
   });
 }
 
-/* ===============================
-   NAVEGACIÓN
-================================ */
 function restart() {
   clearState();
   showSection("start");
@@ -558,7 +491,6 @@ function showPrivacy() {
 function showSection(id) {
   ["start","test","results","weekly","weeklyResultScreen","privacy"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
-
   document.getElementById(id).classList.remove("hidden");
 }
 
