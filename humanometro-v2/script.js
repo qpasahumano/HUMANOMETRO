@@ -110,7 +110,7 @@ const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
-    ["Когда alguien te habla, ¿dejás el celular?","Presencia humana"],
+    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
     ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso humano"],
     ["¿Te afecta el sufrimiento ajeno?","Sensibilidad emocional"]
   ]},
@@ -132,11 +132,11 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
   { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let week = 0, q = 0, currentScore = 0;
@@ -456,4 +456,4 @@ function show(id){
   ["start", "test", "weeklyResult", "monthlyResult", "mirrorIntro", "mirrorTest", "finalResult"]
     .forEach(sec => $(sec)?.classList.add("hidden"));
   $(id)?.classList.remove("hidden");
-     }
+}
