@@ -13,11 +13,9 @@
 </head>
 <body>
 
-  <!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
   <div class="device-frame-wrapper">
     <div class="device-screen">
 
-      <!-- ENCABEZADO FIJO GLOBAL CON ICONO Y SELLO EN TODA LA APP -->
       <header class="app-global-header">
         <div class="sello-wrap global-logo">
           <img
@@ -36,12 +34,10 @@
 
       <div class="app-container">
 
-        <!-- INICIO V2 -->
         <section id="start">
           <div class="card scroll-sheet">
             <h1>Humanómetro</h1>
             
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -55,7 +51,6 @@
           </div>
         </section>
 
-        <!-- TEST SEMANAL -->
         <section id="test" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
@@ -73,13 +68,11 @@
           </div>
         </section>
 
-        <!-- DEVOLUCIÓN SEMANAL -->
         <section id="weeklyResult" class="hidden">
           <div class="card scroll-sheet scroll-sheet-compact">
             <div class="symbol-large" id="weeklySymbol">🐞</div>
             <h2>Lectura Semanal</h2>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -95,13 +88,11 @@
           </div>
         </section>
 
-        <!-- CIERRE DE CICLO V2 / TRANSICIÓN AL ESPEJO -->
         <section id="monthlyResult" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle">Cierre</div>
             <h2>Cierre de Ciclo</h2>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -115,13 +106,11 @@
           </div>
         </section>
 
-        <!-- INTRODUCCIÓN A TU REFLEJO -->
         <section id="mirrorIntro" class="hidden">
           <div class="card scroll-sheet">
             <div class="subtitle">Fase Final</div>
             <h1>Tu reflejo</h1>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -135,13 +124,11 @@
           </div>
         </section>
 
-        <!-- TEST TU REFLEJO -->
         <section id="mirrorTest" class="hidden">
           <div class="card scroll-sheet">
             <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
             <div class="subtitle segment-title-compact">Situación Emocional</div>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -156,12 +143,10 @@
           </div>
         </section>
 
-        <!-- RESULTADO FINAL INTEGRADO -->
         <section id="finalResult" class="hidden">
           <div class="card scroll-sheet scroll-sheet-compact">
             <div class="subtitle">Diagnóstico Integrativo</div>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
               <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
               <div class="thermo-bar"><div class="thermo-fill"></div></div>
@@ -172,7 +157,6 @@
             </div>
             <h2 id="finalState" class="global-result-compact">Analizando...</h2>
             
-            <!-- RECUADRO DE TEXTO CON SCROLL PROPIO (SOLO TEXTO) -->
             <div id="finalTextWrap" class="hidden">
               <div class="scroll-sheet final-text-sheet">
                 <p class="description" id="finalHumanText"></p>
@@ -180,7 +164,6 @@
             </div>
           </div>
 
-          <!-- BOTÓN DE FINALIZAR FUERA DEL RECUADRO DE TEXTO -->
           <div class="results-action-wrap" id="finalActionWrap">
             <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar ciclo</button>
           </div>
@@ -190,7 +173,6 @@
     </div>
   </div>
 
-  <!-- OVERLAY DE TRANSICIÓN CON CUBO GIRATORIO LENTO (3 SEGUNDOS) -->
   <div class="cube-transition-overlay" id="cubeOverlay">
     <img src="activos/image_cube.png" alt="Cubo Humanómetro">
     <span>Cerrando ciclo...</span>
