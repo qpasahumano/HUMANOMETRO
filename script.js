@@ -1,4 +1,4 @@
-/* ===============================
+ /* ===============================
    REFERENCIAS DOM
 ================================ */
 const areaTitle = document.getElementById("areaTitle");
@@ -529,14 +529,23 @@ function updateThermometer(percent) {
 function restart() {
 
   if (!DEV_MODE) {
-    const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
-    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
+    const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
+
+    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
       showWeeklyBlockFlash();
       return;
     }
-    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
+
+    if (lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
+      goToV2();
+      return;
+    }
   }
 
+  goToV2();
+}
+
+function returnToStart() {
   clearState();
   showSection("start");
   updateThermometer(5);
@@ -557,4 +566,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-       }
+}
