@@ -1,4 +1,4 @@
- /* ===============================
+/* ===============================
    REFERENCIAS DOM
 ================================ */
 const areaTitle = document.getElementById("areaTitle");
@@ -93,14 +93,14 @@ const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
 const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
 
 /* ===============================
-   DESTELLO BLOQUEO (AJUSTE 1, 2 Y 3: SIN CONTENEDORES FANTASMAS Y ROJO BRILLANTE)
+   DESTELLO BLOQUEO
 ================================ */
 function showWeeklyBlockFlash() {
-  const el = document.getElementById("weeklyBlockNotice") || document.getElementById("weeklyBlockFlash");
+  const el = document.getElementById("weeklyBlockFlash");
   if (!el) return;
   el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
   el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 2000);
+  setTimeout(() => el.classList.add("hidden"), 1400);
 }
 
 /* ===============================
@@ -172,20 +172,22 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO LECTURA EVOLUTIVA
+   ACCESO RECORRIDO MENSUAL
 ================================ */
 function weeklyWithDonation() {
 
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
 
-  if (!DEV_MODE && lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
-    showWeeklyBlockFlash();
-    return;
-  }
-
   if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
     goToV2();
     return;
+  }
+
+  if (!DEV_MODE) {
+    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
+      showWeeklyBlockFlash();
+      return;
+    }
   }
 
   startWeekly();
@@ -425,8 +427,10 @@ function showResults() {
     tips.innerHTML = `<li>${commonFeedback(avg)}</li>`;
   }
 
-  weeklyAccess.innerHTML =
-    `<button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>`;
+  if (mode === "premium") {
+    weeklyAccess.innerHTML =
+      `<button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>`;
+  }
 
   saveState({ lastSection: "results", finalAvg: avg });
 }
@@ -473,8 +477,10 @@ function updateThermometer(percent) {
     if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
+      // 1. Progreso físico exacto basado en el porcentaje de preguntas respondidas (0 a 100%)
       const progressFraction = answeredCount / totalQuestionsCount;
 
+      // 2. Cálculo del puntaje acumulado real vs el máximo posible acumulado hasta ahora
       let totalEarned = 0;
       let maxPossibleSoFar = 0;
 
@@ -491,6 +497,7 @@ function updateThermometer(percent) {
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
 
+      // 3. Mapeo estricto por tercios de preguntas contestadas para evitar saltos bruscos:
       let baseMin = 5;
       let baseMax = 33;
 
@@ -502,6 +509,7 @@ function updateThermometer(percent) {
         baseMax = 100;
       }
 
+      // El porcentaje dentro del tercio actual responde a la calidad de las respuestas
       targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
       targetPct = Math.min(100, Math.max(5, targetPct));
     }
@@ -512,6 +520,7 @@ function updateThermometer(percent) {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
       
+      // Aplicación de la paleta de colores según el tramo visual correspondiente
       if (targetPct <= 33.3) {
         fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPct <= 66.6) {
@@ -529,23 +538,14 @@ function updateThermometer(percent) {
 function restart() {
 
   if (!DEV_MODE) {
-    const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
-
-    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
+    const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
+    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
       showWeeklyBlockFlash();
       return;
     }
-
-    if (lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
-      goToV2();
-      return;
-    }
+    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
   }
 
-  goToV2();
-}
-
-function returnToStart() {
   clearState();
   showSection("start");
   updateThermometer(5);
