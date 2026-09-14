@@ -9,7 +9,7 @@ const V2_BLOCK_KEY = "hm_v2_last_week";
 const V2_STATE_KEY = "hm_v2_progress_state";
 
 /* ===============================
-   UTILIDADES Y PERSISTENCIA
+   BLOQUEO Y PERSISTENCIA — UTILIDADES
 ================================ */
 function now(){ return Date.now(); }
 
@@ -32,8 +32,6 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
-    mq,
-    mirrorScore,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -45,15 +43,6 @@ function loadV2State() {
   const raw = localStorage.getItem(V2_STATE_KEY);
   if (!raw) return null;
   try { return JSON.parse(raw); } catch { return null; }
-}
-
-function finalizarYReiniciar() {
-  localStorage.removeItem(V2_BLOCK_KEY);
-  localStorage.removeItem(V2_STATE_KEY);
-  localStorage.removeItem("hm_v1_block_recorrido");
-  localStorage.removeItem("hm_v1_block_volve_pronto");
-  localStorage.removeItem("hm_v1_state");
-  window.location.href = "../";
 }
 
 /* ===============================
@@ -85,9 +74,7 @@ function showWeeklyBlockFlash(){
   setTimeout(()=>d.remove(),1300);
 }
 
-/* ===============================
-   CACHE DOM Y DATOS BASE
-================================ */
+/* CACHE DOM */
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
 const questionMeasure = $("questionMeasure");
@@ -105,8 +92,10 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
+/* EMOJIS ESPEJO */
 const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
 
+/* DATOS BASE */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -128,24 +117,11 @@ const WEEKS = [
   ]}
 ];
 
-const MIRROR_QUESTIONS = [
-  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
-  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
-];
-
+/* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
-let mq = 0, mirrorScore = 0;
 
-/* ===============================
-   REANUDACIÓN AUTOMÁTICA EN V2
-================================ */
+/* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
   const saved = loadV2State();
   if (!saved) return;
@@ -156,24 +132,9 @@ let mq = 0, mirrorScore = 0;
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
-  mq = saved.mq || 0;
-  mirrorScore = saved.mirrorScore || 0;
 
   if (saved.lastSection) {
-    if (
-      (saved.lastSection === "mirrorIntro" ||
-       saved.lastSection === "mirrorTest" ||
-       saved.lastSection === "finalResult") &&
-      !pasoUnaSemana()
-    ) {
-      show("monthlyResult");
-      updateThermometer(calculateHistoricalPercentage());
-      saveV2State({ lastSection: "monthlyResult" });
-      return;
-    }
-
     show(saved.lastSection);
-
     if (saved.lastSection === "test") {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
@@ -183,66 +144,30 @@ let mq = 0, mirrorScore = 0;
     } else if (saved.lastSection === "mirrorTest") {
       loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      showFinalResults();
+      updateThermometer(calculateFinalPercentage());
     }
   }
 })();
 
-/* ===============================
-   FLUJO PRINCIPAL V2
-================================ */
+/* FLUJO */
 function startV2(){
   const saved = loadV2State();
-
-  if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
-    show(saved.lastSection || "test");
-    if (saved.lastSection === "test" || !saved.lastSection) {
-      loadQuestion();
-    } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(calculateCurrentPercentage());
-    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
-      if (!pasoUnaSemana()) {
-        showWeeklyBlockFlash();
-        show("monthlyResult");
-        updateThermometer(calculateHistoricalPercentage());
-        saveV2State({ lastSection: "monthlyResult" });
-        return;
-      }
-      updateThermometer(calculateHistoricalPercentage());
-    } else if (saved.lastSection === "mirrorTest") {
-      if (!pasoUnaSemana()) {
-        showWeeklyBlockFlash();
-        show("monthlyResult");
-        updateThermometer(calculateHistoricalPercentage());
-        saveV2State({ lastSection: "monthlyResult" });
-        return;
-      }
-      loadMirror();
-    } else if (saved.lastSection === "finalResult") {
-      showFinalResults();
-    }
+  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
+    show(saved.lastSection || "test"); 
+    if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
     return;
   }
 
   document.body.classList.remove("mirror-bg");
-  week = 0;
-  q = 0;
-  currentScore = 0;
-  weeklyScores = [];
-  allAnswers = [];
-  mirrorLog = [];
-  mq = 0;
-  mirrorScore = 0;
-
+  week = 0; q = 0; currentScore = 0;
+  weeklyScores = []; allAnswers = []; mirrorLog = [];
   saveV2State({ lastSection: "test" });
-  show("test");
-  loadQuestion();
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
   const w = WEEKS[week];
   if (!w) return;
-
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
@@ -256,7 +181,6 @@ function answer(v){
   currentScore += v;
   allAnswers.push({ block: WEEKS[week].title, q, v });
   q++;
-
   saveV2State({ q, currentScore, allAnswers });
   q >= 4 ? showWeekly() : loadQuestion();
 }
@@ -271,62 +195,109 @@ function showWeekly(){
   const avg = currentScore / 4;
   weeklyScores.push(avg);
   
-  updateThermometer(calculateCurrentPercentage());
+  const currentPct = calculateCurrentPercentage();
+  updateThermometer(currentPct);
 
-  const range = avg <= 0.6 ? "low" : avg <= 0.9 ? "midLow" : avg <= 1.4 ? "mid" : "high";
-  weeklySymbol.textContent = range === "low" || range === "midLow" ? "🦇" : range === "mid" ? "🐞" : "🐦";
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
+
+  weeklySymbol.textContent =
+    range === "low" ? "🦇" :
+    range === "midLow" ? "🦇" :
+    range === "mid" ? "🐞" : "🐦";
 
   const block = WEEKS[week].title;
 
   if(block === "Vos ante el mundo"){
     if(avg < 1.5){
-      weeklyText.textContent = "Lo que ocurre en el mundo no siempre logra atravesarte.\n\nEl dolor ajeno, las injusticias o los conflictos pueden aparecer como información lejana, sin generar un impacto emocional sostenido.\n\nEsto no habla de falta de humanidad, sino de posibles mecanismos de defensa, cansancio o saturación emocional.";
-      weeklyAdvice.textContent = "Observar cuándo te cerrás y cuándo te abrís al otro puede ser el primer gesto de reconexión humana.";
+      weeklyText.textContent =
+        "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
+        "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
+        "como información lejana, sin generar un impacto emocional sustained.\n\n"+
+        "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
+        "de defensa, cansancio o saturación emocional.";
+      weeklyAdvice.textContent =
+        "Observar cuándo te cerrás y cuándo te abrís al otro "+
+        "puede ser el primer gesto de reconexión humana.";
     } else {
-      weeklyText.textContent = "El mundo no pasa desapercibido.\n\nHay registro del dolor, de la injusticia y de lo que afecta a otros seres humanos.";
-      weeklyAdvice.textContent = "Sostener esta sensibilidad sin que te abrume es parte de un equilibrio humano maduro.";
+      weeklyText.textContent =
+        "El mundo no pasa desapercibido.\n\n"+
+        "Hay registro del dolor, de la injusticia y de lo que afecta "+
+        "a otros seres humanos.";
+      weeklyAdvice.textContent =
+        "Sostener esta sensibilidad sin que te abrume "+
+        "es parte de un equilibrio humano maduro.";
     }
-  } else if(block === "Vos y la tecnología"){
+  }
+
+  if(block === "Vos y la tecnología"){
     if(avg < 1.5){
-      weeklyText.textContent = "La atención aparece fragmentada.\n\nLa tecnología tiende a absorber momentos que podrían ser habitados con mayor presencia.\n\nNo como error, sino como hábito automatizado.";
-      weeklyAdvice.textContent = "Pequeños cortes conscientes pueden devolver densidad a la experiencia cotidiana.";
+      weeklyText.textContent =
+        "La atención aparece fragmentada.\n\n"+
+        "La tecnología tiende a absorber momentos que podrían "+
+        "ser habitados con mayor presencia.\n\n"+
+        "No como error, sino como hábito automatizado.";
+      weeklyAdvice.textContent =
+        "Pequeños cortes conscientes pueden devolver densidad "+
+        "a la experiencia cotidiana.";
     } else {
-      weeklyText.textContent = "Lo digital acompaña sin dominar.\n\nHay uso consciente y registro del presente.";
-      weeklyAdvice.textContent = "Este equilibrio sostiene vínculos más reales y una experiencia más encarnada.";
+      weeklyText.textContent =
+        "Lo digital acompaña sin dominar.\n\n"+
+        "Hay uso consciente y registro del presente.";
+      weeklyAdvice.textContent =
+        "Este equilibrio sostiene vínculos más reales "+
+        "y una experiencia más encarnada.";
     }
-  } else if(block === "Integración humana"){
+  }
+
+  if(block === "Integración humana"){
     if(avg < 1.5){
-      weeklyText.textContent = "Se perciben fisuras entre pensamiento, emoción y acción.\n\nNo siempre lo que sentís logra expresarse ni lo que pensás logra sostenerse en el hacer.";
-      weeklyAdvice.textContent = "Nombrar estas incongruencias no es debilidad: es el inicio del proceso de integración.";
+      weeklyText.textContent =
+        "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
+        "No siempre lo que sentís logra expresarse "+
+        "ni lo que pensás logra sostenerse en el hacer.";
+      weeklyAdvice.textContent =
+        "Nombrar estas incongruencias no es debilidad: "+
+        "es el inicio del proceso de integración.";
     } else {
-      weeklyText.textContent = "Las respuestas muestran una percepción de coherencia interna.\n\nEsta lectura se limita a cómo te pensás y te observás a vos mismo.\n\nCómo esta coherencia se expresa en el vínculo con el mundo y la tecnología se observa en el siguiente tramo.";
+      weeklyText.textContent =
+        "Las respuestas muestran una percepción de coherencia interna.\n\n"+
+        "Esta lectura se limita a cómo te pensás y te observás a vos mismo.\n\n"+
+        "Cómo esta coherencia se expresa en el vínculo con el mundo y la tecnología\n"+
+        "se observa en el siguiente tramo.";
       weeklyAdvice.textContent = "";
     }
   }
 
   saveV2State({ lastSection: "weeklyResult", weeklyScores });
-  setTimeout(() => weeklyTextWrap.classList.remove("hidden"), 900);
+  setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
 function nextWeek(){
-  week++;
-  q = 0;
+  week++; 
+  q = 0; 
   currentScore = 0;
-
+  
   const isFinished = week >= WEEKS.length;
 
   if (isFinished) {
+    // Marcamos el sello temporal al finalizar el tercer cuestionario completo con sus devoluciones
     marcarSemana();
     saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
     showMonthly();
-    return;
+  } else {
+    // Transición libre y fluida entre cuestionarios sin bloqueos intermedios
+    saveV2State({ week, q, currentScore, lastSection: "test" });
+    show("test"); 
+    loadQuestion();
   }
-
-  saveV2State({ week, q, currentScore, lastSection: "test" });
-  show("test");
-  loadQuestion();
 }
 
+/* ===============================
+   CIERRE DE CICLO VOLUMEN 2
+================================ */
 function showMonthly(){
   show("monthlyResult");
   updateThermometer(calculateHistoricalPercentage());
@@ -334,13 +305,31 @@ function showMonthly(){
 }
 
 /* ===============================
-   FASE ESPEJO ("TU REFLEJO")
+   TU REFLEJO — PREGUNTAS COMPLETAS
 ================================ */
+const MIRROR_QUESTIONS = [
+  { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+];
+
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
+
 function gateMirrorIntro(){
+  // El único bloqueo de los 7 días vive aquí, custodiando el botón de acceso a Tu Reflejo
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
+  openMirror();
+}
+
+function openMirror(){
   show("mirrorIntro");
   updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "mirrorIntro" });
@@ -351,109 +340,232 @@ function startMirror(){
     showWeeklyBlockFlash();
     return;
   }
-
   document.body.classList.add("mirror-bg");
-  mq = 0;
-  mirrorScore = 0;
-  mirrorLog = [];
-
-  saveV2State({ lastSection: "mirrorTest", mq, mirrorScore });
-  show("mirrorTest");
-  loadMirror();
+  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  saveV2State({ lastSection: "mirrorTest" });
+  show("mirrorTest"); loadMirror();
 }
 
 function loadMirror(){
-  mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "🫥";
+  mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
   
-  const pct = Math.round((mq / MIRROR_QUESTIONS.length) * 100);
-  updateThermometer(pct);
+  const hist = calculateHistoricalPercentage();
+  const mirrorProgress = Math.round(hist + ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist));
+  updateThermometer(mirrorProgress);
 }
 
 function answerMirror(v){
-  mirrorScore += v;
-  mirrorLog.push({ q: mq, v });
+  mirrorLog.push(v ?? 0);
+  if(v !== null){ mirrorScore += v; mirrorCount++; }
   mq++;
 
-  saveV2State({ mq, mirrorScore, mirrorLog });
-
-  if (mq >= MIRROR_QUESTIONS.length) {
-    showFinalResults();
-  } else {
-    loadMirror();
+  if(mq === MIRROR_QUESTIONS.length){
+    let semanticDelta = 0;
+    const evitacion = mirrorLog[7] ?? 0;
+    const desconexion = mirrorLog[5] ?? 0;
+    const alegria = mirrorLog[6] ?? 0;
+    semanticDelta -= (evitacion + desconexion) * 0.1;
+    semanticDelta += alegria * 0.1;
+    mirrorScore += semanticDelta;
   }
+
+  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
+  mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
 /* ===============================
-   RESULTADOS FINALES Y CÁLCULOS
+   DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE
 ================================ */
-function showFinalResults(){
+function showFinal(){
   show("finalResult");
-  document.body.classList.add("mirror-bg");
-  finalTextWrap.classList.remove("hidden");
+  finalTextWrap.classList.add("hidden");
+  updateThermometer(calculateFinalPercentage());
+  saveV2State({ lastSection: "finalResult" });
 
-  const finalPct = calculateFinalPercentage();
-  updateThermometer(finalPct);
+  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
-  if (finalFill) finalFill.style.height = finalPct + "%";
+  const tristezaAjena = mirrorLog[1] ?? 0;
+  const desconexion = mirrorLog[5] ?? 0;
+  const evitacion = mirrorLog[7] ?? 0;
 
-  if (finalPct < 40) {
-    finalState.textContent = "Desconexión interna profunda";
-    finalHumanText.textContent = "Las respuestas reflejan una tendencia a evitar o reprimir la intensidad emocional. El sistema se protege del impacto, pero esto genera aislamiento interno.";
-  } else if (finalPct < 70) {
-    finalState.textContent = "Sensibilidad en transición";
-    finalHumanText.textContent = "Existe registro de las emociones, aunque con fluctuaciones en la aceptación y la integración. Hay un puente activo entre lo que sentís y cómo lo gestionás.";
-  } else {
-    finalState.textContent = "Alta integración y presencia";
-    finalHumanText.textContent = "Se observa una conexión sincera con la propia emocionalidad. Hay disponibilidad interna para transitar la intensidad sin evadirla.";
+  const bajaEmpatia = tristezaAjena <= 0.5;
+  const desconexionActiva = desconexion >= 1;
+  const evitacionActiva = evitacion >= 1;
+
+  let semanticPenalty = 0;
+  if(bajaEmpatia) semanticPenalty++;
+  if(desconexionActiva) semanticPenalty++;
+  if(evitacionActiva) semanticPenalty++;
+
+  let range =
+    avg <= 0.6 ? 0 :
+    avg <= 0.9 ? 1 :
+    avg <= 1.4 ? 2 : 3;
+
+  if(range >= 2 && semanticPenalty >= 2){
+    range -= 1;
   }
 
-  saveV2State({ lastSection: "finalResult" });
+  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+    finalTextWrap.classList.remove("hidden");
+
+    if(range === 0){
+      finalState.textContent = "Predominio de NO";
+      finalHumanText.textContent =
+        "Analizando el ciclo completo, aparece un patrón claro:\n"+
+        "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
+        "no generan en vos una respuesta emocional significativa.\n\n"+
+        "No como falta moral,\n"+
+        "sino como señal de distancia.\n\n"+
+        "Esta distancia no habla de frialdad consciente,\n"+
+        "habla de un mecanismo de protección:\n"+
+        "una forma de no involucrarse para no sentir.\n\n"+
+        "El problema no es no sentir,\n"+
+        "sino normalizar ese apagamiento como estado estable.\n\n"+
+        "Cuando el dolor del otro no resuena,\n"+
+        "la humanidad se vuelve funcional,\n"+
+        "pero pierde profundidad.\n\n"+
+        "Este resultado no acusa,\n"+
+        "señala un punto ciego:\n"+
+        "allí donde la empatía podría desarrollarse\n"+
+        "y hoy no está ocurriendo.";
+    }
+    else if(range === 1){
+      finalState.textContent = "Ambivalencia emocional";
+      finalHumanText.textContent =
+        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
+        "Hay momentos de registro, sensibilidad y presencia,\n"+
+        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
+        "El “tal vez” no es indecisión superficial:\n"+
+        "es señal de una tensión interna\n"+
+        "entre lo que sentís\n"+
+        "y lo que te permitís sentir.\n\n"+
+        "La integración no llega forzando respuestas,\n"+
+        "llega cuando dejás de pelearte\n"+
+        "con lo que aparece a medias.";
+    }
+    else if(range === 2){
+      finalState.textContent = "Incongruencia marcada";
+      finalHumanText.textContent =
+        "Al medir el recorrido completo,\n"+
+        "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
+        "Hay registros de conciencia en ciertos planos,\n"+
+        "pero neutralidad o ausencia emocional\n"+
+        "frente a situaciones donde la empatía humana es clave.\n\n"+
+        "Esto no es incoherencia intelectual.\n"+
+        "Es incongruencia emocional.\n\n"+
+        "Distintas partes tuyas responden desde lugares opuestos:\n"+
+        "una se muestra consciente,\n"+
+        "otra evita implicarse,\n"+
+        "otra racionaliza.\n\n"+
+        "El resultado es una humanidad fragmentada:\n"+
+        "funcional, adaptada,\n"+
+        "pero no integrada.\n\n"+
+        "La evolución no comienza corrigiendo respuestas,\n"+
+        "comienza reconociendo\n"+
+        "dónde no estás siendo el mismo\n"+
+        "en todos los planos.";
+    }
+    else{
+      finalState.textContent = "Congruencia humana";
+      finalHumanText.textContent =
+        "A lo largo de todo el recorrido aparece una misma línea:\n"+
+        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
+        "No hay fisuras marcadas\n"+
+        "ni contradicciones defensivas,\n"+
+        "sino una humanidad que registra, procesa\n"+
+        "y responde con presencia.\n\n"+
+        "Esto no habla de perfección,\n"+
+        "habla de conciencia.\n\n"+
+        "Integrar no es llegar a un punto final,\n"+
+        "es mantener abierta la posibilidad\n"+
+        "de seguir siendo humano.";
+    }
+  });
 }
 
+/* ===============================
+   CIERRE Y LIMPIEZA DE CICLO (3 SEGUNDOS DE ANIMACIÓN)
+================================ */
+function finalizarYReiniciar() {
+  const overlay = document.getElementById("cubeOverlay");
+  if (overlay) overlay.classList.add("active");
+
+  setTimeout(() => {
+    localStorage.removeItem(V2_STATE_KEY);
+    localStorage.removeItem(V2_BLOCK_KEY);
+
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("mirror-bg");
+    
+    show("start");
+  }, 3000);
+}
+
+/* ===============================
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
+================================ */
 function calculateCurrentPercentage() {
-  if (weeklyScores.length === 0) return 0;
-  const currentSum = weeklyScores[weeklyScores.length - 1];
-  return Math.round((currentSum / 2) * 100);
+  const totalAnswersSoFar = (week * 4) + q;
+  const maxQ = WEEKS.length * 4;
+  return Math.min(100, Math.max(1, Math.round((totalAnswersSoFar / maxQ) * 100)));
 }
 
 function calculateHistoricalPercentage() {
   if (weeklyScores.length === 0) return 50;
-  const total = weeklyScores.reduce((a, b) => a + b, 0);
-  const avg = total / weeklyScores.length;
-  return Math.round((avg / 2) * 100);
+  let sum = weeklyScores.reduce((a, b) => a + b, 0);
+  let avg = sum / weeklyScores.length;
+  return Math.min(100, Math.max(1, Math.round((avg / 2) * 100)));
 }
 
 function calculateFinalPercentage() {
-  const v2Avg = weeklyScores.length ? (weeklyScores.reduce((a,b)=>a+b,0) / weeklyScores.length) : 1;
-  const mirrorAvg = mirrorLog.length ? (mirrorScore / (mirrorLog.length * 2)) : 0.5;
-  const combined = (v2Avg + mirrorAvg) / 2;
-  return Math.round((combined / 2) * 100);
+  const hist = calculateHistoricalPercentage();
+  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
+  const mirrorPct = (mirrorAvg / 2) * 100;
+  return Math.min(100, Math.max(1, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
 }
 
+/* ===============================
+   TERMÓMETRO GLOBAL INTEGRADO V2 (SELECTOR ÚNICO)
+================================ */
 function updateThermometer(percent) {
-  const fills = document.querySelectorAll('.thermo-bar .thermo-fill');
-  fills.forEach(fill => {
-    if (fill) {
-      fill.style.width = percent + '%';
-      if (percent <= 33.3) {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
-      } else if (percent <= 66.6) {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 100%)";
-      } else {
-        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33.3%, #ffc107 66.6%, #10b981 100%)";
+  if (percent !== undefined) {
+    const fills = document.querySelectorAll('#thermoFill');
+    fills.forEach(fill => {
+      if (fill) {
+        fill.style.width = percent + '%';
       }
-    }
-  });
+    });
 
-  const percentageTexts = document.querySelectorAll('.thermo-percentage-val');
-  percentageTexts.forEach(txt => {
-    txt.textContent = percent + '%';
-  });
+    const valSpans = document.querySelectorAll('.thermo-percentage-val');
+    valSpans.forEach(span => {
+      span.textContent = percent + '%';
+    });
+  }
+}
+
+/* UTIL */
+function animateGauge(el, target, done){
+  if (!el) {
+    done && done();
+    return;
+  }
+  el.style.height="0%";
+  const start = performance.now(), dur = 1800;
+  
+  function step(t){
+    const p = Math.min(1,(t-start)/dur);
+    el.style.height = p * target + "%";
+    p < 1 ? requestAnimationFrame(step) : done && done();
+  }
+  requestAnimationFrame(step);
 }
 
 function show(id){
-  ["start", "test", "weeklyResult", "monthlyResult", "mirrorIntro", "mirrorTest", "finalResult"]
-    .forEach(sec => $(sec)?.classList.add("hidden"));
-  $(id)?.classList.remove("hidden");
-}
+  ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
+    .forEach(s => {
+      const el = $(s);
+      if (el) el.classList.toggle("hidden", s !== id);
+    });
+       }
