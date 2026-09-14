@@ -283,12 +283,10 @@ function nextWeek(){
   const isFinished = week >= WEEKS.length;
 
   if (isFinished) {
-    // Marcamos el sello temporal al finalizar el tercer cuestionario completo con sus devoluciones
     marcarSemana();
     saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
     showMonthly();
   } else {
-    // Transición libre y fluida entre cuestionarios sin bloqueos intermedios
     saveV2State({ week, q, currentScore, lastSection: "test" });
     show("test"); 
     loadQuestion();
@@ -310,7 +308,7 @@ function showMonthly(){
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
   { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
-  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
   { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
@@ -321,7 +319,6 @@ const MIRROR_QUESTIONS = [
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 function gateMirrorIntro(){
-  // El único bloqueo de los 7 días vive aquí, custodiando el botón de acceso a Tu Reflejo
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
@@ -568,4 +565,4 @@ function show(id){
       const el = $(s);
       if (el) el.classList.toggle("hidden", s !== id);
     });
-       }
+}
