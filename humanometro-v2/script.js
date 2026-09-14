@@ -1,4 +1,3 @@
-
 const $ = id => document.getElementById(id);
 
 /* ===============================
@@ -33,9 +32,6 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
-    mq,
-    mirrorScore,
-    mirrorCount,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -78,15 +74,24 @@ function showWeeklyBlockFlash(){
   setTimeout(()=>d.remove(),1300);
 }
 
-/* CACHE DOM */
+/* ===============================
+   CACHE DOM
+================================ */
 const weekTitle = $("weekTitle");
 const questionText = $("questionText");
 const questionMeasure = $("questionMeasure");
+const thermoFill = $("thermoFill");
 
 const weeklySymbol = $("weeklySymbol");
 const weeklyText = $("weeklyText");
 const weeklyAdvice = $("weeklyAdvice");
 const weeklyTextWrap = $("weeklyTextWrap");
+
+const monthlyFill = $("monthlyFill");
+const monthlyTextWrap = $("monthlyTextWrap");
+const monthlySymbol = $("monthlySymbol");
+const monthlyLongText = $("monthlyLongText");
+const monthlyText = $("monthlyText");
 
 const mirrorEmoji = $("mirrorEmoji");
 const mirrorQuestion = $("mirrorQuestion");
@@ -96,10 +101,14 @@ const finalTextWrap = $("finalTextWrap");
 const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
-/* EMOJIS ESPEJO */
+/* ===============================
+   EMOJIS ESPEJO
+================================ */
 const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
 
-/* DATOS BASE */
+/* ===============================
+   DATOS BASE
+================================ */
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
@@ -121,12 +130,15 @@ const WEEKS = [
   ]}
 ];
 
-/* REGISTRO */
+/* ===============================
+   REGISTRO
+================================ */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
-/* REANUDACIÓN AUTOMÁTICA EN V2 */
+/* ===============================
+   REANUDACIÓN AUTOMÁTICA EN V2
+================================ */
 (function resumeV2() {
   const saved = loadV2State();
   if (!saved) return;
@@ -137,17 +149,38 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
-  mq = saved.mq || 0;
-  mirrorScore = saved.mirrorScore || 0;
-  mirrorCount = saved.mirrorCount || 0;
 
   if (saved.lastSection) {
+
+    /*
+      BLINDAJE:
+      Si el estado guardado intenta mostrar "Tu reflejo"
+      antes de cumplir los 7 días, no se permite acceder.
+      Se vuelve a mostrar el cierre del Volumen 2 para que
+      el botón "Acceder a Tu reflejo" vuelva a comprobar
+      el bloqueo correctamente.
+    */
+    if (
+      (saved.lastSection === "mirrorIntro" ||
+       saved.lastSection === "mirrorTest" ||
+       saved.lastSection === "finalResult") &&
+      !pasoUnaSemana()
+    ) {
+      show("monthlyResult");
+      updateThermometer(calculateHistoricalPercentage());
+      saveV2State({ lastSection: "monthlyResult" });
+      return;
+    }
+
     show(saved.lastSection);
+
     if (saved.lastSection === "test") {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
       updateThermometer(calculateCurrentPercentage());
-    } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
+    } else if (saved.lastSection === "monthlyResult") {
+      updateThermometer(calculateHistoricalPercentage());
+    } else if (saved.lastSection === "mirrorIntro") {
       updateThermometer(calculateHistoricalPercentage());
     } else if (saved.lastSection === "mirrorTest") {
       loadMirror();
@@ -157,52 +190,99 @@ let mq = 0, mirrorScore = 0, mirrorCount = 0;
   }
 })();
 
-/* CONTROL DE VISIBILIDAD DE SECCIONES */
-function show(sectionId) {
-  const sections = document.querySelectorAll("section");
-  sections.forEach(sec => {
-    if (sec.id === sectionId) {
-      sec.classList.remove("hidden");
-    } else {
-      sec.classList.add("hidden");
-    }
-  });
-}
-
-/* FLUJO */
+/* ===============================
+   FLUJO
+================================ */
 function startV2(){
   const saved = loadV2State();
-  if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
-    show(saved.lastSection || "test"); 
-    if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
+
+  if (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
+
+    /*
+      IMPORTANTE:
+      No existe bloqueo entre los tres bloques de V2.
+      El bloqueo de 7 días solamente corresponde a "Tu reflejo",
+      después de completar los tres bloques.
+    */
+
+    show(saved.lastSection || "test");
+
+    if (saved.lastSection === "test" || !saved.lastSection) {
+      loadQuestion();
+    } else if (saved.lastSection === "weeklyResult") {
+      updateThermometer(calculateCurrentPercentage());
+    } else if (saved.lastSection === "monthlyResult") {
+      updateThermometer(calculateHistoricalPercentage());
+    } else if (saved.lastSection === "mirrorIntro") {
+      if (!pasoUnaSemana()) {
+        showWeeklyBlockFlash();
+        show("monthlyResult");
+        updateThermometer(calculateHistoricalPercentage());
+        saveV2State({ lastSection: "monthlyResult" });
+        return;
+      }
+      updateThermometer(calculateHistoricalPercentage());
+    } else if (saved.lastSection === "mirrorTest") {
+      if (!pasoUnaSemana()) {
+        showWeeklyBlockFlash();
+        show("monthlyResult");
+        updateThermometer(calculateHistoricalPercentage());
+        saveV2State({ lastSection: "monthlyResult" });
+        return;
+      }
+      loadMirror();
+    } else if (saved.lastSection === "finalResult") {
+      updateThermometer(calculateFinalPercentage());
+    }
+
     return;
   }
 
   document.body.classList.remove("mirror-bg");
-  week = 0; q = 0; currentScore = 0;
-  weeklyScores = []; allAnswers = []; mirrorLog = [];
-  mq = 0; mirrorScore = 0; mirrorCount = 0;
+
+  week = 0;
+  q = 0;
+  currentScore = 0;
+  weeklyScores = [];
+  allAnswers = [];
+  mirrorLog = [];
+
   saveV2State({ lastSection: "test" });
-  show("test"); loadQuestion();
+  show("test");
+  loadQuestion();
 }
 
 function loadQuestion(){
   const w = WEEKS[week];
   if (!w) return;
+
   weekTitle.textContent = w.title;
   questionText.textContent = w.questions[q][0];
   questionMeasure.textContent = w.questions[q][1];
   
-  updateThermometer(calculateCurrentPercentage());
+  const totalQIndex = (week * 4) + q;
+  const pct = Math.round((totalQIndex / (WEEKS.length * 4)) * 100);
+
+  updateThermometer(pct);
 }
 
 function answer(v){
   currentScore += v;
-  allAnswers.push({ block: WEEKS[week].title, q, v });
+
+  allAnswers.push({
+    block: WEEKS[week].title,
+    q,
+    v
+  });
+
   q++;
-  saveV2State({ q, currentScore, allAnswers });
-  
-  updateThermometer(calculateCurrentPercentage());
+
+  saveV2State({
+    q,
+    currentScore,
+    allAnswers
+  });
+
   q >= 4 ? showWeekly() : loadQuestion();
 }
 
@@ -292,30 +372,61 @@ function showWeekly(){
     }
   }
 
-  saveV2State({ lastSection: "weeklyResult", weeklyScores });
+  saveV2State({
+    lastSection: "weeklyResult",
+    weeklyScores
+  });
+
   setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
+/* ===============================
+   AVANCE ENTRE BLOQUES V2
+================================ */
 function nextWeek(){
-  week++; 
-  q = 0; 
+
+  /*
+    NO HAY BLOQUEO DE 7 DÍAS ENTRE LOS TRES BLOQUES.
+    Los bloques se completan consecutivamente.
+  */
+
+  week++;
+  q = 0;
   currentScore = 0;
-  
+
   const isFinished = week >= WEEKS.length;
 
+  /*
+    El contador de 7 días se inicia solamente cuando
+    se completaron los tres bloques.
+  */
   if (isFinished) {
     marcarSemana();
-    saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
+
+    saveV2State({
+      week,
+      q,
+      currentScore,
+      lastSection: "monthlyResult"
+    });
+
     showMonthly();
-  } else {
-    saveV2State({ week, q, currentScore, lastSection: "test" });
-    show("test"); 
-    loadQuestion();
+    return;
   }
+
+  saveV2State({
+    week,
+    q,
+    currentScore,
+    lastSection: "test"
+  });
+
+  show("test");
+  loadQuestion();
 }
 
 /* ===============================
-   CIERRE DE CICLO VOLUMEN 2
+   CIERRE VOLUMEN 2
 ================================ */
 function showMonthly(){
   show("monthlyResult");
@@ -324,80 +435,131 @@ function showMonthly(){
 }
 
 /* ===============================
-   TU REFLEJO — PREGUNTAS COMPLETAS
+   ESPEJO — PREGUNTAS COMPLETAS
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Когда estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
+
+/* ===============================
+   ACCESO A TU REFLEJO
+================================ */
 function gateMirrorIntro(){
-  if(!pasoUnaSemana()){
-    showWeeklyBlockFlash();
-    return;
-  }
   openMirror();
 }
 
 function openMirror(){
+
+  /*
+    BLOQUEO DE 7 DÍAS:
+    Se comprueba siempre al intentar acceder a Tu reflejo.
+  */
+  if(!pasoUnaSemana()){
+    showWeeklyBlockFlash();
+    return;
+  }
+
   show("mirrorIntro");
   updateThermometer(calculateHistoricalPercentage());
   saveV2State({ lastSection: "mirrorIntro" });
 }
 
 function startMirror(){
+
+  /*
+    SEGUNDA COMPROBACIÓN:
+    Aunque se haya llegado a la pantalla de introducción,
+    el bloqueo se vuelve a verificar antes de comenzar.
+  */
   if(!pasoUnaSemana()){
     showWeeklyBlockFlash();
     return;
   }
+
   document.body.classList.add("mirror-bg");
-  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
-  saveV2State({ lastSection: "mirrorTest" });
-  show("mirrorTest"); loadMirror();
+
+  mq = 0;
+  mirrorScore = 0;
+  mirrorCount = 0;
+  mirrorLog = [];
+
+  saveV2State({
+    lastSection: "mirrorTest"
+  });
+
+  show("mirrorTest");
+  loadMirror();
 }
 
 function loadMirror(){
   mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
   mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
   
-  updateThermometer(calculateMirrorCurrentPercentage());
+  const hist = calculateHistoricalPercentage();
+  const mirrorProgress =
+    Math.round(
+      hist +
+      ((mq + 1) / MIRROR_QUESTIONS.length) * (100 - hist)
+    );
+
+  updateThermometer(mirrorProgress);
 }
 
 function answerMirror(v){
   mirrorLog.push(v ?? 0);
-  if(v !== null){ mirrorScore += v; mirrorCount++; }
+
+  if(v !== null){
+    mirrorScore += v;
+    mirrorCount++;
+  }
+
   mq++;
 
   if(mq === MIRROR_QUESTIONS.length){
     let semanticDelta = 0;
+
     const evitacion = mirrorLog[7] ?? 0;
     const desconexion = mirrorLog[5] ?? 0;
     const alegria = mirrorLog[6] ?? 0;
+
     semanticDelta -= (evitacion + desconexion) * 0.1;
     semanticDelta += alegria * 0.1;
+
     mirrorScore += semanticDelta;
   }
 
-  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
-  
-  updateThermometer(calculateMirrorCurrentPercentage());
+  saveV2State({
+    mq,
+    mirrorScore,
+    mirrorCount,
+    mirrorLog
+  });
+
   mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
 /* ===============================
-   DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE
+   DEVOLUCIÓN FINAL INTEGRATIVA
 ================================ */
 function showFinal(){
   show("finalResult");
+
   finalTextWrap.classList.add("hidden");
+
   updateThermometer(calculateFinalPercentage());
-  saveV2State({ lastSection: "finalResult" });
+
+  saveV2State({
+    lastSection: "finalResult"
+  });
 
   const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
@@ -410,6 +572,7 @@ function showFinal(){
   const evitacionActiva = evitacion >= 1;
 
   let semanticPenalty = 0;
+
   if(bajaEmpatia) semanticPenalty++;
   if(desconexionActiva) semanticPenalty++;
   if(evitacionActiva) semanticPenalty++;
@@ -423,13 +586,16 @@ function showFinal(){
     range -= 1;
   }
 
-  animateGauge(finalFill, calculateFinalPercentage(), ()=>{
+  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+
     finalTextWrap.classList.remove("hidden");
 
     if(range === 0){
+
       finalState.textContent = "Predominio de NO";
+
       finalHumanText.textContent =
-        "Analizando el ciclo completo, aparece un patrón claro:\n"+
+        "Analizando el mes completo, aparece un patrón claro:\n"+
         "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
         "no generan en vos una respuesta emocional significativa.\n\n"+
         "No como falta moral,\n"+
@@ -439,7 +605,7 @@ function showFinal(){
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
         "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Когда el dolor del otro no resuena,\n"+
+        "Cuando el dolor del otro no resuena,\n"+
         "la humanidad se vuelve funcional,\n"+
         "pero pierde profundidad.\n\n"+
         "Este resultado no acusa,\n"+
@@ -447,8 +613,11 @@ function showFinal(){
         "allí donde la empatía podría desarrollarse\n"+
         "y hoy no está ocurriendo.";
     }
+
     else if(range === 1){
+
       finalState.textContent = "Ambivalencia emocional";
+
       finalHumanText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
         "Hay momentos de registro, sensibilidad y presencia,\n"+
@@ -461,8 +630,11 @@ function showFinal(){
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
     }
+
     else if(range === 2){
+
       finalState.textContent = "Incongruencia marcada";
+
       finalHumanText.textContent =
         "Al medir el recorrido completo,\n"+
         "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
@@ -483,8 +655,11 @@ function showFinal(){
         "dónde no estás siendo el mismo\n"+
         "en todos los planos.";
     }
+
     else{
+
       finalState.textContent = "Congruencia humana";
+
       finalHumanText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
         "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
@@ -493,7 +668,7 @@ function showFinal(){
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
         "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n"+
+        "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
         "de seguir siendo humano.";
@@ -502,89 +677,197 @@ function showFinal(){
 }
 
 /* ===============================
-   CIERRE Y LIMPIEZA DE CICLO (3 SEGUNDOS DE ANIMACIÓN)
-================================ */
-function finalizarYReiniciar() {
-  const overlay = document.getElementById("cubeOverlay");
-  if (overlay) overlay.classList.add("active");
-
-  setTimeout(() => {
-    localStorage.removeItem(V2_STATE_KEY);
-    localStorage.removeItem(V2_BLOCK_KEY);
-
-    if (overlay) overlay.classList.remove("active");
-    document.body.classList.remove("mirror-bg");
-    
-    show("start");
-  }, 3000);
-}
-
-/* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO (1-100)
 ================================ */
 function calculateCurrentPercentage() {
-  const totalQuestionsCount = 4;
-  const answeredCount = q;
+  const totalAnswersSoFar = (week * 4) + q;
+  const maxQ = WEEKS.length * 4;
 
-  if (totalQuestionsCount === 0) return 5;
-
-  const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
-  const baseProgress = Math.max(5, progressPhysicalPct);
-
-  let totalMaxPossibleSoFar = answeredCount * 2;
-  let totalEarnedPoints = currentScore;
-
-  const qualityRatio = totalMaxPossibleSoFar > 0 ? (totalEarnedPoints / totalMaxPossibleSoFar) : 0;
-  
-  return Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
+  return Math.min(
+    100,
+    Math.max(
+      1,
+      Math.round((totalAnswersSoFar / maxQ) * 100)
+    )
+  );
 }
 
 function calculateHistoricalPercentage() {
-  if (weeklyScores.length === 0) return 5;
+  if (weeklyScores.length === 0) return 50;
+
   let sum = weeklyScores.reduce((a, b) => a + b, 0);
   let avg = sum / weeklyScores.length;
-  return Math.min(100, Math.max(5, Math.round((avg / 2) * 100)));
-}
 
-function calculateMirrorCurrentPercentage() {
-  const hist = calculateHistoricalPercentage();
-  const totalQuestionsCount = MIRROR_QUESTIONS.length;
-  const answeredCount = mq;
-
-  if (totalQuestionsCount === 0) return hist;
-
-  const progressPhysicalPct = Math.round((answeredCount / totalQuestionsCount) * 100);
-  const baseProgress = Math.max(5, progressPhysicalPct);
-
-  let mirrorEarned = 0;
-  for (let i = 0; i < mq; i++) {
-    mirrorEarned += (mirrorLog[i] ?? 0);
-  }
-  let mirrorMax = mq * 2;
-  const qualityRatio = mirrorMax > 0 ? (mirrorEarned / mirrorMax) : 0;
-
-  const mirrorPct = Math.min(100, Math.max(5, Math.round(baseProgress * (0.35 + (qualityRatio * 0.65)))));
-  
-  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+  return Math.min(
+    100,
+    Math.max(
+      1,
+      Math.round((avg / 2) * 100)
+    )
+  );
 }
 
 function calculateFinalPercentage() {
   const hist = calculateHistoricalPercentage();
-  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 0;
-  const mirrorPct = Math.min(100, Math.max(5, Math.round((mirrorAvg / 2) * 100)));
-  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+  const mirrorAvg = mirrorCount
+    ? (mirrorScore / mirrorCount)
+    : 1;
+
+  const mirrorPct = (mirrorAvg / 2) * 100;
+
+  return Math.min(
+    100,
+    Math.max(
+      1,
+      Math.round((hist * 0.4) + (mirrorPct * 0.6))
+    )
+  );
 }
 
 /* ===============================
    TERMÓMETRO GLOBAL INTEGRADO V2
+   (CON GAMA CROMÁTICA Y VALOR NUMÉRICO)
 ================================ */
 function updateThermometer(percent) {
+
   if (percent !== undefined) {
-    const fills = document.querySelectorAll('.thermo-fill');
+
+    const fills = document.querySelectorAll(
+      '#thermoFill, .thermo-fill, #weeklyThermoFill, #monthlyFill'
+    );
+
     fills.forEach(fill => {
+
       if (fill) {
+
         fill.style.width = percent + '%';
+
+        if (percent < 35) {
+
+          fill.style.background =
+            'linear-gradient(90deg, #ff4d4d, #ff9933)';
+
+        } else if (percent < 70) {
+
+          fill.style.background =
+            'linear-gradient(90deg, #ff9933, #ffd11a)';
+
+        } else {
+
+          fill.style.background =
+            'linear-gradient(90deg, #ffd11a, #2ecc71)';
+        }
       }
     });
 
-    const valSpans = document.querySelecto
+    const valSpans = document.querySelectorAll(
+      '.thermo-percentage-val'
+    );
+
+    valSpans.forEach(span => {
+      span.textContent = percent + '%';
+    });
+  }
+}
+
+/* ===============================
+   ANIMACIÓN DEL GAUGE
+================================ */
+function animateGauge(el, target, done){
+
+  if (!el) {
+    done && done();
+    return;
+  }
+
+  el.style.height="0%";
+
+  const start = performance.now();
+  const dur = 1800;
+  
+  function step(t){
+
+    const p = Math.min(
+      1,
+      (t - start) / dur
+    );
+
+    el.style.height =
+      p * target + "%";
+
+    p < 1
+      ? requestAnimationFrame(step)
+      : done && done();
+  }
+
+  requestAnimationFrame(step);
+}
+
+/* ===============================
+   FINALIZAR Y REINICIAR TODO EL CICLO
+================================ */
+function finalizarYReiniciar(){
+
+  /*
+    Se eliminan todos los estados persistentes
+    del Volumen 2.
+  */
+  localStorage.removeItem(V2_STATE_KEY);
+  localStorage.removeItem(V2_BLOCK_KEY);
+
+  /*
+    Se eliminan todos los estados persistentes
+    del Volumen 1.
+  */
+  localStorage.removeItem("hm_v1_state");
+  localStorage.removeItem("hm_v1_block_recorrido");
+  localStorage.removeItem("hm_v1_block_volve_pronto");
+
+  /*
+    Se elimina también el historial semanal
+    para que el nuevo recorrido comience limpio.
+  */
+  localStorage.removeItem("humanometro_semanal");
+
+  /*
+    Se limpia el estado visual de Tu reflejo.
+  */
+  document.body.classList.remove("mirror-bg");
+
+  /*
+    Volvemos al inicio del Volumen 1.
+    V2 está dentro de /humanometro-v2/,
+    por lo que ../ lleva al index.html principal.
+  */
+  window.location.href = "../";
+}
+
+/* ===============================
+   NAVEGACIÓN
+================================ */
+function show(id){
+
+  [
+    "start",
+    "test",
+    "weeklyResult",
+    "monthlyResult",
+    "mirrorIntro",
+    "mirrorTest",
+    "finalResult"
+  ]
+    .forEach(s => {
+
+      const el = $(s);
+
+      if (el) {
+        el.classList.add("hidden");
+      }
+    });
+
+  const targetEl = $(id);
+
+  if (targetEl) {
+    targetEl.classList.remove("hidden");
+  }
+}
