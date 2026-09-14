@@ -172,16 +172,10 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO RECORRIDO MENSUAL
+   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días)
 ================================ */
-function weeklyWithDonation() {
-
+function goToWeekly() {
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
-
-  if (weeklyCompleted && lastRecorrido && Date.now() - Number(lastRecorrido) >= WEEK_MS) {
-    goToV2();
-    return;
-  }
 
   if (!DEV_MODE) {
     if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
@@ -191,6 +185,26 @@ function weeklyWithDonation() {
   }
 
   startWeekly();
+}
+
+/* ===============================
+   ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días)
+================================ */
+function weeklyWithDonation() {
+  const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
+
+  if (!DEV_MODE) {
+    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
+      showWeeklyBlockFlash();
+      return;
+    }
+  }
+
+  if (!DEV_MODE) {
+    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
+  }
+
+  goToV2();
 }
 
 /* ===============================
@@ -429,7 +443,7 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML =
-      `<button class="premium" onclick="weeklyWithDonation()">Recorrido mensual</button>`;
+      `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
   }
 
   saveState({ lastSection: "results", finalAvg: avg });
@@ -477,10 +491,8 @@ function updateThermometer(percent) {
     if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
-      // 1. Progreso físico exacto basado en el porcentaje de preguntas respondidas (0 a 100%)
       const progressFraction = answeredCount / totalQuestionsCount;
 
-      // 2. Cálculo del puntaje acumulado real vs el máximo posible acumulado hasta ahora
       let totalEarned = 0;
       let maxPossibleSoFar = 0;
 
@@ -497,7 +509,6 @@ function updateThermometer(percent) {
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
 
-      // 3. Mapeo estricto por tercios de preguntas contestadas para evitar saltos bruscos:
       let baseMin = 5;
       let baseMax = 33;
 
@@ -509,7 +520,6 @@ function updateThermometer(percent) {
         baseMax = 100;
       }
 
-      // El porcentaje dentro del tercio actual responde a la calidad de las respuestas
       targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
       targetPct = Math.min(100, Math.max(5, targetPct));
     }
@@ -520,7 +530,6 @@ function updateThermometer(percent) {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
       
-      // Aplicación de la paleta de colores según el tramo visual correspondiente
       if (targetPct <= 33.3) {
         fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPct <= 66.6) {
@@ -536,16 +545,6 @@ function updateThermometer(percent) {
    NAVEGACIÓN
 ================================ */
 function restart() {
-
-  if (!DEV_MODE) {
-    const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
-    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
-      showWeeklyBlockFlash();
-      return;
-    }
-    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
-  }
-
   clearState();
   showSection("start");
   updateThermometer(5);
@@ -557,7 +556,6 @@ function showPrivacy() {
 }
 
 function showSection(id) {
-
   ["start","test","results","weekly","weeklyResultScreen","privacy"]
     .forEach(s => document.getElementById(s).classList.add("hidden"));
 
