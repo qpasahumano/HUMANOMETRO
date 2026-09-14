@@ -1,219 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Humanómetro®</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanómetro</title>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWPMQM4ZZ7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-QWPMQM4ZZ7');
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Open Graph / Compartir -->
-  <meta property="og:title" content="Humanómetro®">
-  <meta property="og:description" content="Una herramienta reflexiva donde te observás a vos en coherencia, emoción y humanidad en el tiempo. No juzga, solo te muestra.">
-  <meta property="og:image" content="https://qpasahumano.github.io/HUMANOMETRO/activos/humanometro_og_1200x630.png">
-  <meta property="og:url" content="https://qpasahumano.github.io/HUMANOMETRO/">
-  <meta property="og:type" content="website">
-
-  <!-- FUENTES -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Mystery+Quest&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- PWA MANIFEST E ÍCONOS -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="activos/hm_logo.png">
-  <link rel="icon" type="image/png" href="activos/hm_logo.png">
 </head>
-
 <body>
-<!-- CONTENEDOR ADAPTABLE: Marco de celular en PC/Tablet, pantalla completa en móviles -->
-<div class="device-frame-wrapper">
-  <div class="device-screen">
-    <main id="app">
 
-      <!-- CAPA DE MANOS DE FONDO (Global y sutil en toda la app) -->
-      <div class="manos-fondo"></div>
+  <div class="device-frame-wrapper">
+    <div class="device-screen">
 
-      <!-- SELLO HUMANÓMETRO LIMPIO -->
-      <div class="sello-wrap global-logo">
-        <img
-          src="activos/image_3.png"
-          alt="Sello Humanómetro"
-          class="sello-humanometro"
-        >
+      <header class="app-global-header">
+        <div class="sello-wrap global-logo">
+          <img
+            src="activos/image_cube.png"
+            alt="Cubo Humanómetro"
+            class="app-cube-icon"
+            style="width: 40px; height: 40px; margin-bottom: 4px;"
+          >
+          <img
+            src="activos/image_3.png"
+            alt="Sello Humanómetro"
+            class="sello-humanometro"
+          >
+        </div>
+      </header>
+
+      <div class="app-container">
+
+        <section id="start">
+          <div class="card scroll-sheet">
+            <h1>Humanómetro</h1>
+            
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <p class="description">
+              Continuación del proceso de observación personal.<br><br>
+              Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
+            </p>
+            <button class="btn btn-primary" onclick="startV2()">Próxima semana</button>
+          </div>
+        </section>
+
+        <section id="test" class="hidden">
+          <div class="card scroll-sheet">
+            <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+            <span class="measure-badge" id="questionMeasure">Medición</span>
+            <p class="description" id="questionText">Cargando pregunta...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answer(2)">Sí, totalmente</button>
+              <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
+              <button class="btn" onclick="answer(0)">No / Casi nunca</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="weeklyResult" class="hidden">
+          <div class="card scroll-sheet scroll-sheet-compact">
+            <div class="symbol-large" id="weeklySymbol">🐞</div>
+            <h2>Lectura Semanal</h2>
+
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <div id="weeklyTextWrap">
+              <p class="description" id="weeklyText"></p>
+              <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
+              <div class="results-action-wrap">
+                <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="monthlyResult" class="hidden">
+          <div class="card scroll-sheet">
+            <div class="subtitle">Cierre</div>
+            <h2>Cierre de Ciclo</h2>
+
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <p class="description">
+              Has completado los tres ciclos de medición de patrones y relación con el entorno.<br><br>
+              Queda habilitada la fase reflexiva final: "Tu reflejo".
+            </p>
+            <button class="btn btn-primary" onclick="gateMirrorIntro()">Acceder a Tu reflejo</button>
+          </div>
+        </section>
+
+        <section id="mirrorIntro" class="hidden">
+          <div class="card scroll-sheet">
+            <div class="subtitle">Fase Final</div>
+            <h1>Tu reflejo</h1>
+
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <p class="description">
+              En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas, integrando todo el recorrido realizado.<br><br>
+              Respondé observando tu verdad interna, no lo que te gustaría sentir.
+            </p>
+            <button class="btn btn-primary" onclick="startMirror()">Comenzar Tu reflejo</button>
+          </div>
+        </section>
+
+        <section id="mirrorTest" class="hidden">
+          <div class="card scroll-sheet">
+            <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
+            <div class="subtitle segment-title-compact">Situación Emocional</div>
+
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <p class="description" id="mirrorQuestion">Cargando situación...</p>
+            <div class="btn-group">
+              <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
+              <button class="btn" onclick="answerMirror(1)">Moderada</button>
+              <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="finalResult" class="hidden">
+          <div class="card scroll-sheet scroll-sheet-compact">
+            <div class="subtitle">Diagnóstico Integrativo</div>
+
+            <div class="thermo-wrapper">
+              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val">0%</span><span>100%</span></div>
+              <div class="thermo-bar"><div class="thermo-fill"></div></div>
+            </div>
+
+            <div class="vertical-gauge-wrap">
+              <div class="vertical-gauge-fill" id="finalFill"></div>
+            </div>
+            <h2 id="finalState" class="global-result-compact">Analizando...</h2>
+            
+            <div id="finalTextWrap" class="hidden">
+              <div class="scroll-sheet final-text-sheet">
+                <p class="description" id="finalHumanText"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="results-action-wrap" id="finalActionWrap">
+            <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar ciclo</button>
+          </div>
+        </section>
+
       </div>
-
-      <!-- INICIO -->
-      <section id="start">
-        <h1>Humanómetro</h1>
-        <p class="intro">
-          Esta herramienta no mide perfección ni juicio.<br>
-          Observa cómo se alinean intención, coherencia y humanidad en tu forma de actuar.
-        </p>
-
-        <!-- TERMÓMETRO LED GLOBAL CON ESCALA -->
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div class="thermo-bar">
-            <div id="thermoFillStart" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <button id="startBtn" class="premium power-on" onclick="startTest(true)">
-          Humanómetro <span class="on-led">ON</span>
-        </button>
-
-        <!-- AVISO DE BLOQUEO / MENSAJE ANTI-ANSIEDAD -->
-        <div id="weeklyBlockNotice" class="weekly-block-flash hidden"></div>
-
-        <p class="legal" onclick="showPrivacy()">Privacidad y uso</p>
-      </section>
-
-      <!-- TEST -->
-      <section id="test" class="hidden">
-        <!-- TÍTULO DEL SEGMENTO -->
-        <h2 id="areaTitle" class="segment-title-compact"></h2>
-
-        <!-- TERMÓMETRO LED CON ESCALA -->
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div class="thermo-bar">
-            <div id="thermoFillTest" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <p id="questionText"></p>
-        <small id="questionNote" class="legal"></small>
-
-        <div class="answers">
-          <button onclick="answer(2)">Sí</button>
-          <button onclick="answer(1)">Tal vez / A veces</button>
-          <button onclick="answer(0)">No</button>
-        </div>
-      </section>
-
-      <!-- RESULTADOS -->
-      <section id="results" class="hidden">
-        <h2 class="results-title-compact">Resultado Humanómetro</h2>
-
-        <!-- TERMÓMETRO LED GLOBAL CON ESCALA (Atado al porcentaje final de Humanidad general) -->
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div class="thermo-bar">
-            <div id="thermoFillResults" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <!-- CÍRCULOS LUMINOSOS (3 arriba y 3 abajo con borde LED) -->
-        <div id="circles" class="circles-grid-compact"></div>
-        <h3 id="globalResult" class="global-result-compact"></h3>
-
-        <!-- LECTURA HUMANA (Con scroll interno compacto, optimizado para subir el botón) -->
-        <div class="scroll-sheet scroll-sheet-compact">
-            <h3>Lectura humana</h3>
-            <ul id="tips"></ul>
-        </div>
-
-        <!-- BOTÓN DE CONTINUAR / ACCESO -->
-        <div id="weeklyAccess" class="results-action-wrap">
-          <button class="premium" onclick="weeklyWithDonation()">Lectura evolutiva</button>
-        </div>
-      </section>
-
-      <!-- PRIMERA SEMANA – PREGUNTAS -->
-      <section id="weekly" class="hidden">
-        <h2 id="weeklyTitle" class="segment-title-compact">Primera semana</h2>
-
-        <p class="weekly-intro">
-          ¿Cómo fue tu semana?<br>
-          Respondé con sinceridad para reconocer tu tendencia humana actual.
-        </p>
-
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div id="weeklyThermometer" class="thermo-bar">
-            <div id="weeklyThermoFill" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <p id="weeklyQuestion"></p>
-
-        <div class="answers">
-          <button onclick="weeklyAnswer(2)">Sí</button>
-          <button onclick="weeklyAnswer(1)">Tal vez / A veces</button>
-          <button onclick="weeklyAnswer(0)">No</button>
-        </div>
-      </section>
-
-      <!-- PRIMERA SEMANA – RESULTADO -->
-      <section id="weeklyResultScreen" class="hidden">
-        <div class="balance-wrap">
-          ⚖️
-        </div>
-
-        <!-- TERMÓMETRO LED EXCLUSIVO PARA RESULTADO SEMANAL -->
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div id="weeklyResultThermometer" class="thermo-bar">
-            <div id="weeklyResultThermoFill" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <!-- DEVOLUCIÓN SEMANAL (Con scroll interno y transparencia) -->
-        <div class="scroll-sheet">
-            <p id="weeklyText" class="weekly-result-text"></p>
-            <p id="weeklyAdvice" class="legal weekly-result-text"></p>
-        </div>
-
-        <button class="premium spaced" onclick="restart()">Volvé pronto</button>
-
-        <!-- 🔒 EL TEXTO DE BLOQUEO PERMANECE OCULTO AQUÍ HASTA QUE SE CLIQUEE EL BOTÓN -->
-        <div id="weeklyBlockFlash" class="hidden weekly-block-flash block-flash">
-          No seas ansioso.<br>
-          Todavía no pasó la semana.
-        </div>
-
-        <p id="weeklySaved" class="legal hidden">
-          ✔ Conteo semanal guardado correctamente.
-        </p>
-      </section>
-
-      <!-- PRIVACIDAD -->
-      <section id="privacy" class="hidden">
-        <h2>Privacidad y uso</h2>
-        <p>
-          Humanómetro no recopila datos personales.<br>
-          Todo ocurre localmente.<br>
-          No es diagnóstico médico ni psicológico.<br>
-          Es una herramienta reflexiva.
-        </p>
-
-        <!-- TERMÓMETRO LED GLOBAL CON ESCALA -->
-        <div class="thermo-wrapper">
-          <div class="thermo-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-          <div class="thermo-bar">
-            <div id="thermoFillPrivacy" class="thermo-fill"></div>
-          </div>
-        </div>
-
-        <button onclick="restart()">Volver</button>
-      </section>
-
-    </main>
+    </div>
   </div>
-</div>
 
-<!-- FORZAMOS LA ACTUALIZACIÓN DEL SCRIPT EVITANDO LA CACHÉ CON '?v=2.0' -->
-<script src="script.js?v=2.0"></script>
-<script src="bloqueos.js"></script>
+  <div class="cube-transition-overlay" id="cubeOverlay">
+    <img src="activos/image_cube.png" alt="Cubo Humanómetro">
+    <span>Cerrando ciclo...</span>
+  </div>
 
+  <script src="script.js"></script>
 </body>
+</html>body>
   </html>
