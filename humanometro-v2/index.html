@@ -27,6 +27,9 @@
             class="sello-humanometro"
           >
         </div>
+
+        <!-- NOMBRE SIEMPRE DEBAJO DEL ICONO PRINCIPAL -->
+        <h1>Humanómetro</h1>
       </header>
 
       <div class="app-container">
@@ -34,7 +37,6 @@
         <!-- INICIO V2 -->
         <section id="start">
           <div class="card">
-            <h1>Humanómetro</h1>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
@@ -50,25 +52,29 @@
           </div>
         </section>
 
-        <!-- TEST SEMANAL -->
+        <!-- TEST SEMANAL: SIN RECUADRO -->
         <section id="test" class="hidden">
-          <div class="card">
-            <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
-            <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
-            </div>
-            <span class="measure-badge" id="questionMeasure">Medición</span>
-            <p class="description" id="questionText">Cargando pregunta...</p>
-            <div class="btn-group">
-              <button class="btn" onclick="answer(2)">Sí, totalmente</button>
-              <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
-              <button class="btn" onclick="answer(0)">No / Casi nunca</button>
-            </div>
+
+          <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
+
+          <div class="thermo-wrapper">
+            <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
+            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
           </div>
+
+          <span class="measure-badge" id="questionMeasure">Medición</span>
+
+          <p class="description" id="questionText">Cargando pregunta...</p>
+
+          <div class="btn-group">
+            <button class="btn" onclick="answer(2)">Sí, totalmente</button>
+            <button class="btn" onclick="answer(1)">A veces / Parcialmente</button>
+            <button class="btn" onclick="answer(0)">No / Casi nunca</button>
+          </div>
+
         </section>
 
-        <!-- DEVOLUCIÓN SEMANAL -->
+        <!-- DEVOLUCIÓN SEMANAL: ÚNICO RECUADRO CON SCROLL -->
         <section id="weeklyResult" class="hidden">
           <div class="card scroll-sheet scroll-sheet-compact">
             <div class="symbol-large" id="weeklySymbol">🐞</div>
@@ -130,25 +136,27 @@
           </div>
         </section>
 
-        <!-- TEST TU REFLEJO -->
+        <!-- TEST TU REFLEJO: SIN RECUADRO -->
         <section id="mirrorTest" class="hidden">
-          <div class="card">
-            <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
-            <div class="subtitle segment-title-compact">Situación Emocional</div>
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
-            <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
-            </div>
+          <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
 
-            <p class="description" id="mirrorQuestion">Cargando situación...</p>
-            <div class="btn-group">
-              <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
-              <button class="btn" onclick="answerMirror(1)">Moderada</button>
-              <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
-            </div>
+          <div class="subtitle segment-title-compact">Situación Emocional</div>
+
+          <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
+          <div class="thermo-wrapper">
+            <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
+            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
           </div>
+
+          <p class="description" id="mirrorQuestion">Cargando situación...</p>
+
+          <div class="btn-group">
+            <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
+            <button class="btn" onclick="answerMirror(1)">Moderada</button>
+            <button class="btn" onclick="answerMirror(0)">Nula / Casi nada</button>
+          </div>
+
         </section>
 
         <!-- RESULTADO FINAL INTEGRADO -->
@@ -165,9 +173,10 @@
             <div class="vertical-gauge-wrap">
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
+
             <h2 id="finalState" class="global-result-compact">Analizando...</h2>
 
-            <!-- RECUADRO DE TEXTO CON SCROLL PROPIO (SOLO TEXTO DE LA DEVOLUCIÓN) -->
+            <!-- RECUADRO DE TEXTO CON SCROLL PROPIO (SOLO DEVOLUCIÓN) -->
             <div id="finalTextWrap" class="hidden">
               <div class="scroll-sheet final-text-sheet">
                 <p class="description" id="finalHumanText"></p>
