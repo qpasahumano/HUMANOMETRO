@@ -8,6 +8,9 @@ body {
   font-family: "Poppins", sans-serif;
   position: relative;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body::before {
@@ -50,6 +53,7 @@ body.mirror-bg {
   width: 100%;
   padding: 12px 16px 4px 16px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
@@ -58,12 +62,11 @@ body.mirror-bg {
   flex-shrink: 0;
 }
 
-/* MISMA ESTRUCTURA VISUAL DEL SELLO DE VOLUMEN 1 */
-
 .sello-wrap {
   display: flex;
   justify-content: center;
-  margin: 12px auto 4px;
+  align-items: center;
+  margin: 12px auto 2px;
   position: relative;
 }
 
@@ -88,6 +91,19 @@ body.mirror-bg {
   opacity: 0.4;
   animation: auraSpin 10s linear infinite;
   z-index: -1;
+}
+
+.global-logo-title {
+  margin: 0 auto 4px;
+  color: #dffaff;
+  font-family: "Poppins", sans-serif;
+  font-size: .9rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-align: center;
+  text-shadow:
+    0 0 8px rgba(120,255,230,.8),
+    0 0 18px rgba(120,255,230,.5);
 }
 
 @keyframes freqFloat {
@@ -120,6 +136,21 @@ body.mirror-bg {
   box-sizing: border-box;
   position: relative;
   z-index: 2;
+}
+
+.app-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(120,255,230,.14) 0%, rgba(31,64,55,.16) 50%, transparent 80%);
+  pointer-events: none;
+  z-index: -1;
+  animation: appAuraPulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes appAuraPulse {
+  0% { transform: scale(.9); opacity: .5; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 /* ===== LÁMINA PRINCIPAL ===== */
@@ -247,7 +278,7 @@ body.mirror-bg {
   border-color: rgba(106,255,159,.6);
   box-shadow:
     0 0 14px rgba(106,255,159,.35),
-    inset 0 0 8px rgba(106,255,159,.15);
+    inset 0 0 8px rgba(120,255,230,.15);
   font-weight: 600;
 }
 
@@ -545,4 +576,4 @@ body.mirror-bg {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(120,255,230,.5);
   animation: fadeInOut 3s ease-in-out forwards;
-                                   }
+}
