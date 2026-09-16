@@ -178,7 +178,7 @@ button, .btn {
   box-shadow:
     0 0 14px rgba(120,255,230,0.3),
     inset 0 0 8px rgba(120,255,230,0.15);
-  transition: transform .15s ease, box-shadow .15s ease;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
 }
 
 button:active, .btn:active { transform: scale(0.96); }
@@ -187,6 +187,35 @@ button:active, .btn:active { transform: scale(0.96); }
   background: linear-gradient(45deg, #162a24, #1f4037);
   border-color: rgba(106,255,159,0.7);
   box-shadow: 0 0 18px rgba(106,255,159,0.45), inset 0 0 10px rgba(106,255,159,0.25);
+}
+
+/* ===== ESTILO ESPECÍFICO CON LUMINOSIDAD PARA BOTÓN PREMIUM / LECTURA EVOLUTIVA ===== */
+button.premium, .btn.premium {
+  background: linear-gradient(45deg, #122923, #1f4f42);
+  border-color: rgba(106, 255, 159, 0.9);
+  color: #f4fffc;
+  font-weight: 600;
+  box-shadow: 
+    0 0 20px rgba(106, 255, 159, 0.6), 
+    inset 0 0 12px rgba(106, 255, 159, 0.4);
+  animation: premiumGlowPulse 2.2s infinite alternate ease-in-out;
+}
+
+button.premium:active, .btn.premium:active {
+  transform: scale(0.95);
+  background: linear-gradient(45deg, #1f4f42, #2e7c66);
+  box-shadow: 
+    0 0 30px rgba(106, 255, 159, 1), 
+    inset 0 0 18px rgba(255, 255, 255, 0.7);
+}
+
+@keyframes premiumGlowPulse {
+  0% {
+    box-shadow: 0 0 14px rgba(106, 255, 159, 0.4), inset 0 0 8px rgba(106, 255, 159, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 26px rgba(106, 255, 159, 0.8), inset 0 0 14px rgba(106, 255, 159, 0.5);
+  }
 }
 
 .answers button, .btn-group button {
@@ -543,4 +572,4 @@ button:active, .btn:active { transform: scale(0.96); }
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 18px rgba(255, 42, 71, 1); }
   100% { opacity: 0.7; }
-}
+   }
