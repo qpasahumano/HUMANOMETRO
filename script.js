@@ -164,7 +164,7 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
+   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto - AUDITADO)
 ================================ */
 function goToWeekly() {
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
@@ -172,7 +172,7 @@ function goToWeekly() {
   if (!DEV_MODE) {
     if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
       showWeeklyBlockFlash();
-      return;
+      return; // Frena estrictamente si no pasaron los 7 días
     }
   }
 
@@ -188,7 +188,7 @@ function weeklyWithDonation() {
   if (!DEV_MODE) {
     if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
       showWeeklyBlockFlash();
-      return;
+      return; // Frena estrictamente si no pasaron los 7 días
     }
   }
 
@@ -475,7 +475,6 @@ function updateThermometer(percent) {
       });
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
-      // Proporción matemática estricta basada en el rendimiento real acumulado
       const progressFraction = answeredCount / totalQuestionsCount;
       const baseProgress = Math.max(5, Math.round(progressFraction * 100));
       
