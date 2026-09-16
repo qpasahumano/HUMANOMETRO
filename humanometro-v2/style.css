@@ -47,11 +47,11 @@ body.mirror-bg {
   position: relative;
 }
 
-/* ===== ENCABEZADO GLOBAL CON SELLO HUMANÓMETRO (Compactado al máximo) ===== */
+/* ===== ENCABEZADO GLOBAL CON SELLO HUMANÓMETRO (Espacio superior eliminado) ===== */
 
 .app-global-header {
   width: 100%;
-  padding: 2px 16px 0px 16px; /* Reducido drásticamente el padding vertical superior/inferior */
+  padding: 0px 16px 0px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -66,35 +66,35 @@ body.mirror-bg {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2px auto 0px; /* Reducido margen del sello */
+  margin: 0px auto;
   position: relative;
 }
 
 .sello-humanometro {
-  width: 65px; /* Ligeramente más compacto para ganar espacio en pantallas móviles */
+  width: 72px;
   height: auto;
   animation: freqFloat 6s ease-in-out infinite;
   opacity: 0.95;
   filter:
-    drop-shadow(0 0 10px rgba(120,255,230,.9))
-    drop-shadow(0 0 25px rgba(120,200,255,.8));
+    drop-shadow(0 0 8px rgba(120,255,230,.9))
+    drop-shadow(0 0 20px rgba(120,200,255,.8));
 }
 
 .sello-wrap::before {
   content: "";
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   background: conic-gradient(#6aff9f,#6ad0ff,#c77dff,#6aff9f);
   filter: blur(12px);
-  opacity: 0.4;
+  opacity: 0.35;
   animation: auraSpin 10s linear infinite;
   z-index: -1;
 }
 
 .global-logo-title {
-  margin: 0 auto 2px; /* Margen inferior mínimo para la etiqueta */
+  margin: 0 auto;
   color: #dffaff;
   font-family: "Poppins", sans-serif;
   font-size: .8rem;
@@ -102,8 +102,8 @@ body.mirror-bg {
   letter-spacing: .12em;
   text-align: center;
   text-shadow:
-    0 0 8px rgba(120,255,230,.8),
-    0 0 18px rgba(120,255,230,.5);
+    0 0 6px rgba(120,255,230,.8),
+    0 0 14px rgba(120,255,230,.5);
 }
 
 @keyframes freqFloat {
@@ -126,11 +126,11 @@ body.mirror-bg {
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: 0px 16px 8px 16px; /* Padding superior ajustado a 0 para eliminar el aire muerto */
+  padding: 0px 16px 8px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Cambiado de center a flex-start para pegar el contenido al header */
+  justify-content: flex-start;
   flex-grow: 1;
   box-sizing: border-box;
   position: relative;
@@ -161,7 +161,7 @@ body.mirror-bg {
   background: rgba(10,15,25,0.88);
   border: 1px solid rgba(120,255,230,0.25);
   border-radius: 20px;
-  padding: 10px 16px; /* Padding interno optimizado */
+  padding: 10px 16px;
   box-shadow:
     0 0 28px rgba(120,255,230,.25),
     inset 0 0 22px rgba(255,255,255,.05);
@@ -197,14 +197,14 @@ body.mirror-bg {
   color: #dffaff;
   letter-spacing: .04em;
   margin-top: 2px;
-  margin-bottom: 6px; /* Reducido margen inferior de títulos */
+  margin-bottom: 8px;
   text-align: center;
   text-shadow:
     0 0 8px rgba(120,255,230,.9),
     0 0 22px rgba(120,255,230,.7);
 }
 
-.card h1 { font-size: 1.45rem; } /* Ligeramente optimizado para que no desborde */
+.card h1 { font-size: 1.5rem; }
 .card h2 { font-size: 1.2rem; }
 
 .card .subtitle {
@@ -213,16 +213,16 @@ body.mirror-bg {
   font-size: .68rem;
   letter-spacing: .2em;
   color: #6aff9f;
-  margin-bottom: 4px; /* Reducido */
+  margin-bottom: 4px;
   text-align: center;
   text-shadow: 0 0 8px rgba(106,255,159,.5);
 }
 
 .card .description {
-  font-size: .84rem;
+  font-size: .85rem;
   line-height: 1.4;
   color: #d2ece6;
-  margin-bottom: 10px; /* Reducido para acercar elementos internos */
+  margin-bottom: 10px;
   white-space: pre-line;
   text-align: center;
 }
@@ -235,7 +235,7 @@ body.mirror-bg {
   font-size: .7rem;
   padding: 2px 8px;
   border-radius: 20px;
-  margin-bottom: 6px; /* Reducido */
+  margin-bottom: 6px;
   letter-spacing: .05em;
   font-family: "Poppins", sans-serif;
 }
@@ -245,14 +245,14 @@ body.mirror-bg {
   flex-direction: column;
   gap: 0;
   width: 100%;
-  margin-top: 4px; /* Reducido */
+  margin-top: 4px;
 }
 
 .btn {
   width: 85%;
   max-width: 300px;
-  margin: 5px auto; /* Márgenes compactos entre botones */
-  padding: 8px 12px; /* Padding reducido para ganar espacio vertical */
+  margin: 6px auto;
+  padding: 8px 12px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: .88em;
@@ -299,7 +299,7 @@ body.mirror-bg {
 
 .thermo-wrapper {
   width: 100%;
-  margin: 6px 0; /* Reducido */
+  margin: 4px 0;
 }
 
 .thermo-scale {
@@ -315,7 +315,7 @@ body.mirror-bg {
 
 .thermo-bar {
   width: 100%;
-  height: 10px; /* Ligeramente más estilizado */
+  height: 10px;
   background: rgba(15,23,42,.85);
   border: 1px solid rgba(120,255,230,.4);
   border-radius: 20px;
@@ -348,12 +348,12 @@ body.mirror-bg {
 }
 
 .vertical-gauge-wrap {
-  width: 24px; /* Ligeramente más angosto para ahorrar espacio horizontal y vertical */
-  height: 140px; /* Altura optimizada para pantallas móviles */
+  width: 26px;
+  height: 150px;
   background: rgba(15,23,42,.85);
   border: 1px solid rgba(120,255,230,.3);
   border-radius: 20px;
-  margin: 6px auto; /* Reducido */
+  margin: 6px auto;
   overflow: hidden;
   position: relative;
   box-shadow:
@@ -390,8 +390,8 @@ body.mirror-bg {
 }
 
 .symbol-large {
-  font-size: 2.4rem; /* Reducido para evitar saltos de línea y exceso de aire */
-  margin-bottom: 4px;
+  font-size: 2.8rem;
+  margin-bottom: 6px;
   text-shadow: 0 0 15px rgba(120,255,230,.6);
   animation: floatSymbol 2.6s infinite ease-in-out;
 }
@@ -402,7 +402,7 @@ body.mirror-bg {
 }
 
 .mirror-emoji {
-  font-size: 36px; /* Reducido para adaptarse compactamente */
+  font-size: 38px;
   color: #cffff4;
   text-align: center;
   margin: 8px auto;
@@ -468,7 +468,7 @@ body.mirror-bg {
 }
 
 .segment-title-compact {
-  font-size: 1.05rem; /* Ajustado */
+  font-size: 1.1rem;
   color: #a7f3d0;
   margin: 4px 0;
   font-family: "Poppins", sans-serif;
@@ -479,7 +479,7 @@ body.mirror-bg {
 }
 
 .global-result-compact {
-  font-size: .84rem;
+  font-size: .85rem;
   color: #a7f3d0;
   margin: 2px 0;
   text-align: center;
