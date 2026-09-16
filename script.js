@@ -132,6 +132,7 @@ function showWeeklyBlockFlash() {
     const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
     if (weeklyResultFill) {
       weeklyResultFill.style.width = weeklyPercent + '%';
+      applyThermoColor(weeklyResultFill, weeklyPercent);
     }
     return;
   }
@@ -260,6 +261,7 @@ function showWeeklyResultScreen() {
   const weeklyResultFill = document.getElementById("weeklyResultThermoFill");
   if (weeklyResultFill) {
     weeklyResultFill.style.width = weeklyPercent + '%';
+    applyThermoColor(weeklyResultFill, weeklyPercent);
   }
   saveState({ lastSection: "weeklyResultScreen", weeklyCompleted: true });
 }
@@ -398,6 +400,7 @@ function showResults() {
   const resultsFill = document.getElementById("thermoFillResults");
   if (resultsFill) {
     resultsFill.style.width = avg + '%';
+    applyThermoColor(resultsFill, avg);
   }
 
   if (mode === "common") {
@@ -423,6 +426,23 @@ function premiumFeedback(area, p) {
   return `En ${area}, tu conducta refleja conciencia, responsabilidad y humanidad activa.`;
 }
 
+/* ===============================
+   GESTIÓN DE COLOR ESTRICTA POR ZONAS
+================================ */
+function applyThermoColor(element, targetPercent) {
+  if (!element) return;
+  if (targetPercent <= 50) {
+    element.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+  } else if (targetPercent <= 75) {
+    element.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 50%, #ffc107 100%)";
+  } else {
+    element.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33%, #ffc107 66%, #10b981 100%)";
+  }
+}
+
+/* ===============================
+   TERMÓMETRO MATEMÁTICO ACUMULATIVO V1
+================================ */
 function updateThermometer(percent) {
   let targetPct = percent;
 
@@ -440,7 +460,6 @@ function updateThermometer(percent) {
     if (totalQuestionsCount === 0 || answeredCount === 0) {
       targetPct = 5;
     } else {
-      const progressFraction = answeredCount / totalQuestionsCount;
       let totalEarned = 0;
       let maxPossibleSoFar = 0;
 
@@ -456,16 +475,12 @@ function updateThermometer(percent) {
       });
 
       const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
-      let baseMin = 5, baseMax = 33;
-
-      if (progressFraction > 0.333 && progressFraction <= 0.666) {
-        baseMin = 34; baseMax = 66;
-      } else if (progressFraction > 0.666) {
-        baseMin = 67; baseMax = 100;
-      }
-
-      targetPct = Math.round(baseMin + (qualityRatio * (baseMax - baseMin)));
-      targetPct = Math.min(100, Math.max(5, targetPct));
+      // Proporción matemática estricta basada en el rendimiento real acumulado
+      const progressFraction = answeredCount / totalQuestionsCount;
+      const baseProgress = Math.max(5, Math.round(progressFraction * 100));
+      
+      targetPct = Math.min(100, Math.round(baseProgress * (0.3 + (qualityRatio * 0.7))));
+      targetPct = Math.max(5, targetPct);
     }
   }
 
@@ -473,6 +488,7 @@ function updateThermometer(percent) {
   fills.forEach(fill => {
     if (fill && fill.id !== 'weeklyResultThermoFill' && fill.id !== 'thermoFillResults') {
       fill.style.width = targetPct + '%';
+      applyThermoColor(fill, targetPct);
     }
   });
 }
