@@ -20,6 +20,8 @@
 
       <!-- ENCABEZADO FIJO GLOBAL CON SELLO ÚNICO EN TODA LA APP -->
       <header class="app-global-header">
+
+        <!-- SELLO: SE MANTIENE CENTRADO Y EN SU POSICIÓN ORIGINAL -->
         <div class="sello-wrap global-logo">
           <img
             src="../activos/image_3.png"
@@ -28,28 +30,35 @@
           >
         </div>
 
-        <!-- NOMBRE SIEMPRE DEBAJO DEL ICONO PRINCIPAL -->
-        <h1>Humanómetro</h1>
+        <!-- NOMBRE SIEMPRE DEBAJO DEL SELLO -->
+        <div class="global-logo-title">Humanómetro</div>
+
       </header>
 
       <div class="app-container">
 
-        <!-- INICIO V2 -->
+        <!-- INICIO V2 / CONTINUACIÓN DEL PROCESO: SIN RECUADRO -->
         <section id="start">
-          <div class="card">
 
-            <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
-            <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+          <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
+          <div class="thermo-wrapper">
+            <div class="thermo-scale">
+              <span>0%</span>
+              <span class="thermo-percentage-val" id="thermoVal">0%</span>
+              <span>100%</span>
             </div>
-
-            <p class="description">
-              Continuación del proceso de observación personal.<br><br>
-              Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
-            </p>
-            <button class="btn btn-primary" onclick="startV2()">Próxima semana</button>
+            <div class="thermo-bar">
+              <div class="thermo-fill" id="thermoFill"></div>
+            </div>
           </div>
+
+          <p class="description">
+            Continuación del proceso de observación personal.<br><br>
+            Evaluaremos tu vínculo con el entorno, la tecnología y tus estados emocionales profundos.
+          </p>
+
+          <button class="btn btn-primary" onclick="startV2()">Próxima semana</button>
+
         </section>
 
         <!-- TEST SEMANAL: SIN RECUADRO -->
@@ -58,8 +67,14 @@
           <div class="subtitle segment-title-compact" id="weekTitle">Semana</div>
 
           <div class="thermo-wrapper">
-            <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+            <div class="thermo-scale">
+              <span>0%</span>
+              <span class="thermo-percentage-val" id="thermoVal">0%</span>
+              <span>100%</span>
+            </div>
+            <div class="thermo-bar">
+              <div class="thermo-fill" id="thermoFill"></div>
+            </div>
           </div>
 
           <span class="measure-badge" id="questionMeasure">Medición</span>
@@ -74,65 +89,100 @@
 
         </section>
 
-        <!-- DEVOLUCIÓN SEMANAL: ÚNICO RECUADRO CON SCROLL -->
+        <!-- DEVOLUCIÓN SEMANAL: RECUADRO + SCROLL EXCLUSIVAMENTE PARA LA DEVOLUCIÓN -->
         <section id="weeklyResult" class="hidden">
           <div class="card scroll-sheet scroll-sheet-compact">
+
             <div class="symbol-large" id="weeklySymbol">🐞</div>
+
             <h2>Lectura Semanal</h2>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-scale">
+                <span>0%</span>
+                <span class="thermo-percentage-val" id="thermoVal">0%</span>
+                <span>100%</span>
+              </div>
+              <div class="thermo-bar">
+                <div class="thermo-fill" id="thermoFill"></div>
+              </div>
             </div>
 
             <div id="weeklyTextWrap">
               <p class="description" id="weeklyText"></p>
-              <p class="description" style="color: var(--cyan-bright);" id="weeklyAdvice"></p>
+
+              <p
+                class="description"
+                style="color: var(--cyan-bright);"
+                id="weeklyAdvice"
+              ></p>
+
               <div class="results-action-wrap">
                 <button class="btn btn-primary" onclick="nextWeek()">Continuar</button>
               </div>
             </div>
+
           </div>
         </section>
 
         <!-- CIERRE DE CICLO V2 / TRANSICIÓN AL ESPEJO -->
         <section id="monthlyResult" class="hidden">
           <div class="card">
+
             <div class="subtitle">Cierre</div>
+
             <h2>Cierre de Ciclo</h2>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-scale">
+                <span>0%</span>
+                <span class="thermo-percentage-val" id="thermoVal">0%</span>
+                <span>100%</span>
+              </div>
+              <div class="thermo-bar">
+                <div class="thermo-fill" id="thermoFill"></div>
+              </div>
             </div>
 
             <p class="description">
               Has completado los tres ciclos de medición de patrones y relación con el entorno.<br><br>
               Queda habilitada la fase reflexiva final: "Tu reflejo".
             </p>
+
             <button class="btn btn-primary" onclick="gateMirrorIntro()">Cierre de ciclo</button>
+
           </div>
         </section>
 
         <!-- INTRODUCCIÓN A TU REFLEJO -->
         <section id="mirrorIntro" class="hidden">
           <div class="card">
+
             <div class="subtitle">Fase Final</div>
+
             <h1>Tu reflejo</h1>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-scale">
+                <span>0%</span>
+                <span class="thermo-percentage-val" id="thermoVal">0%</span>
+                <span>100%</span>
+              </div>
+              <div class="thermo-bar">
+                <div class="thermo-fill" id="thermoFill"></div>
+              </div>
             </div>
 
             <p class="description">
               En esta etapa evaluarás cómo reaccionás internamente frente a situaciones emocionales concretas, integrando todo el recorrido realizado.<br><br>
               Respondé observando tu verdad interna, no lo que te gustaría sentir.
             </p>
+
             <button class="btn btn-primary" onclick="startMirror()">Comenzar Tu reflejo</button>
+
           </div>
         </section>
 
@@ -141,15 +191,25 @@
 
           <div class="mirror-emoji" id="mirrorEmoji">🫥</div>
 
-          <div class="subtitle segment-title-compact">Situación Emocional</div>
+          <div class="subtitle segment-title-compact">
+            Situación Emocional
+          </div>
 
           <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
           <div class="thermo-wrapper">
-            <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-            <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+            <div class="thermo-scale">
+              <span>0%</span>
+              <span class="thermo-percentage-val" id="thermoVal">0%</span>
+              <span>100%</span>
+            </div>
+            <div class="thermo-bar">
+              <div class="thermo-fill" id="thermoFill"></div>
+            </div>
           </div>
 
-          <p class="description" id="mirrorQuestion">Cargando situación...</p>
+          <p class="description" id="mirrorQuestion">
+            Cargando situación...
+          </p>
 
           <div class="btn-group">
             <button class="btn" onclick="answerMirror(2)">Mucha intensidad</button>
@@ -162,32 +222,43 @@
         <!-- RESULTADO FINAL INTEGRADO -->
         <section id="finalResult" class="hidden">
           <div class="card">
+
             <div class="subtitle">Diagnóstico Integrativo</div>
 
             <!-- TERMÓMETRO GLOBAL UNIFICADO PERSISTENTE -->
             <div class="thermo-wrapper">
-              <div class="thermo-scale"><span>0%</span><span class="thermo-percentage-val" id="thermoVal">0%</span><span>100%</span></div>
-              <div class="thermo-bar"><div class="thermo-fill" id="thermoFill"></div></div>
+              <div class="thermo-scale">
+                <span>0%</span>
+                <span class="thermo-percentage-val" id="thermoVal">0%</span>
+                <span>100%</span>
+              </div>
+              <div class="thermo-bar">
+                <div class="thermo-fill" id="thermoFill"></div>
+              </div>
             </div>
 
             <div class="vertical-gauge-wrap">
               <div class="vertical-gauge-fill" id="finalFill"></div>
             </div>
 
-            <h2 id="finalState" class="global-result-compact">Analizando...</h2>
+            <h2 id="finalState" class="global-result-compact">
+              Analizando...
+            </h2>
 
-            <!-- RECUADRO DE TEXTO CON SCROLL PROPIO (SOLO DEVOLUCIÓN) -->
+            <!-- RECUADRO + SCROLL EXCLUSIVAMENTE PARA LA DEVOLUCIÓN FINAL -->
             <div id="finalTextWrap" class="hidden">
               <div class="scroll-sheet final-text-sheet">
                 <p class="description" id="finalHumanText"></p>
               </div>
             </div>
+
           </div>
 
-          <!-- BOTÓN DE FINALIZAR FUERA DEL RECUADRO DE TEXTO -->
+          <!-- BOTÓN DE FINALIZAR FUERA DEL RECUADRO DE DEVOLUCIÓN -->
           <div class="results-action-wrap" id="finalActionWrap">
             <button class="btn btn-primary" onclick="finalizarYReiniciar()">Finalizar ciclo</button>
           </div>
+
         </section>
 
       </div>
