@@ -561,10 +561,6 @@ function updateThermometer(explicitPercent) {
     if (fill) {
       fill.style.width = targetPercent + '%';
       
-      // Regla de colores estricta por tramos:
-      // 0% a 50%: Rojos (Alerta baja / crítico)
-      // 50% a 75%: Amarillos (Precaución / intermedio)
-      // 75% a 100%: Verdes (Exclusivo para respuestas mayoritariamente de 'Sí')
       if (targetPercent <= 50) {
         fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPercent <= 75) {
