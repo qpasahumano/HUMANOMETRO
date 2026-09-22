@@ -164,7 +164,7 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto - AUDITADO)
+   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
 ================================ */
 function goToWeekly() {
   const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
@@ -172,7 +172,7 @@ function goToWeekly() {
   if (!DEV_MODE) {
     if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
       showWeeklyBlockFlash();
-      return; // Frena estrictamente si no pasaron los 7 días
+      return;
     }
   }
 
@@ -188,7 +188,7 @@ function weeklyWithDonation() {
   if (!DEV_MODE) {
     if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
       showWeeklyBlockFlash();
-      return; // Frena estrictamente si no pasaron los 7 días
+      return;
     }
   }
 
