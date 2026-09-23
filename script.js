@@ -84,13 +84,11 @@ const WEEKLY_QUESTIONS = [
 ];
 
 /* ===============================
-   BLOQUEO + REANUDACIÓN — CONFIG
+   BLOQUEO + REANUDACIÓN — CONFIG UNIFICADA (V2_BLOCK_KEY)
 ================================ */
 const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-const BLOCK_KEY_RECORRIDO_V1 = "hm_v1_block_recorrido";
-const BLOCK_KEY_VOLVE_PRONTO_V1 = "hm_v1_block_volve_pronto";
+const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 
 /* ===============================
    DESTELLO BLOQUEO
@@ -121,11 +119,6 @@ function showWeeklyBlockFlash() {
   weeklyCompleted = saved.weeklyCompleted || false;
 
   if (weeklyCompleted) {
-    const last = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
-    if (last && Date.now() - Number(last) >= WEEK_MS) {
-      goToV2();
-      return;
-    }
     showSection("weeklyResultScreen");
     const avg = weeklyScores.length ? weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length : 2;
     const weeklyPercent = Math.round((avg / 2) * 100);
@@ -167,10 +160,10 @@ function showWeeklyBlockFlash() {
    ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
 ================================ */
 function goToWeekly() {
-  const lastRecorrido = localStorage.getItem(BLOCK_KEY_RECORRIDO_V1);
+  const lastRecorrido = localStorage.getItem(V2_BLOCK_KEY);
 
   if (!DEV_MODE) {
-    if (lastRecorrido && Date.now() - Number(lastRecorrido) < WEEK_MS) {
+    if (lastRecorrido && (Date.now() - Number(lastRecorrido)) < WEEK_MS) {
       showWeeklyBlockFlash();
       return;
     }
@@ -183,17 +176,17 @@ function goToWeekly() {
    ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días estricto)
 ================================ */
 function weeklyWithDonation() {
-  const lastVolver = localStorage.getItem(BLOCK_KEY_VOLVE_PRONTO_V1);
+  const lastVolver = localStorage.getItem(V2_BLOCK_KEY);
 
   if (!DEV_MODE) {
-    if (lastVolver && Date.now() - Number(lastVolver) < WEEK_MS) {
+    if (lastVolver && (Date.now() - Number(lastVolver)) < WEEK_MS) {
       showWeeklyBlockFlash();
       return;
     }
   }
 
   if (!DEV_MODE) {
-    localStorage.setItem(BLOCK_KEY_VOLVE_PRONTO_V1, Date.now());
+    localStorage.setItem(V2_BLOCK_KEY, Date.now());
   }
 
   goToV2();
@@ -279,7 +272,7 @@ function saveWeekly() {
   weeklySaved.classList.remove("hidden");
 
   if (!DEV_MODE) {
-    localStorage.setItem(BLOCK_KEY_RECORRIDO_V1, Date.now());
+    localStorage.setItem(V2_BLOCK_KEY, Date.now());
   }
 }
 
