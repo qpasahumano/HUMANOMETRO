@@ -15,5 +15,7 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "description": "Aplicación para medir y gestionar las distintas dimensiones de la humanidad y el bienestar personal.",
+  "id": "Humanómetro"
 }
