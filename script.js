@@ -91,14 +91,42 @@ const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 
 /* ===============================
-   DESTELLO BLOQUEO
+   DESTELLO BLOQUEO UNIFICADO (Dcon Dinámico e Independiente del HTML)
 ================================ */
 function showWeeklyBlockFlash() {
+  // Intenta buscar el elemento estático por si existe en el HTML
   const el = document.getElementById("weeklyBlockFlash");
-  if (!el) return;
-  el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 1400);
+  if (el) {
+    el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+    el.classList.remove("hidden");
+    setTimeout(() => el.classList.add("hidden"), 1400);
+    return;
+  }
+
+  // Si no está en el HTML, lo crea de forma 100% dinámica para asegurar que se dispare siempre
+  const d = document.createElement("div");
+  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+  d.style.cssText = `
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    font-size:1.35rem;
+    color:#eaffff;
+    background:
+      radial-gradient(circle, rgba(180,255,255,.28), transparent 60%),
+      rgba(6,18,40,.45);
+    text-shadow:
+      0 0 12px rgba(140,255,240,1),
+      0 0 26px rgba(140,255,240,.85);
+    z-index:9999;
+    animation: blockFade 1.3s ease-out forwards;
+  `;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 1300);
 }
 
 /* ===============================
@@ -362,7 +390,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS (Ajuste Bloqueo Primer Semana)
+   RESULTADOS
 ================================ */
 function showResults() {
   showSection("results");
@@ -402,15 +430,6 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML = `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
-    
-    // 🔒 ESTE ES EL ÚNICO AJUSTE QUIRÚRGICO: 
-    // Registra la primera semana al mostrar los círculos porcentuales si no estaba registrada previamente.
-    if (!DEV_MODE) {
-      const existingBlock = localStorage.getItem(V2_BLOCK_KEY);
-      if (!existingBlock) {
-        localStorage.setItem(V2_BLOCK_KEY, Date.now());
-      }
-    }
   }
 
   saveState({ lastSection: "results", finalAvg: avg });
@@ -513,4 +532,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
- }
+}
