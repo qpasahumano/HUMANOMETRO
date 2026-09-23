@@ -95,10 +95,36 @@ const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar d
 ================================ */
 function showWeeklyBlockFlash() {
   const el = document.getElementById("weeklyBlockFlash");
-  if (!el) return;
-  el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  el.classList.remove("hidden");
-  setTimeout(() => el.classList.add("hidden"), 1400);
+  if (el) {
+    el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+    el.classList.remove("hidden");
+    setTimeout(() => el.classList.add("hidden"), 1400);
+    return;
+  }
+
+  // Respaldo dinámico de seguridad por si el elemento flash no estuviera presente en el DOM de esta vista
+  const d = document.createElement("div");
+  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+  d.style.cssText = `
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    font-size:1.35rem;
+    color:#ff2a47;
+    background:
+      radial-gradient(circle, rgba(255,42,71,.28), transparent 60%),
+      rgba(6,18,40,.85);
+    text-shadow:
+      0 0 12px rgba(255,42,71,1),
+      0 0 26px rgba(255,42,71,.85);
+    z-index:9999;
+  `;
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 1400);
 }
 
 /* ===============================
@@ -403,7 +429,7 @@ function showResults() {
   if (mode === "premium") {
     weeklyAccess.innerHTML = `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
     
-    // 🔒 ESTE ES EL ÚNICO AJUSTE QUIRÚRGICO: 
+    // 🔒 ESTE ES EL AJUSTE QUIRÚRGICO MANTENIDO: 
     // Registra la primera semana al mostrar los círculos porcentuales si no estaba registrada previamente.
     if (!DEV_MODE) {
       const existingBlock = localStorage.getItem(V2_BLOCK_KEY);
@@ -513,4 +539,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
- }
+}
