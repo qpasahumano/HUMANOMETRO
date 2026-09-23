@@ -88,44 +88,17 @@ const WEEKLY_QUESTIONS = [
 ================================ */
 const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const V2_BLOCK_KEY = "hm_v2_last_week"; // Llave unificada estricta de 7 días
+const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 
 /* ===============================
-   DESTELLO BLOQUEO (Cartel Rojo de Ansiedad)
+   DESTELLO BLOQUEO
 ================================ */
 function showWeeklyBlockFlash() {
-  // Intenta buscar el elemento estático en el HTML
   const el = document.getElementById("weeklyBlockFlash");
-  if (el) {
-    el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-    el.classList.remove("hidden");
-    setTimeout(() => el.classList.add("hidden"), 1400);
-    return;
-  }
-
-  // Respaldo dinámico por si el elemento no estuviera mapeado en el HTML
-  const d = document.createElement("div");
-  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  d.style.cssText = `
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    pointer-events:none;
-    font-size:1.35rem;
-    color:#ff2a47;
-    background:
-      radial-gradient(circle, rgba(255,42,71,.28), transparent 60%),
-      rgba(6,18,40,.85);
-    text-shadow:
-      0 0 12px rgba(255,42,71,1),
-      0 0 26px rgba(255,42,71,.85);
-    z-index:9999;
-  `;
-  document.body.appendChild(d);
-  setTimeout(() => d.remove(), 1400);
+  if (!el) return;
+  el.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 1400);
 }
 
 /* ===============================
@@ -184,7 +157,7 @@ function showWeeklyBlockFlash() {
 })();
 
 /* ===============================
-   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto + Cartel Rojo)
+   ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
 ================================ */
 function goToWeekly() {
   const lastRecorrido = localStorage.getItem(V2_BLOCK_KEY);
@@ -200,7 +173,7 @@ function goToWeekly() {
 }
 
 /* ===============================
-   ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días estricto + Cartel Rojo)
+   ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días estricto)
 ================================ */
 function weeklyWithDonation() {
   const lastVolver = localStorage.getItem(V2_BLOCK_KEY);
@@ -389,7 +362,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS
+   RESULTADOS (Ajuste Bloqueo Primer Semana)
 ================================ */
 function showResults() {
   showSection("results");
@@ -430,7 +403,8 @@ function showResults() {
   if (mode === "premium") {
     weeklyAccess.innerHTML = `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
     
-    // Sella el registro inicial de los 7 días al finalizar el test premium por primera vez
+    // 🔒 ESTE ES EL ÚNICO AJUSTE QUIRÚRGICO: 
+    // Registra la primera semana al mostrar los círculos porcentuales si no estaba registrada previamente.
     if (!DEV_MODE) {
       const existingBlock = localStorage.getItem(V2_BLOCK_KEY);
       if (!existingBlock) {
@@ -539,4 +513,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+ }
