@@ -362,7 +362,7 @@ function answer(v) {
 }
 
 /* ===============================
-   RESULTADOS
+   RESULTADOS (Ajuste Bloqueo Primer Semana)
 ================================ */
 function showResults() {
   showSection("results");
@@ -402,6 +402,15 @@ function showResults() {
 
   if (mode === "premium") {
     weeklyAccess.innerHTML = `<button class="premium" onclick="goToWeekly()">Lectura evolutiva</button>`;
+    
+    // 🔒 ESTE ES EL ÚNICO AJUSTE QUIRÚRGICO: 
+    // Registra la primera semana al mostrar los círculos porcentuales si no estaba registrada previamente.
+    if (!DEV_MODE) {
+      const existingBlock = localStorage.getItem(V2_BLOCK_KEY);
+      if (!existingBlock) {
+        localStorage.setItem(V2_BLOCK_KEY, Date.now());
+      }
+    }
   }
 
   saveState({ lastSection: "results", finalAvg: avg });
@@ -504,4 +513,4 @@ function showSection(id) {
 
 function goToV2() {
   window.location.href = "./humanometro-v2/";
-}
+ }
