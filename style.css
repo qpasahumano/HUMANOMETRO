@@ -136,7 +136,27 @@ body.mirror-bg::before {
 
 .brand-meta { font-size: .7rem; opacity: .9; }
 
-.intro { font-size: .95rem; line-height: 1.5; margin: 20px 0; }
+/* ===== CALIBRACIÓN DE TEXTOS NUEVOS DE INICIO ===== */
+.intro-box-new {
+  margin: 14px 0 18px 0;
+}
+
+.intro-title-new {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #a7f3d0;
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 10px rgba(106, 255, 159, 0.4);
+}
+
+.intro { 
+  font-size: 0.9rem; 
+  line-height: 1.45; 
+  margin: 0; 
+  opacity: 0.95;
+}
+
 .legal { font-size: .75rem; opacity: .92; }
 .legal.small { font-size: .72rem; line-height: 1.45; }
 
@@ -277,7 +297,7 @@ button.premium:active, .btn.premium:active {
   color: #a7f3d0 !important;
 }
 
-/* ===== TERMÓMETRO V1 CON TERCIOS EXACTOS (0%-33.3% ROJO, 33.3%-66.6% AMARILLO, 66.6%-100% VERDE) ===== */
+/* ===== TERMÓMETRO V1 CON TERCIOS EXACTOS ===== */
 .thermo-wrapper {
   width: 100%;
   margin: 12px 0;
@@ -542,7 +562,7 @@ button.premium:active, .btn.premium:active {
   to { transform: rotate(360deg); }
 }
 
-/* ===== ESTILO DEL CARTEL DE BLOQUEO "NO SEAS ANSIOSO" (CONTENEDORES FANTASMAS ELIMINADOS & ROJO VISIBLE) ===== */
+/* ===== ESTILO DEL CARTEL DE BLOQUEO "NO SEAS ANSIOSO" ===== */
 .hidden, 
 #weeklySaved:empty, 
 .weekly-saved:empty, 
@@ -572,42 +592,4 @@ button.premium:active, .btn.premium:active {
   0% { opacity: 0.7; }
   50% { opacity: 1; text-shadow: 0 0 18px rgba(255, 42, 71, 1); }
   100% { opacity: 0.7; }
-}
-
-/* ===== NUEVOS ESTILOS ESPECÍFICOS SOLICITADOS (EFECTO LUMÍNICO Y FLECHA SUTIL) ===== */
-.intro-luminescent {
-  color: #dfffff;
-  text-shadow: 0 0 10px rgba(120, 255, 230, 0.5), 0 0 20px rgba(120, 255, 230, 0.2);
-  animation: introGlow 3s infinite alternate ease-in-out;
-}
-
-@keyframes introGlow {
-  0% { text-shadow: 0 0 8px rgba(120, 255, 230, 0.4), 0 0 15px rgba(120, 255, 230, 0.1); }
-  100% { text-shadow: 0 0 14px rgba(120, 255, 230, 0.8), 0 0 25px rgba(120, 255, 230, 0.4); }
-}
-
-.evolutive-prompt-wrap {
-  margin: 10px auto 4px;
-  text-align: center;
-}
-
-.evolutive-prompt-text {
-  font-size: 0.85rem;
-  color: #a7f3d0;
-  font-weight: 500;
-  text-shadow: 0 0 8px rgba(106, 255, 159, 0.4);
-  display: block;
-}
-
-.evolutive-arrow {
-  font-size: 1rem;
-  color: #6aff9f;
-  margin-top: 2px;
-  animation: bounceArrow 1.5s infinite ease-in-out;
-  text-shadow: 0 0 10px rgba(106, 255, 159, 0.8);
-}
-
-@keyframes bounceArrow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(4px); }
 }
