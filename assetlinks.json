@@ -1,1 +1,11 @@
 
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.humanometro.v1",
+    "sha256_cert_fingerprints": [
+      "AQUÍ_VA_TU_CODIGO_SHA256_LARGO"
+    ]
+  }
+}]
