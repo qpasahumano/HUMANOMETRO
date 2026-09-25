@@ -99,7 +99,7 @@ const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
-    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
+    ["Когда alguien te habla, ¿dejás el celular?","Presencia humana"],
     ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso humano"],
     ["¿Te afecta el sufrimiento ajeno?","Sensibilidad emocional"]
   ]},
@@ -414,7 +414,7 @@ function showFinal(){
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
         "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Cuando el dolor del otro no resuena,\n"+
+        "Когда el dolor del otro no resuena,\n"+
         "la humanidad se vuelve funcional,\n"+
         "pero pierde profundidad.\n\n"+
         "Este resultado no acusa,\n"+
@@ -444,7 +444,7 @@ function showFinal(){
         "Hay registros de conciencia en ciertos planos,\n"+
         "pero neutralidad o ausencia emocional\n"+
         "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intelectual.\n"+
+        "Это no es incoherencia intelectual.\n"+
         "Es incongruencia emocional.\n\n"+
         "Distintas partes tuyas responden desde lugares opuestos:\n"+
         "una se muestra consciente,\n"+
@@ -467,7 +467,7 @@ function showFinal(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
+        "Это no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
@@ -495,34 +495,51 @@ function finalizarYReiniciar() {
 }
 
 /* ===============================
-   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO ACUMULATIVO (1-100)
+   CÁLCULOS DE PORCENTAJE DE TERMÓMETRO ACUMULATIVO (1-100) — ADAPTADO V1
 ================================ */
 function calculateCurrentPercentage() {
+  let totalQuestionsCount = 0;
+  WEEKS.forEach(w => { totalQuestionsCount += w.questions.length; });
+
+  let answeredCount = 0;
+  if (week < WEEKS.length) {
+    answeredCount = (week * 4) + q;
+  } else {
+    answeredCount = totalQuestionsCount;
+  }
+
+  const activeSec = document.querySelector("section:not(.hidden)")?.id;
+  if (activeSec === "mirrorTest") {
+    answeredCount = totalQuestionsCount + (mq > 0 ? mq : 0);
+    totalQuestionsCount += MIRROR_QUESTIONS.length;
+  }
+
+  if (totalQuestionsCount === 0 || answeredCount === 0) {
+    return 5;
+  }
+
   let totalEarned = 0;
-  let totalMax = 0;
-  
+  let maxPossibleSoFar = 0;
+
   for (let i = 0; i < weeklyScores.length; i++) {
+    maxPossibleSoFar += 4 * 2;
     totalEarned += weeklyScores[i] * 4;
-    totalMax += 4 * 2;
   }
-  
-  const currentActiveSection = document.querySelector("section:not(.hidden)")?.id;
-  
-  if (currentActiveSection === "test" && week < WEEKS.length) {
+
+  if (activeSec === "test" && week < WEEKS.length) {
+    maxPossibleSoFar += q * 2;
     totalEarned += currentScore;
-    totalMax += q * 2;
-  } else if (currentActiveSection === "mirrorTest") {
-    for (let i = 0; i < weeklyScores.length; i++) {
-      totalEarned += weeklyScores[i] * 4;
-      totalMax += 4 * 2;
-    }
+  } else if (activeSec === "mirrorTest") {
+    maxPossibleSoFar += mirrorScore;
     totalEarned += mirrorScore;
-    totalMax += (mq > 0 ? mq : 1) * 2;
   }
+
+  const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
+  const progressFraction = answeredCount / totalQuestionsCount;
+  const baseProgress = Math.max(5, Math.round(progressFraction * 100));
   
-  if (totalMax === 0) return 5;
-  const ratio = totalEarned / totalMax;
-  return Math.min(100, Math.max(5, Math.round(ratio * 100)));
+  let targetPct = Math.round(baseProgress * (0.3 + (qualityRatio * 0.7)));
+  return Math.min(100, Math.max(5, targetPct));
 }
 
 function calculateHistoricalPercentage() {
@@ -540,7 +557,7 @@ function calculateFinalPercentage() {
 }
 
 /* ===============================
-   TERMÓMETRO GLOBAL INTEGRADO V2 (CON GAMA DE COLORES ESTRICTA)
+   TERMÓMETRO GLOBAL INTEGRADO V2 (CON GAMA DE COLORES ESTRICTA V1)
 ================================ */
 function updateThermometer(explicitPercent) {
   let targetPercent = explicitPercent;
@@ -556,7 +573,7 @@ function updateThermometer(explicitPercent) {
     }
   }
 
-  const fills = document.querySelectorAll('#thermoFill');
+  const fills = document.querySelectorAll('.thermo-fill');
   fills.forEach(fill => {
     if (fill) {
       fill.style.width = targetPercent + '%';
