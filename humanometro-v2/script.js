@@ -16,12 +16,14 @@ function now(){ return Date.now(); }
 function pasoUnaSemana(){
   if (DEV_MODE) return true;
   const last = localStorage.getItem(V2_BLOCK_KEY);
-  if (!last) return true;
+  if (!last || isNaN(Number(last))) return true;
   return (now() - Number(last)) >= WEEK_MS;
 }
 
 function marcarSemana(){
-  localStorage.setItem(V2_BLOCK_KEY, now());
+  if (!localStorage.getItem(V2_BLOCK_KEY)) {
+    localStorage.setItem(V2_BLOCK_KEY, now());
+  }
 }
 
 function saveV2State(extra = {}) {
