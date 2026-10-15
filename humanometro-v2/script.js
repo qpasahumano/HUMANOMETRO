@@ -1,4 +1,4 @@
-const $ = id => document.getElementById(id);
+Const $ = id => document.getElementById(id);
 
 /* ===============================
    BLOQUEO SEMANAL — CONFIG
@@ -99,7 +99,7 @@ const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊
 const WEEKS = [
   { title:"Vos ante el mundo", questions:[
     ["Cuando ves noticias de guerras o conflictos, ¿te genera tristeza?","Empatía global"],
-    ["Когда alguien te habla, ¿dejás el celular?","Presencia humana"],
+    ["Cuando alguien te habla, ¿dejás el celular?","Presencia humana"],
     ["¿Sentís impulso de involucrarte ante injusticias?","Compromiso humano"],
     ["¿Te afecta el sufrimiento ajeno?","Sensibilidad emocional"]
   ]},
@@ -300,17 +300,17 @@ function showMonthly(){
 }
 
 /* ===============================
-   TU REFLEJO — PREGUNTAS COMPLETAS
+   TU REFLEJO — PREGUNTAS COMPLETAS (CORREGIDAS AL ESPAÑOL)
 ================================ */
 const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
-  { t:"Когда te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
-  { t:"Когда tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánto culpa aparece después, aunque intentes justificarte o seguir adelante?" },
-  { t:"Когда se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
-  { t:"Когда estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
+  { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
+  { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
@@ -366,7 +366,7 @@ function answerMirror(v){
 }
 
 /* ===============================
-   DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE
+   DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE (CORREGIDAS AL ESPAÑOL)
 ================================ */
 function showFinal(){
   show("finalResult");
@@ -414,7 +414,7 @@ function showFinal(){
         "una forma de no involucrarse para no sentir.\n\n"+
         "El problema no es no sentir,\n"+
         "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Когда el dolor del otro no resuena,\n"+
+        "Cuando el dolor del otro no resuena,\n"+
         "la humanidad se vuelve funcional,\n"+
         "pero pierde profundidad.\n\n"+
         "Este resultado no acusa,\n"+
@@ -444,7 +444,7 @@ function showFinal(){
         "Hay registros de conciencia en ciertos planos,\n"+
         "pero neutralidad o ausencia emocional\n"+
         "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Это no es incoherencia intelectual.\n"+
+        "Esto no es incoherencia intelectual.\n"+
         "Es incongruencia emocional.\n\n"+
         "Distintas partes tuyas responden desde lugares opuestos:\n"+
         "una se muestra consciente,\n"+
@@ -467,7 +467,7 @@ function showFinal(){
         "ni contradicciones defensivas,\n"+
         "sino una humanidad que registra, procesa\n"+
         "y responde con presencia.\n\n"+
-        "Это no habla de perfección,\n"+
+        "Esto no habla de perfección,\n"+
         "habla de conciencia.\n\n"+
         "Integrar no es llegar a un punto final,\n"+
         "es mantener abierta la posibilidad\n"+
