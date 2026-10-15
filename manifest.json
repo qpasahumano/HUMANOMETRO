@@ -14,13 +14,13 @@
 "icons": [
 {
 "src": "./activos/image_3.png",
-"sizes": "512x512",
+"sizes": "1254x1254",
 "type": "image/png",
 "purpose": "any"
 },
 {
 "src": "./activos/image_3.png",
-"sizes": "512x512",
+"sizes": "1254x1254",
 "type": "image/png",
 "purpose": "maskable"
 }
