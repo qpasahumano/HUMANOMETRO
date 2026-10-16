@@ -1,4 +1,4 @@
-const $ = id => document.getElementById(id);
+Const $ = id => document.getElementById(id);
 
 /* ===============================
    BLOQUEO SEMANAL — CONFIG
@@ -421,74 +421,61 @@ function showFinal(){
     if(range === 0){
       finalState.textContent = "Predominio de NO";
       finalHumanText.textContent =
-        "Analizando el ciclo completo, aparece un patrón claro:\n"+
-        "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
-        "no generan en vos una respuesta emocional significativa.\n\n"+
-        "No como falta moral,\n"+
-        "sino como señal de distancia.\n\n"+
-        "Esta distancia no habla de frialdad consciente,\n"+
-        "habla de un mecanismo de protección:\n"+
-        "una forma de no involucrarse para no sentir.\n\n"+
-        "El problema no es no sentir,\n"+
-        "sino normalizar ese apagamiento como estado estable.\n\n"+
-        "Cuando el dolor del otro no resuena,\n"+
-        "la humanidad se vuelve funcional,\n"+
-        "pero pierde profundidad.\n\n"+
-        "Este resultado no acusa,\n"+
-        "señala un punto ciego:\n"+
-        "allí donde la empatía podría desarrollarse\n"+
-        "y hoy no está ocurriendo.";
+        "Analizando el ciclo completo, aparece un patrón claro y sustained:\n"+
+        "muchas situaciones cotidianas que implican dolor ajeno, conflicto o malestar externo\n"+
+        "no generan en vos una respuesta emocional significativa o visible.\n\n"+
+        "Esta observación no constituye un juicio moral ni una acusación de frialdad;\n"+
+        "señala la presencia de un mecanismo de distancia adaptativa.\n\n"+
+        "Esta distancia actúa frecuentemente como un escudo de protección inconsciente:\n"+
+        "una estrategia para resguardar la propia energía no involucrándose afectivamente.\n\n"+
+        "El riesgo latente no radica en no sentir en un instante puntual,\n"+
+        "sino en normalizar e institucionalizar ese apagamiento emocional como un estado estable y permanente.\n\n"+
+        "Cuando las vivencias y dolores de los demás dejan de resonar internamente,\n"+
+        "la humanidad se vuelve puramente funcional y operativa, pero pierde su profundidad y su impacto real.\n\n"+
+        "Esta devolución no busca juzgarte, sino iluminar un punto ciego fundamental:\n"+
+        "aquel espacio donde la empatía y la conexión genuina podrían desarrollarse,\n"+
+        "pero donde hoy prima el repliegue y la desconexión.";
     }
     else if(range === 1){
       finalState.textContent = "Ambivalencia emocional";
       finalHumanText.textContent =
-        "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
-        "Hay momentos de registro, sensibilidad y presencia,\n"+
-        "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
-        "El “tal vez” no es indecisión superficial:\n"+
-        "es señal de una tensión interna\n"+
-        "entre lo que sentís\n"+
-        "y lo que te permitís sentir.\n\n"+
-        "La integración no llega forzando respuestas,\n"+
-        "llega cuando dejás de pelearte\n"+
-        "con lo que aparece a medias.";
+        "Tus respuestas a lo largo del recorrido reflejan una humanidad oscilante, que se manifiesta y luego se retira.\n\n"+
+        "Existen momentos claros de registro sensible, presencia y empatía genuina,\n"+
+        "seguidos inmediatamente por tramos de automatismo, duda o replegamiento defensivo.\n\n"+
+        "La recurrencia del 'tal vez' o de las respuestas intermedias no representa una simple indecisión superficial:\n"+
+        "es el síntoma directo de una tensión interna constante entre lo que sentís internamente\n"+
+        "y lo que efectivamente te permitís experimentar y expresar hacia afuera.\n\n"+
+        "La integración emocional no se alcanza forzando certidumbres o respuestas perfectas;\n"+
+        "comienza a construirse cuando dejás de luchar contra la contradicción\n"+
+        "y aceptás habitar con honestidad lo que surge en vos, incluso cuando se presenta de forma incompleta.";
     }
     else if(range === 2){
       finalState.textContent = "Incongruencia marcada";
       finalHumanText.textContent =
-        "Al medir el recorrido completo,\n"+
-        "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
-        "Hay registros de conciencia en ciertos planos,\n"+
-        "pero neutralidad o ausencia emocional\n"+
-        "frente a situaciones donde la empatía humana es clave.\n\n"+
-        "Esto no es incoherencia intelectual.\n"+
-        "Es incongruencia emocional.\n\n"+
-        "Distintas partes tuyas responden desde lugares opuestos:\n"+
-        "una se muestra consciente,\n"+
-        "otra evita implicarse,\n"+
-        "otra racionaliza.\n\n"+
-        "El resultado es una humanidad fragmentada:\n"+
-        "funcional, adaptada,\n"+
-        "pero no integrada.\n\n"+
-        "La evolución no comienza corrigiendo respuestas,\n"+
-        "comienza reconociendo\n"+
-        "dónde no estás siendo el mismo\n"+
-        "en todos los planos.";
+        "Al integrar la totalidad de tus respuestas en los distintos bloques,\n"+
+        "se evidencia una incompatibilidad estructural entre las diversas dimensiones de tu experiencia.\n\n"+
+        "Se observan registros de alta conciencia y lucidez en ciertos planos teóricos o reflexivos,\n"+
+        "que conviven con estados de neutralidad, indiferencia o ausencia emocional frente a situaciones donde la sensibilidad humana es determinante.\n\n"+
+        "No se trata de una incoherencia puramente intelectual o de pensamiento. Se trata de una incongruencia emocional profunda:\n"+
+        "diferentes facetas de tu ser responden desde lugares opuestos y no coordinados. Mientras una parte se percibe plenamente consciente,\n"+
+        "otra evita activamente implicarse y otra busca racionalizar el proceso.\n\n"+
+        "El resultado es una vivencia fragmentada: altamente funcional y adaptada en lo social,\n"+
+        "pero desintegrada en su núcleo interno.\n\n"+
+        "La verdadera evolución no comienza corrigiendo intelectualmente las respuestas,\n"+
+        "sino reconociendo con transparencia dónde no estás siendo el mismo en todos los aspectos de tu vida.";
     }
     else{
       finalState.textContent = "Congruencia humana";
       finalHumanText.textContent =
-        "A lo largo de todo el recorrido aparece una misma línea:\n"+
-        "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
-        "No hay fisuras marcadas\n"+
-        "ni contradicciones defensivas,\n"+
-        "sino una humanidad que registra, procesa\n"+
-        "y responde con presencia.\n\n"+
-        "Esto no habla de perfección,\n"+
-        "habla de conciencia.\n\n"+
-        "Integrar no es llegar a un punto final,\n"+
-        "es mantener abierta la posibilidad\n"+
-        "de seguir siendo humano.";
+        "A lo largo de todo el recorrido evaluado se sostiene una misma línea directora:\n"+
+        "una marcada coherencia entre lo que sentís, lo que pensás y el modo en que actuás frente al entorno.\n\n"+
+        "No se detectan fisuras defensivas ni contradicciones severas entre tus planos internos,\n"+
+        "sino la manifestación de una humanidad que registra el entorno, procesa las emociones con madurez\n"+
+        "y responde con presencia auténtica.\n\n"+
+        "Este estado no representa un logro estático ni una condición de perfección inalterable;\n"+
+        "es el reflejo de un ejercicio constante de conciencia activa.\n\n"+
+        "Integrar la propia humanidad no significa llegar a un destino final definitivo,\n"+
+        "sino mantener viva y abierta la capacidad cotidiana de seguir sintiendo y conectando con la realidad.";
     }
   });
 }
@@ -506,8 +493,8 @@ function finalizarYReiniciar() {
 
     if (overlay) overlay.classList.remove("active");
     document.body.classList.remove("mirror-bg");
-    
-    show("start");
+
+    window.location.reload();
   }, 3000);
 }
 
