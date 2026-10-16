@@ -1,4 +1,4 @@
-Const $ = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 /* ===============================
    BLOQUEO SEMANAL — CONFIG
@@ -21,53 +21,53 @@ function registrarMarcaFinCiclo(){
 }
 
 function saveV2State(extra = {}) {
-  Const state = {
-    Week,
-    Q,
-    CurrentScore,
-    WeeklyScores,
-    AllAnswers,
-    MirrorLog,
-    LastSection: document.querySelector("section:not(.hidden)")?.id || "start",
-    Timestamp: now(),
+  const state = {
+    week,
+    q,
+    currentScore,
+    weeklyScores,
+    allAnswers,
+    mirrorLog,
+    lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
+    timestamp: now(),
     ...extra
   };
-  LocalStorage.setItem(V2_STATE_KEY, JSON.stringify(state));
+  localStorage.setItem(V2_STATE_KEY, JSON.stringify(state));
 }
 
 function loadV2State() {
-  Const raw = localStorage.getItem(V2_STATE_KEY);
-  If (!raw) return null;
-  Try { return JSON.parse(raw); } catch { return null; }
+  const raw = localStorage.getItem(V2_STATE_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
 }
 
 /* ===============================
    BLOQUEO VISUAL UNIFICADO
 ================================ */
 function showWeeklyBlockFlash(){
-  Const d = document.createElement("div");
-  D.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
-  D.style.cssText = `
-    Position:fixed;
-    Inset:0;
-    Display:flex;
-    Align-items:center;
-    Justify-content:center;
-    Text-align:center;
-    Pointer-events:none;
-    Font-size:1.35rem;
-    Color:#eaffff;
-    Background:
-      Radial-gradient(circle, rgba(180,255,255,.28), transparent 60%),
-      Rgba(6,18,40,.45);
-    Text-shadow:
+  const d = document.createElement("div");
+  d.innerHTML = "No seas ansioso.<br>Todavía no pasó la semana.";
+  d.style.cssText = `
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    font-size:1.35rem;
+    color:#eaffff;
+    background:
+      radial-gradient(circle, rgba(180,255,255,.28), transparent 60%),
+      rgba(6,18,40,.45);
+    text-shadow:
       0 0 12px rgba(140,255,240,1),
       0 0 26px rgba(140,255,240,.85);
-    Z-index:9999;
-    Animation: blockFade 1.3s ease-out forwards;
+    z-index:9999;
+    animation: blockFade 1.3s ease-out forwards;
   `;
-  Document.body.appendChild(d);
-  SetTimeout(()=>d.remove(),1300);
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),1300);
 }
 
 /* CACHE DOM */
@@ -89,7 +89,7 @@ const finalHumanText = $("finalHumanText");
 const finalState = $("finalState");
 
 /* EMOJIS ESPEJO */
-const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍osú","😊","🫥"];
+const MIRROR_EMOJIS = ["😡","😢","😨","😔","😰","😶‍🌫️","😊","🫥"];
 
 /* DATOS BASE */
 const WEEKS = [
@@ -119,170 +119,170 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
 /* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
-  Const saved = loadV2State();
-  If (!saved) return;
+  const saved = loadV2State();
+  if (!saved) return;
 
-  Week = saved.week || 0;
-  Q = saved.q || 0;
-  CurrentScore = saved.currentScore || 0;
-  WeeklyScores = saved.weeklyScores || [];
-  AllAnswers = saved.allAnswers || [];
-  MirrorLog = saved.mirrorLog || [];
+  week = saved.week || 0;
+  q = saved.q || 0;
+  currentScore = saved.currentScore || 0;
+  weeklyScores = saved.weeklyScores || [];
+  allAnswers = saved.allAnswers || [];
+  mirrorLog = saved.mirrorLog || [];
 
-  If (saved.lastSection) {
-    Show(saved.lastSection);
-    If (saved.lastSection === "test") {
-      LoadQuestion();
+  if (saved.lastSection) {
+    show(saved.lastSection);
+    if (saved.lastSection === "test") {
+      loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
-      UpdateThermometer(calculateCurrentPercentage());
+      updateThermometer(calculateCurrentPercentage());
     } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
-      UpdateThermometer(calculateHistoricalPercentage());
+      updateThermometer(calculateHistoricalPercentage());
     } else if (saved.lastSection === "mirrorTest") {
-      LoadMirror();
+      loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      UpdateThermometer(calculateFinalPercentage());
+      updateThermometer(calculateFinalPercentage());
     }
   }
 })();
 
 /* FLUJO */
 function startV2(){
-  Const saved = loadV2State();
-  If (saved && (saved.week > 0 || saved.lastSection && saved.lastSection !== "start")) {
-    Show(saved.lastSection || "test"); 
-    If (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
-    Return;
+  const saved = loadV2State();
+  if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
+    show(saved.lastSection || "test"); 
+    if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
+    return;
   }
 
-  Document.body.classList.remove("mirror-bg");
-  Week = 0; q = 0; currentScore = 0;
-  WeeklyScores = []; allAnswers = []; mirrorLog = [];
-  SaveV2State({ lastSection: "test" });
-  Show("test"); loadQuestion();
+  document.body.classList.remove("mirror-bg");
+  week = 0; q = 0; currentScore = 0;
+  weeklyScores = []; allAnswers = []; mirrorLog = [];
+  saveV2State({ lastSection: "test" });
+  show("test"); loadQuestion();
 }
 
 function loadQuestion(){
-  Const w = WEEKS[week];
-  If (!w) return;
-  WeekTitle.textContent = w.title;
-  QuestionText.textContent = w.questions[q][0];
-  QuestionMeasure.textContent = w.questions[q][1];
+  const w = WEEKS[week];
+  if (!w) return;
+  weekTitle.textContent = w.title;
+  questionText.textContent = w.questions[q][0];
+  questionMeasure.textContent = w.questions[q][1];
   
-  UpdateThermometer();
+  updateThermometer();
 }
 
 function answer(v){
-  CurrentScore += v;
-  AllAnswers.push({ block: WEEKS[week].title, q, v });
-  Q++;
-  SaveV2State({ q, currentScore, allAnswers });
-  Q >= 4 ? ShowWeekly() : loadQuestion();
+  currentScore += v;
+  allAnswers.push({ block: WEEKS[week].title, q, v });
+  q++;
+  saveV2State({ q, currentScore, allAnswers });
+  q >= 4 ? showWeekly() : loadQuestion();
 }
 
 /* ===============================
    DEVOLUCIONES SEMANALES
 ================================ */
 function showWeekly(){
-  Show("weeklyResult");
-  WeeklyTextWrap.classList.add("hidden");
+  show("weeklyResult");
+  weeklyTextWrap.classList.add("hidden");
   
-  Const avg = currentScore / 4;
-  WeeklyScores.push(avg);
+  const avg = currentScore / 4;
+  weeklyScores.push(avg);
   
-  UpdateThermometer();
+  updateThermometer();
 
-  Const range =
-    Avg <= 0.6 ? "low" :
-    Avg <= 0.9 ? "midLow" :
-    Avg <= 1.4 ? "mid" : "high";
+  const range =
+    avg <= 0.6 ? "low" :
+    avg <= 0.9 ? "midLow" :
+    avg <= 1.4 ? "mid" : "high";
 
-  WeeklySymbol.textContent =
-    Range === "low" ? "🦇" :
-    Range === "midLow" ? "🦇" :
-    Range === "mid" ? "🐞" : "🐦";
+  weeklySymbol.textContent =
+    range === "low" ? "🦇" :
+    range === "midLow" ? "🦇" :
+    range === "mid" ? "🐞" : "🐦";
 
-  Const block = WEEKS[week].title;
+  const block = WEEKS[week].title;
 
-  If(block === "Vos ante el mundo"){
-    If(avg < 1.5){
-      WeeklyText.textContent =
+  if(block === "Vos ante el mundo"){
+    if(avg < 1.5){
+      weeklyText.textContent =
         "Lo que ocurre en el mundo no siempre logra atravesarte.\n\n"+
         "El dolor ajeno, las injusticias o los conflictos pueden aparecer "+
-        "como información lejana, sin generar un impacto emocional sustained.\n\n"+
+        "como información lejana, sin generar un impacto emocional sostenido.\n\n"+
         "Esto no habla de falta de humanidad, sino de posibles mecanismos "+
         "de defensa, cansancio o saturación emocional.";
-      WeeklyAdvice.textContent =
+      weeklyAdvice.textContent =
         "Observar cuándo te cerrás y cuándo te abrís al otro "+
         "puede ser el primer gesto de reconexión humana.";
     } else {
-      WeeklyText.textContent =
+      weeklyText.textContent =
         "El mundo no pasa desapercibido.\n\n"+
         "Hay registro del dolor, de la injusticia y de lo que afecta "+
         "a otros seres humanos.";
-      WeeklyAdvice.textContent =
+      weeklyAdvice.textContent =
         "Sostener esta sensibilidad sin que te abrume "+
         "es parte de un equilibrio humano maduro.";
     }
   }
 
-  If(block === "Vos y la tecnología"){
-    If(avg < 1.5){
-      WeeklyText.textContent =
+  if(block === "Vos y la tecnología"){
+    if(avg < 1.5){
+      weeklyText.textContent =
         "La atención aparece fragmentada.\n\n"+
         "La tecnología tiende a absorber momentos que podrían "+
         "ser habitados con mayor presencia.\n\n"+
         "No como error, sino como hábito automatizado.";
-      WeeklyAdvice.textContent =
+      weeklyAdvice.textContent =
         "Pequeños cortes conscientes pueden devolver densidad "+
         "a la experiencia cotidiana.";
     } else {
-      WeeklyText.textContent =
+      weeklyText.textContent =
         "Lo digital acompaña sin dominar.\n\n"+
         "Hay uso consciente y registro del presente.";
-      WeeklyAdvice.textContent =
+      weeklyAdvice.textContent =
         "Este equilibrio sostiene vínculos más reales "+
         "y una experiencia más encarnada.";
     }
   }
 
-  If(block === "Integración humana"){
-    If(avg < 1.5){
-      WeeklyText.textContent =
+  if(block === "Integración humana"){
+    if(avg < 1.5){
+      weeklyText.textContent =
         "Se perciben fisuras entre pensamiento, emoción y acción.\n\n"+
         "No siempre lo que sentís logra expresarse "+
         "ni lo que pensás logra sostenerse en el hacer.";
-      WeeklyAdvice.textContent =
+      weeklyAdvice.textContent =
         "Nombrar estas incongruencias no es debilidad: "+
         "es el inicio del proceso de integración.";
     } else {
-      WeeklyText.textContent =
+      weeklyText.textContent =
         "Las respuestas muestran una percepción de coherencia interna.\n\n"+
         "Esta lectura se limita a cómo te pensás y te observás a vos mismo.\n\n"+
         "Cómo esta coherencia se expresa en el vínculo con el mundo y la tecnología\n"+
         "se observa en el siguiente tramo.";
-      WeeklyAdvice.textContent = "";
+      weeklyAdvice.textContent = "";
     }
   }
 
-  SaveV2State({ lastSection: "weeklyResult", weeklyScores });
-  SetTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
+  saveV2State({ lastSection: "weeklyResult", weeklyScores });
+  setTimeout(()=>weeklyTextWrap.classList.remove("hidden"),900);
 }
 
-Function nextWeek(){
-  Week++; 
-  Q = 0; 
-  CurrentScore = 0;
+function nextWeek(){
+  week++; 
+  q = 0; 
+  currentScore = 0;
   
-  Const isFinished = week >= WEEKS.length;
+  const isFinished = week >= WEEKS.length;
 
-  If (isFinished) {
-    RegistrarMarcaFinCiclo(); // EL GUARDADO SOLO REGISTRA EL TIEMPO SIN BLOQUEAR
-    SaveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
-    ShowMonthly();
+  if (isFinished) {
+    registrarMarcaFinCiclo(); // EL GUARDADO SOLO REGISTRA EL TIEMPO SIN BLOQUEAR
+    saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
+    showMonthly();
   } else {
-    SaveV2State({ week, q, currentScore, lastSection: "test" });
-    Show("test"); 
-    LoadQuestion();
+    saveV2State({ week, q, currentScore, lastSection: "test" });
+    show("test"); 
+    loadQuestion();
   }
 }
 
@@ -290,9 +290,9 @@ Function nextWeek(){
    CIERRE DE CICLO VOLUMEN 2
 ================================ */
 function showMonthly(){
-  Show("monthlyResult");
-  UpdateThermometer();
-  SaveV2State({ lastSection: "monthlyResult" });
+  show("monthlyResult");
+  updateThermometer();
+  saveV2State({ lastSection: "monthlyResult" });
 }
 
 /* ===============================
@@ -309,121 +309,118 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
-Let mq = 0, mirrorScore = 0, mirrorCount = 0;
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 // 2. EL BLOQUEO Y DESBLOQUEO ESTÁN CONCENTRADOS EXCLUSIVAMENTE EN ESTE BOTÓN
-Function gateMirrorIntro(){
-  If (DEV_MODE) {
-    OpenMirror();
-    Return;
+function gateMirrorIntro(){
+  if (DEV_MODE) {
+    openMirror();
+    return;
   }
 
-  Const lastTime = localStorage.getItem(V2_BLOCK_KEY);
+  const lastTime = localStorage.getItem(V2_BLOCK_KEY);
   
-  // Si no hay fecha guardada por alguna razón, deja pasar o registra.
-  If (!lastTime || isNaN(Number(lastTime))) {
-    OpenMirror();
-    Return;
+  if (!lastTime || isNaN(Number(lastTime))) {
+    openMirror();
+    return;
   }
 
-  Const transcurrido = now() - Number(lastTime);
+  const transcurrido = now() - Number(lastTime);
 
-  // ECUACIÓN MATEMÁTICA: ¿Transcurrieron los 7 días (WEEK_MS)?
-  If (transcurrido < WEEK_MS) {
-    ShowWeeklyBlockFlash(); // BLOQUEO
+  if (transcurrido < WEEK_MS) {
+    showWeeklyBlockFlash(); // BLOQUEO
   } else {
-    OpenMirror();           // DESBLOQUEO
+    openMirror();           // DESBLOQUEO
   }
 }
 
-Function openMirror(){
-  Show("mirrorIntro");
-  UpdateThermometer();
-  SaveV2State({ lastSection: "mirrorIntro" });
+function openMirror(){
+  show("mirrorIntro");
+  updateThermometer();
+  saveV2State({ lastSection: "mirrorIntro" });
 }
 
-Function startMirror(){
-  // El botón de iniciar refleja la misma validación unificada de gateMirrorIntro
-  If (!DEV_MODE) {
-    Const lastTime = localStorage.getItem(V2_BLOCK_KEY);
-    If (lastTime && !isNaN(Number(lastTime))) {
-      If ((now() - Number(lastTime)) < WEEK_MS) {
-        ShowWeeklyBlockFlash();
-        Return;
+function startMirror(){
+  if (!DEV_MODE) {
+    const lastTime = localStorage.getItem(V2_BLOCK_KEY);
+    if (lastTime && !isNaN(Number(lastTime))) {
+      if ((now() - Number(lastTime)) < WEEK_MS) {
+        showWeeklyBlockFlash();
+        return;
       }
     }
   }
 
-  Document.body.classList.add("mirror-bg");
-  Mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
-  SaveV2State({ lastSection: "mirrorTest" });
-  Show("mirrorTest"); loadMirror();
+  document.body.classList.add("mirror-bg");
+  mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  saveV2State({ lastSection: "mirrorTest" });
+  show("mirrorTest"); loadMirror();
 }
 
-Function loadMirror(){
-  MirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
-  MirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
-  UpdateThermometer();
+function loadMirror(){
+  mirrorEmoji.textContent = MIRROR_EMOJIS[mq] || "⬤";
+  mirrorQuestion.textContent = MIRROR_QUESTIONS[mq].t;
+  updateThermometer();
 }
 
-Function answerMirror(v){
-  MirrorLog.push(v ?? 0);
-  If(v !== null){ mirrorScore += v; mirrorCount++; }
-  Mq++;
+function answerMirror(v){
+  mirrorLog.push(v ?? 0);
+  if(v !== null){ mirrorScore += v; mirrorCount++; }
+  mq++;
 
-  If(mq === MIRROR_QUESTIONS.length){
-    Let semanticDelta = 0;
-    Const evitacion = mirrorLog[7] ?? 0;
-    Const desconexion = mirrorLog[5] ?? 0;
-    Const alegria = mirrorLog[6] ?? 0;
-    SemanticDelta -= (evitacion + desconexion) * 0.1;
-    SemanticDelta += alegria * 0.1;
-    MirrorScore += semanticDelta;
+  if(mq === MIRROR_QUESTIONS.length){
+    let semanticDelta = 0;
+    const evitacion = mirrorLog[7] ?? 0;
+    const desconexion = mirrorLog[5] ?? 0;
+    const alegria = mirrorLog[6] ?? 0;
+    semanticDelta -= (evitacion + desconexion) * 0.1;
+    semanticDelta += alegria * 0.1;
+    mirrorScore += semanticDelta;
   }
 
-  SaveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
-  Mq >= MIRROR_QUESTIONS.length ? ShowFinal() : loadMirror();
+  saveV2State({ mq, mirrorScore, mirrorCount, mirrorLog });
+  mq >= MIRROR_QUESTIONS.length ? showFinal() : loadMirror();
 }
 
 /* ===============================
    DEVOLUCIÓN FINAL INTEGRATIVA Y CIERRE
 ================================ */
 function showFinal(){
-  Show("finalResult");
-  FinalTextWrap.classList.add("hidden");
-  UpdateThermometer();
-  SaveV2State({ lastSection: "finalResult" });
+  show("finalResult");
+  finalTextWrap.classList.add("hidden");
+  updateThermometer();
+  saveV2State({ lastSection: "finalResult" });
 
-  Const avg = mirrorCount ? MirrorScore / mirrorCount : 0;
+  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
 
-  Const tristezaAjena = mirrorLog[1] ?? 0;
-  Const desconexion = mirrorLog[5] ?? 0;
-  Const evitacion = mirrorLog[7] ?? 0;
+  const tristezaAjena = mirrorLog[1] ?? 0;
+  const desconexion = mirrorLog[5] ?? 0;
+  const evitacion = mirrorLog[7] ?? 0;
 
-  Const bajaEmpatia = tristezaAjena <= 0.5;
-  Const desconexionActiva = desconexion >= 1;
-  Const evitacionActiva = evitacion >= 1;
+  const bajaEmpatia = tristezaAjena <= 0.5;
+  const desconexionActiva = desconexion >= 1;
+  const evitacionActiva = evitacion >= 1;
 
-  Let semanticPenalty = 0;
-  If(bajaEmpatia) semanticPenalty++;
-  If(desconexionActiva) semanticPenalty++;
-  If(evitacionActiva) semanticPenalty++;
+  let semanticPenalty = 0;
+  if(bajaEmpatia) semanticPenalty++;
+  if(desconexionActiva) semanticPenalty++;
+  if(evitacionActiva) semanticPenalty++;
 
-  Let range =
-    Avg <= 0.6 ? 0 :
-    Avg <= 0.9 ? 1 :
-    Avg <= 1.4 ? 2 : 3;
+  let range =
+    avg <= 0.6 ? 0 :
+    avg <= 0.9 ? 1 :
+    avg <= 1.4 ? 2 : 3;
 
-  If(range >= 2 && semanticPenalty >= 2){
-    Range -= 1;
+  if(range >= 2 && semanticPenalty >= 2){
+    range -= 1;
   }
 
-  AnimateGauge(finalFill, (avg / 2) * 100, ()=>{
-    FinalTextWrap.classList.remove("hidden");
+  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+    finalTextWrap.classList.remove("hidden");
 
-    If(range === 0){
-      FinalState.textContent = "Predominio de NO";
-      FinalHumanText.textContent =
+    if(range === 0){
+      finalState.textContent = "Predominio de NO";
+      finalHumanText.textContent =
         "Analizando el ciclo completo, aparece un patrón claro:\n"+
         "muchas situaciones que implican dolor ajeno, conflicto o malestar externo\n"+
         "no generan en vos una respuesta emocional significativa.\n\n"+
@@ -442,9 +439,9 @@ function showFinal(){
         "allí donde la empatía podría desarrollarse\n"+
         "y hoy no está ocurriendo.";
     }
-    Else if(range === 1){
-      FinalState.textContent = "Ambivalencia emocional";
-      FinalHumanText.textContent =
+    else if(range === 1){
+      finalState.textContent = "Ambivalencia emocional";
+      finalHumanText.textContent =
         "Tus respuestas muestran una humanidad que aparece y se retira.\n\n"+
         "Hay momentos de registro, sensibilidad y presencia,\n"+
         "seguidos por momentos de automatismo, duda o repliegue.\n\n"+
@@ -456,9 +453,9 @@ function showFinal(){
         "llega cuando dejás de pelearte\n"+
         "con lo que aparece a medias.";
     }
-    Else if(range === 2){
-      FinalState.textContent = "Incongruencia marcada";
-      FinalHumanText.textContent =
+    else if(range === 2){
+      finalState.textContent = "Incongruencia marcada";
+      finalHumanText.textContent =
         "Al medir el recorrido completo,\n"+
         "aparece una incompatibilidad marcada entre tus respuestas.\n\n"+
         "Hay registros de conciencia en ciertos planos,\n"+
@@ -478,9 +475,9 @@ function showFinal(){
         "dónde no estás siendo el mismo\n"+
         "en todos los planos.";
     }
-    Else{
-      FinalState.textContent = "Congruencia humana";
-      FinalHumanText.textContent =
+    else{
+      finalState.textContent = "Congruencia humana";
+      finalHumanText.textContent =
         "A lo largo de todo el recorrido aparece una misma línea:\n"+
         "coherencia entre lo que sentís, lo que pensás y lo que hacés.\n\n"+
         "No hay fisuras marcadas\n"+
@@ -500,17 +497,17 @@ function showFinal(){
    CIERRE Y LIMPIEZA DE CICLO
 ================================ */
 function finalizarYReiniciar() {
-  Const overlay = document.getElementById("cubeOverlay");
-  If (overlay) overlay.classList.add("active");
+  const overlay = document.getElementById("cubeOverlay");
+  if (overlay) overlay.classList.add("active");
 
-  SetTimeout(() => {
-    LocalStorage.removeItem(V2_STATE_KEY);
-    LocalStorage.removeItem(V2_BLOCK_KEY);
+  setTimeout(() => {
+    localStorage.removeItem(V2_STATE_KEY);
+    localStorage.removeItem(V2_BLOCK_KEY);
 
-    If (overlay) overlay.classList.remove("active");
-    Document.body.classList.remove("mirror-bg");
+    if (overlay) overlay.classList.remove("active");
+    document.body.classList.remove("mirror-bg");
     
-    Show("start");
+    show("start");
   }, 3000);
 }
 
@@ -518,123 +515,123 @@ function finalizarYReiniciar() {
    CÁLCULOS DE PORCENTAJE DE TERMÓMETRO ACUMULATIVO (1-100)
 ================================ */
 function calculateCurrentPercentage() {
-  Let totalQuestionsCount = 0;
+  let totalQuestionsCount = 0;
   WEEKS.forEach(w => { totalQuestionsCount += w.questions.length; });
 
-  Let answeredCount = 0;
-  If (week < WEEKS.length) {
-    AnsweredCount = (week * 4) + q;
+  let answeredCount = 0;
+  if (week < WEEKS.length) {
+    answeredCount = (week * 4) + q;
   } else {
-    AnsweredCount = totalQuestionsCount;
+    answeredCount = totalQuestionsCount;
   }
 
-  Const activeSec = document.querySelector("section:not(.hidden)")?.id;
-  If (activeSec === "mirrorTest") {
-    AnsweredCount = totalQuestionsCount + (mq > 0 ? Mq : 0);
-    TotalQuestionsCount += MIRROR_QUESTIONS.length;
+  const activeSec = document.querySelector("section:not(.hidden)")?.id;
+  if (activeSec === "mirrorTest") {
+    answeredCount = totalQuestionsCount + (mq > 0 ? mq : 0);
+    totalQuestionsCount += MIRROR_QUESTIONS.length;
   }
 
-  If (totalQuestionsCount === 0 || answeredCount === 0) {
-    Return 5;
+  if (totalQuestionsCount === 0 || answeredCount === 0) {
+    return 5;
   }
 
-  Let totalEarned = 0;
-  Let maxPossibleSoFar = 0;
+  let totalEarned = 0;
+  let maxPossibleSoFar = 0;
 
-  For (let i = 0; i < weeklyScores.length; i++) {
-    MaxPossibleSoFar += 4 * 2;
-    TotalEarned += weeklyScores[i] * 4;
+  for (let i = 0; i < weeklyScores.length; i++) {
+    maxPossibleSoFar += 4 * 2;
+    totalEarned += weeklyScores[i] * 4;
   }
 
-  If (activeSec === "test" && week < WEEKS.length) {
-    MaxPossibleSoFar += q * 2;
-    TotalEarned += currentScore;
+  if (activeSec === "test" && week < WEEKS.length) {
+    maxPossibleSoFar += q * 2;
+    totalEarned += currentScore;
   } else if (activeSec === "mirrorTest") {
-    MaxPossibleSoFar += mirrorScore;
-    TotalEarned += mirrorScore;
+    maxPossibleSoFar += mirrorScore;
+    totalEarned += mirrorScore;
   }
 
-  Const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
-  Const progressFraction = answeredCount / totalQuestionsCount;
-  Const baseProgress = Math.max(5, Math.round(progressFraction * 100));
+  const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
+  const progressFraction = answeredCount / totalQuestionsCount;
+  const baseProgress = Math.max(5, Math.round(progressFraction * 100));
   
-  Let targetPct = Math.round(baseProgress * (0.3 + (qualityRatio * 0.7)));
-  Return Math.min(100, Math.max(5, Math.round(targetPct)));
+  let targetPct = Math.round(baseProgress * (0.3 + (qualityRatio * 0.7)));
+  return Math.min(100, Math.max(5, Math.round(targetPct)));
 }
 
-Function calculateHistoricalPercentage() {
-  If (weeklyScores.length === 0) return 30;
-  Let sum = weeklyScores.reduce((a, b) => a + b, 0);
-  Let avg = sum / weeklyScores.length;
-  Return Math.min(100, Math.max(5, Math.round((avg / 2) * 100)));
+function calculateHistoricalPercentage() {
+  if (weeklyScores.length === 0) return 30;
+  let sum = weeklyScores.reduce((a, b) => a + b, 0);
+  let avg = sum / weeklyScores.length;
+  return Math.min(100, Math.max(5, Math.round((avg / 2) * 100)));
 }
 
-Function calculateFinalPercentage() {
-  Const hist = calculateHistoricalPercentage();
-  Const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
-  Const mirrorPct = (mirrorAvg / 2) * 100;
-  Return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+function calculateFinalPercentage() {
+  const hist = calculateHistoricalPercentage();
+  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
+  const mirrorPct = (mirrorAvg / 2) * 100;
+  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
 }
 
 /* ===============================
    TERMÓMETRO GLOBAL INTEGRADO V2
 ================================ */
 function updateThermometer(explicitPercent) {
-  Let targetPercent = explicitPercent;
+  let targetPercent = explicitPercent;
   
-  If (targetPercent === undefined) {
-    Const activeSec = document.querySelector("section:not(.hidden)")?.id;
-    If (activeSec === "monthlyResult" || activeSec === "mirrorIntro") {
-      TargetPercent = calculateHistoricalPercentage();
+  if (targetPercent === undefined) {
+    const activeSec = document.querySelector("section:not(.hidden)")?.id;
+    if (activeSec === "monthlyResult" || activeSec === "mirrorIntro") {
+      targetPercent = calculateHistoricalPercentage();
     } else if (activeSec === "finalResult") {
-      TargetPercent = calculateFinalPercentage();
+      targetPercent = calculateFinalPercentage();
     } else {
-      TargetPercent = calculateCurrentPercentage();
+      targetPercent = calculateCurrentPercentage();
     }
   }
 
-  Const fills = document.querySelectorAll('.thermo-fill');
-  Fills.forEach(fill => {
-    If (fill) {
-      Fill.style.width = targetPercent + '%';
+  const fills = document.querySelectorAll('.thermo-fill');
+  fills.forEach(fill => {
+    if (fill) {
+      fill.style.width = targetPercent + '%';
       
-      If (targetPercent <= 50) {
-        Fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
+      if (targetPercent <= 50) {
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 100%)";
       } else if (targetPercent <= 75) {
-        Fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 50%, #ffc107 100%)";
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 50%, #ffc107 100%)";
       } else {
-        Fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33%, #ffc107 66%, #10b981 100%)";
+        fill.style.background = "linear-gradient(90deg, #3b0000 0%, #ff2a47 33%, #ffc107 66%, #10b981 100%)";
       }
     }
   });
 
-  Const valSpans = document.querySelectorAll('.thermo-percentage-val');
-  ValSpans.forEach(span => {
-    Span.textContent = targetPercent + '%';
+  const valSpans = document.querySelectorAll('.thermo-percentage-val');
+  valSpans.forEach(span => {
+    span.textContent = targetPercent + '%';
   });
 }
 
 /* UTIL */
 function animateGauge(el, target, done){
-  If (!el) {
-    Done && done();
-    Return;
+  if (!el) {
+    done && done();
+    return;
   }
-  El.style.height="0%";
-  Const start = performance.now(), dur = 1800;
+  el.style.height="0%";
+  const start = performance.now(), dur = 1800;
   
-  Function step(t){
-    Const p = Math.min(1,(t-start)/dur);
-    El.style.height = p * target + "%";
-    P < 1 ? RequestAnimationFrame(step) : done && done();
+  function step(t){
+    const p = Math.min(1,(t-start)/dur);
+    el.style.height = p * target + "%";
+    p < 1 ? requestAnimationFrame(step) : done && done();
   }
-  RequestAnimationFrame(step);
+  requestAnimationFrame(step);
 }
 
-Function show(id){
+function show(id){
   ["start","test","weeklyResult","monthlyResult","mirrorIntro","mirrorTest","finalResult"]
     .forEach(s => {
-      Const el = $(s);
-      If (el) el.classList.toggle("hidden", s !== id);
+      const el = $(s);
+      if (el) el.classList.toggle("hidden", s !== id);
     });
 }
