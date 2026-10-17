@@ -207,7 +207,7 @@ body.mirror-bg::before {
   letter-spacing: 0.05em;
 }
 
-/* ===== BOTONES MÁS COMPACTOS ===== */
+/* ===== BOTONES Y CENTRADO DE CONTENEDORES ===== */
 button, .btn {
   width: 85%;
   max-width: 300px;
@@ -223,6 +223,8 @@ button, .btn {
     0 0 14px rgba(120,255,230,0.3),
     inset 0 0 8px rgba(120,255,230,0.15);
   transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  display: block;
+  text-align: center;
 }
 
 button:active, .btn:active { transform: scale(0.96); }
@@ -260,6 +262,14 @@ button.premium:active, .btn.premium:active {
   100% {
     box-shadow: 0 0 26px rgba(106, 255, 159, 0.8), inset 0 0 14px rgba(106, 255, 159, 0.5);
   }
+}
+
+.answers, .btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .answers button, .btn-group button {
@@ -447,7 +457,7 @@ button.premium:active, .btn.premium:active {
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== SCROLL SHEET COMPACTO CON ALTO DINÁMICO RECALCULADO ===== */
+/* ===== SCROLL SHEET COMPACTO CON ALTO RECALCULADO ===== */
 .glass-sheet, .card, .scroll-sheet, .scroll-sheet-compact {
   background: rgba(10, 15, 25, 0.85);
   backdrop-filter: blur(10px);
@@ -455,8 +465,8 @@ button.premium:active, .btn.premium:active {
   border-radius: 22px;
   padding: 16px 18px;
   
-  /* Ajuste matemático para que el botón y su señalización entren sin quedar tapados */
-  max-height: calc(100vh - 350px) !important;
+  /* Ajustado para liberar espacio vertical y subir el botón de lectura evolutiva */
+  max-height: 40vh !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
@@ -493,7 +503,9 @@ button.premium:active, .btn.premium:active {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
+  text-align: center;
 }
 
 .evolution-prompt-text {
@@ -519,6 +531,11 @@ button.premium:active, .btn.premium:active {
 .results-action-wrap {
   margin-top: 8px;
   margin-bottom: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .results-action-wrap button,
