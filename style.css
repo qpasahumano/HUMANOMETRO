@@ -55,6 +55,7 @@ body.mirror-bg::before {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   background-color: transparent;
   position: relative;
   overflow: hidden;
@@ -96,6 +97,10 @@ body.mirror-bg::before {
   position: relative;
   z-index: 2;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   
   mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
@@ -207,7 +212,7 @@ body.mirror-bg::before {
   letter-spacing: 0.05em;
 }
 
-/* ===== BOTONES Y CENTRADO DE CONTENEDORES ===== */
+/* ===== BOTONES MÁS COMPACTOS Y CENTRADOS ===== */
 button, .btn {
   width: 85%;
   max-width: 300px;
@@ -294,6 +299,7 @@ button.premium:active, .btn.premium:active {
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 8px !important;
   justify-content: center !important;
+  align-items: center !important;
   margin: 12px auto !important;
   max-width: 280px !important;
 }
@@ -457,7 +463,7 @@ button.premium:active, .btn.premium:active {
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== SCROLL SHEET COMPACTO CON ALTO RECALCULADO ===== */
+/* ===== SCROLL SHEET COMPACTO CON ALTO REDUCIDO ===== */
 .glass-sheet, .card, .scroll-sheet, .scroll-sheet-compact {
   background: rgba(10, 15, 25, 0.85);
   backdrop-filter: blur(10px);
@@ -465,7 +471,7 @@ button.premium:active, .btn.premium:active {
   border-radius: 22px;
   padding: 16px 18px;
   
-  /* Ajustado para liberar espacio vertical y subir el botón de lectura evolutiva */
+  /* Reducido a 40vh para liberar espacio y permitir que el botón suba */
   max-height: 40vh !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
@@ -504,8 +510,8 @@ button.premium:active, .btn.premium:active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
   text-align: center;
+  gap: 2px;
 }
 
 .evolution-prompt-text {
@@ -514,6 +520,7 @@ button.premium:active, .btn.premium:active {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-shadow: 0 0 8px rgba(106, 255, 159, 0.4);
+  text-align: center;
 }
 
 .evolution-arrow {
@@ -521,6 +528,7 @@ button.premium:active, .btn.premium:active {
   color: #6aff9f;
   animation: subtleArrowBounce 1.8s infinite ease-in-out;
   text-shadow: 0 0 10px rgba(106, 255, 159, 0.6);
+  text-align: center;
 }
 
 @keyframes subtleArrowBounce {
@@ -536,6 +544,7 @@ button.premium:active, .btn.premium:active {
   align-items: center;
   justify-content: center;
   width: 100%;
+  text-align: center;
 }
 
 .results-action-wrap button,
@@ -543,6 +552,7 @@ button.premium:active, .btn.premium:active {
   margin: 2px auto;
   padding: 8px 12px;
   font-size: 0.85em;
+  text-align: center;
 }
 
 .state-led {
