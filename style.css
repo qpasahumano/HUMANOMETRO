@@ -447,15 +447,20 @@ button.premium:active, .btn.premium:active {
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== SCROLL SHEET COMPACTO ===== */
+/* ===== SCROLL SHEET COMPACTO CON ALTO DINÁMICO RECALCULADO ===== */
 .glass-sheet, .card, .scroll-sheet, .scroll-sheet-compact {
   background: rgba(10, 15, 25, 0.85);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(120,255,230,0.25);
   border-radius: 22px;
   padding: 16px 18px;
-  max-height: 40vh;
-  overflow-y: auto;
+  
+  /* Ajuste matemático para que el botón y su señalización entren sin quedar tapados */
+  max-height: calc(100vh - 350px) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+
   box-shadow:
     0 0 28px rgba(120,255,230,.25),
     inset 0 0 22px rgba(255,255,255,.05);
