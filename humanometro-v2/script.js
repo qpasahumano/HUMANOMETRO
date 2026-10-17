@@ -1,4 +1,3 @@
-
 const $ = id => document.getElementById(id);
 
 /* ===============================
@@ -6,7 +5,7 @@ const $ = id => document.getElementById(id);
 ================================ */
 const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const V2_BLOCK_KEY = "hm_v2_last_week";
+const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 const V2_STATE_KEY = "hm_v2_progress_state";
 
 /* ===============================
@@ -277,7 +276,7 @@ function nextWeek(){
   const isFinished = week >= WEEKS.length;
 
   if (isFinished) {
-    registrarMarcaFinCiclo(); // EL GUARDADO SOLO REGISTRA EL TIEMPO SIN BLOQUEAR
+    registrarMarcaFinCiclo(); 
     saveV2State({ week, q, currentScore, lastSection: "monthlyResult" });
     showMonthly();
   } else {
@@ -307,12 +306,11 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
-// 2. EL BLOQUEO Y DESBLOQUEO ESTÁN CONCENTRADOS EXCLUSIVAMENTE EN ESTE BOTÓN
 function gateMirrorIntro(){
   if (DEV_MODE) {
     openMirror();
@@ -329,9 +327,9 @@ function gateMirrorIntro(){
   const transcurrido = now() - Number(lastTime);
 
   if (transcurrido < WEEK_MS) {
-    showWeeklyBlockFlash(); // BLOQUEO
+    showWeeklyBlockFlash(); 
   } else {
-    openMirror();           // DESBLOQUEO
+    openMirror();           
   }
 }
 
@@ -431,7 +429,7 @@ function showFinal(){
         "una estrategia para resguardar la propia energía no involucrándose afectivamente.\n\n"+
         "El riesgo latente no radica en no sentir en un instante puntual,\n"+
         "sino en normalizar e institucionalizar ese apagamiento emocional como un estado estable y permanente.\n\n"+
-        "Cuando las vivencias y dolores de los demás dejan de resonar internamente,\n"+
+        "Когда las vivencias y dolores de los demás dejan de resonar internamente,\n"+
         "la humanidad se vuelve puramente funcional y operativa, pero pierde su profundidad y su impacto real.\n\n"+
         "Esta devolución no busca juzgarte, sino iluminar un punto ciego fundamental:\n"+
         "aquel espacio donde la empatía y la conexión genuina podrían desarrollarse,\n"+
@@ -481,25 +479,6 @@ function showFinal(){
         "sino mantener viva y abierta la capacidad cotidiana de seguir sintiendo y conectando con la realidad.";
     }
   });
-}
-
-/* ===============================
-   CIERRE Y LIMPIEZA DE CICLO
-   SE CONSERVA LA FUNCIÓN ORIGINAL
-================================ */
-function finalizarYReiniciar() {
-  const overlay = document.getElementById("cubeOverlay");
-  if (overlay) overlay.classList.add("active");
-
-  setTimeout(() => {
-    localStorage.removeItem(V2_STATE_KEY);
-    localStorage.removeItem(V2_BLOCK_KEY);
-
-    if (overlay) overlay.classList.remove("active");
-    document.body.classList.remove("mirror-bg");
-    
-    show("start");
-  }, 3000);
 }
 
 /* ===============================
@@ -625,4 +604,29 @@ function show(id){
       const el = $(s);
       if (el) el.classList.toggle("hidden", s !== id);
     });
+}
+
+/* ===============================
+   RESETEO TOTAL Y RETORNO AL VOLUMEN 1
+================================ */
+function resetearTodoA1() {
+  const overlay = document.getElementById("cubeOverlay");
+  if (overlay) overlay.classList.add("active");
+
+  setTimeout(() => {
+    // 1. Limpiar persistencia del Volumen 2
+    localStorage.removeItem("hm_v2_progress_state");
+    localStorage.removeItem("hm_v2_last_week");
+    localStorage.removeItem("hm_v2_state");
+    localStorage.removeItem("hm_v2_last_date");
+
+    // 2. Limpiar persistencia del Volumen 1
+    localStorage.removeItem("hm_v1_state");
+    localStorage.removeItem("humanometro_semanal");
+    localStorage.removeItem("hm_v1_week1");
+
+    // 3. Ocultar overlay y redirigir a la raíz (Volumen 1 / Humanómetro ON)
+    if (overlay) overlay.classList.remove("active");
+    window.location.href = "../index.html";
+  }, 3000);
 }
