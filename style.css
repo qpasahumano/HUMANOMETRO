@@ -55,7 +55,6 @@ body.mirror-bg::before {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   background-color: transparent;
   position: relative;
   overflow: hidden;
@@ -97,10 +96,6 @@ body.mirror-bg::before {
   position: relative;
   z-index: 2;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   
   mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle at center, black 70%, transparent 100%);
@@ -162,7 +157,7 @@ body.mirror-bg::before {
   opacity: 0.95;
 }
 
-/* Efecto lumínico y lindo para la nueva frase introductoria */
+/* Efecto lumínico para la frase introductoria */
 .lumetric-intro-text {
   font-size: 0.9rem;
   line-height: 1.5;
@@ -212,7 +207,7 @@ body.mirror-bg::before {
   letter-spacing: 0.05em;
 }
 
-/* ===== BOTONES MÁS COMPACTOS Y CENTRADOS ===== */
+/* ===== BOTONES Y CENTRADO DE CONTENEDORES ===== */
 button, .btn {
   width: 85%;
   max-width: 300px;
@@ -299,7 +294,6 @@ button.premium:active, .btn.premium:active {
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 8px !important;
   justify-content: center !important;
-  align-items: center !important;
   margin: 12px auto !important;
   max-width: 280px !important;
 }
@@ -463,7 +457,7 @@ button.premium:active, .btn.premium:active {
   100% { transform: scale(1); opacity: .7; }
 }
 
-/* ===== SCROLL SHEET COMPACTO CON ALTO REDUCIDO ===== */
+/* ===== SCROLL SHEET COMPACTO CON ALTO RECALCULADO (ACOTADO PARA DEJAR VISIBLE EL BOTÓN) ===== */
 .glass-sheet, .card, .scroll-sheet, .scroll-sheet-compact {
   background: rgba(10, 15, 25, 0.85);
   backdrop-filter: blur(10px);
@@ -471,8 +465,8 @@ button.premium:active, .btn.premium:active {
   border-radius: 22px;
   padding: 16px 18px;
   
-  /* Reducido a 40vh para liberar espacio y permitir que el botón suba */
-  max-height: 40vh !important;
+  /* Reducido a 32vh para liberar espacio vertical y subir el botón de lectura evolutiva */
+  max-height: 32vh !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
@@ -503,15 +497,16 @@ button.premium:active, .btn.premium:active {
   line-height: 1.3;
 }
 
-/* ===== ESTILOS PARA LA NUEVA INDICACIÓN EN RESULTADOS ===== */
+/* ===== ESTILOS PARA LA NUEVA INDICACIÓN EN RESULTADOS Y CENTRADO DE ACCIONES ===== */
 .evolution-prompt-wrap {
   margin: 10px auto 4px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   gap: 2px;
+  text-align: center;
+  width: 100%;
 }
 
 .evolution-prompt-text {
@@ -520,7 +515,6 @@ button.premium:active, .btn.premium:active {
   font-weight: 500;
   letter-spacing: 0.03em;
   text-shadow: 0 0 8px rgba(106, 255, 159, 0.4);
-  text-align: center;
 }
 
 .evolution-arrow {
@@ -528,7 +522,6 @@ button.premium:active, .btn.premium:active {
   color: #6aff9f;
   animation: subtleArrowBounce 1.8s infinite ease-in-out;
   text-shadow: 0 0 10px rgba(106, 255, 159, 0.6);
-  text-align: center;
 }
 
 @keyframes subtleArrowBounce {
