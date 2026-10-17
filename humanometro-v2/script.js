@@ -1,3 +1,4 @@
+
 const $ = id => document.getElementById(id);
 
 /* ===============================
@@ -7,27 +8,6 @@ const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week";
 const V2_STATE_KEY = "hm_v2_progress_state";
-
-/* ===============================
-   AUTOLIMPIEZA DE 2 HORAS Y SALTO AL VOLUMEN 1
-================================ */
-const FINAL_VIEWED_KEY = "hm_final_viewed_time";
-const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
-
-function checkAndResetIfExpired() {
-  const finalViewedTime = localStorage.getItem(FINAL_VIEWED_KEY);
-  if (finalViewedTime) {
-    if ((now() - Number(finalViewedTime)) > TWO_HOURS_MS) {
-      localStorage.removeItem(V2_STATE_KEY);
-      localStorage.removeItem(V2_BLOCK_KEY);
-      localStorage.removeItem(FINAL_VIEWED_KEY);
-      localStorage.removeItem("hm_v2_last_week");
-      
-      // Redirección al inicio absoluto del Volumen 1 (Humanómetro ON)
-      window.location.href = "index.html"; 
-    }
-  }
-}
 
 /* ===============================
    BLOQUEO Y PERSISTENCIA — UTILIDADES
@@ -138,10 +118,8 @@ const WEEKS = [
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
 
-/* REANUDACIÓN AUTOMÁTICA EN V2 (CON VALIDACIÓN DE 2 HORAS Y VISIBILIDAD) */
+/* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
-  checkAndResetIfExpired();
-
   const saved = loadV2State();
   if (!saved) return;
 
@@ -167,13 +145,6 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
     }
   }
 })();
-
-// Evita caché o congelamiento en segundo plano en celulares
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") {
-    checkAndResetIfExpired();
-  }
-});
 
 /* FLUJO */
 function startV2(){
@@ -332,10 +303,10 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando algo en la calle, en una conversación o en una situación cotidiana no sale como esperabas, ¿cuánto enojo sentís internamente, más allá de lo que muestres hacia afuera?" },
   { t:"Cuando te enterás de una situación difícil, injusta o dolorosa —ya sea propia o ajena—, ¿cuánta tristeza aparece en vos de forma real, aunque no la expreses?" },
   { t:"Cuando tenés que tomar una decisión importante o enfrentar una situación incierta, ¿cuánto miedo sentís antes de actuar, incluso si seguís avanzando igual?" },
-  { t:"Когда recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
+  { t:"Cuando recordás algo que dijiste, hiciste o dejaste de hacer, ¿cuánta culpa aparece después, aunque intentes justificarte o seguir adelante?" },
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
-  { t:"Когда vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
+  { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
   { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
@@ -509,11 +480,6 @@ function showFinal(){
         "Integrar la propia humanidad no significa llegar a un destino final definitivo,\n"+
         "sino mantener viva y abierta la capacidad cotidiana de seguir sintiendo y conectando con la realidad.";
     }
-
-    // Marca de tiempo para iniciar el conteo de las 2 horas de gracia de lectura
-    if (!localStorage.getItem(FINAL_VIEWED_KEY)) {
-      localStorage.setItem(FINAL_VIEWED_KEY, now());
-    }
   });
 }
 
@@ -528,7 +494,6 @@ function finalizarYReiniciar() {
   setTimeout(() => {
     localStorage.removeItem(V2_STATE_KEY);
     localStorage.removeItem(V2_BLOCK_KEY);
-    localStorage.removeItem(FINAL_VIEWED_KEY);
 
     if (overlay) overlay.classList.remove("active");
     document.body.classList.remove("mirror-bg");
