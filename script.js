@@ -88,7 +88,15 @@ const WEEKLY_QUESTIONS = [
 ================================ */
 const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
+const V2_BLOCK_KEY = "hm_v2_last_week"; // Compatibilidad con instalaciones existentes
+const V1_FIRST_LOCK_KEY = "hm_v1_first_lock_at";
+const V1_SECOND_LOCK_KEY = "hm_v1_second_lock_at";
+function firstLockTime(){
+  return localStorage.getItem(V1_FIRST_LOCK_KEY) || localStorage.getItem(V2_BLOCK_KEY);
+}
+function secondLockTime(){
+  return localStorage.getItem(V1_SECOND_LOCK_KEY) || localStorage.getItem(V2_BLOCK_KEY);
+}
 
 /* ===============================
    DESTELLO BLOQUEO (Ajustado para forzar visibilidad total)
@@ -142,6 +150,17 @@ function showWeeklyBlockFlash() {
   weeklyCompleted = saved.weeklyCompleted || false;
 
   if (weeklyCompleted) {
+    const avgRestore = weeklyScores.length ? weeklyScores.reduce((a,b)=>a+b,0)/weeklyScores.length : 2;
+    if (avgRestore < 0.8) {
+      weeklyText.innerText = "Esta semana mostró una desconexión entre intención y acción.";
+      weeklyAdvice.innerText = "Observar tus reacciones sin juzgar puede ayudarte a recuperar coherencia.";
+    } else if (avgRestore < 1.5) {
+      weeklyText.innerText = "Tu humanidad estuvo presente, pero de forma fluctuante.";
+      weeklyAdvice.innerText = "Sostener la atención consciente puede estabilizar tu respuesta emocional.";
+    } else {
+      weeklyText.innerText = "Mostraste coherencia humana y presencia consciente esta semana.";
+      weeklyAdvice.innerText = "Continuar actuando desde la empatía refuerza tu equilibrio interno.";
+    }
     showSection("weeklyResultScreen");
     const avg = weeklyScores.length ? weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length : 2;
     const weeklyPercent = Math.round((avg / 2) * 100);
@@ -183,7 +202,7 @@ function showWeeklyBlockFlash() {
    ACCESO LECTURA EVOLUTIVA (Bloqueo 7 días estricto)
 ================================ */
 function goToWeekly() {
-  const lastRecorrido = localStorage.getItem(V2_BLOCK_KEY);
+  const lastRecorrido = firstLockTime();
 
   if (!DEV_MODE) {
     if (lastRecorrido && (Date.now() - Number(lastRecorrido)) < WEEK_MS) {
@@ -199,7 +218,7 @@ function goToWeekly() {
    ACCESO VOLVÉ PRONTO / PASE A V2 (Bloqueo 7 días estricto)
 ================================ */
 function weeklyWithDonation() {
-  const lastVolver = localStorage.getItem(V2_BLOCK_KEY);
+  const lastVolver = secondLockTime();
 
   if (!DEV_MODE) {
     if (lastVolver && (Date.now() - Number(lastVolver)) < WEEK_MS) {
@@ -208,10 +227,7 @@ function weeklyWithDonation() {
     }
   }
 
-  if (!DEV_MODE) {
-    localStorage.setItem(V2_BLOCK_KEY, Date.now());
-  }
-
+  // El ingreso no reinicia ningún bloqueo ya cumplido.
   goToV2();
 }
 
@@ -295,7 +311,9 @@ function saveWeekly() {
   weeklySaved.classList.remove("hidden");
 
   if (!DEV_MODE) {
-    localStorage.setItem(V2_BLOCK_KEY, Date.now());
+    localStorage.setItem(V1_SECOND_LOCK_KEY, String(Date.now()));
+    // Mantener compatibilidad con quienes ya tienen la llave antigua.
+    localStorage.setItem(V2_BLOCK_KEY, String(Date.now()));
   }
 }
 
@@ -428,9 +446,10 @@ function showResults() {
     
     if (!DEV_MODE) {
       const existingBlock = localStorage.getItem(V2_BLOCK_KEY);
-      if (!existingBlock) {
-        localStorage.setItem(V2_BLOCK_KEY, Date.now());
+      if (!localStorage.getItem(V1_FIRST_LOCK_KEY)) {
+        localStorage.setItem(V1_FIRST_LOCK_KEY, String(existingBlock || Date.now()));
       }
+      if (!existingBlock) localStorage.setItem(V2_BLOCK_KEY, String(Date.now()));
     }
   }
 
