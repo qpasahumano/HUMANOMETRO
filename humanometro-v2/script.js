@@ -7,6 +7,7 @@ const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 const V2_STATE_KEY = "hm_v2_progress_state";
+const V2_MIRROR_BLOCK_KEY = "hm_v2_mirror_unlock_at"; // tercer bloqueo independiente
 
 /* ===============================
    BLOQUEO Y PERSISTENCIA — UTILIDADES
@@ -15,9 +16,31 @@ function now(){ return Date.now(); }
 
 // 1. EL GUARDADO SOLO GUARDA (Registra la marca de tiempo sin alterar ni bloquear)
 function registrarMarcaFinCiclo(){
-  if (!localStorage.getItem(V2_BLOCK_KEY)) {
-    localStorage.setItem(V2_BLOCK_KEY, now());
+  // No modificar las fechas de los bloqueos del Volumen 1.
+  if (!localStorage.getItem(V2_MIRROR_BLOCK_KEY)) {
+    localStorage.setItem(V2_MIRROR_BLOCK_KEY, String(now()));
   }
+}
+
+function fechaCierreCiclo(){
+  const saved = loadV2State();
+  const finished = saved && (saved.week >= WEEKS.length ||
+    ["monthlyResult", "mirrorIntro", "mirrorTest", "finalResult"].includes(saved.lastSection));
+  if (!finished) return null;
+  let fecha = Number(localStorage.getItem(V2_MIRROR_BLOCK_KEY));
+  if (!Number.isFinite(fecha) || fecha <= 0) {
+    // Migración: aprovechar la fecha histórica de finalización, sin reiniciar la espera.
+    const original = Number(saved.cycleFinishedAt || saved.timestamp);
+    fecha = Number.isFinite(original) && original > 0 ? original : now();
+    localStorage.setItem(V2_MIRROR_BLOCK_KEY, String(fecha));
+  }
+  return fecha;
+}
+
+function puedeAbrirReflejo(){
+  if (DEV_MODE) return true;
+  const fecha = fechaCierreCiclo();
+  return fecha !== null && now() - fecha >= WEEK_MS;
 }
 
 function saveV2State(extra = {}) {
@@ -28,6 +51,10 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
+    mq,
+    mirrorScore,
+    mirrorCount,
+    cycleFinishedAt: Number(localStorage.getItem(V2_MIRROR_BLOCK_KEY)) || null,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -116,9 +143,10 @@ const WEEKS = [
 /* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 /* REANUDACIÓN AUTOMÁTICA EN V2 */
-(function resumeV2() {
+function resumeV2() {
   const saved = loadV2State();
   if (!saved) return;
 
@@ -128,29 +156,34 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
+  mq = Number(saved.mq) || 0;
+  mirrorScore = Number(saved.mirrorScore) || 0;
+  mirrorCount = Number(saved.mirrorCount) || 0;
+  if (week >= WEEKS.length) fechaCierreCiclo();
 
   if (saved.lastSection) {
     show(saved.lastSection);
     if (saved.lastSection === "test") {
       loadQuestion();
     } else if (saved.lastSection === "weeklyResult") {
-      updateThermometer(calculateCurrentPercentage());
+      showWeekly(true);
     } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
       updateThermometer(calculateHistoricalPercentage());
     } else if (saved.lastSection === "mirrorTest") {
-      loadMirror();
+      document.body.classList.add("mirror-bg");
+      if (mq < MIRROR_QUESTIONS.length) loadMirror(); else showFinal();
     } else if (saved.lastSection === "finalResult") {
-      updateThermometer(calculateFinalPercentage());
+      document.body.classList.add("mirror-bg");
+      showFinal();
     }
   }
-})();
+}
 
 /* FLUJO */
 function startV2(){
   const saved = loadV2State();
   if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
-    show(saved.lastSection || "test"); 
-    if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
+    resumeV2();
     return;
   }
 
@@ -182,12 +215,12 @@ function answer(v){
 /* ===============================
    DEVOLUCIONES SEMANALES
 ================================ */
-function showWeekly(){
+function showWeekly(restoring = false){
   show("weeklyResult");
   weeklyTextWrap.classList.add("hidden");
   
   const avg = currentScore / 4;
-  weeklyScores.push(avg);
+  if (!restoring && weeklyScores.length <= week) weeklyScores.push(avg);
   
   updateThermometer();
 
@@ -309,28 +342,12 @@ const MIRROR_QUESTIONS = [
   { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
-
 function gateMirrorIntro(){
-  if (DEV_MODE) {
-    openMirror();
+  if (!puedeAbrirReflejo()) {
+    showWeeklyBlockFlash();
     return;
   }
-
-  const lastTime = localStorage.getItem(V2_BLOCK_KEY);
-  
-  if (!lastTime || isNaN(Number(lastTime))) {
-    openMirror();
-    return;
-  }
-
-  const transcurrido = now() - Number(lastTime);
-
-  if (transcurrido < WEEK_MS) {
-    showWeeklyBlockFlash(); 
-  } else {
-    openMirror();           
-  }
+  openMirror();
 }
 
 function openMirror(){
@@ -340,20 +357,20 @@ function openMirror(){
 }
 
 function startMirror(){
-  if (!DEV_MODE) {
-    const lastTime = localStorage.getItem(V2_BLOCK_KEY);
-    if (lastTime && !isNaN(Number(lastTime))) {
-      if ((now() - Number(lastTime)) < WEEK_MS) {
-        showWeeklyBlockFlash();
-        return;
-      }
-    }
+  if (!puedeAbrirReflejo()) {
+    showWeeklyBlockFlash();
+    return;
   }
-
+  const saved = loadV2State();
+  if (saved && ["mirrorTest", "finalResult"].includes(saved.lastSection)) {
+    resumeV2();
+    return;
+  }
   document.body.classList.add("mirror-bg");
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
+  show("mirrorTest");
   saveV2State({ lastSection: "mirrorTest" });
-  show("mirrorTest"); loadMirror();
+  loadMirror();
 }
 
 function loadMirror(){
@@ -390,7 +407,7 @@ function showFinal(){
   updateThermometer();
   saveV2State({ lastSection: "finalResult" });
 
-  const avg = mirrorCount ? mirrorScore / mirrorCount : 0;
+  const avg = calculateIntegratedAverage();
 
   const tristezaAjena = mirrorLog[1] ?? 0;
   const desconexion = mirrorLog[5] ?? 0;
@@ -414,7 +431,7 @@ function showFinal(){
     range -= 1;
   }
 
-  animateGauge(finalFill, (avg / 2) * 100, ()=>{
+  animateGauge(finalFill, calculateFinalPercentage(), ()=>{
     finalTextWrap.classList.remove("hidden");
 
     if(range === 0){
@@ -517,8 +534,8 @@ function calculateCurrentPercentage() {
     maxPossibleSoFar += q * 2;
     totalEarned += currentScore;
   } else if (activeSec === "mirrorTest") {
-    maxPossibleSoFar += mirrorScore;
-    totalEarned += mirrorScore;
+    maxPossibleSoFar += mirrorCount * 2;
+    totalEarned += Math.max(0, Math.min(mirrorCount * 2, mirrorScore));
   }
 
   const qualityRatio = maxPossibleSoFar > 0 ? (totalEarned / maxPossibleSoFar) : 0;
@@ -536,11 +553,34 @@ function calculateHistoricalPercentage() {
   return Math.min(100, Math.max(5, Math.round((avg / 2) * 100)));
 }
 
+function calculateIntegratedAverage(){
+  // Ponderación de las tres etapas: V1 (incluida su lectura semanal), V2 y espejo.
+  const v1 = (() => { try { return JSON.parse(localStorage.getItem("hm_v1_state") || "null"); } catch { return null; } })();
+  const values = [];
+  if (v1 && v1.scores && Array.isArray(v1.modules)) {
+    let total = 0, count = 0;
+    v1.modules.forEach(m => { if (Number.isFinite(Number(v1.scores[m.name]))) { total += Number(v1.scores[m.name]); count += m.questions.length; } });
+    if (count) values.push({ avg: total / count, weight: count });
+  }
+  if (v1 && Array.isArray(v1.weeklyScores) && v1.weeklyScores.length) {
+    values.push({ avg: v1.weeklyScores.reduce((a,b)=>a+Number(b),0)/v1.weeklyScores.length, weight: v1.weeklyScores.length });
+  }
+  if (allAnswers.length) {
+    values.push({ avg: allAnswers.reduce((a,b)=>a+Number(b.v),0)/allAnswers.length, weight: allAnswers.length });
+  } else if (weeklyScores.length) {
+    values.push({ avg: weeklyScores.reduce((a,b)=>a+Number(b),0)/weeklyScores.length, weight: weeklyScores.length*4 });
+  }
+  // Las emociones negativas no son puntuaciones de humanidad: se invierte su intensidad.
+  if (mirrorLog.length) {
+    const positives = mirrorLog.map((x,i)=> i === 1 || i === 6 ? Number(x) : 2-Number(x));
+    values.push({ avg: positives.reduce((a,b)=>a+b,0)/positives.length, weight: positives.length });
+  }
+  const weight = values.reduce((a,b)=>a+b.weight,0);
+  return weight ? Math.max(0,Math.min(2,values.reduce((a,b)=>a+b.avg*b.weight,0)/weight)) : 0;
+}
+
 function calculateFinalPercentage() {
-  const hist = calculateHistoricalPercentage();
-  const mirrorAvg = mirrorCount ? (mirrorScore / mirrorCount) : 1;
-  const mirrorPct = (mirrorAvg / 2) * 100;
-  return Math.min(100, Math.max(5, Math.round((hist * 0.4) + (mirrorPct * 0.6))));
+  return Math.min(100, Math.max(5, Math.round(calculateIntegratedAverage() / 2 * 100)));
 }
 
 /* ===============================
@@ -617,6 +657,9 @@ function resetearTodoA1() {
     // 1. Limpiar persistencia del Volumen 2
     localStorage.removeItem("hm_v2_progress_state");
     localStorage.removeItem("hm_v2_last_week");
+    localStorage.removeItem("hm_v2_mirror_unlock_at");
+    localStorage.removeItem("hm_v1_first_lock_at");
+    localStorage.removeItem("hm_v1_second_lock_at");
     localStorage.removeItem("hm_v2_state");
     localStorage.removeItem("hm_v2_last_date");
 
@@ -630,3 +673,6 @@ function resetearTodoA1() {
     window.location.href = "../index.html";
   }, 3000);
 }
+
+// Ejecutar la recuperación cuando ya están definidas las preguntas del espejo.
+resumeV2();
