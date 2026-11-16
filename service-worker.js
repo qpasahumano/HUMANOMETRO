@@ -1,35 +1,56 @@
-/* HUMANÓMETRO — actualización de recursos sin borrar datos locales */
-const CACHE_NAME = "humanometro-assets-2026-11-16";
+/* =========================================
+   SERVICE WORKER — HUMANÓMETRO
+   Cache básico para PWA
+========================================= */
+
+const CACHE_NAME = "humanometro-v1-cache";
 const ASSETS_TO_CACHE = [
-  "./", "./index.html", "./style.css", "./script.js",
-  "./manifest.json", "./humanometro-v2/index.html",
-  "./humanometro-v2/style.css", "./humanometro-v2/script.js"
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./bloqueos.js",
+  "./manifest.json",
+  "./activos/logo-hm.png",
+  "./icons/icon-192x192.png",
+  "./icons/icon-512x512.png"
 ];
+
+/* ===============================
+   INSTALACIÓN
+=============================== */
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(async cache => {
-    await Promise.allSettled(ASSETS_TO_CACHE.map(url => cache.add(url)));
-  }));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
   self.skipWaiting();
 });
+
+/* ===============================
+   ACTIVACIÓN
+=============================== */
 self.addEventListener("activate", event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(
-    keys.filter(key => key.startsWith("humanometro-") && key !== CACHE_NAME).map(key => caches.delete(key))
-  )));
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
   self.clients.claim();
 });
+
+/* ===============================
+   FETCH (CACHE FIRST)
+=============================== */
 self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
-  event.respondWith((async () => {
-    try {
-      const fresh = await fetch(event.request);
-      if (fresh.ok) {
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(event.request, fresh.clone());
-      }
-      return fresh;
-    } catch {
-      const cached = await caches.match(event.request);
-      return cached || Response.error();
-    }
-  })());
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
 });
