@@ -345,6 +345,30 @@ function gateMirrorIntro(){
   else showWeeklyBlockFlash();
 }
 
+// Al regresar de una suspensión, consultar nuevamente la fecha real.
+let hmWasHidden = false;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { hmWasHidden = true; return; }
+  if (hmWasHidden) { hmWasHidden = false; hmCheckResume(); }
+});
+window.addEventListener("pageshow", event => {
+  if (event.persisted) hmCheckResume();
+});
+function hmCheckResume(){
+  const saved = loadV2State();
+  if (!saved || saved.lastSection !== "monthlyResult" || !puedeAbrirReflejo()) return;
+  // Aviso local, sin permisos ni notificaciones push.
+  const id = "hmResumeNotice";
+  if (document.getElementById(id)) return;
+  const notice = document.createElement("div");
+  notice.id = id;
+  notice.textContent = "Tu reflejo ya está disponible. Tocá Cierre de ciclo para continuar.";
+  notice.setAttribute("role", "status");
+  notice.style.cssText = "position:fixed;bottom:18px;left:5%;width:90%;box-sizing:border-box;padding:12px 16px;border-radius:10px;background:#10223b;color:white;text-align:center;z-index:9999;font:500 14px sans-serif;box-shadow:0 3px 15px #0006";
+  document.body.appendChild(notice);
+  setTimeout(() => notice.remove(), 6000);
+}
+
 function openMirror(){
   show("mirrorIntro");
   updateThermometer();
