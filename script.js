@@ -128,6 +128,15 @@ function showWeeklyBlockFlash() {
    REANUDACIÓN AUTOMÁTICA
 ================================ */
 (function resumeIfWaiting() {
+  // V2 tiene prioridad sobre cualquier pantalla antigua de V1.
+  // No se modifica ni elimina el estado histórico de ninguno de los volúmenes.
+  try {
+    const v2 = JSON.parse(localStorage.getItem("hm_v2_progress_state") || "null");
+    if (v2 && (v2.lastSection && v2.lastSection !== "start" || Number(v2.week) > 0)) {
+      window.location.replace("./humanometro-v2/");
+      return;
+    }
+  } catch (_) { /* Un estado ilegible no debe bloquear V1. */ }
   const saved = loadState();
   if (!saved) return;
 
@@ -208,10 +217,7 @@ function weeklyWithDonation() {
     }
   }
 
-  if (!DEV_MODE) {
-    localStorage.setItem(V2_BLOCK_KEY, Date.now());
-  }
-
+  // El ingreso a V2 no debe alterar la fecha de espera de V1.
   goToV2();
 }
 
