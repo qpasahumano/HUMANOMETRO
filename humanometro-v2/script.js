@@ -7,6 +7,7 @@ const DEV_MODE = false;
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const V2_BLOCK_KEY = "hm_v2_last_week"; // Unificado con Volumen 2 para evitar desfasaje de llaves
 const V2_STATE_KEY = "hm_v2_progress_state";
+const V2_CYCLE_END_KEY = "hm_v2_cycle_finished_at";
 
 /* ===============================
    BLOQUEO Y PERSISTENCIA — UTILIDADES
@@ -15,9 +16,25 @@ function now(){ return Date.now(); }
 
 // 1. EL GUARDADO SOLO GUARDA (Registra la marca de tiempo sin alterar ni bloquear)
 function registrarMarcaFinCiclo(){
-  if (!localStorage.getItem(V2_BLOCK_KEY)) {
-    localStorage.setItem(V2_BLOCK_KEY, now());
+  // Fecha exclusiva de V2: nunca reutilizar la espera de V1 ni reiniciarla.
+  const existing = Number(localStorage.getItem(V2_CYCLE_END_KEY));
+  if (!Number.isFinite(existing) || existing <= 0) {
+    localStorage.setItem(V2_CYCLE_END_KEY, String(now()));
   }
+}
+
+function puedeAbrirReflejo(){
+  const saved = loadV2State();
+  const finished = saved && (Number(saved.week) >= WEEKS.length ||
+    ["monthlyResult", "mirrorIntro", "mirrorTest", "finalResult"].includes(saved.lastSection));
+  if (!finished) return false;
+  const raw = localStorage.getItem(V2_CYCLE_END_KEY);
+  // Compatibilidad: usuarios que completaron V2 antes de que existiera
+  // una fecha de cierre fiable. No imponerles una espera nueva inventada.
+  if (raw === null) return true;
+  const timestamp = Number(raw);
+  if (!Number.isFinite(timestamp) || timestamp <= 0) return false;
+  return now() - timestamp >= WEEK_MS;
 }
 
 function saveV2State(extra = {}) {
@@ -28,6 +45,9 @@ function saveV2State(extra = {}) {
     weeklyScores,
     allAnswers,
     mirrorLog,
+    mq,
+    mirrorScore,
+    mirrorCount,
     lastSection: document.querySelector("section:not(.hidden)")?.id || "start",
     timestamp: now(),
     ...extra
@@ -116,6 +136,7 @@ const WEEKS = [
 /* REGISTRO */
 let week = 0, q = 0, currentScore = 0;
 let weeklyScores = [], allAnswers = [], mirrorLog = [];
+let mq = 0, mirrorScore = 0, mirrorCount = 0;
 
 /* REANUDACIÓN AUTOMÁTICA EN V2 */
 (function resumeV2() {
@@ -128,8 +149,12 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
   weeklyScores = saved.weeklyScores || [];
   allAnswers = saved.allAnswers || [];
   mirrorLog = saved.mirrorLog || [];
+  mq = Math.max(0, Math.min(8, Number(saved.mq ?? mirrorLog.length) || 0));
+  mirrorCount = Number(saved.mirrorCount ?? mirrorLog.length) || 0;
+  mirrorScore = Number(saved.mirrorScore ?? mirrorLog.reduce((a,b)=>a+(Number(b)||0),0)) || 0;
 
   if (saved.lastSection) {
+    queueMicrotask(() => {
     show(saved.lastSection);
     if (saved.lastSection === "test") {
       loadQuestion();
@@ -138,10 +163,12 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
     } else if (saved.lastSection === "monthlyResult" || saved.lastSection === "mirrorIntro") {
       updateThermometer(calculateHistoricalPercentage());
     } else if (saved.lastSection === "mirrorTest") {
-      loadMirror();
+      if (mq >= MIRROR_QUESTIONS.length) showFinal();
+      else loadMirror();
     } else if (saved.lastSection === "finalResult") {
-      updateThermometer(calculateFinalPercentage());
+      showFinal();
     }
+    });
   }
 })();
 
@@ -149,8 +176,12 @@ let weeklyScores = [], allAnswers = [], mirrorLog = [];
 function startV2(){
   const saved = loadV2State();
   if (saved && (saved.week > 0 || (saved.lastSection && saved.lastSection !== "start"))) {
-    show(saved.lastSection || "test"); 
+    show(saved.lastSection || "test");
     if (saved.lastSection === "test" || !saved.lastSection) loadQuestion();
+    else if (saved.lastSection === "mirrorTest") {
+      if (mq < MIRROR_QUESTIONS.length) loadMirror(); else showFinal();
+    } else if (saved.lastSection === "finalResult") showFinal();
+    else updateThermometer();
     return;
   }
 
@@ -309,28 +340,9 @@ const MIRROR_QUESTIONS = [
   { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
-let mq = 0, mirrorScore = 0, mirrorCount = 0;
-
 function gateMirrorIntro(){
-  if (DEV_MODE) {
-    openMirror();
-    return;
-  }
-
-  const lastTime = localStorage.getItem(V2_BLOCK_KEY);
-  
-  if (!lastTime || isNaN(Number(lastTime))) {
-    openMirror();
-    return;
-  }
-
-  const transcurrido = now() - Number(lastTime);
-
-  if (transcurrido < WEEK_MS) {
-    showWeeklyBlockFlash(); 
-  } else {
-    openMirror();           
-  }
+  if (DEV_MODE || puedeAbrirReflejo()) openMirror();
+  else showWeeklyBlockFlash();
 }
 
 function openMirror(){
@@ -340,16 +352,10 @@ function openMirror(){
 }
 
 function startMirror(){
-  if (!DEV_MODE) {
-    const lastTime = localStorage.getItem(V2_BLOCK_KEY);
-    if (lastTime && !isNaN(Number(lastTime))) {
-      if ((now() - Number(lastTime)) < WEEK_MS) {
-        showWeeklyBlockFlash();
-        return;
-      }
-    }
+  if (!DEV_MODE && !puedeAbrirReflejo()) {
+    showWeeklyBlockFlash();
+    return;
   }
-
   document.body.classList.add("mirror-bg");
   mq = 0; mirrorScore = 0; mirrorCount = 0; mirrorLog = [];
   saveV2State({ lastSection: "mirrorTest" });
@@ -619,6 +625,7 @@ function resetearTodoA1() {
     localStorage.removeItem("hm_v2_last_week");
     localStorage.removeItem("hm_v2_state");
     localStorage.removeItem("hm_v2_last_date");
+    localStorage.removeItem(V2_CYCLE_END_KEY);
 
     // 2. Limpiar persistencia del Volumen 1
     localStorage.removeItem("hm_v1_state");
