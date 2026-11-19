@@ -337,7 +337,7 @@ const MIRROR_QUESTIONS = [
   { t:"Cuando se acumulan responsabilidades, demandas externas o presiones internas, ¿cuánta ansiedad sentís en tu cuerpo o en tu mente, aunque continúes funcionando?" },
   { t:"Cuando estás con personas importantes para vos, ¿cuánta desconexión emocional sentís, aun estando físicamente presente?" },
   { t:"Cuando vivís un momento simple, sin exigencias ni expectativas, ¿cuánta alegría genuina sentís, sin necesidad de estímulos externos?" },
-  { t:"Когда aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
+  { t:"Cuando aparece una emoción incómoda que no sabés nombrar del todo, ¿cuánto tendés a evitarla, minimizarla o distraerte para no sentirla?" }
 ];
 
 function gateMirrorIntro(){
@@ -459,7 +459,7 @@ function showFinal(){
         "una estrategia para resguardar la propia energía no involucrándose afectivamente.\n\n"+
         "El riesgo latente no radica en no sentir en un instante puntual,\n"+
         "sino en normalizar e institucionalizar ese apagamiento emocional como un estado estable y permanente.\n\n"+
-        "Когда las vivencias y dolores de los demás dejan de resonar internamente,\n"+
+        "Cuando las vivencias y dolores de los demás dejan de resonar internamente,\n"+
         "la humanidad se vuelve puramente funcional y operativa, pero pierde su profundidad y su impacto real.\n\n"+
         "Esta devolución no busca juzgarte, sino iluminar un punto ciego fundamental:\n"+
         "aquel espacio donde la empatía y la conexión genuina podrían desarrollarse,\n"+
